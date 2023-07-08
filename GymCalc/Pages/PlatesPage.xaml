@@ -1,0 +1,44 @@
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="GymCalc.Pages.PlatesPage"
+    BackgroundColor="#111"
+    Title="Plates">
+
+    <ScrollView VerticalOptions="Fill">
+        <Grid
+            x:Name="PlatesGrid"
+            RowDefinitions="Auto"
+            ColumnDefinitions="*,Auto"
+            Padding="10"
+            RowSpacing="10"
+            ColumnSpacing="10">
+
+            <Label
+                Text="Select which plate weights (kg) are available:"
+                TextColor="White"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+            </Label>
+
+        </Grid>
+    </ScrollView>
+
+    <!-- <Button -->
+    <!--     Grid.Row="2" -->
+    <!--     Grid.Column="0" -->
+    <!--     Text="Add new" -->
+    <!--     Clicked="AddNewPlateWeightClicked" -->
+    <!--     Style="{StaticResource ButtonStyle}" /> -->
+    <!-- <Button -->
+    <!--     Grid.Row="2" -->
+    <!--     Grid.Column="1" -->
+    <!--     Text="Save" -->
+    <!--     Clicked="SavePlateWeightsClicked" -->
+    <!--     Style="{StaticResource ButtonStyle}" /> -->
+
+</ContentPage>

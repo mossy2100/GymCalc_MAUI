@@ -1,0 +1,53 @@
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="GymCalc.Pages.CalculatorPage"
+    BackgroundColor="White"
+    Title="Calculator">
+    <ScrollView>
+        <Grid
+            ColumnDefinitions="*,*"
+            RowDefinitions="Auto,Auto,Auto"
+            ColumnSpacing="10"
+            RowSpacing="10"
+            Padding="10">
+
+            <!-- Row 0: Target weight -->
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Target weight (kg)"
+                VerticalTextAlignment="Center" />
+            <Entry
+                x:Name="TargetWeight"
+                Grid.Row="0"
+                Grid.Column="1"
+                Keyboard="Numeric"
+                VerticalTextAlignment="Center" />
+
+            <!-- Row 1: Bar weight -->
+            <Label
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="Bar weight (kg)"
+                VerticalTextAlignment="Center" />
+            <Picker
+                x:Name="BarWeight"
+                Grid.Row="1"
+                Grid.Column="1"
+                VerticalTextAlignment="Center" />
+
+            <!-- Row 2: Calculate button -->
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="Calculate"
+                Clicked="CalculateButton_Clicked" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

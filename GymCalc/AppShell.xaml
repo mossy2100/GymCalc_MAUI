@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell
+    x:Class="GymCalc.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:GymCalc.Pages"
+    FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <Tab Title="Barbells" Icon="barbell_plate_icon.png">
+            <ShellContent Title="Plates" ContentTemplate="{DataTemplate pages:PlatesPage}" />
+            <ShellContent Title="Bars" ContentTemplate="{DataTemplate pages:BarsPage}" />
+        </Tab>
+        <Tab Title="Calculator" Icon="calculator_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+        </Tab>
+        <Tab Title="Dumbbells" Icon="dumbbell_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>
