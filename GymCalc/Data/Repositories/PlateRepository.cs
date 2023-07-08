@@ -34,7 +34,7 @@ internal static class PlateRepository
     /// </summary>
     /// <param name="weight">The weight of the plate in kilograms.</param>
     /// <returns>The default plate color.</returns>
-    public static Color DefaultPlateColor(double weight)
+    public static string DefaultPlateColor(double weight)
     {
         while (weight < 5)
         {
@@ -43,14 +43,14 @@ internal static class PlateRepository
 
         return weight switch
         {
-            25 => Color.FromRgb(0xb3, 0x00, 0x0c), // red
-            20 => Color.FromRgb(0x20, 0x38, 0x80), // blue
-            15 => Color.FromRgb(0xf2, 0xd0, 0x24), // yellow
-            12.5 => Color.FromRgb(0xff, 0x5c, 0x26), // orange
-            10 => Color.FromRgb(0x24, 0xb3, 0x24), // green
-            7.5 => Color.FromRgb(0xe5, 0x7e, 0xc3), // pink
-            5 => Color.FromRgb(0xe5, 0xe5, 0xe5), // white
-            _ => Color.FromRgb(0x69, 0x50, 0xb3), // purple
+            25 => "#b3000c", // red
+            20 => "#203880", // blue
+            15 => "#f2d024", // yellow
+            12.5 => "#ff5c26", // orange
+            10 => "#24b324", // green
+            7.5 => "#e57ec3", // pink
+            5 => "#e5e5e5", // white
+            _ => "#6950b3", // purple
         };
     }
 
@@ -76,7 +76,7 @@ internal static class PlateRepository
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Color = DefaultPlateColor(weight).ToInt(),
+                    Color = DefaultPlateColor(weight),
                     Enabled = enabled
                 };
                 await db.InsertAsync(plate);

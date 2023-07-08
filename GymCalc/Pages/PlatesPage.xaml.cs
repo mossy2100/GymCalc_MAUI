@@ -37,7 +37,7 @@ public partial class PlatesPage : ContentPage
             PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(30)));
 
             // Get the colors.
-            var bgColor = Color.FromInt(plate.Color);
+            var bgColor = Color.Parse(plate.Color);
             var textColor = bgColor.GetTextColor();
 
             // Add the plate background.
@@ -71,7 +71,7 @@ public partial class PlatesPage : ContentPage
             cb.CheckedChanged += OnPlateCheckboxChanged;
             PlatesGrid.Add(cb, 1, row);
 
-            // Remember the plate weight in the lookup table.
+            // Link the checkbox to the plate in the lookup table.
             _cbPlateMap[cb] = plate;
 
             // Next row.

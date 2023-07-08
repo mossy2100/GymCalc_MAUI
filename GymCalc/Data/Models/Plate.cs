@@ -13,5 +13,5 @@ public class Plate
 
     public bool Enabled { get; set; }
 
-    public int Color { get; set; }
+    public string Color { get; set; }
 }
