@@ -9,24 +9,26 @@ internal static class PlateRepository
 {
     /// <summary>
     /// Default plates.
+    /// The key is the plate weight in kilograms. The value is the Enabled flag.
+    /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
     private static readonly Dictionary<double, bool> DefaultPlates = new Dictionary<double, bool>
     {
-        [25] = true,
-        [20] = true,
-        [15] = true,
-        [12.5] = false,
-        [10] = true,
-        [7.5] = true,
-        [5] = true,
-        [2.5] = true,
-        [2] = false,
-        [1.5] = false,
-        [1.25] = true,
-        [1] = false,
-        [0.75] = false,
+        [0.25] = false,
         [0.5] = false,
-        [0.25] = false
+        [0.75] = false,
+        [1] = false,
+        [1.25] = true,
+        [1.5] = false,
+        [2] = false,
+        [2.5] = true,
+        [5] = true,
+        [7.5] = true,
+        [10] = true,
+        [12.5] = false,
+        [15] = true,
+        [20] = true,
+        [25] = true
     };
 
     /// <summary>
@@ -43,13 +45,13 @@ internal static class PlateRepository
 
         return weight switch
         {
-            25 => "#b3000c", // red
-            20 => "#203880", // blue
-            15 => "#f2d024", // yellow
-            12.5 => "#ff5c26", // orange
-            10 => "#24b324", // green
-            7.5 => "#e57ec3", // pink
             5 => "#e5e5e5", // white
+            7.5 => "#e57ec3", // pink
+            10 => "#24b324", // green
+            12.5 => "#ff5c26", // orange
+            15 => "#f2d024", // yellow
+            20 => "#203880", // blue
+            25 => "#b3000c", // red
             _ => "#6950b3", // purple
         };
     }

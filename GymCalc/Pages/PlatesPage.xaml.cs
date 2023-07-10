@@ -2,6 +2,7 @@ using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Utilities;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
@@ -29,54 +30,72 @@ public partial class PlatesPage : ContentPage
 
         // Get the plates.
         var db = Database.GetConnection();
-        var plates = await db.Table<Plate>().ToListAsync();
+        var plates = await db.Table<Plate>().OrderBy(p => p.Weight).ToListAsync();
 
-        var row = 1;
+        var rowNum = 1;
+        var rowDefinition = new RowDefinition(new GridLength(30));
         foreach (var plate in plates)
         {
-            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(30)));
-
-            // Get the colors.
-            var bgColor = Color.Parse(plate.Color);
-            var textColor = bgColor.GetTextColor();
-
-            // Add the plate background.
-            var rect = new Rectangle
-            {
-                RadiusX = 5,
-                RadiusY = 5,
-                HeightRequest = 30,
-                Fill = bgColor
-            };
-            PlatesGrid.Add(rect, 0, row);
-
-            // Add the plate weight text.
-            var label = new Label()
-            {
-                Text = plate.Weight.ToString(CultureInfo.InvariantCulture),
-                TextColor = textColor,
-                FontSize = 20,
-                FontAttributes = FontAttributes.Bold,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center
-            };
-            PlatesGrid.Add(label, 0, row);
+            PlatesGrid.RowDefinitions.Add(rowDefinition);
+            AddPlateToGrid(plate, PlatesGrid, 0, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox
             {
                 IsChecked = plate.Enabled,
-                Color = Colors.White
+                // Color = Colors.White
             };
             cb.CheckedChanged += OnPlateCheckboxChanged;
-            PlatesGrid.Add(cb, 1, row);
+            PlatesGrid.Add(cb, 1, rowNum);
 
             // Link the checkbox to the plate in the lookup table.
             _cbPlateMap[cb] = plate;
 
             // Next row.
-            row++;
+            rowNum++;
         }
+    }
+
+    internal static void AddPlateToGrid(Plate plate, Grid platesGrid, int columnNum, int rowNum)
+    {
+        // Get the colors.
+        var bgColor = Color.Parse(plate.Color);
+        var textColor = bgColor.GetTextColor();
+
+        // Add the plate background.
+        var plateWidth = 50 + plate.Weight / 25 * 250;
+        var rect = new Rectangle
+        {
+            RadiusX = 4,
+            RadiusY = 4,
+            HeightRequest = 30,
+            WidthRequest = plateWidth,
+            Fill = bgColor.AddLuminosity(-0.1f),
+        };
+        platesGrid.Add(rect, columnNum, rowNum);
+
+        // Add the plate edge.
+        var rect2 = new Rectangle
+        {
+            RadiusX = 0,
+            RadiusY = 0,
+            HeightRequest = 22,
+            WidthRequest = plateWidth,
+            Fill = bgColor,
+        };
+        platesGrid.Add(rect2, columnNum, rowNum);
+
+        // Add the plate weight text.
+        var label = new Label()
+        {
+            Text = plate.Weight.ToString(CultureInfo.InvariantCulture),
+            TextColor = textColor,
+            FontSize = 16,
+            FontAttributes = FontAttributes.Bold,
+            VerticalTextAlignment = TextAlignment.Center,
+            HorizontalTextAlignment = TextAlignment.Center
+        };
+        platesGrid.Add(label, columnNum, rowNum);
     }
 
     /// <summary>

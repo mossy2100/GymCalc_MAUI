@@ -2,6 +2,7 @@ using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Utilities;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
@@ -29,51 +30,55 @@ public partial class BarsPage : ContentPage
 
         // Get the bars.
         var db = Database.GetConnection();
-        var bars = await db.Table<Bar>().ToListAsync();
+        var bars = await db.Table<Bar>().OrderBy(b => b.Weight).ToListAsync();
 
         // Get the steel bar gradient brush.
         var brush = ColorUtility.GetSteelBarBrush();
 
-        var row = 1;
+        var rowNum = 1;
         foreach (var bar in bars)
         {
             // Add a new row to the grid.
             BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(30)));
 
-            // Add the bar.
+            // Add the bar background.
+            var barLength = 50 + bar.Weight / 25 * 250;
             var rect = new Rectangle
             {
                 RadiusX = 0,
                 RadiusY = 0,
-                HeightRequest = 30,
+                HeightRequest = 22,
+                WidthRequest = barLength,
                 Fill = brush
             };
-            BarsGrid.Add(rect, 0, row);
+            BarsGrid.Add(rect, 0, rowNum);
+
+            // Add the bar weight text.
             var label = new Label
             {
                 Text = bar.Weight.ToString(CultureInfo.InvariantCulture),
                 TextColor = Colors.Black,
-                FontSize = 20,
+                FontSize = 16,
                 FontAttributes = FontAttributes.Bold,
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             };
-            BarsGrid.Add(label, 0, row);
+            BarsGrid.Add(label, 0, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox
             {
                 IsChecked = bar.Enabled,
-                Color = Colors.White
+                // Color = Colors.White
             };
             cb.CheckedChanged += OnBarCheckboxChanged;
-            BarsGrid.Add(cb, 1, row);
+            BarsGrid.Add(cb, 1, rowNum);
 
             // Remember the bar weight in the lookup table.
             cbBarMap[cb] = bar;
 
             // Next row.
-            row++;
+            rowNum++;
         }
     }
 

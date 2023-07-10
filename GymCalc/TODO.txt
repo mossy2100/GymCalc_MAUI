@@ -1,0 +1,5 @@
+2. Change the colour for user-defined plates back to the Hulk purple plate colour.
+3. Handle when the percentage weight is less than the bar weight.
+4. Figure out why the bold text isn't working.
+5. Reverse order of plates and bars in the Barbells pages so they are increasing.
+6. Update background colour of icon to use the new dark blue.

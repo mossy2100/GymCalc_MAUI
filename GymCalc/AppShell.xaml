@@ -7,12 +7,12 @@
     FlyoutBehavior="Disabled">
 
     <TabBar>
+        <Tab Title="Calculator" Icon="calculator_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+        </Tab>
         <Tab Title="Barbells" Icon="plate_icon.png">
             <ShellContent Title="Plates" ContentTemplate="{DataTemplate pages:PlatesPage}" />
             <ShellContent Title="Bars" ContentTemplate="{DataTemplate pages:BarsPage}" />
-        </Tab>
-        <Tab Title="Calculator" Icon="calculator_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
         </Tab>
         <Tab Title="Dumbbells" Icon="dumbbell_icon.png">
             <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
