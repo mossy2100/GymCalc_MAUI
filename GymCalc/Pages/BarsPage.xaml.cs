@@ -33,7 +33,7 @@ public partial class BarsPage : ContentPage
         var bars = await db.Table<Bar>().OrderBy(b => b.Weight).ToListAsync();
 
         // Get the steel bar gradient brush.
-        var brush = ColorUtility.GetSteelBarBrush();
+        var brush = GetSteelBarBrush();
 
         var rowNum = 1;
         foreach (var bar in bars)
@@ -69,7 +69,6 @@ public partial class BarsPage : ContentPage
             var cb = new CheckBox
             {
                 IsChecked = bar.Enabled,
-                // Color = Colors.White
             };
             cb.CheckedChanged += OnBarCheckboxChanged;
             BarsGrid.Add(cb, 1, rowNum);
@@ -95,5 +94,18 @@ public partial class BarsPage : ContentPage
         bar.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(bar);
+    }
+
+    /// <summary>
+    /// Create the steel bar gradient brush.
+    /// </summary>
+    /// <returns></returns>
+    internal static Brush GetSteelBarBrush()
+    {
+        var brush = new LinearGradientBrush { EndPoint = new Point(0, 1) };
+        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 0));
+        brush.GradientStops.Add(new GradientStop(Colors.White, 0.5f));
+        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 1));
+        return brush;
     }
 }

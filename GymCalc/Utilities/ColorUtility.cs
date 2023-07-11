@@ -45,17 +45,4 @@ internal static class ColorUtility
     {
         return bgColor.GetPerceivedLightness() >= 65 ? Colors.Black : Colors.White;
     }
-
-    /// <summary>
-    /// Create the steel bar gradient brush.
-    /// </summary>
-    /// <returns></returns>
-    internal static Brush GetSteelBarBrush()
-    {
-        var brush = new LinearGradientBrush { EndPoint = new Point(0, 1) };
-        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 0));
-        brush.GradientStops.Add(new GradientStop(Colors.White, 0.5f));
-        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 1));
-        return brush;
-    }
 }

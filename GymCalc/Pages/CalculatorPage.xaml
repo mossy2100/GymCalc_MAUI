@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="GymCalc.Pages.CalculatorPage"
-    BackgroundColor="White"
     Title="Calculator">
 
     <ScrollView>
@@ -33,7 +32,7 @@
                     FontSize="16"
                     Keyboard="Numeric"
                     VerticalTextAlignment="Center"
-                    BackgroundColor="{StaticResource Secondary}" />
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
 
                 <!-- Row 1: Bar weight -->
                 <Label
@@ -48,7 +47,7 @@
                     Grid.Column="1"
                     FontSize="16"
                     VerticalTextAlignment="Center"
-                    BackgroundColor="{StaticResource Secondary}" />
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
             </Grid>
 
             <!-- Item 1: Calculate button -->

@@ -12,6 +12,8 @@
             <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="{StaticResource White}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
