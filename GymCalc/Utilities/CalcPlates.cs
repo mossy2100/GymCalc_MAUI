@@ -20,9 +20,6 @@ internal static class CalcPlates
             .ToListAsync()
             .Result;
 
-        // Get the weight of the smallest plate.
-        var smallestPlate = plates.Min(p => p.Weight);
-
         // Calculate the results.
         var results = new Dictionary<double, PlatesResult>();
 
@@ -30,42 +27,27 @@ internal static class CalcPlates
         // Later, this might be configurable.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var targetWeightTotal = maxWeight * percent / 100.0;
-            var targetWeightEachEnd = (targetWeightTotal - barWeight) / 2;
-            var platesResult = new PlatesResult { TargetWeight = targetWeightEachEnd };
+            var idealTotal = maxWeight * percent / 100.0;
+            var idealPlates = (idealTotal - barWeight) / 2;
 
-            // Get as close as we can without going over.
-            var closestBelow = GetPlatesClosestBelow(targetWeightEachEnd, plates);
-            var closestBelowTotal = closestBelow.Sum(p => p.Weight);
-
-            // See if we're done.
-            if (closestBelowTotal == targetWeightEachEnd)
+            // Initialise the result.
+            var platesResult = new PlatesResult
             {
-                // Exact.
-                platesResult.ActualWeight = closestBelowTotal;
-                platesResult.Plates = closestBelow;
-            }
-            else
-            {
-                // Get as close as we can, just going over.
-                var closestAbove = GetPlatesClosestBelow(closestBelowTotal + smallestPlate, plates);
-                var closestAboveTotal = closestAbove.Sum(p => p.Weight);
+                IdealWeight = idealPlates,
+                ClosestWeight = 0
+            };
 
-                // Which is closer?
-                var diffBelow = targetWeightEachEnd - closestBelowTotal;
-                var diffAbove = closestAboveTotal - targetWeightEachEnd;
-                if (diffBelow < diffAbove)
+            // Get the set of plates that is closest to the ideal weight.
+            var bestSolution = FindBestSolution(idealPlates, plates);
+            if (bestSolution != null)
+            {
+                platesResult.ClosestWeight = bestSolution.Sum();
+
+                // Get the plates.
+                foreach (var plateWeight in bestSolution)
                 {
-                    // If diffBelow is less than diffAbove, we'll take the lower weight.
-                    platesResult.ActualWeight = closestBelowTotal;
-                    platesResult.Plates = closestBelow;
-                }
-                else
-                {
-                    // If diffBelow is greater than or equal to diffAbove, we'll take the higher
-                    // weight.
-                    platesResult.ActualWeight = closestAboveTotal;
-                    platesResult.Plates = closestAbove;
+                    var plate = plates.Where(p => p.Weight == plateWeight).First();
+                    platesResult.Plates.Add(plate);
                 }
             }
 
@@ -75,24 +57,99 @@ internal static class CalcPlates
         return results;
     }
 
-    private static List<Plate> GetPlatesClosestBelow(double targetWeight, List<Plate> plates)
+    private static List<List<double>> GetSolutions(double weight, List<Plate> plates,
+        double maxPlateWeight, bool aboveOnly = false)
     {
-        var closestBelow = new List<Plate>();
-        var rem = targetWeight;
-        var smallestPlate = plates.Min(p => p.Weight);
-        while (rem >= smallestPlate)
+        var solutions = new List<List<double>>();
+        if (weight <= 0)
         {
-            // Look through the plates for the next one to add to the stack.
-            foreach (var plate in plates)
+            return solutions;
+        }
+
+        foreach (var plate in plates)
+        {
+            var plateWeight = plate.Weight;
+
+            if (plateWeight <= maxPlateWeight && (aboveOnly || plateWeight <= weight))
             {
-                if (plate.Weight <= rem)
+                var remWeight = weight - plateWeight;
+
+                // If there's no remainder or we've gone over, we're done.
+                if (remWeight <= 0)
                 {
-                    closestBelow.Add(plate);
-                    rem -= plate.Weight;
-                    break;
+                    if (aboveOnly && remWeight < 0 || !aboveOnly && remWeight == 0)
+                    {
+                        var plateResult = new List<double> { plateWeight };
+                        solutions.Add(plateResult);
+                    }
+                    continue;
+                }
+
+                // Get all possible solutions for the remaining weight.
+                var remSolutions = GetSolutions(remWeight, plates, plateWeight, aboveOnly);
+
+                // If there were no solutions, we're done.
+                if (remSolutions.Count == 0)
+                {
+                    var plateResult = new List<double> { plateWeight };
+                    solutions.Add(plateResult);
+                    continue;
+                }
+
+                // Append the current plate to each solution.
+                foreach (var remSolution in remSolutions)
+                {
+                    var plateResult = new List<double> { plateWeight };
+                    foreach (var remPlateWeight in remSolution)
+                    {
+                        plateResult.Add(remPlateWeight);
+                    }
+                    solutions.Add(plateResult);
                 }
             }
         }
-        return closestBelow;
+
+        return solutions;
+    }
+
+    public static List<double> FindBestSolution(double idealWeight, List<Plate> plates)
+    {
+        List<double> bestSolution = null;
+
+        // Get all solutions equal to or less than the ideal weight.
+        var maxPlateWeight = plates.Select(p => p.Weight).Max();
+        var solutionsBelow = GetSolutions(idealWeight, plates, maxPlateWeight);
+
+        if (solutionsBelow.Count > 0)
+        {
+            var bestSolutionBelow = solutionsBelow
+                .OrderBy(s => double.Abs(idealWeight - s.Sum()))
+                .ThenBy(s => s.Count)
+                .First();
+            var bestSolutionBelowSum = bestSolutionBelow.Sum();
+            bestSolution = bestSolutionBelow;
+
+            // If the solution is not exact, look for the best solution above and compare.
+            if (bestSolutionBelowSum != idealWeight)
+            {
+                var solutionsAbove = GetSolutions(idealWeight, plates, maxPlateWeight, true);
+                if (solutionsAbove.Count > 0)
+                {
+                    var bestSolutionAbove = solutionsAbove
+                        .OrderBy(s => double.Abs(idealWeight - s.Sum()))
+                        .ThenBy(s => s.Count)
+                        .First();
+                    var bestSolutionAboveSum = bestSolutionAbove.Sum();
+                    var diffBelow = idealWeight - bestSolutionBelowSum;
+                    var diffAbove = bestSolutionAboveSum - idealWeight;
+                    if (diffAbove < diffBelow)
+                    {
+                        bestSolution = bestSolutionAbove;
+                    }
+                }
+            }
+        }
+
+        return bestSolution;
     }
 }

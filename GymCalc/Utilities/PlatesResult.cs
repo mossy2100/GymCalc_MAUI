@@ -4,9 +4,9 @@ namespace GymCalc.Utilities;
 
 public class PlatesResult
 {
-    public double TargetWeight;
+    public double IdealWeight;
 
-    public double ActualWeight;
+    public double ClosestWeight;
 
-    public List<Plate> Plates;
+    public List<Plate> Plates = new ();
 }

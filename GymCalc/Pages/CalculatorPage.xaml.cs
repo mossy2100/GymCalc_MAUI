@@ -107,9 +107,8 @@ public partial class CalculatorPage : ContentPage
 
     private void DisplayResults(Dictionary<double, PlatesResult> results)
     {
-        // Update the message.
+        // Clear the error message.
         ResultsLabel.Text = "";
-        // ResultsLabel.TextColor = Colors.Black;
 
         // Clear the old results.
         while (CalculatorLayout.Count > 3)
@@ -123,72 +122,104 @@ public partial class CalculatorPage : ContentPage
         {
             var textGrid = new Grid
             {
+                ColumnDefinitions = new ColumnDefinitionCollection(
+                    new ColumnDefinition(new GridLength(3, GridUnitType.Star)),
+                    new ColumnDefinition(new GridLength(2, GridUnitType.Star)),
+                    new ColumnDefinition(new GridLength(2, GridUnitType.Star))
+                ),
                 RowDefinitions = new RowDefinitionCollection(
-                    new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto),
                     new RowDefinition(GridLength.Auto)
                 ),
-                ColumnDefinitions = new ColumnDefinitionCollection(
-                    new ColumnDefinition(new GridLength(2, GridUnitType.Star)),
-                    new ColumnDefinition(new GridLength(1, GridUnitType.Star))
-                ),
-                RowSpacing = 5,
-                ColumnSpacing = 5
+                ColumnSpacing = 15,
+                RowSpacing = 15,
             };
-            var percentLabel = new Label()
+
+            ///////////
+            // Row 0.
+
+            // Percentage heading.
+            var percentLabel = new Label
             {
-                Text = $"{percent}%",
+                FormattedText = TextUtility.BoldText($"{percent}%"),
                 FontSize = 24,
-                FontAttributes = FontAttributes.Bold
             };
             textGrid.Add(percentLabel, 0, 0);
 
-            var totalWeightLabel = new Label()
+            // Ideal heading.
+            var idealHeading = new Label
             {
-                Text = "Total including bar:",
+                FormattedText = TextUtility.BoldText("Ideal"),
                 FontSize = 16,
+                VerticalTextAlignment = TextAlignment.End,
             };
-            textGrid.Add(totalWeightLabel, 0, 1);
+            textGrid.Add(idealHeading, 1, 0);
 
-            var totalWeight = MaxWeight * percent / 100.0;
-            var totalWeightAmount = new Label()
+            // Closest heading.
+            var closestHeading = new Label
             {
-                Text = $"{totalWeight:F2} kg",
+                FormattedText = TextUtility.BoldText("Closest"),
                 FontSize = 16,
-                FontAttributes = FontAttributes.Bold
+                VerticalTextAlignment = TextAlignment.End,
             };
-            textGrid.Add(totalWeightAmount, 1, 1);
+            textGrid.Add(closestHeading, 2, 0);
 
-            var targetWeightLabel = new Label()
-            {
-                Text = "Ideal plates per each end:",
-                FontSize = 16,
-            };
-            textGrid.Add(targetWeightLabel, 0, 2);
+            ///////////
+            // Row 1.
 
-            var targetWeightAmount = new Label()
+            // Total including bar heading.
+            var totalHeading = new Label
             {
-                Text = $"{platesResult.TargetWeight:F2} kg",
+                FormattedText = TextUtility.BoldText("Total including bar"),
                 FontSize = 16,
-                FontAttributes = FontAttributes.Bold
             };
-            textGrid.Add(targetWeightAmount, 1, 2);
+            textGrid.Add(totalHeading, 0, 1);
 
-            var actualWeightLabel = new Label()
+            // Ideal total weight.
+            var idealTotal = MaxWeight * percent / 100.0;
+            var idealTotalValue = new Label
             {
-                Text = "Plates to use:",
+                FormattedText = TextUtility.NormalText($"{idealTotal:F2} kg"),
                 FontSize = 16,
             };
-            textGrid.Add(actualWeightLabel, 0, 3);
+            textGrid.Add(idealTotalValue, 1, 1);
 
-            var actualWeightAmount = new Label()
+            // Closest total weight.
+            var closestTotal = 2 * platesResult.ClosestWeight + BarWeight;
+            var closestTotalValue = new Label
             {
-                Text = $"{platesResult.ActualWeight:F2} kg",
+                FormattedText = TextUtility.NormalText($"{closestTotal:F2} kg"),
                 FontSize = 16,
-                FontAttributes = FontAttributes.Bold
             };
-            textGrid.Add(actualWeightAmount, 1, 3);
+            textGrid.Add(closestTotalValue, 2, 1);
+
+            ///////////
+            // Row 2.
+
+            // Plates per end heading.
+            var platesPerEndHeading = new Label
+            {
+                FormattedText = TextUtility.BoldText("Plates per end"),
+                FontSize = 16,
+            };
+            textGrid.Add(platesPerEndHeading, 0, 2);
+
+            // Ideal plates weight.
+            var idealPlatesValue = new Label
+            {
+                FormattedText = TextUtility.NormalText($"{platesResult.IdealWeight:F2} kg"),
+                FontSize = 16,
+            };
+            textGrid.Add(idealPlatesValue, 1, 2);
+
+            // Closest plates weight.
+            var closestPlatesValue = new Label
+            {
+                FormattedText = TextUtility.NormalText($"{platesResult.ClosestWeight:F2} kg"),
+                FontSize = 16,
+            };
+            textGrid.Add(closestPlatesValue, 2, 2);
 
             CalculatorLayout.Add(textGrid);
 
