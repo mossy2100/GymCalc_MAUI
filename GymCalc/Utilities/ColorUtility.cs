@@ -52,8 +52,7 @@ internal static class ColorUtility
     /// <returns></returns>
     internal static Brush GetSteelBarBrush()
     {
-        var brush = new LinearGradientBrush();
-        brush.EndPoint = new Point(0, 1);
+        var brush = new LinearGradientBrush { EndPoint = new Point(0, 1) };
         brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 0));
         brush.GradientStops.Add(new GradientStop(Colors.White, 0.5f));
         brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 1));

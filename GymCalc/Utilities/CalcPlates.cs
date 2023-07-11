@@ -1,4 +1,3 @@
-using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 
@@ -6,22 +5,17 @@ namespace GymCalc.Utilities;
 
 internal static class CalcPlates
 {
-    internal static async Task<Dictionary<double, PlatesResult>> CalculateResults(double maxWeight,
+    internal static async Task<Dictionary<double, List<double>>> CalculateResults(double maxWeight,
         double barWeight)
     {
         // Make sure we have some plates.
         await PlateRepository.InitializeTable();
 
         // Get the available plates.
-        var db = Database.GetConnection();
-        var plates = db.Table<Plate>()
-            .Where(p => p.Enabled)
-            .OrderByDescending(p => p.Weight)
-            .ToListAsync()
-            .Result;
+        var plates = PlateRepository.GetAllAvailable();
 
         // Calculate the results.
-        var results = new Dictionary<double, PlatesResult>();
+        var results = new Dictionary<double, List<double>>();
 
         // For now we'll hard code that we want 50%, 60% ... 100%.
         // Later, this might be configurable.
@@ -30,28 +24,8 @@ internal static class CalcPlates
             var idealTotal = maxWeight * percent / 100.0;
             var idealPlates = (idealTotal - barWeight) / 2;
 
-            // Initialise the result.
-            var platesResult = new PlatesResult
-            {
-                IdealWeight = idealPlates,
-                ClosestWeight = 0
-            };
-
             // Get the set of plates that is closest to the ideal weight.
-            var bestSolution = FindBestSolution(idealPlates, plates);
-            if (bestSolution != null)
-            {
-                platesResult.ClosestWeight = bestSolution.Sum();
-
-                // Get the plates.
-                foreach (var plateWeight in bestSolution)
-                {
-                    var plate = plates.Where(p => p.Weight == plateWeight).First();
-                    platesResult.Plates.Add(plate);
-                }
-            }
-
-            results[percent] = platesResult;
+            results[percent] = FindBestSolution(idealPlates, plates);
         }
 
         return results;
@@ -66,10 +40,14 @@ internal static class CalcPlates
             return solutions;
         }
 
+        // Go through all the plate weights looking for possible solutions.
         foreach (var plate in plates)
         {
             var plateWeight = plate.Weight;
 
+            // Check if the current plate is valid for this solution.
+            // We don't want to exceed the weight of the previous plate in the stack (represented by
+            // maxPlateWeight) otherwise we'll get duplicate solutions.
             if (plateWeight <= maxPlateWeight && (aboveOnly || plateWeight <= weight))
             {
                 var remWeight = weight - plateWeight;
@@ -77,8 +55,14 @@ internal static class CalcPlates
                 // If there's no remainder or we've gone over, we're done.
                 if (remWeight <= 0)
                 {
+                    // If the remainder is 0 but we're only looking for solutions that exceed the
+                    // ideal weight (i.e. aboveOnly is true), then the current plate is not a
+                    // solution, but we still need to terminate the iteration.
+                    // If we're only looking for solutions that are less than or equal to the ideal
+                    // weight, the if the remainder is 0 the current plate is the solution.
                     if (aboveOnly && remWeight < 0 || !aboveOnly && remWeight == 0)
                     {
+                        // The current plate is the only one in the solution.
                         var plateResult = new List<double> { plateWeight };
                         solutions.Add(plateResult);
                     }
@@ -91,6 +75,7 @@ internal static class CalcPlates
                 // If there were no solutions, we're done.
                 if (remSolutions.Count == 0)
                 {
+                    // The current plate is the only one in the solution.
                     var plateResult = new List<double> { plateWeight };
                     solutions.Add(plateResult);
                     continue;
@@ -112,7 +97,13 @@ internal static class CalcPlates
         return solutions;
     }
 
-    public static List<double> FindBestSolution(double idealWeight, List<Plate> plates)
+    /// <summary>
+    /// Find the set of plates closest to the ideal weight.
+    /// </summary>
+    /// <param name="idealWeight"></param>
+    /// <param name="plates"></param>
+    /// <returns>A list of double values representing the plates in the best solution.</returns>
+    private static List<double> FindBestSolution(double idealWeight, List<Plate> plates)
     {
         List<double> bestSolution = null;
 

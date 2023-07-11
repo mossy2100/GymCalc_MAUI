@@ -46,15 +46,4 @@ internal static class Database
 
         return _database;
     }
-
-    /// <summary>
-    /// Initialize the database and its tables.
-    /// </summary>
-    internal static async Task Initialize()
-    {
-        // Ensure the database tables exists and contains some data.
-        await PlateRepository.InitializeTable();
-        await BarRepository.InitializeTable();
-        // await DumbbellRepository.InitializeTable();
-    }
 }

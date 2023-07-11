@@ -1,8 +1,8 @@
-* Allow for missing or irregular plates.
-* Handle when the percentage weight is less than the bar weight.
+* Test themes.
 * Add support for dumbbells.
 
 Version 2
 =========
 * Allow user to add custom plate and bar weights.
 * Add support for machines.
+* Add support for lbs.

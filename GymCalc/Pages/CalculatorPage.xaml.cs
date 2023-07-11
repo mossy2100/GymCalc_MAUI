@@ -1,15 +1,16 @@
 using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
+using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
 
 public partial class CalculatorPage : ContentPage
 {
-    private double MaxWeight;
+    private double _maxWeight;
 
-    private double BarWeight;
+    private double _barWeight;
 
     public CalculatorPage()
     {
@@ -31,8 +32,9 @@ public partial class CalculatorPage : ContentPage
     {
         // Get the current selected value.
         var initialSelectedIndex = BarWeightPicker.SelectedIndex;
-        var initialSelectedValue =
-            initialSelectedIndex != -1 ? BarWeightPicker.Items[initialSelectedIndex] : null;
+        var initialSelectedValue = initialSelectedIndex != -1
+            ? BarWeightPicker.Items[initialSelectedIndex]
+            : null;
 
         // Reset the picker items.
         BarWeightPicker.Items.Clear();
@@ -68,7 +70,7 @@ public partial class CalculatorPage : ContentPage
         // If the original selected bar weight is no longer present, try to select the default.
         if (!valueSelected)
         {
-            var weightString = Bar.DEFAULT_WEIGHT.ToString(CultureInfo.InvariantCulture);
+            var weightString = BarRepository.DEFAULT_WEIGHT.ToString(CultureInfo.InvariantCulture);
             for (i = 0; i < BarWeightPicker.Items.Count; i++)
             {
                 // Default selection.
@@ -91,9 +93,9 @@ public partial class CalculatorPage : ContentPage
     private async void CalculateButtonClicked(object sender, EventArgs e)
     {
         // Get the weights from the calculator fields and validate them.
-        BarWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
-        var maxWeightOk = double.TryParse(MaxWeightEntry.Text, out MaxWeight);
-        if (!maxWeightOk || MaxWeight < BarWeight)
+        _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
+        var maxWeightOk = double.TryParse(MaxWeightEntry.Text, out _maxWeight);
+        if (!maxWeightOk || _maxWeight < _barWeight)
         {
             ResultsLabel.Text = "Make sure the max weight is greater than or equal to the bar weight.";
             ResultsLabel.TextColor = Colors.Red;
@@ -101,11 +103,11 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Calculate and display the results.
-        var results = await CalcPlates.CalculateResults(MaxWeight, BarWeight);
+        var results = await CalcPlates.CalculateResults(_maxWeight, _barWeight);
         DisplayResults(results);
     }
 
-    private void DisplayResults(Dictionary<double, PlatesResult> results)
+    private void DisplayResults(Dictionary<double, List<double>> results)
     {
         // Clear the error message.
         ResultsLabel.Text = "";
@@ -116,9 +118,10 @@ public partial class CalculatorPage : ContentPage
             CalculatorLayout.RemoveAt(3);
         }
 
-        var rowDef = new RowDefinition();
+        // Get the available plates.
+        var plates = PlateRepository.GetAllAvailable();
 
-        foreach ((double percent, PlatesResult platesResult) in results)
+        foreach (var (percent, platesResult) in results)
         {
             var textGrid = new Grid
             {
@@ -145,7 +148,7 @@ public partial class CalculatorPage : ContentPage
                 FormattedText = TextUtility.BoldText($"{percent}%"),
                 FontSize = 24,
             };
-            textGrid.Add(percentLabel, 0, 0);
+            textGrid.Add(percentLabel, 0);
 
             // Ideal heading.
             var idealHeading = new Label
@@ -154,7 +157,7 @@ public partial class CalculatorPage : ContentPage
                 FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
-            textGrid.Add(idealHeading, 1, 0);
+            textGrid.Add(idealHeading, 1);
 
             // Closest heading.
             var closestHeading = new Label
@@ -163,7 +166,7 @@ public partial class CalculatorPage : ContentPage
                 FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
-            textGrid.Add(closestHeading, 2, 0);
+            textGrid.Add(closestHeading, 2);
 
             ///////////
             // Row 1.
@@ -177,7 +180,8 @@ public partial class CalculatorPage : ContentPage
             textGrid.Add(totalHeading, 0, 1);
 
             // Ideal total weight.
-            var idealTotal = MaxWeight * percent / 100.0;
+            var idealTotal = _maxWeight * percent / 100.0;
+            var idealPlates = (idealTotal - _barWeight) / 2;
             var idealTotalValue = new Label
             {
                 FormattedText = TextUtility.NormalText($"{idealTotal:F2} kg"),
@@ -186,7 +190,8 @@ public partial class CalculatorPage : ContentPage
             textGrid.Add(idealTotalValue, 1, 1);
 
             // Closest total weight.
-            var closestTotal = 2 * platesResult.ClosestWeight + BarWeight;
+            var closestPlates = platesResult.Sum();
+            var closestTotal = 2 * closestPlates + _barWeight;
             var closestTotalValue = new Label
             {
                 FormattedText = TextUtility.NormalText($"{closestTotal:F2} kg"),
@@ -208,7 +213,7 @@ public partial class CalculatorPage : ContentPage
             // Ideal plates weight.
             var idealPlatesValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{platesResult.IdealWeight:F2} kg"),
+                FormattedText = TextUtility.NormalText($"{idealPlates:F2} kg"),
                 FontSize = 16,
             };
             textGrid.Add(idealPlatesValue, 1, 2);
@@ -216,7 +221,7 @@ public partial class CalculatorPage : ContentPage
             // Closest plates weight.
             var closestPlatesValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{platesResult.ClosestWeight:F2} kg"),
+                FormattedText = TextUtility.NormalText($"{closestPlates:F2} kg"),
                 FontSize = 16,
             };
             textGrid.Add(closestPlatesValue, 2, 2);
@@ -225,12 +230,12 @@ public partial class CalculatorPage : ContentPage
 
             // Construct the plates grid and add it to the layout.
             var platesGrid = new Grid { Padding = new Thickness(0, 0, 0, 20) };
-            var sortedPlates = platesResult.Plates.OrderBy(p => p.Weight).ToList();
             var j = 0;
-            for (var p = 0; p < sortedPlates.Count; p++)
+            platesResult.Sort();
+            foreach (var plateWeight in platesResult)
             {
-                platesGrid.RowDefinitions.Add(rowDef);
-                var plate = sortedPlates[p];
+                platesGrid.RowDefinitions.Add(new RowDefinition());
+                var plate = plates.First(p => p.Weight == plateWeight);
                 PlatesPage.AddPlateToGrid(plate, platesGrid, 0, j);
                 j++;
             }

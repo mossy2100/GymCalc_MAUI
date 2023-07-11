@@ -18,7 +18,7 @@ public partial class BarsPage : ContentPage
     /// <summary>
     /// Dictionary mapping checkboxes to bars.
     /// </summary>
-    private Dictionary<CheckBox, Bar> cbBarMap = new ();
+    private Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
     /// <summary>
     /// Initialize the list of bars.
@@ -75,7 +75,7 @@ public partial class BarsPage : ContentPage
             BarsGrid.Add(cb, 1, rowNum);
 
             // Remember the bar weight in the lookup table.
-            cbBarMap[cb] = bar;
+            _cbBarMap[cb] = bar;
 
             // Next row.
             rowNum++;
@@ -91,7 +91,7 @@ public partial class BarsPage : ContentPage
     {
         // Update the bar's Enabled state.
         var cb = (CheckBox)sender;
-        var bar = cbBarMap[cb];
+        var bar = _cbBarMap[cb];
         bar.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(bar);

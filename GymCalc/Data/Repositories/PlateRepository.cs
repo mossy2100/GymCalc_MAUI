@@ -36,7 +36,7 @@ internal static class PlateRepository
     /// </summary>
     /// <param name="weight">The weight of the plate in kilograms.</param>
     /// <returns>The default plate color.</returns>
-    public static string DefaultPlateColor(double weight)
+    private static string DefaultPlateColor(double weight)
     {
         while (weight < 5)
         {
@@ -84,5 +84,19 @@ internal static class PlateRepository
                 await db.InsertAsync(plate);
             }
         }
+    }
+
+    /// <summary>
+    /// Get the available plates.
+    /// </summary>
+    /// <returns></returns>
+    public static List<Plate> GetAllAvailable()
+    {
+        var db = Database.GetConnection();
+        return db.Table<Plate>()
+            .Where(p => p.Enabled)
+            .OrderByDescending(p => p.Weight)
+            .ToListAsync()
+            .Result;
     }
 }

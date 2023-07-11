@@ -1,6 +1,6 @@
 namespace GymCalc.Utilities;
 
-public static class TextUtility
+internal static class TextUtility
 {
     /// <summary>
     /// Easily construct a formatted string.
@@ -14,7 +14,7 @@ public static class TextUtility
         bool italic = false, Color color = null)
     {
         // Initialize the Span.
-        var span = new Span() { Text = text };
+        var span = new Span { Text = text };
 
         // Set the font style if specified.
         if (bold || italic)
@@ -38,7 +38,7 @@ public static class TextUtility
         }
 
         // Construct the FormattedString object.
-        return new FormattedString() { Spans = { span } };
+        return new FormattedString { Spans = { span } };
     }
 
     public static FormattedString NormalText(string text)

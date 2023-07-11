@@ -43,7 +43,6 @@ public partial class PlatesPage : ContentPage
             var cb = new CheckBox
             {
                 IsChecked = plate.Enabled,
-                // Color = Colors.White
             };
             cb.CheckedChanged += OnPlateCheckboxChanged;
             PlatesGrid.Add(cb, 1, rowNum);
@@ -86,7 +85,7 @@ public partial class PlatesPage : ContentPage
         platesGrid.Add(rect2, columnNum, rowNum);
 
         // Add the plate weight text.
-        var label = new Label()
+        var label = new Label
         {
             Text = plate.Weight.ToString(CultureInfo.InvariantCulture),
             TextColor = textColor,

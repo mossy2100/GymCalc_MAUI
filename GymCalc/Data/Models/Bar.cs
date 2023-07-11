@@ -12,6 +12,4 @@ public class Bar
     public string Unit { get; set; }
 
     public bool Enabled { get; set; }
-
-    public const double DEFAULT_WEIGHT = 20;
 }
