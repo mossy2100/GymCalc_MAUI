@@ -9,9 +9,10 @@ internal static class TextUtility
     /// <param name="bold">If it should be bold.</param>
     /// <param name="italic">If it should be italic.</param>
     /// <param name="color">What colour it should be.</param>
+    /// <param name="style">What style it should use.</param>
     /// <returns></returns>
     public static FormattedString CreateFormattedString(string text, bool bold = false,
-        bool italic = false, Color color = null)
+        bool italic = false, Color color = null, Style style = null)
     {
         // Initialize the Span.
         var span = new Span { Text = text };
@@ -37,6 +38,12 @@ internal static class TextUtility
             span.TextColor = color;
         }
 
+        // Set the style if specified.
+        if (style != null)
+        {
+            span.Style = style;
+        }
+
         // Construct the FormattedString object.
         return new FormattedString { Spans = { span } };
     }
@@ -59,5 +66,10 @@ internal static class TextUtility
     public static FormattedString ColorText(string text, Color color)
     {
         return CreateFormattedString(text, false, false, color);
+    }
+
+    public static FormattedString StyleText(string text, Style style)
+    {
+        return CreateFormattedString(text, false, false, null, style);
     }
 }

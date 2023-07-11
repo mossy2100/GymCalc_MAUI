@@ -1,4 +1,5 @@
-* Test themes.
+* It takes a very long time to generate the solutions when the weight is large.
+  I think the answer is to immediately discard any solutions with a diff larger than the minimum found so far.
 * Add support for dumbbells.
 
 Version 2

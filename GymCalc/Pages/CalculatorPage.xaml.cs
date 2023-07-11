@@ -3,6 +3,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
 
@@ -118,6 +119,24 @@ public partial class CalculatorPage : ContentPage
             CalculatorLayout.RemoveAt(3);
         }
 
+        // Prepare the styles.
+        var resources = App.Current!.Resources;
+        var percentStyle = (Style)resources["ResultsTablePercent"];
+        var headerStyle = (Style)resources["ResultsTableHeader"];
+        var weightStyle = (Style)resources["ResultsTableWeight"];
+
+        // Separator line.
+        var deviceWidth =
+            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        var horizontalLineWidth = deviceWidth - 20;
+        var horizontalLine = new Rectangle
+        {
+            BackgroundColor = Colors.Grey,
+            WidthRequest = horizontalLineWidth,
+            HeightRequest = 1,
+        };
+        CalculatorLayout.Add(horizontalLine);
+
         // Get the available plates.
         var plates = PlateRepository.GetAllAvailable();
 
@@ -137,6 +156,7 @@ public partial class CalculatorPage : ContentPage
                 ),
                 ColumnSpacing = 15,
                 RowSpacing = 15,
+                Padding = new Thickness(0, 20, 0, 0),
             };
 
             ///////////
@@ -145,16 +165,15 @@ public partial class CalculatorPage : ContentPage
             // Percentage heading.
             var percentLabel = new Label
             {
-                FormattedText = TextUtility.BoldText($"{percent}%"),
-                FontSize = 24,
+                FormattedText = TextUtility.StyleText($"{percent}%", percentStyle),
             };
             textGrid.Add(percentLabel, 0);
 
             // Ideal heading.
             var idealHeading = new Label
             {
-                FormattedText = TextUtility.BoldText("Ideal"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText("Ideal", headerStyle),
+                // FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
             textGrid.Add(idealHeading, 1);
@@ -162,8 +181,8 @@ public partial class CalculatorPage : ContentPage
             // Closest heading.
             var closestHeading = new Label
             {
-                FormattedText = TextUtility.BoldText("Closest"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText("Closest", headerStyle),
+                // FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
             textGrid.Add(closestHeading, 2);
@@ -174,8 +193,8 @@ public partial class CalculatorPage : ContentPage
             // Total including bar heading.
             var totalHeading = new Label
             {
-                FormattedText = TextUtility.BoldText("Total including bar"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText("Total including bar", headerStyle),
+                // FontSize = 16,
             };
             textGrid.Add(totalHeading, 0, 1);
 
@@ -184,8 +203,8 @@ public partial class CalculatorPage : ContentPage
             var idealPlates = (idealTotal - _barWeight) / 2;
             var idealTotalValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{idealTotal:F2} kg"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText($"{idealTotal:F2} kg", weightStyle),
+                // FontSize = 16,
             };
             textGrid.Add(idealTotalValue, 1, 1);
 
@@ -194,8 +213,8 @@ public partial class CalculatorPage : ContentPage
             var closestTotal = 2 * closestPlates + _barWeight;
             var closestTotalValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{closestTotal:F2} kg"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText($"{closestTotal:F2} kg", weightStyle),
+                // FontSize = 16,
             };
             textGrid.Add(closestTotalValue, 2, 1);
 
@@ -205,31 +224,31 @@ public partial class CalculatorPage : ContentPage
             // Plates per end heading.
             var platesPerEndHeading = new Label
             {
-                FormattedText = TextUtility.BoldText("Plates per end"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText("Plates per end", headerStyle),
+                // FontSize = 16,
             };
             textGrid.Add(platesPerEndHeading, 0, 2);
 
             // Ideal plates weight.
             var idealPlatesValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{idealPlates:F2} kg"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText($"{idealPlates:F2} kg", weightStyle),
+                // FontSize = 16,
             };
             textGrid.Add(idealPlatesValue, 1, 2);
 
             // Closest plates weight.
             var closestPlatesValue = new Label
             {
-                FormattedText = TextUtility.NormalText($"{closestPlates:F2} kg"),
-                FontSize = 16,
+                FormattedText = TextUtility.StyleText($"{closestPlates:F2} kg", weightStyle),
+                // FontSize = 16,
             };
             textGrid.Add(closestPlatesValue, 2, 2);
 
             CalculatorLayout.Add(textGrid);
 
             // Construct the plates grid and add it to the layout.
-            var platesGrid = new Grid { Padding = new Thickness(0, 0, 0, 20) };
+            var platesGrid = new Grid { Padding = new Thickness(0, 10, 0, 20) };
             var j = 0;
             platesResult.Sort();
             foreach (var plateWeight in platesResult)
@@ -240,6 +259,15 @@ public partial class CalculatorPage : ContentPage
                 j++;
             }
             CalculatorLayout.Add(platesGrid);
+
+            // Separator line.
+            horizontalLine = new Rectangle
+            {
+                BackgroundColor = Colors.Grey,
+                WidthRequest = horizontalLineWidth,
+                HeightRequest = 1,
+            };
+            CalculatorLayout.Add(horizontalLine);
         }
     }
 }
