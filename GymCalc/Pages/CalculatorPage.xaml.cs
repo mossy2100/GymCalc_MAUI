@@ -1,4 +1,5 @@
 using System.Globalization;
+using GymCalc.Calculations;
 using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
 using Microsoft.Maui.Controls.Shapes;

@@ -1,16 +1,16 @@
 using GymCalc.Data.Repositories;
 
-namespace GymCalc.Utilities;
+namespace GymCalc.Calculations;
 
-public class BarbellSolver
+internal class BarbellSolver
 {
-    private double _idealWeight;
-
-    private double _smallestDiff;
+    private List<double> _availablePlateWeights;
 
     private List<double> _bestSolution;
 
-    private List<double> _availablePlateWeights;
+    private double _idealWeight;
+
+    private double _smallestDiff;
 
     internal async Task<Dictionary<double, List<double>>> CalculateResults(double maxWeight,
         double barWeight)

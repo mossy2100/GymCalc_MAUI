@@ -1,103 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
+    x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="GymCalc.Pages.CalculatorPage"
     Title="Calculator">
 
     <ScrollView>
         <VerticalStackLayout
             x:Name="CalculatorLayout"
-            Spacing="10"
-            Padding="10">
+            Padding="10"
+            Spacing="10">
 
-            <!-- Item 0: Exercise type selection -->
+            <!--  Item 0: Exercise type selection  -->
             <Grid
                 Padding="0,0,0,10"
                 ColumnDefinitions="*,*"
-                RowDefinitions="Auto,Auto"
                 ColumnSpacing="10"
+                RowDefinitions="Auto,Auto"
                 RowSpacing="10">
-
                 <Label
-                    Grid.Column="0"
                     Grid.Row="0"
+                    Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Text="Select exercise type:" />
-
                 <Button
                     x:Name="BarbellButton"
-                    Grid.Column="0"
                     Grid.Row="1"
+                    Grid.Column="0"
+                    Clicked="OnBarbellButtonClicked"
                     Style="{StaticResource BarbellButtonStyle}"
-                    Text="Barbell"
-                    Clicked="OnBarbellButtonClicked" />
-
+                    Text="Barbell" />
                 <Button
                     x:Name="DumbbellButton"
-                    Grid.Column="1"
                     Grid.Row="1"
+                    Grid.Column="1"
+                    Clicked="OnDumbbellButtonClicked"
                     Style="{StaticResource DumbbellButtonStyle}"
-                    Text="Dumbbell"
-                    Clicked="OnDumbbellButtonClicked" />
+                    Text="Dumbbell" />
             </Grid>
 
-            <!-- Item 1: Form -->
+            <!--  Item 1: Form  -->
             <Grid
                 x:Name="CalculatorFormGrid"
+                Padding="0"
                 ColumnDefinitions="2*,*"
                 RowDefinitions="Auto,Auto"
-                Padding="0"
                 RowSpacing="10">
 
-                <!-- Row 0: Max weight -->
+                <!--  Row 0: Max weight  -->
                 <Label
                     x:Name="MaxWeightLabel"
                     Grid.Row="0"
                     Grid.Column="0"
-                    Text="Maximum weight (kg)"
                     FontSize="16"
+                    Text="Maximum weight (kg)"
                     VerticalTextAlignment="Center" />
                 <Entry
                     x:Name="MaxWeightEntry"
                     Grid.Row="0"
                     Grid.Column="1"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
                     FontSize="16"
                     Keyboard="Numeric"
-                    VerticalTextAlignment="Center"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+                    VerticalTextAlignment="Center" />
 
-                <!-- Row 1: Bar weight -->
+                <!--  Row 1: Bar weight  -->
                 <Label
                     x:Name="BarWeightLabel"
                     Grid.Row="1"
                     Grid.Column="0"
-                    Text="Bar weight (kg)"
                     FontSize="16"
+                    Text="Bar weight (kg)"
                     VerticalTextAlignment="Center" />
                 <Picker
                     x:Name="BarWeightPicker"
                     Grid.Row="1"
                     Grid.Column="1"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
                     FontSize="16"
-                    VerticalTextAlignment="Center"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+                    VerticalTextAlignment="Center" />
             </Grid>
 
-            <!-- Item 2: Calculate button -->
+            <!--  Item 2: Calculate button  -->
             <Button
-                Text="Calculate"
                 Clicked="OnCalculateButtonClicked"
-                Style="{StaticResource ButtonStyle}" />
+                Style="{StaticResource ButtonStyle}"
+                Text="Calculate" />
 
-            <!-- Item 3: Error or other message -->
+            <!--  Item 3: Error or other message  -->
             <Label
                 x:Name="ErrorMessage"
-                Text=""
-                FontSize="16"
+                Padding="0"
                 FontAttributes="Bold"
-                TextColor="Red"
-                Padding="0" />
+                FontSize="16"
+                Text=""
+                TextColor="Red" />
 
         </VerticalStackLayout>
     </ScrollView>

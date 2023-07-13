@@ -11,7 +11,7 @@ public partial class BarsPage : ContentPage
     /// <summary>
     /// Dictionary mapping checkboxes to bars.
     /// </summary>
-    private Dictionary<CheckBox, Bar> _cbBarMap = new ();
+    private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
     public BarsPage()
     {
@@ -51,7 +51,7 @@ public partial class BarsPage : ContentPage
                 RadiusY = 0,
                 HeightRequest = 22,
                 WidthRequest = barLength,
-                Fill = brush
+                Fill = brush,
             };
             BarsGrid.Add(rect, 0, rowNum);
 

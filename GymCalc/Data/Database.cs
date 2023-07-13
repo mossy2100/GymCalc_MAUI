@@ -1,4 +1,3 @@
-using GymCalc.Data.Repositories;
 using SQLite;
 
 namespace GymCalc.Data;
@@ -11,23 +10,24 @@ internal static class Database
     /// <summary>
     /// Filename of the database file.
     /// </summary>
-    private const string DB_FILENAME = "GymCalc.db3";
-
-    /// <summary>
-    /// Full path to the database file.
-    /// </summary>
-    private static string DB_PATH => Path.Combine(FileSystem.AppDataDirectory, DB_FILENAME);
+    private const string _DB_FILENAME = "GymCalc.db3";
 
     /// <summary>
     /// Flags used to define the features of database connection.
     /// </summary>
-    private const SQLiteOpenFlags FLAGS =
+    private const SQLiteOpenFlags _FLAGS =
         // Open the database in read/write mode.
         SQLiteOpenFlags.ReadWrite |
         // Create the database if it doesn't exist.
         SQLiteOpenFlags.Create |
         // Enable multi-threaded database access.
         SQLiteOpenFlags.SharedCache;
+
+    /// <summary>
+    /// Full path to the database file.
+    /// </summary>
+    private static readonly string _DB_PATH =
+        Path.Combine(FileSystem.AppDataDirectory, _DB_FILENAME);
 
     /// <summary>
     /// Single instance of the database (singleton pattern).
@@ -41,7 +41,7 @@ internal static class Database
     {
         if (_database == null)
         {
-            _database = new SQLiteAsyncConnection(DB_PATH, FLAGS);
+            _database = new SQLiteAsyncConnection(_DB_PATH, _FLAGS);
         }
 
         return _database;

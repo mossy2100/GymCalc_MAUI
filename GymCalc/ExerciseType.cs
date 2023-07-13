@@ -1,9 +1,12 @@
-namespace GymCalc.Utilities;
+namespace GymCalc;
 
 internal enum ExerciseType
 {
     Barbell,
+
     Dumbbell,
+
     PlateLoadedMachine,
-    PinLoadedMachine
+
+    PinLoadedMachine,
 }

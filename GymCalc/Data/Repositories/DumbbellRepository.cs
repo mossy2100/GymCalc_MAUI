@@ -10,7 +10,7 @@ internal static class DumbbellRepository
     /// <summary>
     /// Ensure the database table exist and contains some dumbbells.
     /// </summary>
-    public static async Task InitializeTable()
+    internal static async Task InitializeTable()
     {
         var db = Database.GetConnection();
 
@@ -31,7 +31,7 @@ internal static class DumbbellRepository
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Enabled = true
+                    Enabled = true,
                 };
                 await db.InsertAsync(dumbbell);
             }
@@ -49,7 +49,7 @@ internal static class DumbbellRepository
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Enabled = true
+                    Enabled = true,
                 };
                 await db.InsertAsync(dumbbell);
             }

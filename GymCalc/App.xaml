@@ -1,8 +1,9 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Application
+    x:Class="GymCalc.App"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="GymCalc.App">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -59,8 +60,8 @@
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource GrayE}, Dark={StaticResource Gray2}}" />
-                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light='{StaticResource GrayC}', Dark={StaticResource Gray4}}" />
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}" />
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light='{StaticResource Gray200}', Dark={StaticResource Gray600}}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Selected">
@@ -74,11 +75,17 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="BarbellButtonStyle" TargetType="Button" BasedOn="{StaticResource ExerciseTypeButtonStyle}">
+            <Style
+                x:Key="BarbellButtonStyle"
+                BasedOn="{StaticResource ExerciseTypeButtonStyle}"
+                TargetType="Button">
                 <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_100.png', Dark='deadlift_white_100.png'}" />
             </Style>
 
-            <Style x:Key="DumbbellButtonStyle" TargetType="Button" BasedOn="{StaticResource ExerciseTypeButtonStyle}">
+            <Style
+                x:Key="DumbbellButtonStyle"
+                BasedOn="{StaticResource ExerciseTypeButtonStyle}"
+                TargetType="Button">
                 <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
             </Style>
 

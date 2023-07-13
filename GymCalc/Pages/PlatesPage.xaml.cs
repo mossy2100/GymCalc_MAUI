@@ -12,7 +12,7 @@ public partial class PlatesPage : ContentPage
     /// <summary>
     /// Dictionary mapping checkboxes to plates.
     /// </summary>
-    private Dictionary<CheckBox, Plate> _cbPlateMap = new ();
+    private readonly Dictionary<CheckBox, Plate> _cbPlateMap = new ();
 
     public PlatesPage()
     {
@@ -95,7 +95,7 @@ public partial class PlatesPage : ContentPage
             FontSize = 16,
             FontAttributes = FontAttributes.Bold,
             VerticalTextAlignment = TextAlignment.Center,
-            HorizontalTextAlignment = TextAlignment.Center
+            HorizontalTextAlignment = TextAlignment.Center,
         };
         platesGrid.Add(label, columnNum, rowNum);
     }

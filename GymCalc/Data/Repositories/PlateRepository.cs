@@ -12,7 +12,7 @@ internal static class PlateRepository
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
-    private static readonly Dictionary<double, bool> DefaultPlates = new Dictionary<double, bool>
+    private static readonly Dictionary<double, bool> _DEFAULT_PLATES = new ()
     {
         [0.25] = false,
         [0.5] = false,
@@ -28,7 +28,7 @@ internal static class PlateRepository
         [12.5] = false,
         [15] = true,
         [20] = true,
-        [25] = true
+        [25] = true,
     };
 
     /// <summary>
@@ -59,7 +59,7 @@ internal static class PlateRepository
     /// <summary>
     /// Ensure the database table exist and contains some plates.
     /// </summary>
-    public static async Task InitializeTable()
+    internal static async Task InitializeTable()
     {
         var db = Database.GetConnection();
 
@@ -72,14 +72,14 @@ internal static class PlateRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var (weight, enabled) in DefaultPlates)
+            foreach (var (weight, enabled) in _DEFAULT_PLATES)
             {
                 var plate = new Plate
                 {
                     Weight = weight,
                     Unit = "kg",
                     Color = DefaultPlateColor(weight),
-                    Enabled = enabled
+                    Enabled = enabled,
                 };
                 await db.InsertAsync(plate);
             }

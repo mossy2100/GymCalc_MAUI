@@ -10,11 +10,6 @@ internal static class BarRepository
     public const double DEFAULT_WEIGHT = 20;
 
     /// <summary>
-    /// Default bars.
-    /// </summary>
-    private static readonly double[] DefaultBars = { 10, 15, 20, 25 };
-
-    /// <summary>
     /// Ensure the database table exist and contains some bars.
     /// </summary>
     public static async Task InitializeTable()
@@ -30,13 +25,13 @@ internal static class BarRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var weight in DefaultBars)
+            for (int weight = 10; weight <= 25; weight += 5)
             {
                 var bar = new Bar
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Enabled = true
+                    Enabled = true,
                 };
                 await db.InsertAsync(bar);
             }

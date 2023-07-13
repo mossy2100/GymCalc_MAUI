@@ -2,6 +2,7 @@ using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Graphics;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -11,7 +12,7 @@ public partial class DumbbellsPage : ContentPage
     /// <summary>
     /// Dictionary mapping checkboxes to dumbbells.
     /// </summary>
-    private Dictionary<CheckBox, Dumbbell> _cbDumbbellMap = new ();
+    private readonly Dictionary<CheckBox, Dumbbell> _cbDumbbellMap = new ();
 
     public DumbbellsPage()
     {
@@ -37,7 +38,7 @@ public partial class DumbbellsPage : ContentPage
         // Display them all in a table with checkboxes.
         var rowNum = 1;
         var colNum = 0;
-        var rowHeight = 50;
+        const int rowHeight = 50;
         foreach (var dumbbell in dumbbells)
         {
             if (colNum == 0)
@@ -68,7 +69,7 @@ public partial class DumbbellsPage : ContentPage
             // Add the checkbox.
             var cb = new CheckBox
             {
-                IsChecked = dumbbell.Enabled
+                IsChecked = dumbbell.Enabled,
             };
             cb.CheckedChanged += OnDumbbellCheckboxChanged;
             DumbbellsGrid.Add(cb, colNum + 1, rowNum);

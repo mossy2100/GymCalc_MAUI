@@ -1,7 +1,7 @@
 using Galaxon.Core.Numbers;
 using GymCalc.Data.Repositories;
 
-namespace GymCalc.Utilities;
+namespace GymCalc.Calculations;
 
 internal static class DumbbellCalculation
 {
@@ -34,7 +34,7 @@ internal static class DumbbellCalculation
     /// <param name="availableDumbbellWeights"></param>
     /// <returns>The closest dumbbell to the ideal weight.</returns>
     private static double FindBestSolution(double idealWeight,
-        List<double> availableDumbbellWeights)
+        IReadOnlyList<double> availableDumbbellWeights)
     {
         double dumbbellWeight = 0;
 

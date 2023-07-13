@@ -1,6 +1,4 @@
-﻿using GymCalc.Utilities;
-
-namespace GymCalc;
+﻿namespace GymCalc;
 
 public partial class App : Application
 {

@@ -13,7 +13,7 @@ internal static class ColorUtility
     /// <returns></returns>
     private static double Linearize(double colorChannel)
     {
-        return (colorChannel <= 0.04045)
+        return colorChannel <= 0.04045
             ? colorChannel / 12.92
             : double.Pow((colorChannel + 0.055) / 1.055, 2.4);
     }
@@ -23,18 +23,20 @@ internal static class ColorUtility
     /// </summary>
     /// <param name="color"></param>
     /// <returns></returns>
-    internal static double GetPerceivedLightness(this Color color)
+    public static double GetPerceivedLightness(this Color color)
     {
         // Convert RGB values to linear values.
         var r = Linearize(color.Red);
         var g = Linearize(color.Green);
         var b = Linearize(color.Blue);
 
-        // Find luminance Y.
-        var Y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        // Find luminance.
+        var y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
         // Find perceived lightness.
-        return (Y <= 216.0 / 24389) ? Y * (24389.0 / 27) : double.Cbrt(Y) * 116 - 16;
+        return y <= 216.0 / 24389
+            ? y * (24389.0 / 27)
+            : double.Cbrt(y) * 116 - 16;
     }
 
     /// <summary>
