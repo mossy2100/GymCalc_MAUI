@@ -72,4 +72,10 @@ internal static class TextUtility
     {
         return CreateFormattedString(text, false, false, null, style);
     }
+
+    public static FormattedString StyleText(string text, string styleName)
+    {
+        var style = MauiUtilities.LookupResource<Style>(styleName);
+        return CreateFormattedString(text, false, false, null, style);
+    }
 }

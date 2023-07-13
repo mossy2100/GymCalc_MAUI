@@ -42,4 +42,14 @@ internal static class BarRepository
             }
         }
     }
+
+    /// <summary>
+    /// Get the bars.
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<List<Bar>> GetAll(bool onlyEnabled = false, bool ascending = true)
+    {
+        await InitializeTable();
+        return await HeavyThingRepository.GetAll<Bar>(onlyEnabled, ascending);
+    }
 }

@@ -2,38 +2,40 @@ using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
-using GymCalc.Utilities;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
 
 public partial class BarsPage : ContentPage
 {
-    public BarsPage()
-    {
-        InitializeComponent();
-        InitializeBars();
-    }
-
     /// <summary>
     /// Dictionary mapping checkboxes to bars.
     /// </summary>
     private Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
+    public BarsPage()
+    {
+        InitializeComponent();
+    }
+
+    protected override async void OnAppearing()
+    {
+        if (BarsGrid.RowDefinitions.Count == 1)
+        {
+            await DisplayBars();
+        }
+    }
+
     /// <summary>
     /// Initialize the list of bars.
     /// </summary>
-    private async void InitializeBars()
+    private async Task DisplayBars()
     {
-        // Ensure table exists.
-        await BarRepository.InitializeTable();
-
         // Get the bars.
-        var db = Database.GetConnection();
-        var bars = await db.Table<Bar>().OrderBy(b => b.Weight).ToListAsync();
+        var bars = await BarRepository.GetAll();
 
         // Get the steel bar gradient brush.
-        var brush = GetSteelBarBrush();
+        var brush = GetBarBrush();
 
         var rowNum = 1;
         foreach (var bar in bars)
@@ -100,12 +102,12 @@ public partial class BarsPage : ContentPage
     /// Create the steel bar gradient brush.
     /// </summary>
     /// <returns></returns>
-    internal static Brush GetSteelBarBrush()
+    internal static Brush GetBarBrush()
     {
         var brush = new LinearGradientBrush { EndPoint = new Point(0, 1) };
-        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 0));
+        brush.GradientStops.Add(new GradientStop(Color.Parse("#aaa"), 0));
         brush.GradientStops.Add(new GradientStop(Colors.White, 0.5f));
-        brush.GradientStops.Add(new GradientStop(Colors.DimGrey, 1));
+        brush.GradientStops.Add(new GradientStop(Color.Parse("#aaa"), 1));
         return brush;
     }
 }

@@ -5,12 +5,7 @@
     x:Class="GymCalc.Pages.BarsPage"
     Title="Bars">
 
-    <ScrollView VerticalOptions="Fill">
-        <ScrollView.Padding>
-            <OnPlatform x:TypeArguments="Thickness" Default="10">
-                <On Platform="iOS" Value="10,40,10,10" />
-            </OnPlatform>
-        </ScrollView.Padding>
+    <ScrollView VerticalOptions="Fill" Padding="10">
         <Grid
             x:Name="BarsGrid"
             RowDefinitions="Auto"
@@ -18,14 +13,11 @@
             Padding="10"
             RowSpacing="10"
             ColumnSpacing="10">
-
             <Label
                 Text="Select which bar weights (kg) are available:"
                 Grid.Row="0"
                 Grid.Column="0"
-                Grid.ColumnSpan="2">
-            </Label>
-
+                Grid.ColumnSpan="2" />
         </Grid>
     </ScrollView>
 

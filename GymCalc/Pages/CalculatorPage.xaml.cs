@@ -1,6 +1,4 @@
 using System.Globalization;
-using GymCalc.Data;
-using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
 using Microsoft.Maui.Controls.Shapes;
@@ -9,9 +7,9 @@ namespace GymCalc.Pages;
 
 public partial class CalculatorPage : ContentPage
 {
-    private double _maxWeight;
+    private static double _maxWeight;
 
-    private double _barWeight;
+    private static double _barWeight;
 
     public CalculatorPage()
     {
@@ -19,17 +17,70 @@ public partial class CalculatorPage : ContentPage
     }
 
     /// <inheritdoc />
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
+        // Initialise the exercise type to the current selection.
+        UpdateExerciseType(App.SelectedExerciseType);
+
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        ResetBarWeightPicker();
+        await ResetBarWeightPicker();
+    }
+
+    private void SelectExerciseTypeButton(Button button)
+    {
+        button.BorderWidth = 1;
+        button.BorderColor = MauiUtilities.LookupResource<Color>("Primary");
+        button.BackgroundColor = MauiUtilities.LookupResource<Color>("Secondary");
+    }
+
+    private void DeselectExerciseTypeButton(Button button)
+    {
+        button.BorderWidth = 1;
+        button.BorderColor = Color.Parse("#ccc");
+        button.BackgroundColor = Color.Parse("#eee");
+    }
+
+    private void UpdateExerciseType(ExerciseType exerciseType)
+    {
+        App.SelectedExerciseType = exerciseType;
+
+        switch (exerciseType)
+        {
+            case ExerciseType.Barbell:
+                SelectExerciseTypeButton(BarbellButton);
+                DeselectExerciseTypeButton(DumbbellButton);
+                break;
+
+            case ExerciseType.Dumbbell:
+                SelectExerciseTypeButton(DumbbellButton);
+                DeselectExerciseTypeButton(BarbellButton);
+                break;
+        }
+    }
+
+    private void OnBarbellButtonClicked(object sender, EventArgs e)
+    {
+        UpdateExerciseType(ExerciseType.Barbell);
+        MaxWeightLabel.Text = "Maximum total weight (kg)";
+        CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
+        BarWeightLabel.IsVisible = true;
+        BarWeightPicker.IsVisible = true;
+    }
+
+    private void OnDumbbellButtonClicked(object sender, EventArgs e)
+    {
+        UpdateExerciseType(ExerciseType.Dumbbell);
+        MaxWeightLabel.Text = "Maximum weight per dumbbell (kg)";
+        BarWeightLabel.IsVisible = false;
+        BarWeightPicker.IsVisible = false;
+        CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
     }
 
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    private void ResetBarWeightPicker()
+    private async Task ResetBarWeightPicker()
     {
         // Get the current selected value.
         var initialSelectedIndex = BarWeightPicker.SelectedIndex;
@@ -41,13 +92,8 @@ public partial class CalculatorPage : ContentPage
         BarWeightPicker.Items.Clear();
         BarWeightPicker.SelectedIndex = -1;
 
-        // Get the available bar weights.
-        var db = Database.GetConnection();
-        var bars = db.Table<Bar>()
-            .Where(b => b.Enabled)
-            .OrderBy(b => b.Weight)
-            .ToListAsync()
-            .Result;
+        // Get the available bar weights ordered by weight.
+        var bars = await BarRepository.GetAll(true);
 
         // Initialise the items in the bar weight picker.
         var i = 0;
@@ -91,57 +137,83 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private async void CalculateButtonClicked(object sender, EventArgs e)
+    private async void OnCalculateButtonClicked(object sender, EventArgs e)
     {
-        // Get the weights from the calculator fields and validate them.
-        _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
-        var maxWeightOk = double.TryParse(MaxWeightEntry.Text, out _maxWeight);
-        if (!maxWeightOk || _maxWeight < _barWeight)
+        switch (App.SelectedExerciseType)
         {
-            ResultsLabel.Text = "Make sure the max weight is greater than or equal to the bar weight.";
-            ResultsLabel.TextColor = Colors.Red;
-            return;
-        }
+            case ExerciseType.Barbell:
+                // Get the weights from the calculator fields and validate them.
+                _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
+                if (!double.TryParse(MaxWeightEntry.Text, out _maxWeight))
+                {
+                    ErrorMessage.Text = "Please enter the maximum total weight, including the bar.";
+                    return;
+                }
+                if (_maxWeight < _barWeight)
+                {
+                    ErrorMessage.Text =
+                        "Make sure the maximum weight is greater than or equal to the bar weight.";
+                    return;
+                }
 
-        // Calculate and display the results.
-        var results = await CalcPlates.CalculateResults(_maxWeight, _barWeight);
-        DisplayResults(results);
+                // Calculate and display the results.
+                var barbellSolver = new BarbellSolver();
+                var barbellResult = await barbellSolver.CalculateResults(_maxWeight, _barWeight);
+                await DisplayBarbellResults(barbellResult);
+                break;
+
+            case ExerciseType.Dumbbell:
+                // Get the max dumbbell weight from the calculator field.
+                if (!double.TryParse(MaxWeightEntry.Text, out _maxWeight))
+                {
+                    ErrorMessage.Text = "Please enter the maximum weight per dumbbell.";
+                    return;
+                }
+
+                // Calculate and display the results.
+                var dumbbellResult = await DumbbellCalculation.CalculateResults(_maxWeight);
+                DisplayDumbbellResults(dumbbellResult);
+                break;
+        }
     }
 
-    private void DisplayResults(Dictionary<double, List<double>> results)
+    private async Task DisplayBarbellResults(Dictionary<double, List<double>> results)
     {
         // Clear the error message.
-        ResultsLabel.Text = "";
+        ErrorMessage.Text = "";
 
         // Clear the old results.
-        while (CalculatorLayout.Count > 3)
+        while (CalculatorLayout.Count > 4)
         {
-            CalculatorLayout.RemoveAt(3);
+            CalculatorLayout.RemoveAt(CalculatorLayout.Count - 1);
         }
 
         // Prepare the styles.
-        var resources = App.Current!.Resources;
-        var percentStyle = (Style)resources["ResultsTablePercent"];
-        var headerStyle = (Style)resources["ResultsTableHeader"];
-        var weightStyle = (Style)resources["ResultsTableWeight"];
+        var percentStyle = MauiUtilities.LookupResource<Style>("ResultsTablePercent");
+        var headerStyle = MauiUtilities.LookupResource<Style>("ResultsTableHeader");
+        var weightStyle = MauiUtilities.LookupResource<Style>("ResultsTableWeight");
+        var focusWeightStyle = MauiUtilities.LookupResource<Style>("ResultsTableFocusWeight");
 
-        // Separator line.
+        // Get the device width in device-independent pixels.
         var deviceWidth =
             DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
-        var horizontalLineWidth = deviceWidth - 20;
-        var horizontalLine = new Rectangle
-        {
-            BackgroundColor = Colors.Grey,
-            WidthRequest = horizontalLineWidth,
-            HeightRequest = 1,
-        };
-        CalculatorLayout.Add(horizontalLine);
 
-        // Get the available plates.
-        var plates = PlateRepository.GetAllAvailable();
+        // Get the available plates as a dictionary mapping weights to Plate objects.
+        var plates = await PlateRepository.GetAll(true);
+        var plateLookup = plates.ToDictionary(p => p.Weight, p => p);
 
         foreach (var (percent, platesResult) in results)
         {
+            // Horizontal rule.
+            var horizontalLine = new Rectangle
+            {
+                BackgroundColor = Colors.Grey,
+                WidthRequest = deviceWidth - 20,
+                HeightRequest = 1,
+            };
+            CalculatorLayout.Add(horizontalLine);
+
+            // Table of results for this percentage.
             var textGrid = new Grid
             {
                 ColumnDefinitions = new ColumnDefinitionCollection(
@@ -173,7 +245,6 @@ public partial class CalculatorPage : ContentPage
             var idealHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Ideal", headerStyle),
-                // FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
             textGrid.Add(idealHeading, 1);
@@ -182,7 +253,6 @@ public partial class CalculatorPage : ContentPage
             var closestHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Closest", headerStyle),
-                // FontSize = 16,
                 VerticalTextAlignment = TextAlignment.End,
             };
             textGrid.Add(closestHeading, 2);
@@ -194,7 +264,6 @@ public partial class CalculatorPage : ContentPage
             var totalHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Total including bar", headerStyle),
-                // FontSize = 16,
             };
             textGrid.Add(totalHeading, 0, 1);
 
@@ -204,7 +273,6 @@ public partial class CalculatorPage : ContentPage
             var idealTotalValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{idealTotal:F2} kg", weightStyle),
-                // FontSize = 16,
             };
             textGrid.Add(idealTotalValue, 1, 1);
 
@@ -214,7 +282,6 @@ public partial class CalculatorPage : ContentPage
             var closestTotalValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{closestTotal:F2} kg", weightStyle),
-                // FontSize = 16,
             };
             textGrid.Add(closestTotalValue, 2, 1);
 
@@ -225,7 +292,6 @@ public partial class CalculatorPage : ContentPage
             var platesPerEndHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Plates per end", headerStyle),
-                // FontSize = 16,
             };
             textGrid.Add(platesPerEndHeading, 0, 2);
 
@@ -233,15 +299,13 @@ public partial class CalculatorPage : ContentPage
             var idealPlatesValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{idealPlates:F2} kg", weightStyle),
-                // FontSize = 16,
             };
             textGrid.Add(idealPlatesValue, 1, 2);
 
             // Closest plates weight.
             var closestPlatesValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{closestPlates:F2} kg", weightStyle),
-                // FontSize = 16,
+                FormattedText = TextUtility.StyleText($"{closestPlates:F2} kg", focusWeightStyle),
             };
             textGrid.Add(closestPlatesValue, 2, 2);
 
@@ -254,20 +318,115 @@ public partial class CalculatorPage : ContentPage
             foreach (var plateWeight in platesResult)
             {
                 platesGrid.RowDefinitions.Add(new RowDefinition());
-                var plate = plates.First(p => p.Weight == plateWeight);
-                PlatesPage.AddPlateToGrid(plate, platesGrid, 0, j);
+                PlatesPage.AddPlateToGrid(plateLookup[plateWeight], platesGrid, 0, j);
                 j++;
             }
             CalculatorLayout.Add(platesGrid);
+        }
+    }
 
-            // Separator line.
-            horizontalLine = new Rectangle
+    private void DisplayDumbbellResults(Dictionary<double, double> results)
+    {
+        // Clear the error message.
+        ErrorMessage.Text = "";
+
+        // Clear the old results.
+        while (CalculatorLayout.Count > 4)
+        {
+            CalculatorLayout.RemoveAt(CalculatorLayout.Count - 1);
+        }
+
+        // Prepare the styles.
+        var percentStyle = MauiUtilities.LookupResource<Style>("ResultsTablePercent");
+        var headerStyle = MauiUtilities.LookupResource<Style>("ResultsTableHeader");
+        var weightStyle = MauiUtilities.LookupResource<Style>("ResultsTableWeight");
+        var focusWeightStyle = MauiUtilities.LookupResource<Style>("ResultsTableFocusWeight");
+
+        // Get the device width in device-independent pixels.
+        var deviceWidth =
+            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+
+        foreach (var (percent, closestWeight) in results)
+        {
+            // Horizontal rule.
+            var horizontalLine = new Rectangle
             {
                 BackgroundColor = Colors.Grey,
-                WidthRequest = horizontalLineWidth,
+                WidthRequest = deviceWidth - 20,
                 HeightRequest = 1,
             };
             CalculatorLayout.Add(horizontalLine);
+
+            // Table of results for this percentage.
+            var textGrid = new Grid
+            {
+                ColumnDefinitions = new ColumnDefinitionCollection(
+                    new ColumnDefinition(new GridLength(3, GridUnitType.Star)),
+                    new ColumnDefinition(new GridLength(2, GridUnitType.Star)),
+                    new ColumnDefinition(new GridLength(2, GridUnitType.Star))
+                ),
+                RowDefinitions = new RowDefinitionCollection(
+                    new RowDefinition(GridLength.Auto),
+                    new RowDefinition(GridLength.Auto)
+                ),
+                ColumnSpacing = 15,
+                RowSpacing = 15,
+                Padding = new Thickness(0, 20, 0, 20),
+            };
+
+            ///////////
+            // Row 0.
+
+            // Percentage heading.
+            var percentLabel = new Label
+            {
+                FormattedText = TextUtility.StyleText($"{percent}%", percentStyle),
+            };
+            textGrid.Add(percentLabel, 0);
+
+            // Ideal heading.
+            var idealHeading = new Label
+            {
+                FormattedText = TextUtility.StyleText("Ideal", headerStyle),
+                VerticalTextAlignment = TextAlignment.End,
+            };
+            textGrid.Add(idealHeading, 1);
+
+            // Closest heading.
+            var closestHeading = new Label
+            {
+                FormattedText = TextUtility.StyleText("Closest", headerStyle),
+                VerticalTextAlignment = TextAlignment.End,
+            };
+            textGrid.Add(closestHeading, 2);
+
+            ///////////
+            // Row 1.
+
+            // Total including bar heading.
+            var dumbbellHeading = new Label
+            {
+                FormattedText = TextUtility.StyleText("Dumbbells to use", headerStyle),
+            };
+            textGrid.Add(dumbbellHeading, 0, 1);
+
+            // Ideal dumbbell weight.
+            var idealWeight = _maxWeight * percent / 100.0;
+            var idealValue = new Label
+            {
+                FormattedText = TextUtility.StyleText($"{idealWeight:F2} kg", weightStyle),
+            };
+            textGrid.Add(idealValue, 1, 1);
+
+            // Closest dumbbell weight.
+            var closestValue = new Label
+            {
+                FormattedText = TextUtility.StyleText($"{closestWeight:F2} kg", focusWeightStyle),
+                TextColor = Colors.Blue,
+            };
+            textGrid.Add(closestValue, 2, 1);
+
+            CalculatorLayout.Add(textGrid);
         }
     }
 }

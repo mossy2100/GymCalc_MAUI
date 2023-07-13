@@ -5,12 +5,7 @@
     x:Class="GymCalc.Pages.PlatesPage"
     Title="Plates">
 
-    <ScrollView VerticalOptions="Fill">
-        <ScrollView.Padding>
-            <OnPlatform x:TypeArguments="Thickness" Default="10">
-                <On Platform="iOS" Value="10,40,10,10" />
-            </OnPlatform>
-        </ScrollView.Padding>
+    <ScrollView VerticalOptions="Fill" Padding="10">
         <Grid
             x:Name="PlatesGrid"
             RowDefinitions="Auto"
@@ -32,13 +27,13 @@
     <!--     Grid.Row="2" -->
     <!--     Grid.Column="0" -->
     <!--     Text="Add new" -->
-    <!--     Clicked="AddNewPlateWeightClicked" -->
+    <!--     Clicked="OnAddNewPlateWeightClicked" -->
     <!--     Style="{StaticResource ButtonStyle}" /> -->
     <!-- <Button -->
     <!--     Grid.Row="2" -->
     <!--     Grid.Column="1" -->
     <!--     Text="Save" -->
-    <!--     Clicked="SavePlateWeightsClicked" -->
+    <!--     Clicked="OnSavePlateWeightsClicked" -->
     <!--     Style="{StaticResource ButtonStyle}" /> -->
 
 </ContentPage>

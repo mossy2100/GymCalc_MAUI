@@ -11,8 +11,48 @@
             Spacing="10"
             Padding="10">
 
-            <!-- Item 0: Form -->
+            <!-- Item 0: Exercise type selection -->
             <Grid
+                Padding="0"
+                ColumnDefinitions="*,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="10"
+                RowSpacing="10">
+
+                <Label
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    Text="Select exercise type:" />
+
+                <Button
+                    x:Name="BarbellButton"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Padding="10"
+                    ImageSource="deadlift_100.png"
+                    Text="Barbell"
+                    TextColor="Black"
+                    ContentLayout="Top,0"
+                    HeightRequest="140"
+                    Clicked="OnBarbellButtonClicked" />
+
+                <Button
+                    x:Name="DumbbellButton"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Padding="10"
+                    ImageSource="dumbbell_press_100.png"
+                    Text="Dumbbell"
+                    TextColor="Black"
+                    ContentLayout="Top,0"
+                    HeightRequest="140"
+                    Clicked="OnDumbbellButtonClicked" />
+            </Grid>
+
+            <!-- Item 1: Form -->
+            <Grid
+                x:Name="CalculatorFormGrid"
                 ColumnDefinitions="2*,*"
                 RowDefinitions="Auto,Auto"
                 Padding="0"
@@ -20,6 +60,7 @@
 
                 <!-- Row 0: Max weight -->
                 <Label
+                    x:Name="MaxWeightLabel"
                     Grid.Row="0"
                     Grid.Column="0"
                     Text="Maximum weight (kg)"
@@ -36,6 +77,7 @@
 
                 <!-- Row 1: Bar weight -->
                 <Label
+                    x:Name="BarWeightLabel"
                     Grid.Row="1"
                     Grid.Column="0"
                     Text="Bar weight (kg)"
@@ -50,18 +92,20 @@
                     BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
             </Grid>
 
-            <!-- Item 1: Calculate button -->
+            <!-- Item 2: Calculate button -->
             <Button
                 Text="Calculate"
-                Clicked="CalculateButtonClicked"
+                Clicked="OnCalculateButtonClicked"
                 Style="{StaticResource ButtonStyle}" />
 
-            <!-- Item 2: Results message -->
+            <!-- Item 3: Error or other message -->
             <Label
-                x:Name="ResultsLabel"
+                x:Name="ErrorMessage"
                 Text=""
                 FontSize="16"
-                FontAttributes="Bold" Padding="0,0,0,20" />
+                FontAttributes="Bold"
+                TextColor="Red"
+                Padding="0,0,0,20" />
 
         </VerticalStackLayout>
     </ScrollView>

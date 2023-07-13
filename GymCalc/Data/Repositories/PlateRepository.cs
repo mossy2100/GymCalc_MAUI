@@ -87,16 +87,12 @@ internal static class PlateRepository
     }
 
     /// <summary>
-    /// Get the available plates.
+    /// Get the plates.
     /// </summary>
     /// <returns></returns>
-    public static List<Plate> GetAllAvailable()
+    public static async Task<List<Plate>> GetAll(bool onlyEnabled = false, bool ascending = true)
     {
-        var db = Database.GetConnection();
-        return db.Table<Plate>()
-            .Where(p => p.Enabled)
-            .OrderByDescending(p => p.Weight)
-            .ToListAsync()
-            .Result;
+        await InitializeTable();
+        return await HeavyThingRepository.GetAll<Plate>(onlyEnabled, ascending);
     }
 }

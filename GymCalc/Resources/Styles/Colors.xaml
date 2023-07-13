@@ -10,6 +10,7 @@
     <Color x:Key="Primary">#2a4fd4</Color>
     <Color x:Key="Secondary">#d7def7</Color>
     <Color x:Key="Tertiary">#05154c</Color>
+    <Color x:Key="Blue4">#668cff</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Gray100">#E1E1E1</Color>

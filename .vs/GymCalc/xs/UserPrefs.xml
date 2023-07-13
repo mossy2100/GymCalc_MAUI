@@ -1,11 +1,8 @@
 ﻿<Properties StartupConfiguration="{0D430C5C-124A-425D-9FE1-FB40C1C1BEE7}|Default">
-  <MultiItemStartupConfigurations />
-  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.Galaxy_Nexus_API_34" />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="Android.Galaxy_Nexus_API_34" />
   <MonoDevelop.Ide.Workbench ActiveDocument="GymCalc/AppShell.xaml">
     <Files>
       <File FileName="GymCalc/AppShell.xaml" Line="23" Column="1" />
@@ -22,6 +19,9 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="MyAppleMacCatalystID" />
+  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="net7.0-android" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
 </Properties>

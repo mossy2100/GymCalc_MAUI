@@ -9,28 +9,31 @@ namespace GymCalc.Pages;
 
 public partial class PlatesPage : ContentPage
 {
-    public PlatesPage()
-    {
-        InitializeComponent();
-        InitializePlates();
-    }
-
     /// <summary>
     /// Dictionary mapping checkboxes to plates.
     /// </summary>
     private Dictionary<CheckBox, Plate> _cbPlateMap = new ();
 
+    public PlatesPage()
+    {
+        InitializeComponent();
+    }
+
+    protected override async void OnAppearing()
+    {
+        if (PlatesGrid.RowDefinitions.Count == 1)
+        {
+            await DisplayPlates();
+        }
+    }
+
     /// <summary>
     /// Initialize the list of plates.
     /// </summary>
-    private async void InitializePlates()
+    private async Task DisplayPlates()
     {
-        // Ensure table exists.
-        await PlateRepository.InitializeTable();
-
-        // Get the plates.
-        var db = Database.GetConnection();
-        var plates = await db.Table<Plate>().OrderBy(p => p.Weight).ToListAsync();
+        // Get all the plates, ordered by weight.
+        var plates = await PlateRepository.GetAll();
 
         var rowNum = 1;
         var rowDefinition = new RowDefinition(new GridLength(30));

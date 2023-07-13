@@ -1,11 +1,24 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="GymCalc.Pages.DumbbellsPage"
     Title="Dumbbells">
 
-    <ContentPage.Content></ContentPage.Content>
+    <ScrollView VerticalOptions="Fill" Padding="10">
+        <Grid
+            x:Name="DumbbellsGrid"
+            Padding="10"
+            ColumnDefinitions="*,Auto,*,Auto"
+            RowDefinitions="Auto"
+            ColumnSpacing="10"
+            RowSpacing="20">
+            <Label
+                Text="Select which dumbbell weights (kg) are available:"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="4" />
+        </Grid>
+    </ScrollView>
+
 </ContentPage>
