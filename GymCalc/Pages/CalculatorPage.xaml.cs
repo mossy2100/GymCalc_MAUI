@@ -27,20 +27,6 @@ public partial class CalculatorPage : ContentPage
         await ResetBarWeightPicker();
     }
 
-    private void SelectExerciseTypeButton(Button button)
-    {
-        button.BorderWidth = 1;
-        button.BorderColor = MauiUtilities.LookupResource<Color>("Primary");
-        button.BackgroundColor = MauiUtilities.LookupResource<Color>("Secondary");
-    }
-
-    private void DeselectExerciseTypeButton(Button button)
-    {
-        button.BorderWidth = 1;
-        button.BorderColor = Color.Parse("#ccc");
-        button.BackgroundColor = Color.Parse("#eee");
-    }
-
     private void UpdateExerciseType(ExerciseType exerciseType)
     {
         App.SelectedExerciseType = exerciseType;
@@ -48,13 +34,13 @@ public partial class CalculatorPage : ContentPage
         switch (exerciseType)
         {
             case ExerciseType.Barbell:
-                SelectExerciseTypeButton(BarbellButton);
-                DeselectExerciseTypeButton(DumbbellButton);
+                VisualStateManager.GoToState(BarbellButton, "Selected");
+                VisualStateManager.GoToState(DumbbellButton, "Normal");
                 break;
 
             case ExerciseType.Dumbbell:
-                SelectExerciseTypeButton(DumbbellButton);
-                DeselectExerciseTypeButton(BarbellButton);
+                VisualStateManager.GoToState(DumbbellButton, "Selected");
+                VisualStateManager.GoToState(BarbellButton, "Normal");
                 break;
         }
     }
@@ -64,6 +50,7 @@ public partial class CalculatorPage : ContentPage
         UpdateExerciseType(ExerciseType.Barbell);
         MaxWeightLabel.Text = "Maximum total weight (kg)";
         CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
+        CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 10);
         BarWeightLabel.IsVisible = true;
         BarWeightPicker.IsVisible = true;
     }
@@ -75,6 +62,7 @@ public partial class CalculatorPage : ContentPage
         BarWeightLabel.IsVisible = false;
         BarWeightPicker.IsVisible = false;
         CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
+        CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 0);
     }
 
     /// <summary>

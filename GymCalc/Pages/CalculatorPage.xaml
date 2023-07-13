@@ -13,7 +13,7 @@
 
             <!-- Item 0: Exercise type selection -->
             <Grid
-                Padding="0"
+                Padding="0,0,0,10"
                 ColumnDefinitions="*,*"
                 RowDefinitions="Auto,Auto"
                 ColumnSpacing="10"
@@ -29,24 +29,16 @@
                     x:Name="BarbellButton"
                     Grid.Column="0"
                     Grid.Row="1"
-                    Padding="10"
-                    ImageSource="deadlift_100.png"
+                    Style="{StaticResource BarbellButtonStyle}"
                     Text="Barbell"
-                    TextColor="Black"
-                    ContentLayout="Top,0"
-                    HeightRequest="140"
                     Clicked="OnBarbellButtonClicked" />
 
                 <Button
                     x:Name="DumbbellButton"
                     Grid.Column="1"
                     Grid.Row="1"
-                    Padding="10"
-                    ImageSource="dumbbell_press_100.png"
+                    Style="{StaticResource DumbbellButtonStyle}"
                     Text="Dumbbell"
-                    TextColor="Black"
-                    ContentLayout="Top,0"
-                    HeightRequest="140"
                     Clicked="OnDumbbellButtonClicked" />
             </Grid>
 
@@ -105,7 +97,7 @@
                 FontSize="16"
                 FontAttributes="Bold"
                 TextColor="Red"
-                Padding="0,0,0,20" />
+                Padding="0" />
 
         </VerticalStackLayout>
     </ScrollView>

@@ -44,7 +44,9 @@
         <MauiImage Update="Resources\Images\plate_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\dumbbell_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\exercise_types\deadlift_100.png" BaseSize="100,100" />
+        <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />
         <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_100.png" BaseSize="100,100" />
+        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_white_100.png" BaseSize="100,100" />
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
@@ -55,8 +57,16 @@
         <MauiImage Include="Resources\Images\exercise_types\deadlift_100.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        <None Remove="Resources\Images\exercise_types\deadlift_white_100.png" />
+        <MauiImage Include="Resources\Images\exercise_types\deadlift_white_100.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
         <None Remove="Resources\Images\exercise_types\dumbbell_press_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_100.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\exercise_types\dumbbell_press_white_100.png" />
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
     </ItemGroup>

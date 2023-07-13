@@ -1,7 +1,14 @@
-* Add support for dumbbells.
+* Make checkboxes blue.
+* Fix issue with dumbbell exercise label missing "l".
+* Add border to form fields.
+* Add a dumbbell graphic to the dumbbell calculation results and improve the results grid layout.
+* Add support for plate-loaded machines.
+* Add About page in a flyout.
+* Sort out the colours. Remove unused colours from Colors.xml.
 
-Version 2
-=========
-* Allow user to add custom plate and bar weights.
-* Add support for machines.
+Future
+======
+* Get it working on Android.
+* Allow user to add custom weights.
 * Add support for lbs.
+* Add support for pin-loaded machines.
