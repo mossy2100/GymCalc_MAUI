@@ -44,30 +44,30 @@
         <MauiImage Update="Resources\Images\plate_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\dumbbell_icon_300.png" BaseSize="30,30" />
         
-        <MauiImage Update="Resources\Images\exercise_types\barbell_black_130_label.png" BaseSize="130,130" />
-        <MauiImage Update="Resources\Images\exercise_types\barbell_white_130_label.png" BaseSize="130,130" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_black_130_label.png" BaseSize="130,130" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_white_130_label.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\barbell_black.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\barbell_white.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\dumbbell_black.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\dumbbell_white.png" BaseSize="130,130" />
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-        <None Remove="Resources\Images\exercise_types\barbell_black_130_label.png" />
-        <MauiImage Include="Resources\Images\exercise_types\barbell_black_130_label.png">
+        <None Remove="Resources\Images\exercise_types\barbell_black.png" />
+        <MauiImage Include="Resources\Images\exercise_types\barbell_black.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\barbell_white_130_label.png" />
-        <MauiImage Include="Resources\Images\exercise_types\barbell_white_130_label.png">
+        <None Remove="Resources\Images\exercise_types\barbell_white.png" />
+        <MauiImage Include="Resources\Images\exercise_types\barbell_white.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_black_130_label.png" />
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_black_130_label.png">
+        <None Remove="Resources\Images\exercise_types\dumbbell_black.png" />
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_black.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_white_130_label.png" />
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_white_130_label.png">
+        <None Remove="Resources\Images\exercise_types\dumbbell_white.png" />
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_white.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
     </ItemGroup>

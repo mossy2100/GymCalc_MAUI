@@ -93,14 +93,14 @@
                 x:Key="BarbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='barbell_black_130_label.png', Dark='barbell_white_130_label.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='barbell_black.png', Dark='barbell_white.png'}" />
             </Style>
 
             <Style
                 x:Key="DumbbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_black_130_label.png', Dark='dumbbell_white_130_label.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_black.png', Dark='dumbbell_white.png'}" />
             </Style>
 
         </ResourceDictionary>
