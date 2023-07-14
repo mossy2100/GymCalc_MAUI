@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Calculations;
 using GymCalc.Data.Repositories;
+using GymCalc.Graphics;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -178,10 +179,10 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Prepare the styles.
-        var percentStyle = MauiUtilities.LookupResource<Style>("ResultsTablePercent");
-        var headerStyle = MauiUtilities.LookupResource<Style>("ResultsTableHeader");
-        var weightStyle = MauiUtilities.LookupResource<Style>("ResultsTableWeight");
-        var focusWeightStyle = MauiUtilities.LookupResource<Style>("ResultsTableFocusWeight");
+        var percentStyle = MauiUtilities.LookupStyle("ResultsTablePercent");
+        var headerStyle = MauiUtilities.LookupStyle("ResultsTableHeader");
+        var weightStyle = MauiUtilities.LookupStyle("ResultsTableWeight");
+        var focusWeightStyle = MauiUtilities.LookupStyle("ResultsTableFocusWeight");
 
         // Get the device width in device-independent pixels.
         var deviceWidth =
@@ -326,14 +327,18 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Prepare the styles.
-        var percentStyle = MauiUtilities.LookupResource<Style>("ResultsTablePercent");
-        var headerStyle = MauiUtilities.LookupResource<Style>("ResultsTableHeader");
-        var weightStyle = MauiUtilities.LookupResource<Style>("ResultsTableWeight");
-        var focusWeightStyle = MauiUtilities.LookupResource<Style>("ResultsTableFocusWeight");
+        var percentStyle = MauiUtilities.LookupStyle("ResultsTablePercent");
+        var headerStyle = MauiUtilities.LookupStyle("ResultsTableHeader");
+        var weightStyle = MauiUtilities.LookupStyle("ResultsTableWeight");
+        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
         // Get the device width in device-independent pixels.
         var deviceWidth =
             DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+
+        // Dumbbell graphic dimensions.
+        const int dumbbellHeight = 50;
+        const int dumbbellWidth = 100;
 
         foreach (var (percent, closestWeight) in results)
         {
@@ -350,9 +355,9 @@ public partial class CalculatorPage : ContentPage
             var textGrid = new Grid
             {
                 ColumnDefinitions = new ColumnDefinitionCollection(
-                    new ColumnDefinition(new GridLength(3, GridUnitType.Star)),
                     new ColumnDefinition(new GridLength(2, GridUnitType.Star)),
-                    new ColumnDefinition(new GridLength(2, GridUnitType.Star))
+                    new ColumnDefinition(new GridLength(3, GridUnitType.Star)),
+                    new ColumnDefinition(new GridLength(3, GridUnitType.Star))
                 ),
                 RowDefinitions = new RowDefinitionCollection(
                     new RowDefinition(GridLength.Auto),
@@ -371,47 +376,56 @@ public partial class CalculatorPage : ContentPage
             {
                 FormattedText = TextUtility.StyleText($"{percent}%", percentStyle),
             };
-            textGrid.Add(percentLabel, 0);
+            textGrid.Add(percentLabel, 0, 0);
 
             // Ideal heading.
             var idealHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Ideal", headerStyle),
                 VerticalTextAlignment = TextAlignment.End,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
-            textGrid.Add(idealHeading, 1);
+            textGrid.Add(idealHeading, 1, 0);
 
             // Closest heading.
             var closestHeading = new Label
             {
                 FormattedText = TextUtility.StyleText("Closest", headerStyle),
                 VerticalTextAlignment = TextAlignment.End,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
-            textGrid.Add(closestHeading, 2);
+            textGrid.Add(closestHeading, 2, 0);
 
             ///////////
             // Row 1.
-
-            // Total including bar heading.
-            var dumbbellHeading = new Label
-            {
-                FormattedText = TextUtility.StyleText("Dumbbells to use", headerStyle),
-            };
-            textGrid.Add(dumbbellHeading, 0, 1);
 
             // Ideal dumbbell weight.
             var idealWeight = _maxWeight * percent / 100.0;
             var idealValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{idealWeight:F2} kg", weightStyle),
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
             textGrid.Add(idealValue, 1, 1);
 
-            // Closest dumbbell weight.
+            // Closest dumbbell.
+
+            // Dumbbell background.
+            var dumbbellGraphic = new GraphicsView
+            {
+                Drawable = new DumbbellGraphic(),
+                HeightRequest = dumbbellHeight,
+                WidthRequest = dumbbellWidth,
+            };
+            textGrid.Add(dumbbellGraphic, 2, 1);
+
+            // Dumbbell label.
             var closestValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{closestWeight:F2} kg", focusWeightStyle),
-                TextColor = Colors.Blue,
+                FormattedText = TextUtility.StyleText($"{closestWeight}", barLabelStyle),
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
             };
             textGrid.Add(closestValue, 2, 1);
 

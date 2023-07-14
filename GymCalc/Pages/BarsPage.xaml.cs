@@ -1,8 +1,8 @@
-using System.Globalization;
+using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
-using Microsoft.Maui.Controls.Shapes;
+using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
 
@@ -37,6 +37,9 @@ public partial class BarsPage : ContentPage
         // Get the steel bar gradient brush.
         var brush = GetBarBrush();
 
+        // Get the style.
+        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
+
         var rowNum = 1;
         foreach (var bar in bars)
         {
@@ -58,10 +61,7 @@ public partial class BarsPage : ContentPage
             // Add the bar weight text.
             var label = new Label
             {
-                Text = bar.Weight.ToString(CultureInfo.InvariantCulture),
-                TextColor = Colors.Black,
-                FontSize = 16,
-                FontAttributes = FontAttributes.Bold,
+                FormattedText = TextUtility.StyleText($"{bar.Weight}", barLabelStyle),
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             };

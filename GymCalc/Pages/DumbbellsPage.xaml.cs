@@ -35,24 +35,30 @@ public partial class DumbbellsPage : ContentPage
         // Get the dumbbells.
         var dumbbells = await DumbbellRepository.GetAll();
 
+        // Dumbbell graphic dimensions.
+        const int dumbbellHeight = 50;
+        const int dumbbellWidth = 100;
+
+        // Get the style.
+        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
+
         // Display them all in a table with checkboxes.
         var rowNum = 1;
         var colNum = 0;
-        const int rowHeight = 50;
         foreach (var dumbbell in dumbbells)
         {
             if (colNum == 0)
             {
                 // Add a new row to the grid.
-                DumbbellsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(rowHeight)));
+                DumbbellsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(dumbbellHeight)));
             }
 
             // Get the dumbbell background.
             var dumbbellGraphic = new GraphicsView
             {
                 Drawable = new DumbbellGraphic(),
-                HeightRequest = rowHeight,
-                WidthRequest = 100,
+                HeightRequest = dumbbellHeight,
+                WidthRequest = dumbbellWidth,
             };
             DumbbellsGrid.Add(dumbbellGraphic, colNum, rowNum);
 
@@ -60,7 +66,7 @@ public partial class DumbbellsPage : ContentPage
             var labelText = dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
             var label = new Label
             {
-                FormattedText = TextUtility.StyleText(labelText, "DumbbellLabel"),
+                FormattedText = TextUtility.StyleText(labelText, barLabelStyle),
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             };

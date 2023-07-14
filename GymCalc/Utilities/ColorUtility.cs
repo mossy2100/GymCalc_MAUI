@@ -6,8 +6,7 @@ namespace GymCalc.Utilities;
 internal static class ColorUtility
 {
     /// <summary>
-    /// Send this function a decimal sRGB gamma encoded color value between 0.0 and 1.0, and it
-    /// returns a linearized value.
+    /// Convert a decimal sRGB gamma-encoded color value between 0.0 and 1.0 to a linearized value.
     /// </summary>
     /// <param name="colorChannel"></param>
     /// <returns></returns>
@@ -30,7 +29,7 @@ internal static class ColorUtility
         var g = Linearize(color.Green);
         var b = Linearize(color.Blue);
 
-        // Find luminance.
+        // Calculate luminance.
         var y = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
         // Find perceived lightness.

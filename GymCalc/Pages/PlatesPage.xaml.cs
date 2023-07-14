@@ -64,6 +64,9 @@ public partial class PlatesPage : ContentPage
         var bgColor = Color.Parse(plate.Color);
         var textColor = bgColor.GetTextColor();
 
+        // Get the style.
+        var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
+
         // Add the plate background.
         var plateWidth = 50 + plate.Weight / 25 * 250;
         var rect = new Rectangle
@@ -90,10 +93,11 @@ public partial class PlatesPage : ContentPage
         // Add the plate weight text.
         var label = new Label
         {
-            Text = plate.Weight.ToString(CultureInfo.InvariantCulture),
-            TextColor = textColor,
-            FontSize = 16,
-            FontAttributes = FontAttributes.Bold,
+            FormattedText = TextUtility.CreateFormattedString($"{plate.Weight}", true, false,
+                textColor, plateLabelStyle),
+            // TextColor = textColor,
+            // FontSize = 16,
+            // FontAttributes = FontAttributes.Bold,
             VerticalTextAlignment = TextAlignment.Center,
             HorizontalTextAlignment = TextAlignment.Center,
         };

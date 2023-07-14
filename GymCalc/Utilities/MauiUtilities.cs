@@ -39,4 +39,14 @@ public static class MauiUtilities
 
         return default(T);
     }
+
+    internal static Color LookupColor(string resourceName, ContentPage page = null)
+    {
+        return LookupResource<Color>(resourceName, page);
+    }
+
+    internal static Style LookupStyle(string resourceName, ContentPage page = null)
+    {
+        return LookupResource<Style>(resourceName, page);
+    }
 }
