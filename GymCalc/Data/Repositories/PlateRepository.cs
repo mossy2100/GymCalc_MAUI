@@ -59,7 +59,7 @@ internal static class PlateRepository
     /// <summary>
     /// Ensure the database table exist and contains some plates.
     /// </summary>
-    internal static async Task InitializeTable()
+    internal static async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -92,7 +92,6 @@ internal static class PlateRepository
     /// <returns></returns>
     public static async Task<List<Plate>> GetAll(bool onlyEnabled = false, bool ascending = true)
     {
-        await InitializeTable();
         return await HeavyThingRepository.GetAll<Plate>(onlyEnabled, ascending);
     }
 }

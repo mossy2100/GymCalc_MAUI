@@ -10,7 +10,7 @@ internal static class DumbbellRepository
     /// <summary>
     /// Ensure the database table exist and contains some dumbbells.
     /// </summary>
-    internal static async Task InitializeTable()
+    internal static async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -62,7 +62,6 @@ internal static class DumbbellRepository
     /// <returns></returns>
     public static async Task<List<Dumbbell>> GetAll(bool onlyEnabled = false, bool ascending = true)
     {
-        await InitializeTable();
         return await HeavyThingRepository.GetAll<Dumbbell>(onlyEnabled, ascending);
     }
 }

@@ -1,3 +1,4 @@
+using GymCalc.Data.Repositories;
 using SQLite;
 
 namespace GymCalc.Data;
@@ -45,5 +46,15 @@ internal static class Database
         }
 
         return _database;
+    }
+
+    /// <summary>
+    /// Initialize the database.
+    /// </summary>
+    internal static async Task Initialize()
+    {
+        await BarRepository.Initialize();
+        await PlateRepository.Initialize();
+        await DumbbellRepository.Initialize();
     }
 }

@@ -15,6 +15,12 @@
                 <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Quaternary}}" />
             </Style>
 
+            <Style x:Key="ControlFrameStyle" TargetType="Frame">
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Quaternary}, Dark={StaticResource Primary}}" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+
             <Style x:Key="ButtonStyle" TargetType="Button">
                 <Setter Property="FontSize" Value="20" />
                 <Setter Property="FontAttributes" Value="Bold" />
@@ -61,13 +67,13 @@
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray900}}" />
-                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light='{StaticResource Gray200}', Dark={StaticResource Gray600}}" />
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
-                                    <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Quaternary}, Dark={StaticResource Primary}}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>

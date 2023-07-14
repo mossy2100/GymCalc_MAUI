@@ -55,14 +55,19 @@
                     FontSize="16"
                     Text="Maximum weight (kg)"
                     VerticalTextAlignment="Center" />
-                <Entry
-                    x:Name="MaxWeightEntry"
+                <Frame
+                    x:Name="MaxWeightEntryFrame"
                     Grid.Row="0"
                     Grid.Column="1"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
-                    FontSize="16"
-                    Keyboard="Numeric"
-                    VerticalTextAlignment="Center" />
+                    Style="{StaticResource ControlFrameStyle}">
+                    <Entry
+                        x:Name="MaxWeightEntry"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
+                                                          Dark={StaticResource Tertiary}}"
+                        FontSize="16"
+                        Keyboard="Numeric"
+                        VerticalTextAlignment="Center" />
+                </Frame>
 
                 <!--  Row 1: Bar weight  -->
                 <Label
@@ -72,13 +77,18 @@
                     FontSize="16"
                     Text="Bar weight (kg)"
                     VerticalTextAlignment="Center" />
-                <Picker
-                    x:Name="BarWeightPicker"
+                <Frame
+                    x:Name="BarWeightPickerFrame"
                     Grid.Row="1"
                     Grid.Column="1"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
-                    FontSize="16"
-                    VerticalTextAlignment="Center" />
+                    Style="{StaticResource ControlFrameStyle}">
+                    <Picker
+                        x:Name="BarWeightPicker"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
+                                                          Dark={StaticResource Tertiary}}"
+                        FontSize="16"
+                        VerticalTextAlignment="Center" />
+                </Frame>
             </Grid>
 
             <!--  Item 2: Calculate button  -->

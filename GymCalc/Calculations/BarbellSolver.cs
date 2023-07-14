@@ -58,7 +58,7 @@ internal class BarbellSolver
     /// </summary>
     /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
     /// <param name="currentStack">The stack of plates so far.</param>
-    private void FindSolutions(double maxPlateWeight, List<double> currentStack)
+    private void FindSolutions(double maxPlateWeight, IReadOnlyList<double> currentStack)
     {
         foreach (var newPlateWeight in _availablePlateWeights)
         {

@@ -12,7 +12,7 @@ internal static class BarRepository
     /// <summary>
     /// Ensure the database table exist and contains some bars.
     /// </summary>
-    public static async Task InitializeTable()
+    internal static async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -25,7 +25,7 @@ internal static class BarRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            for (int weight = 10; weight <= 25; weight += 5)
+            for (var weight = 10; weight <= 25; weight += 5)
             {
                 var bar = new Bar
                 {
@@ -44,7 +44,6 @@ internal static class BarRepository
     /// <returns></returns>
     public static async Task<List<Bar>> GetAll(bool onlyEnabled = false, bool ascending = true)
     {
-        await InitializeTable();
         return await HeavyThingRepository.GetAll<Bar>(onlyEnabled, ascending);
     }
 }

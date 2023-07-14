@@ -1,8 +1,8 @@
 using System.Globalization;
+using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Calculations;
 using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
 
@@ -37,11 +37,21 @@ public partial class CalculatorPage : ContentPage
             case ExerciseType.Barbell:
                 VisualStateManager.GoToState(BarbellButton, "Selected");
                 VisualStateManager.GoToState(DumbbellButton, "Normal");
+                MaxWeightLabel.Text = "Maximum total weight (kg)";
+                CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
+                CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 10);
+                BarWeightLabel.IsVisible = true;
+                BarWeightPickerFrame.IsVisible = true;
                 break;
 
             case ExerciseType.Dumbbell:
                 VisualStateManager.GoToState(DumbbellButton, "Selected");
                 VisualStateManager.GoToState(BarbellButton, "Normal");
+                MaxWeightLabel.Text = "Maximum weight per dumbbell (kg)";
+                BarWeightLabel.IsVisible = false;
+                BarWeightPickerFrame.IsVisible = false;
+                CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
+                CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 0);
                 break;
         }
     }
@@ -49,21 +59,11 @@ public partial class CalculatorPage : ContentPage
     private void OnBarbellButtonClicked(object sender, EventArgs e)
     {
         UpdateExerciseType(ExerciseType.Barbell);
-        MaxWeightLabel.Text = "Maximum total weight (kg)";
-        CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
-        CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 10);
-        BarWeightLabel.IsVisible = true;
-        BarWeightPicker.IsVisible = true;
     }
 
     private void OnDumbbellButtonClicked(object sender, EventArgs e)
     {
         UpdateExerciseType(ExerciseType.Dumbbell);
-        MaxWeightLabel.Text = "Maximum weight per dumbbell (kg)";
-        BarWeightLabel.IsVisible = false;
-        BarWeightPicker.IsVisible = false;
-        CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
-        CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 0);
     }
 
     /// <summary>

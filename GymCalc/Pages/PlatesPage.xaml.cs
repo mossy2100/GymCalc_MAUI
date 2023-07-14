@@ -1,9 +1,9 @@
 using System.Globalization;
+using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Utilities;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace GymCalc.Pages;
 
