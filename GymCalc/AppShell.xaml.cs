@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-
-namespace GymCalc;
+﻿namespace GymCalc;
 
 public partial class AppShell : Shell
 {

@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Utilities;
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
 
 namespace GymCalc.Pages;
 
