@@ -21,12 +21,23 @@ public partial class CalculatorPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        // Initialise the exercise type to the current selection.
+        // Initialise the exercise type buttons.
+        SetExerciseTypeButtonWidths();
         UpdateExerciseType(App.SelectedExerciseType);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
         await ResetBarWeightPicker();
+    }
+
+    private void SetExerciseTypeButtonWidths()
+    {
+        var deviceWidth =
+            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        const int nButtons = 2;
+        var buttonWidth = (deviceWidth - 30) / nButtons;
+        BarbellButton.WidthRequest = buttonWidth;
+        DumbbellButton.WidthRequest = buttonWidth;
     }
 
     private void UpdateExerciseType(ExerciseType exerciseType)

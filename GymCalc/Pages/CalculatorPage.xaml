@@ -28,13 +28,15 @@
                     Grid.Row="1"
                     Grid.Column="0"
                     Clicked="OnBarbellButtonClicked"
-                    Style="{StaticResource BarbellButtonStyle}" />
+                    Style="{StaticResource BarbellButtonStyle}"
+                    Text="Barbell" />
                 <Button
                     x:Name="DumbbellButton"
                     Grid.Row="1"
                     Grid.Column="1"
                     Clicked="OnDumbbellButtonClicked"
-                    Style="{StaticResource DumbbellButtonStyle}" />
+                    Style="{StaticResource DumbbellButtonStyle}"
+                    Text="Dumbbell" />
             </Grid>
 
             <!--  Item 1: Form  -->
