@@ -1,4 +1,3 @@
-using Galaxon.Core.Numbers;
 using GymCalc.Data.Repositories;
 
 namespace GymCalc.Calculations;
@@ -43,7 +42,7 @@ internal static class DumbbellCalculation
             dumbbellWeight = availableDumbbellWeights[i];
 
             // Check for exact match.
-            if (dumbbellWeight.FuzzyEquals(idealWeight))
+            if (dumbbellWeight == idealWeight)
             {
                 return dumbbellWeight;
             }

@@ -1,4 +1,3 @@
-* Fix issue with dumbbell exercise label missing "l".
 * Add About page in a flyout.
 
 Future versions

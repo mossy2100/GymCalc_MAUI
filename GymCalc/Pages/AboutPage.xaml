@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GymCalc.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="About GymCalc">
+
+    <VerticalStackLayout Padding="10" Spacing="10">
+        <Label FontSize="16" Text="GymCalc is my first app." />
+        <Label FontSize="16" Text="Test 2" />
+        <Label FontSize="16" Text="Test 3" />
+    </VerticalStackLayout>
+
+</ContentPage>

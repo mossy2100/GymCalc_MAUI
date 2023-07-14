@@ -11,13 +11,16 @@
             <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
         </Tab>
         <Tab Title="Bars" Icon="barbell_icon_300.png">
-            <ShellContent Title="Bars" ContentTemplate="{DataTemplate pages:BarsPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" />
         </Tab>
         <Tab Title="Plates" Icon="plate_icon_300.png">
-            <ShellContent Title="Plates" ContentTemplate="{DataTemplate pages:PlatesPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" />
         </Tab>
         <Tab Title="Dumbbells" Icon="dumbbell_icon_300.png">
             <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
+        </Tab>
+        <Tab Title="About GymCalc" Icon="about_icon_100.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
         </Tab>
     </TabBar>
 
