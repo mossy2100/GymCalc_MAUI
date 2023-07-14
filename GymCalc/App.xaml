@@ -65,9 +65,10 @@
             <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
                 <Setter Property="ContentLayout" Value="Top,0" />
-                <Setter Property="HeightRequest" Value="140" />
+                <Setter Property="HeightRequest" Value="130" />
                 <Setter Property="Padding" Value="10" />
                 <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="HorizontalOptions" Value="Center" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -92,14 +93,14 @@
                 x:Key="BarbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_100.png', Dark='deadlift_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='barbell_black_130_label.png', Dark='barbell_white_130_label.png'}" />
             </Style>
 
             <Style
                 x:Key="DumbbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_black_130_label.png', Dark='dumbbell_white_130_label.png'}" />
             </Style>
 
         </ResourceDictionary>

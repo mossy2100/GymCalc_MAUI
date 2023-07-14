@@ -1,13 +1,14 @@
 * Fix issue with dumbbell exercise label missing "l".
-* Add border to form fields.
-* Add a dumbbell graphic to the dumbbell calculation results and improve the results grid layout.
-* Add support for plate-loaded machines.
 * Add About page in a flyout.
-* Sort out the colours. Remove unused colours from Colors.xml.
 
-Future
-======
-* Get it working on Android.
-* Allow user to add custom weights.
-* Add support for lbs.
+Future versions
+===============
+* Add support for lbs (and thus preferences).
+* Android version.
+* Add support for plate-loaded machines.
+* Allow addition of custom weights/editing of existing weights.
+
+Maybe, but probably not
+=======================
+* Add support for LOTE.
 * Add support for pin-loaded machines.

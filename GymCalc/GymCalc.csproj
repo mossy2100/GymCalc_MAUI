@@ -43,30 +43,31 @@
         <MauiImage Update="Resources\Images\barbell_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\plate_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\dumbbell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\exercise_types\deadlift_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_white_100.png" BaseSize="100,100" />
+        
+        <MauiImage Update="Resources\Images\exercise_types\barbell_black_130_label.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\barbell_white_130_label.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\dumbbell_black_130_label.png" BaseSize="130,130" />
+        <MauiImage Update="Resources\Images\exercise_types\dumbbell_white_130_label.png" BaseSize="130,130" />
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-        <None Remove="Resources\Images\exercise_types\deadlift_100.png" />
-        <MauiImage Include="Resources\Images\exercise_types\deadlift_100.png">
+        <None Remove="Resources\Images\exercise_types\barbell_black_130_label.png" />
+        <MauiImage Include="Resources\Images\exercise_types\barbell_black_130_label.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\deadlift_white_100.png" />
-        <MauiImage Include="Resources\Images\exercise_types\deadlift_white_100.png">
+        <None Remove="Resources\Images\exercise_types\barbell_white_130_label.png" />
+        <MauiImage Include="Resources\Images\exercise_types\barbell_white_130_label.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_press_100.png" />
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_100.png">
+        <None Remove="Resources\Images\exercise_types\dumbbell_black_130_label.png" />
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_black_130_label.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_press_white_100.png" />
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
+        <None Remove="Resources\Images\exercise_types\dumbbell_white_130_label.png" />
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_white_130_label.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
     </ItemGroup>
@@ -81,15 +82,14 @@
         <Reference Include="Galaxon.Core">
             <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.iOS">
+          <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\packs\Microsoft.iOS.Ref\16.4.7089\ref\net7.0\Microsoft.iOS.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="Platforms\Android\AndroidManifest.xml" />
       <Content Include="Platforms\iOS\Info.plist" />
-      <Content Include="Platforms\MacCatalyst\Info.plist" />
-      <Content Include="Platforms\Tizen\tizen-manifest.xml" />
-      <Content Include="Platforms\Windows\app.manifest" />
-      <Content Include="Platforms\Windows\Package.appxmanifest" />
     </ItemGroup>
 
 </Project>
