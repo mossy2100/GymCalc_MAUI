@@ -1,3 +1,6 @@
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+
 namespace GymCalc.Utilities;
 
 internal static class TextUtility
@@ -77,5 +80,110 @@ internal static class TextUtility
     {
         var style = MauiUtilities.LookupStyle(styleName);
         return CreateFormattedString(text, false, false, null, style);
+    }
+
+    public static string CollapseWhitespace(string text)
+    {
+        return Regex.Replace(text, @"\s{2,}", " ");
+    }
+
+    private static void AddSpan(string text, int fontSize, FontAttributes fontAttributes,
+        ref List<List<Span>> spans)
+    {
+        // Ignore empty spans.
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return;
+        }
+
+        // Construct a new span.
+        var newSpan = new Span
+        {
+            Text = CollapseWhitespace(text),
+            FontSize = fontSize,
+            FontAttributes = fontAttributes,
+        };
+
+        // Add it to the last span group.
+        spans.Last().Add(newSpan);
+    }
+
+    public static void ProcessHtmlDocument(HtmlNode node,
+        int parentFontSize,
+        FontAttributes parentFontAttributes,
+        ref List<List<Span>> spans)
+    {
+        // var node = doc.DocumentNode;
+        switch (node.NodeType)
+        {
+            case HtmlNodeType.Text:
+                AddSpan(node.InnerText, parentFontSize, parentFontAttributes, ref spans);
+                break;
+
+            case HtmlNodeType.Element:
+                // Block-level elements require a new span group (which becomes a Label).
+                if (node.Name == "p" || node.Name == "h1" || node.Name == "h2" || node.Name == "li")
+                {
+                    spans.Add(new List<Span>());
+                }
+
+                // Determine the font attributes.
+                var fontAttributes = parentFontAttributes;
+                if (node.Name == "b" || node.Name == "strong")
+                {
+                    fontAttributes |= FontAttributes.Bold;
+                }
+                if (node.Name == "i" || node.Name == "em")
+                {
+                    fontAttributes |= FontAttributes.Italic;
+                }
+
+                // Determine the font size.
+                var fontSize = parentFontSize;
+                switch (node.Name)
+                {
+                    case "h1":
+                        fontSize = 24;
+                        break;
+
+                    case "h2":
+                        fontSize = 20;
+                        break;
+                }
+
+                // Handle unordered lists.
+                if (node.Name == "li" && node.ParentNode.Name == "ul")
+                {
+                    // Add a new span for the bullet.
+                    var bullSpan = new Span { Text = "\u2022 " };
+                    spans.Last().Add(bullSpan);
+                }
+
+                if (node.HasChildNodes)
+                {
+                    // Add new spans for each child node.
+                    foreach (var childNode in node.ChildNodes)
+                    {
+                        ProcessHtmlDocument(childNode, fontSize, fontAttributes, ref spans);
+                    }
+                }
+                else
+                {
+                    AddSpan(node.InnerText, fontSize, fontAttributes, ref spans);
+                }
+                break;
+
+            case HtmlNodeType.Document:
+                // Add new spans for each child node.
+                foreach (var childNode in node.ChildNodes)
+                {
+                    ProcessHtmlDocument(childNode, parentFontSize, parentFontAttributes, ref spans);
+                }
+                break;
+
+            case HtmlNodeType.Comment:
+                // Do nothing.
+                break;
+        }
     }
 }

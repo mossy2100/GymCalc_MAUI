@@ -5,10 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="About GymCalc">
 
-    <VerticalStackLayout Padding="10" Spacing="10">
-        <Label FontSize="16" Text="GymCalc is my first app." />
-        <Label FontSize="16" Text="Test 2" />
-        <Label FontSize="16" Text="Test 3" />
-    </VerticalStackLayout>
+    <ScrollView Padding="10" VerticalOptions="Fill">
+        <VerticalStackLayout x:Name="AboutLayout" Spacing="10" />
+    </ScrollView>
 
 </ContentPage>

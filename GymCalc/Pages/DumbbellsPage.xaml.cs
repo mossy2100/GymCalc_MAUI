@@ -17,14 +17,7 @@ public partial class DumbbellsPage : ContentPage
     public DumbbellsPage()
     {
         InitializeComponent();
-    }
-
-    protected override async void OnAppearing()
-    {
-        if (DumbbellsGrid.RowDefinitions.Count == 1)
-        {
-            await DisplayDumbbells();
-        }
+        DisplayDumbbells();
     }
 
     /// <summary>

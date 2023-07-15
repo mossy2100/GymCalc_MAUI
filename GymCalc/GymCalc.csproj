@@ -33,18 +33,34 @@
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White" />
+        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_300.png">
+          <BaseSize>30,30</BaseSize>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_300.png">
+          <BaseSize>30,30</BaseSize>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_300.png">
+          <BaseSize>30,30</BaseSize>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_300.png">
+          <BaseSize>30,30</BaseSize>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_300.png">
+          <BaseSize>30,30</BaseSize>
+        </MauiImage>
 
         <!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="White" BaseSize="128,128" />
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
-        <MauiImage Update="Resources\Images\calculator_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\barbell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\plate_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\dumbbell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\about_icon_300.png" BaseSize="30,30" />
-        
+        <!-- Tab bar icons -->
+        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_300.png" BaseSize="30,30" />
+        <MauiImage Update="Resources\Images\tab_bar_icons\barbell_icon_300.png" BaseSize="30,30" />
+        <MauiImage Update="Resources\Images\tab_bar_icons\plate_icon_300.png" BaseSize="30,30" />
+        <MauiImage Update="Resources\Images\tab_bar_icons\dumbbell_icon_300.png" BaseSize="30,30" />
+        <MauiImage Update="Resources\Images\tab_bar_icons\about_icon_300.png" BaseSize="30,30" />
+        <!-- Images for exercise type buttons -->
         <MauiImage Update="Resources\Images\exercise_types\deadlift_100.png" BaseSize="100,100" />
         <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />
         <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_100.png" BaseSize="100,100" />
@@ -74,6 +90,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.49" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.5" />

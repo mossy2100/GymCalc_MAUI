@@ -8,7 +8,6 @@
     <ScrollView Padding="10" VerticalOptions="Fill">
         <Grid
             x:Name="DumbbellsGrid"
-            Padding="10"
             ColumnDefinitions="*,Auto,*,Auto"
             ColumnSpacing="10"
             RowDefinitions="Auto"

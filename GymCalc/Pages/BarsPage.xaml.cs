@@ -16,14 +16,7 @@ public partial class BarsPage : ContentPage
     public BarsPage()
     {
         InitializeComponent();
-    }
-
-    protected override async void OnAppearing()
-    {
-        if (BarsGrid.RowDefinitions.Count == 1)
-        {
-            await DisplayBars();
-        }
+        DisplayBars();
     }
 
     /// <summary>

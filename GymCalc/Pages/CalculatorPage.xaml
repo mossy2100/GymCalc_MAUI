@@ -5,11 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
-    <ScrollView>
-        <VerticalStackLayout
-            x:Name="CalculatorLayout"
-            Padding="10"
-            Spacing="10">
+    <ScrollView Padding="10" VerticalOptions="Fill">
+        <VerticalStackLayout x:Name="CalculatorLayout" Spacing="10">
 
             <!--  Item 0: Exercise type selection  -->
             <Grid

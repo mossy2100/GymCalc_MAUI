@@ -19,7 +19,7 @@
         <Tab Title="Dumbbells" Icon="dumbbell_icon_300.png">
             <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
         </Tab>
-        <Tab Title="About GymCalc" Icon="about_icon_100.png">
+        <Tab Title="About" Icon="about_icon_300.png">
             <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
         </Tab>
     </TabBar>

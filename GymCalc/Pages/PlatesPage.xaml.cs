@@ -16,14 +16,7 @@ public partial class PlatesPage : ContentPage
     public PlatesPage()
     {
         InitializeComponent();
-    }
-
-    protected override async void OnAppearing()
-    {
-        if (PlatesGrid.RowDefinitions.Count == 1)
-        {
-            await DisplayPlates();
-        }
+        DisplayPlates();
     }
 
     /// <summary>
