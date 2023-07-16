@@ -53,6 +53,11 @@ internal static class DumbbellRepository
                 };
                 await db.InsertAsync(dumbbell);
             }
+
+            // Some other dumbbell weights that are manufactured and are sometimes found in gyms
+            // include 11, 12, 13, 14, 16, 18, 22, 24, 26, 28, and 32 kg.
+            // However, I think these are less common, and if we provide users with the capability
+            // to add their own, it will be enough.
         }
     }
 
