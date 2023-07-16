@@ -1,13 +1,13 @@
-* Add About page in a flyout.
-
 Future versions
 ===============
+* "Reset to default" button for bars, plates, and dumbbells.
 * Add support for lbs (and thus preferences).
 * Android version.
 * Add support for plate-loaded machines.
 * Allow addition of custom weights/editing of existing weights.
 
-Maybe, but probably not
-=======================
-* Add support for LOTE.
+Maybe
+=====
+* Add support for kettlebells.
 * Add support for pin-loaded machines.
+* Add support for LOTE.

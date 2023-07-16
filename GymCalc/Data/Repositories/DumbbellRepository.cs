@@ -23,42 +23,48 @@ internal static class DumbbellRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            // Add light dumbbells, from 1-9 kg.
-            double weight;
-            for (weight = 1; weight <= 9; weight++)
-            {
-                var dumbbell = new Dumbbell
-                {
-                    Weight = weight,
-                    Unit = "kg",
-                    Enabled = true,
-                };
-                await db.InsertAsync(dumbbell);
-            }
-
-            // Add heavy dumbbells, from 2.5-50 kg.
-            for (weight = 2.5; weight <= 50; weight += 2.5)
-            {
-                // Skip the 5kg, since we added it already.
-                if (weight == 5)
-                {
-                    continue;
-                }
-
-                var dumbbell = new Dumbbell
-                {
-                    Weight = weight,
-                    Unit = "kg",
-                    Enabled = true,
-                };
-                await db.InsertAsync(dumbbell);
-            }
-
-            // Some other dumbbell weights that are manufactured and are sometimes found in gyms
-            // include 11, 12, 13, 14, 16, 18, 22, 24, 26, 28, and 32 kg.
-            // However, I think these are less common, and if we provide users with the capability
-            // to add their own, it will be enough.
+            var addedSoFar = new List<double>();
+            // Common weights, enabled by default.
+            addedSoFar = await AddDumbbellSet(1, 10, 1, true, addedSoFar);
+            addedSoFar = await AddDumbbellSet(7.5, 50, 2.5, true, addedSoFar);
+            // Less common weights, may provide buttons to add later.
+            // addedSoFar = await AddDumbbellSet(11, 14, 1, false, addedSoFar);
+            // addedSoFar = await AddDumbbellSet(2.5, 5, 2.5, false, addedSoFar);
+            // addedSoFar = await AddDumbbellSet(52.5, 70, 2.5, false, addedSoFar);
+            // addedSoFar = await AddDumbbellSet(75, 80, 5, false, addedSoFar);
+            // addedSoFar = await AddDumbbellSet(90, 100, 10, false, addedSoFar);
+            // Kettlebell weights.
+            // addedSoFar = await AddDumbbellSet(4, 48, 2, false, addedSoFar);
         }
+    }
+
+    private static async Task<List<double>> AddDumbbellSet(double min, double max, double step, bool enabled,
+        List<double> addedSoFar)
+    {
+        var db = Database.GetConnection();
+
+        for (var weight = min; weight <= max; weight += step)
+        {
+            // Check we didn't add this one already.
+            if (addedSoFar.Contains(weight))
+            {
+                continue;
+            }
+
+            // Add the dumbbell.
+            var dumbbell = new Dumbbell
+            {
+                Weight = weight,
+                Unit = "kg",
+                Enabled = enabled,
+            };
+            await db.InsertAsync(dumbbell);
+
+            // Remember it.
+            addedSoFar.Add(weight);
+        }
+
+        return addedSoFar;
     }
 
     /// <summary>

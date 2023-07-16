@@ -10,6 +10,11 @@ internal static class BarRepository
     public const double DEFAULT_WEIGHT = 20;
 
     /// <summary>
+    /// Default bars.
+    /// </summary>
+    private static readonly double[] DefaultBars = { 7.5, 10, 15, 20, 25 };
+
+    /// <summary>
     /// Ensure the database table exist and contains some bars.
     /// </summary>
     internal static async Task Initialize()
@@ -25,7 +30,7 @@ internal static class BarRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            for (var weight = 10; weight <= 25; weight += 5)
+            foreach (var weight in DefaultBars)
             {
                 var bar = new Bar
                 {

@@ -80,7 +80,8 @@ internal class BarbellSolver
             var diff = double.Abs(sum - _idealWeight);
 
             // Check if this is a new best solution.
-            if (diff < _smallestDiff)
+            if (diff < _smallestDiff
+                || diff == _smallestDiff && newStack.Count < _bestSolution.Count)
             {
                 // Update the best solution found so far.
                 _bestSolution = newStack;
@@ -98,6 +99,13 @@ internal class BarbellSolver
             if (sum < _idealWeight)
             {
                 FindSolutions(newPlateWeight, newStack);
+            }
+
+            // If the remaining difference is greater than the weight we just added, don't test
+            // adding any smaller plates. It's unnecessary and makes the algorithm take too long.
+            if (diff > newPlateWeight)
+            {
+                break;
             }
         }
     }
