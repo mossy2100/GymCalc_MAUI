@@ -26,10 +26,9 @@ internal static class DumbbellRepository
             var addedSoFar = new List<double>();
             // Common weights, enabled by default.
             addedSoFar = await AddDumbbellSet(1, 10, 1, true, addedSoFar);
-            addedSoFar = await AddDumbbellSet(7.5, 50, 2.5, true, addedSoFar);
-            // Less common weights, may provide buttons to add later.
+            addedSoFar = await AddDumbbellSet(2.5, 50, 2.5, true, addedSoFar);
+            // Less common weights. I may provide buttons to add sets later.
             // addedSoFar = await AddDumbbellSet(11, 14, 1, false, addedSoFar);
-            // addedSoFar = await AddDumbbellSet(2.5, 5, 2.5, false, addedSoFar);
             // addedSoFar = await AddDumbbellSet(52.5, 70, 2.5, false, addedSoFar);
             // addedSoFar = await AddDumbbellSet(75, 80, 5, false, addedSoFar);
             // addedSoFar = await AddDumbbellSet(90, 100, 10, false, addedSoFar);
