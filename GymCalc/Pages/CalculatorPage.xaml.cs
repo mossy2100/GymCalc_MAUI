@@ -1,6 +1,7 @@
 using System.Globalization;
 using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Calculations;
+using GymCalc.Data;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Utilities;
@@ -13,6 +14,8 @@ public partial class CalculatorPage : ContentPage
 
     private static double _barWeight;
 
+    private bool _databaseInitialized;
+
     public CalculatorPage()
     {
         InitializeComponent();
@@ -21,6 +24,13 @@ public partial class CalculatorPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
+        // Initialize database on first page load.
+        if (!_databaseInitialized)
+        {
+            await Database.Initialize();
+            _databaseInitialized = true;
+        }
+
         // Initialise the exercise type buttons.
         SetExerciseTypeButtonWidths();
         UpdateExerciseType(App.SelectedExerciseType);
@@ -184,7 +194,7 @@ public partial class CalculatorPage : ContentPage
         ErrorMessage.Text = "";
 
         // Clear the old results.
-        while (CalculatorLayout.Count > 4)
+        while (CalculatorLayout.Children[CalculatorLayout.Count - 1] != ErrorMessage)
         {
             CalculatorLayout.RemoveAt(CalculatorLayout.Count - 1);
         }

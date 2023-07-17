@@ -15,9 +15,4 @@ public partial class App : Application
 
         MainPage = new AppShell();
     }
-
-    protected override async void OnStart()
-    {
-        await Database.Initialize();
-    }
 }

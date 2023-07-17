@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,8 +7,7 @@
 
     <ScrollView Padding="10" VerticalOptions="Fill">
         <VerticalStackLayout x:Name="CalculatorLayout" Spacing="10">
-
-            <!--  Item 0: Exercise type selection  -->
+            <!--  Exercise type selection  -->
             <Grid
                 Padding="0,0,0,10"
                 ColumnDefinitions="*,*"
@@ -36,7 +35,7 @@
                     Text="Dumbbell" />
             </Grid>
 
-            <!--  Item 1: Form  -->
+            <!--  Calculator form  -->
             <Grid
                 x:Name="CalculatorFormGrid"
                 Padding="0"
@@ -53,7 +52,6 @@
                     Text="Maximum weight (kg)"
                     VerticalTextAlignment="Center" />
                 <Frame
-                    x:Name="MaxWeightEntryFrame"
                     Grid.Row="0"
                     Grid.Column="1"
                     Style="{StaticResource ControlFrameStyle}">
@@ -88,13 +86,13 @@
                 </Frame>
             </Grid>
 
-            <!--  Item 2: Calculate button  -->
+            <!--  Calculate button  -->
             <Button
                 Clicked="OnCalculateButtonClicked"
                 Style="{StaticResource ButtonStyle}"
                 Text="Calculate" />
 
-            <!--  Item 3: Error or other message  -->
+            <!--  Error or other message  -->
             <Label
                 x:Name="ErrorMessage"
                 Padding="0"

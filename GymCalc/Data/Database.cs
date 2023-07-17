@@ -53,8 +53,9 @@ internal static class Database
     /// </summary>
     internal static async Task Initialize()
     {
-        await BarRepository.Initialize();
-        await PlateRepository.Initialize();
-        await DumbbellRepository.Initialize();
+        var barTask = BarRepository.Initialize();
+        var plateTask = PlateRepository.Initialize();
+        var dumbbellTask = DumbbellRepository.Initialize();
+        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask });
     }
 }

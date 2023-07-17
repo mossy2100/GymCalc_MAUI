@@ -1,18 +1,14 @@
 ﻿<Properties StartupConfiguration="{0D430C5C-124A-425D-9FE1-FB40C1C1BEE7}|Default">
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
-  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GymCalc/AppShell.xaml">
-    <Files>
-      <File FileName="GymCalc/AppShell.xaml" Line="25" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="GymCalc" expanded="True">
             <Node name="GymCalc">
+              <Node name="Pages" expanded="True">
+                <Node name="InitializationPage.xaml" expanded="True" />
+              </Node>
               <Node name="AppShell.xaml" selected="True" />
             </Node>
           </Node>
@@ -23,5 +19,9 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <Xamarin.Addins.Core.Project ActiveDebugTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A9FB3D40-DE8E-4D21-8354-47ED12B9333A" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A9FB3D40-DE8E-4D21-8354-47ED12B9333A" />
 </Properties>

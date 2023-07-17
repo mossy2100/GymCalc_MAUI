@@ -4,11 +4,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    FlyoutBehavior="Disabled">
+    FlyoutBehavior="Disabled"
+    NavBarHasShadow="true">
+
+    <!-- <ShellContent ContentTemplate="{DataTemplate pages:InitializationPage}" Route="init" /> -->
 
     <TabBar>
         <Tab Title="Calculator" Icon="calculator_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" Route="calculator" />
         </Tab>
         <Tab Title="Bars" Icon="barbell_icon_300.png">
             <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" />
