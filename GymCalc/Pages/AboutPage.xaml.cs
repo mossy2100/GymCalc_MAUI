@@ -5,15 +5,26 @@ namespace GymCalc.Pages;
 
 public partial class AboutPage : ContentPage
 {
+    private bool _textLoaded;
+
     public AboutPage()
     {
         InitializeComponent();
-        LoadAboutText();
+    }
+
+    /// <inheritdoc />
+    protected override async void OnAppearing()
+    {
+        if (!_textLoaded)
+        {
+            await LoadAboutText();
+            _textLoaded = true;
+        }
     }
 
     private async Task LoadAboutText()
     {
-        using var stream = await FileSystem.OpenAppPackageFileAsync("About.html");
+        await using var stream = await FileSystem.OpenAppPackageFileAsync("About.html");
 
         var doc = new HtmlDocument();
         doc.Load(stream);

@@ -13,10 +13,21 @@ public partial class PlatesPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Plate> _cbPlateMap = new ();
 
+    private bool _platesDisplayed;
+
     public PlatesPage()
     {
         InitializeComponent();
-        DisplayPlates();
+    }
+
+    /// <inheritdoc />
+    protected override async void OnAppearing()
+    {
+        if (!_platesDisplayed)
+        {
+            await DisplayPlates();
+            _platesDisplayed = true;
+        }
     }
 
     /// <summary>

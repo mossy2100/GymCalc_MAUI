@@ -13,10 +13,21 @@ public partial class BarsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
+    private bool _barsDisplayed;
+
     public BarsPage()
     {
         InitializeComponent();
-        DisplayBars();
+    }
+
+    /// <inheritdoc />
+    protected override async void OnAppearing()
+    {
+        if (!_barsDisplayed)
+        {
+            await DisplayBars();
+            _barsDisplayed = true;
+        }
     }
 
     /// <summary>

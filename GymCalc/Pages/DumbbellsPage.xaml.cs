@@ -14,10 +14,21 @@ public partial class DumbbellsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Dumbbell> _cbDumbbellMap = new ();
 
+    private bool _dumbbellsDisplayed;
+
     public DumbbellsPage()
     {
         InitializeComponent();
-        DisplayDumbbells();
+    }
+
+    /// <inheritdoc />
+    protected override async void OnAppearing()
+    {
+        if (!_dumbbellsDisplayed)
+        {
+            await DisplayDumbbells();
+            _dumbbellsDisplayed = true;
+        }
     }
 
     /// <summary>

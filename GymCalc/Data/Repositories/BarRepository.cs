@@ -12,7 +12,7 @@ internal static class BarRepository
     /// <summary>
     /// Default bars.
     /// </summary>
-    private static readonly double[] DefaultBars = { 7.5, 10, 15, 20, 25 };
+    private static readonly double[] _DefaultBars = { 7.5, 10, 15, 20, 25 };
 
     /// <summary>
     /// Ensure the database table exist and contains some bars.
@@ -30,7 +30,7 @@ internal static class BarRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var weight in DefaultBars)
+            foreach (var weight in _DefaultBars)
             {
                 var bar = new Bar
                 {

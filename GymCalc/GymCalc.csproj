@@ -103,8 +103,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="Platforms\Android\AndroidManifest.xml" />
-      <Content Include="Platforms\iOS\Info.plist" />
+      <None Include="Platforms\Android\AndroidManifest.xml" />
+      <None Include="Platforms\iOS\Info.plist" />
     </ItemGroup>
 
 </Project>

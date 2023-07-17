@@ -122,34 +122,31 @@ internal static class TextUtility
 
             case HtmlNodeType.Element:
                 // Block-level elements require a new span group (which becomes a Label).
-                if (node.Name == "p" || node.Name == "h1" || node.Name == "h2" || node.Name == "li")
+                if (node.Name is "p" or "h1" or "h2" or "li")
                 {
                     spans.Add(new List<Span>());
                 }
 
                 // Determine the font attributes.
                 var fontAttributes = parentFontAttributes;
-                if (node.Name == "b" || node.Name == "strong")
+                switch (node.Name)
                 {
-                    fontAttributes |= FontAttributes.Bold;
-                }
-                if (node.Name == "i" || node.Name == "em")
-                {
-                    fontAttributes |= FontAttributes.Italic;
+                    case "b" or "strong":
+                        fontAttributes |= FontAttributes.Bold;
+                        break;
+
+                    case "i" or "em":
+                        fontAttributes |= FontAttributes.Italic;
+                        break;
                 }
 
                 // Determine the font size.
-                var fontSize = parentFontSize;
-                switch (node.Name)
+                var fontSize = node.Name switch
                 {
-                    case "h1":
-                        fontSize = 24;
-                        break;
-
-                    case "h2":
-                        fontSize = 20;
-                        break;
-                }
+                    "h1" => 24,
+                    "h2" => 20,
+                    _ => parentFontSize
+                };
 
                 // Handle unordered lists.
                 if (node.Name == "li" && node.ParentNode.Name == "ul")
@@ -179,10 +176,6 @@ internal static class TextUtility
                 {
                     ProcessHtmlDocument(childNode, parentFontSize, parentFontAttributes, ref spans);
                 }
-                break;
-
-            case HtmlNodeType.Comment:
-                // Do nothing.
                 break;
         }
     }
