@@ -6,18 +6,15 @@
     Title="Dumbbells">
 
     <ScrollView Padding="10" VerticalOptions="Fill">
-        <Grid
-            x:Name="DumbbellsGrid"
-            ColumnDefinitions="*,Auto,*,Auto"
-            ColumnSpacing="10"
-            RowDefinitions="Auto"
-            RowSpacing="20">
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="4"
-                Text="Select which dumbbell weights (kg) are available:" />
-        </Grid>
+        <VerticalStackLayout Spacing="10">
+            <Label Text="Select which dumbbell weights (kg) are available:" />
+            <Grid
+                x:Name="DumbbellsGrid"
+                ColumnDefinitions="*,Auto,*,Auto"
+                ColumnSpacing="10"
+                RowDefinitions="Auto"
+                RowSpacing="20" />
+        </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

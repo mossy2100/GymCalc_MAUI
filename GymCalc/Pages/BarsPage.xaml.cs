@@ -44,7 +44,7 @@ public partial class BarsPage : ContentPage
         // Get the style.
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
-        var rowNum = 1;
+        var rowNum = 0;
         foreach (var bar in bars)
         {
             // Add a new row to the grid.

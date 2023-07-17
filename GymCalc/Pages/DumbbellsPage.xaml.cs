@@ -47,7 +47,7 @@ public partial class DumbbellsPage : ContentPage
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
         // Display them all in a table with checkboxes.
-        var rowNum = 1;
+        var rowNum = 0;
         var colNum = 0;
         foreach (var dumbbell in dumbbells)
         {

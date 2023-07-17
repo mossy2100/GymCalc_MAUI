@@ -6,18 +6,15 @@
     Title="Bars">
 
     <ScrollView Padding="10" VerticalOptions="Fill">
-        <Grid
-            x:Name="BarsGrid"
-            ColumnDefinitions="*,Auto"
-            ColumnSpacing="10"
-            RowDefinitions="Auto"
-            RowSpacing="10">
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Text="Select which bar weights (kg) are available:" />
-        </Grid>
+        <VerticalStackLayout Spacing="10">
+            <Label Text="Select which bar weights (kg) are available:" />
+            <Grid
+                x:Name="BarsGrid"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="10"
+                RowDefinitions="Auto"
+                RowSpacing="10" />
+        </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>

@@ -1,8 +1,11 @@
+* Deploy to Apple store TestFlight.
+* Fix exercise type button layout on Android.
+* Deploy to Android store.
+
 Future versions
 ===============
 * "Reset to default" button for bars, plates, and dumbbells.
-* Add support for lbs (and thus preferences).
-* Android version.
+* Add support for lbs (which will necessitate a preferences page accessible from the flyout).
 * Add support for plate-loaded machines.
 * Allow addition of custom weights/editing of existing weights.
 

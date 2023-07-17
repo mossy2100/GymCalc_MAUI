@@ -38,7 +38,7 @@ public partial class PlatesPage : ContentPage
         // Get all the plates, ordered by weight.
         var plates = await PlateRepository.GetAll();
 
-        var rowNum = 1;
+        var rowNum = 0;
         var rowDefinition = new RowDefinition(new GridLength(30));
         foreach (var plate in plates)
         {
