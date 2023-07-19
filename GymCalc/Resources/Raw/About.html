@@ -8,31 +8,37 @@
     get the total weight you want, especially once you start doing pyramid or reverse pyramid training. GymCalc solves
     that problem for you.</p>
 
-<p>I made GymCalc partly as an exercise in mobile app development, but it was also something I wanted for myself. I'd
-    already built the core features about 5 years ago using JavaScript. I had tried a number of different apps that
-    supposedly do these types of calculations, and didn't like any of them. So I built GymCalc and ran it in a web
-    browser on my phone.</p>
+<p>I made GymCalc partly as an exercise in mobile app development, but it was also something I wanted for myself. I had
+    tried a number of different apps that supposedly do these types of calculations, and didn't like any of them. So
+    about 5 years ago I built the core features of GymCalc using JavaScript, and ran it in a web browser on my phone.
+    I've been planning since then to make it into a proper app eventually, and now here we are!</p>
 
 <h2>Reverse Pyramid Training</h2>
 
-<p>One popular technique often used when lifting weights is called "reverse pyramid training", or
-    RPT. A typical pattern for this technique starts with 2-3 warm-up sets, as usual, with a low number of reps
-    (about 5). These serve to get blood into the muscles, establish the mind-muscle connection, and provide an
+<p>One popular technique often used when lifting weights is called "reverse pyramid training" (RPT). The original
+    inspiration for GymCalc was to support the use of this technique in my workouts.</p>
+
+<p>The goal of RPT is to do your heaviest set first (after your warm-up sets) when your muscles are least fatigued, to
+    maximise strength gains. Then you progressively lower the weight and increase the reps, shifting focus from strength
+    to hypertrophy. A typical pattern for this technique starts with 2-3 warm-up sets, as usual, with a low number of
+    reps (about 3-5). These serve to get blood into the muscles, establish the mind-muscle connection, and provide an
     opportunity to review your technique. Rest for 1 minute between warm-up sets.</p>
 
 <p>Then you perform your 3 working sets. Start with your heaviest (or goal) weight, and perform as many reps as
-    possible (AMRAP). Then you drop the weight by about 10% and again do AMRAP. Repeat for the 3rd working set.
-    Rest for about 2 minutes before each working set.</p>
+    possible (AMRAP), aiming for about 3-6. Then you drop the weight by about 10% and again do AMRAP, aiming for
+    about 6-9 reps. Repeat for the 3rd working set, aiming for about 9-12 reps. Rest for about 2 minutes before each
+    working set.</p>
 
-<p>So, as an example, let's say your goal for squats in a particular session is to perform 6 reps of 80 kg. Your
-    warm-up sets would be performed with, say, 40kg and 48kg (50% and 60%). Then your working sets would be performed
-    with 80kg, 72kg, and 64kg (100%, 90%, and 80%).</p>
+<p>So, as an example, let's say your goal for squats in a particular session is to perform 6 reps of 100 kg. Your
+    warm-up sets would be performed with, say, 50kg and 60kg. For those who like to do 3 warm-up sets,
+    you could do a third with 70kg (or less; you don't want to pre-fatigue the muscle, as this would defeat the point
+    of reverse pyramid training). Then your working sets would be performed with 100kg, 90kg, and 80kg.</p>
 
 <p>To use the app to determine the best plates to put on the bar, specify the maximum (100%) weight, select
     the bar weight, and press "Calculate". The app will tell you what plates to choose that will give the closest total
-    to 100%, 90%, 80%, 70%, 60%, and 50% of the maximum. I am assuming for now that it would be unusual for
-    people to want lower percentages than this, but if people ask, I can easily add that. I may make the percentages
-    customisable in the future.</p>
+    to 100%, 90%, 80%, 70%, 60%, and 50% of the maximum. I am assuming for now that it would be unusual for people to
+    want lower percentages than this, but if people ask, I can easily add that. I may make the percentages customisable
+    in the future.</p>
 
 <h2>Other techniques</h2>
 
@@ -41,32 +47,36 @@
     warm-up sets at 50% and 60% of the maximum weight, and working sets at 80%, 90%, and 100%.</p>
 
 <p>You can also use the app to do drop sets. This is often the last set for a muscle group within a session, and is
-    intended to "finish off" (i.e. maximally fatigue) the muscles. In a drop set, you do AMRAP at a given weight, then
-    remove, say 10-20% of the weight, immediately do AMRAP again (with no rest), and so on, until you either run out of
-    weight, can't move your arms or legs any more, vomit, or basically die.
-    You can also use the app to help with drop sets, but I wouldn't take too long messing around with swapping plates or
-    it isn't really a drop set anymore. It's a technique better suited to dumbbells and pin-loaded machines.
-    A more basic form of the drop set is to do AMRAP at a given weight, then drop it by 50% and do AMRAP again, then
-    stop.</p>
+    intended to "finish off" (i.e. maximally fatigue) the muscles. In a drop set, you do AMRAP at the maximum weight,
+    then remove about 10-20% of the weight, immediately do AMRAP again (with no rest), and so on, until you either run
+    out of weight, can't move your arms or legs any more, vomit, or basically die.</p>
+
+<p>You can also use the app to help with drop sets, but I wouldn't take too long messing around with swapping plates or
+    it isn't really a drop set anymore. Drop sets are better suited to dumbbells and pin-loaded machines. A more
+    basic form of the drop set is to do AMRAP at a given weight, then drop it by 50% and do AMRAP again, and that's
+    it.</p>
 
 <h2>Weights</h2>
 
 <p>I've included the usual weights for bars, plates, and dumbbells found in most gyms (at least, most gyms in
     Australia). Regarding bar weights, 20kg is the standard and by far the most common, although some gyms may also have
     15kg or 25kg bars. EZ-curl bars are less standardised and usually in the 7.5-10kg range. In a future version I will
-    allow users to enter custom bar (and other) weights.</p>
+    allow users to enter custom weights for bars, plates, and dumbbells.</p>
 
-<p>Most gyms don't have so-called "micro" or fractional plates (those in the 0.25-1kg range), but they
-    can be helpful when you only want to increase the weight by an incremental amount. They're pretty
-    cheap. You can take them to the gym with you and simply enable these weights in the app. These will enable
-    you to get much closer to the ideal weights.</p>
+<p>Most gyms don't have so-called "micro" or fractional plates (those in the 0.25-1kg range), but they can be helpful
+    when you only want to increase your max weight by an incremental amount, or if you're a bit on the OCD side like me
+    and want to make the barbell weight as close as possible to the ideal. They're pretty cheap. You can take them to
+    the gym with you and simply enable these weights in the app.</p>
 
 <p>Most gyms seem to have a set of smaller dumbbells in the range 1-10kg, and a set of larger ones in the range
     2.5-50kg, and this is what I've enabled by default. However, if your gym has different ones, please let me
     know. As mentioned, I'm planning to make it possible to add and remove weights in a future version.</p>
 
+<p>I haven't taken into consideration the weight of dumbbell bars, as this is highly variable. I don't expect this
+    will matter too much.</p>
+
 <p>In theory you can just use the dumbbell option for kettlebells. However, kettlebell weights are different to
-    dumbbell weights. If you would like support for kettlebells added to the app, please let me know.</p>
+    dumbbell weights. I might add support for kettlebells later if people want.</p>
 
 <h2>Plate colours</h2>
 
@@ -76,10 +86,9 @@
 
 <h2>Future enhancements</h2>
 
-<p>I have a handful of new features planned to build when I can.</p>
+<p>I have a handful of new features planned to build over the coming weeks.</p>
 
 <ul>
-    <li>Android version</li>
     <li>Support for plates in US units (lbs)</li>
     <li>Support for plate-loaded machines</li>
     <li>Custom weights for bars, plates, and dumbbells</li>
