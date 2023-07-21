@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Calculations;
 using GymCalc.Data;
+using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Utilities;
@@ -16,9 +17,16 @@ public partial class CalculatorPage : ContentPage
 
     private bool _databaseInitialized;
 
+    private Dictionary<double, List<double>> _barbellResults;
+
+    private Dictionary<double, double> _dumbbellResults;
+
+    private Dictionary<double, Plate> _availPlates;
+
     public CalculatorPage()
     {
         InitializeComponent();
+        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
     }
 
     /// <inheritdoc />
@@ -31,8 +39,9 @@ public partial class CalculatorPage : ContentPage
             _databaseInitialized = true;
         }
 
+        UpdateLayoutOrientation();
+
         // Initialise the exercise type buttons.
-        SetExerciseTypeButtonWidths();
         UpdateExerciseType(App.SelectedExerciseType);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
@@ -40,12 +49,62 @@ public partial class CalculatorPage : ContentPage
         await ResetBarWeightPicker();
     }
 
+    private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    {
+        UpdateLayoutOrientation();
+    }
+
+    private void UpdateLayoutOrientation()
+    {
+        CalculatorLayout.Orientation =
+            DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Landscape
+                ? StackOrientation.Horizontal
+                : StackOrientation.Vertical;
+
+        SetExerciseTypeButtonWidths();
+
+        // Re-render the results for the altered width.
+        switch (App.SelectedExerciseType)
+        {
+            case ExerciseType.Barbell:
+                DisplayBarbellResults();
+                break;
+
+            case ExerciseType.Dumbbell:
+                DisplayDumbbellResults();
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private double GetAvailWidth()
+    {
+        double availWidth;
+        const int padding = 10;
+        if (CalculatorLayout.Orientation == StackOrientation.Vertical)
+        {
+            availWidth = CalculatorLayout.Width - (2 * padding);
+        }
+        else
+        {
+            availWidth = (CalculatorLayout.Width - (4 * padding)) / 2;
+        }
+        return availWidth;
+    }
+
     private void SetExerciseTypeButtonWidths()
     {
-        var deviceWidth =
-            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        // Reset the buttons to some small width so they don't make the form wider than it should be.
+        BarbellButton.WidthRequest = 100;
+        DumbbellButton.WidthRequest = 100;
+
+        const int padding = 10;
         const int nButtons = 2;
-        var buttonWidth = (deviceWidth - 30) / nButtons;
+        var availWidth = GetAvailWidth();
+        var buttonWidth = (availWidth - ((nButtons - 1) * padding)) / nButtons;
+
         BarbellButton.WidthRequest = buttonWidth;
         DumbbellButton.WidthRequest = buttonWidth;
     }
@@ -167,10 +226,14 @@ public partial class CalculatorPage : ContentPage
                     return;
                 }
 
+                // Get the available plates.
+                var plates = await PlateRepository.GetAll(true);
+                _availPlates = plates.ToDictionary(p => p.Weight, p => p);
+
                 // Calculate and display the results.
                 var barbellSolver = new BarbellSolver();
-                var barbellResult = await barbellSolver.CalculateResults(_maxWeight, _barWeight);
-                await DisplayBarbellResults(barbellResult);
+                _barbellResults = barbellSolver.CalculateResults(_maxWeight, _barWeight, _availPlates);
+                DisplayBarbellResults();
                 break;
 
             case ExerciseType.Dumbbell:
@@ -182,21 +245,35 @@ public partial class CalculatorPage : ContentPage
                 }
 
                 // Calculate and display the results.
-                var dumbbellResult = await DumbbellCalculation.CalculateResults(_maxWeight);
-                DisplayDumbbellResults(dumbbellResult);
+                _dumbbellResults = await DumbbellCalculation.CalculateResults(_maxWeight);
+                DisplayDumbbellResults();
                 break;
         }
     }
 
-    private async Task DisplayBarbellResults(Dictionary<double, List<double>> results)
+    /// <summary>
+    /// Clear the results.
+    /// </summary>
+    private void ClearResults()
+    {
+        while (CalculatorResults.Children.Count > 0)
+        {
+            CalculatorResults.RemoveAt(CalculatorResults.Count - 1);
+        }
+    }
+
+    private void DisplayBarbellResults()
     {
         // Clear the error message.
         ErrorMessage.Text = "";
 
-        // Clear the old results.
-        while (CalculatorLayout.Children[CalculatorLayout.Count - 1] != ErrorMessage)
+        // Clear the results.
+        ClearResults();
+
+        // Check if there aren't any results to render.
+        if (_barbellResults == null)
         {
-            CalculatorLayout.RemoveAt(CalculatorLayout.Count - 1);
+            return;
         }
 
         // Prepare the styles.
@@ -205,24 +282,21 @@ public partial class CalculatorPage : ContentPage
         var weightStyle = MauiUtilities.LookupStyle("ResultsTableWeight");
         var focusWeightStyle = MauiUtilities.LookupStyle("ResultsTableFocusWeight");
 
-        // Get the device width in device-independent pixels.
-        var deviceWidth =
-            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        // Get the available width in device-independent pixels.
+        var availWidth = GetAvailWidth();
 
-        // Get the available plates as a dictionary mapping weights to Plate objects.
-        var plates = await PlateRepository.GetAll(true);
-        var plateLookup = plates.ToDictionary(p => p.Weight, p => p);
+        Rectangle horizontalLine;
 
-        foreach (var (percent, platesResult) in results)
+        foreach (var (percent, platesResult) in _barbellResults)
         {
             // Horizontal rule.
-            var horizontalLine = new Rectangle
+            horizontalLine = new Rectangle
             {
                 BackgroundColor = Colors.Grey,
-                WidthRequest = deviceWidth - 20,
+                WidthRequest = availWidth,
                 HeightRequest = 1,
             };
-            CalculatorLayout.Add(horizontalLine);
+            CalculatorResults.Add(horizontalLine);
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -320,7 +394,7 @@ public partial class CalculatorPage : ContentPage
             };
             textGrid.Add(closestPlatesValue, 2, 2);
 
-            CalculatorLayout.Add(textGrid);
+            CalculatorResults.Add(textGrid);
 
             // Construct the plates grid and add it to the layout.
             var platesGrid = new Grid { Padding = new Thickness(0, 10, 0, 20) };
@@ -329,22 +403,34 @@ public partial class CalculatorPage : ContentPage
             foreach (var plateWeight in platesResult)
             {
                 platesGrid.RowDefinitions.Add(new RowDefinition());
-                PlatesPage.AddPlateToGrid(plateLookup[plateWeight], platesGrid, 0, j);
+                PlatesPage.AddPlateToGrid(_availPlates[plateWeight], platesGrid, 0, j);
                 j++;
             }
-            CalculatorLayout.Add(platesGrid);
+            CalculatorResults.Add(platesGrid);
         }
+
+        // Horizontal rule.
+        horizontalLine = new Rectangle
+        {
+            BackgroundColor = Colors.Grey,
+            WidthRequest = availWidth,
+            HeightRequest = 1,
+        };
+        CalculatorResults.Add(horizontalLine);
     }
 
-    private void DisplayDumbbellResults(Dictionary<double, double> results)
+    private void DisplayDumbbellResults()
     {
         // Clear the error message.
         ErrorMessage.Text = "";
 
-        // Clear the old results.
-        while (CalculatorLayout.Count > 4)
+        // Clear the results.
+        ClearResults();
+
+        // Check if there aren't any results to render.
+        if (_dumbbellResults == null)
         {
-            CalculatorLayout.RemoveAt(CalculatorLayout.Count - 1);
+            return;
         }
 
         // Prepare the styles.
@@ -353,24 +439,25 @@ public partial class CalculatorPage : ContentPage
         var weightStyle = MauiUtilities.LookupStyle("ResultsTableWeight");
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
-        // Get the device width in device-independent pixels.
-        var deviceWidth =
-            DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+        // Get the available width in device-independent pixels.
+        var availWidth = GetAvailWidth();
 
         // Dumbbell graphic dimensions.
         const int dumbbellHeight = 50;
         const int dumbbellWidth = 100;
 
-        foreach (var (percent, closestWeight) in results)
+        Rectangle horizontalLine;
+
+        foreach (var (percent, closestWeight) in _dumbbellResults)
         {
             // Horizontal rule.
-            var horizontalLine = new Rectangle
+            horizontalLine = new Rectangle
             {
                 BackgroundColor = Colors.Grey,
-                WidthRequest = deviceWidth - 20,
+                WidthRequest = availWidth,
                 HeightRequest = 1,
             };
-            CalculatorLayout.Add(horizontalLine);
+            CalculatorResults.Add(horizontalLine);
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -450,7 +537,16 @@ public partial class CalculatorPage : ContentPage
             };
             textGrid.Add(closestValue, 2, 1);
 
-            CalculatorLayout.Add(textGrid);
+            CalculatorResults.Add(textGrid);
         }
+
+        // Horizontal rule.
+        horizontalLine = new Rectangle
+        {
+            BackgroundColor = Colors.Grey,
+            WidthRequest = availWidth,
+            HeightRequest = 1,
+        };
+        CalculatorResults.Add(horizontalLine);
     }
 }

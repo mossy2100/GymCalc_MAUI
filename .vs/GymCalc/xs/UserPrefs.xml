@@ -1,27 +1,35 @@
 ﻿<Properties StartupConfiguration="{0D430C5C-124A-425D-9FE1-FB40C1C1BEE7}|Default">
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A9FB3D40-DE8E-4D21-8354-47ED12B9333A" automaticSigning="False" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GymCalc/Pages/CalculatorPage.xaml.cs">
+    <Files>
+      <File FileName="GymCalc/Pages/CalculatorPage.xaml.cs" Line="47" Column="6" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="GymCalc" expanded="True">
             <Node name="GymCalc">
-              <Node name="Pages" expanded="True">
-                <Node name="InitializationPage.xaml" expanded="True" />
+              <Node name="Pages">
+                <Node name="AboutPage.xaml" expanded="True" />
+                <Node name="CalculatorPage.xaml">
+                  <Node name="CalculatorPage.xaml.cs" selected="True" />
+                </Node>
               </Node>
-              <Node name="AppShell.xaml" selected="True" />
+              <Node name="Platforms" expanded="True">
+                <Node name="iOS" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A9FB3D40-DE8E-4D21-8354-47ED12B9333A" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <Xamarin.Addins.Core.Project ActiveDebugTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.A9FB3D40-DE8E-4D21-8354-47ED12B9333A" />
 </Properties>

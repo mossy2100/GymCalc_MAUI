@@ -1,10 +1,11 @@
+using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 
 namespace GymCalc.Calculations;
 
 internal class BarbellSolver
 {
-    private List<double> _availablePlateWeights;
+    private List<double> _availPlateWeights;
 
     private List<double> _bestSolution;
 
@@ -12,14 +13,13 @@ internal class BarbellSolver
 
     private double _smallestDiff;
 
-    internal async Task<Dictionary<double, List<double>>> CalculateResults(double maxWeight,
-        double barWeight)
+    internal Dictionary<double, List<double>> CalculateResults(double maxWeight, double barWeight,
+        Dictionary<double, Plate> availPlates)
     {
-        // Get the available plate weights ordered from heaviest to lightest.
-        var availablePlates = await PlateRepository.GetAll(true, false);
-        _availablePlateWeights = availablePlates.Select(p => p.Weight).ToList();
-
         var results = new Dictionary<double, List<double>>();
+
+        // Get the available plate weights ordered from heaviest to lightest.
+        _availPlateWeights = availPlates.Keys.OrderByDescending(weight => weight).ToList();
 
         // Get the best solution for each percentage fraction of the maxWeight we're interested in.
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
@@ -47,7 +47,7 @@ internal class BarbellSolver
         _bestSolution = new List<double>();
 
         // Search the solutions space.
-        FindSolutions(_availablePlateWeights[0], _bestSolution);
+        FindSolutions(_availPlateWeights[0], _bestSolution);
 
         // Return the best solution found during the search.
         return _bestSolution;
@@ -60,7 +60,7 @@ internal class BarbellSolver
     /// <param name="currentStack">The stack of plates so far.</param>
     private void FindSolutions(double maxPlateWeight, IReadOnlyList<double> currentStack)
     {
-        foreach (var newPlateWeight in _availablePlateWeights)
+        foreach (var newPlateWeight in _availPlateWeights)
         {
             // Only add plates that are less than or equal to the largest plate added so far.
             // Ensuring plates are added in order of decreasing weight eliminates duplicate

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
@@ -15,7 +15,7 @@
         <ApplicationTitle>GymCalc</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.astromultimedia.gymcalc</ApplicationId>
+        <ApplicationId>co.galaxon.gymcalc</ApplicationId>
         <ApplicationIdGuid>89618253-4289-40C8-85F3-9E96DC58FDDF</ApplicationIdGuid>
 
         <!-- Versions -->
@@ -32,6 +32,11 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
       <CreatePackage>false</CreatePackage>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+      <CreatePackage>false</CreatePackage>
+      <CodesignProvision>Automatic:InHouse</CodesignProvision>
+      <CodesignKey>Apple Distribution: Shaun Moss (N2YGZM872J)</CodesignKey>
     </PropertyGroup>
     <ItemGroup>
         <!-- App Icon -->
@@ -93,7 +98,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.49" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.50" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
         <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.5" />
