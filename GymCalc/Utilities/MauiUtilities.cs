@@ -53,7 +53,6 @@ public static class MauiUtilities
     /// <summary>
     /// Remove all the children from a StackLayout, VerticalStackLayout, or HorizontalStackLayout.
     /// </summary>
-    /// <param name="stack"></param>
     public static void ClearStack(StackBase stack)
     {
         // Remove children.
@@ -68,7 +67,6 @@ public static class MauiUtilities
     /// If removeCols is true, remove all the column definitions as well.
     /// If removeRows is true, remove all the row definitions as well.
     /// </summary>
-    /// <param name="stack"></param>
     public static void ClearGrid(Grid grid, bool removeCols = false, bool removeRows = false)
     {
         // Remove children.
@@ -94,5 +92,23 @@ public static class MauiUtilities
                 grid.RowDefinitions.RemoveAt(grid.RowDefinitions.Count - 1);
             }
         }
+    }
+
+    /// <summary>
+    /// Get the device width in device-independent units, which are the units used by MAUI.
+    /// </summary>
+    /// <returns></returns>
+    public static double GetDeviceWidth()
+    {
+        return DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+    }
+
+    /// <summary>
+    /// Get the device height in device-independent units, which are the units used by MAUI.
+    /// </summary>
+    /// <returns></returns>
+    public static double GetDeviceHeight()
+    {
+        return DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
     }
 }

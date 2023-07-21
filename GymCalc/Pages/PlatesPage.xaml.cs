@@ -63,13 +63,16 @@ public partial class PlatesPage : ContentPage
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
         PlatesStackLayout.HeightRequest = (_plateHeight + PlatesGridRowSpacing) * nRows + 20;
 
+        // Get the maximum plate weight.
+        var maxPlateWeight = plates.Last().Weight;
+
         var rowNum = 0;
         var colNum = 0;
         var rowDefinition = new RowDefinition(new GridLength(_plateHeight));
         foreach (var plate in plates)
         {
             PlatesGrid.RowDefinitions.Add(rowDefinition);
-            AddPlateToGrid(plate, PlatesGrid, colNum, rowNum);
+            AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
 
             // Add the checkbox.
             var cb = new CheckBox
@@ -92,7 +95,7 @@ public partial class PlatesPage : ContentPage
         }
     }
 
-    internal static void AddPlateToGrid(Plate plate, Grid platesGrid, int columnNum, int rowNum)
+    internal static void AddPlateToGrid(Plate plate, Grid platesGrid, int columnNum, int rowNum, double maxPlateWeight)
     {
         // Get the colors.
         var bgColor = Color.Parse(plate.Color);
@@ -102,7 +105,10 @@ public partial class PlatesPage : ContentPage
         var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
 
         // Add the plate background.
-        var plateWidth = 50 + plate.Weight / 25 * 250;
+        const int minPlateWidth = 50;
+        var maxPlateWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
+        var plateWidth = minPlateWidth
+            + plate.Weight / maxPlateWeight * (maxPlateWidth - minPlateWidth);
         var rect = new Rectangle
         {
             RadiusX = 4,

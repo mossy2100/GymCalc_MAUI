@@ -276,18 +276,12 @@ public partial class CalculatorPage : ContentPage
         // Get the available width in device-independent pixels.
         var availWidth = GetAvailWidth();
 
-        Rectangle horizontalLine;
+        var maxPlateWeight = _availPlates.Keys.Max();
 
         foreach (var (percent, platesResult) in _barbellResults)
         {
             // Horizontal rule.
-            horizontalLine = new Rectangle
-            {
-                BackgroundColor = Colors.Grey,
-                WidthRequest = availWidth,
-                HeightRequest = 1,
-            };
-            CalculatorResults.Add(horizontalLine);
+            CalculatorResults.Add(GetHorizontalRule(availWidth));
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -394,20 +388,14 @@ public partial class CalculatorPage : ContentPage
             foreach (var plateWeight in platesResult)
             {
                 platesGrid.RowDefinitions.Add(new RowDefinition());
-                PlatesPage.AddPlateToGrid(_availPlates[plateWeight], platesGrid, 0, j);
+                PlatesPage.AddPlateToGrid(_availPlates[plateWeight], platesGrid, 0, j, maxPlateWeight);
                 j++;
             }
             CalculatorResults.Add(platesGrid);
         }
 
         // Horizontal rule.
-        horizontalLine = new Rectangle
-        {
-            BackgroundColor = Colors.Grey,
-            WidthRequest = availWidth,
-            HeightRequest = 1,
-        };
-        CalculatorResults.Add(horizontalLine);
+        CalculatorResults.Add(GetHorizontalRule(availWidth));
     }
 
     private void DisplayDumbbellResults()
@@ -437,18 +425,10 @@ public partial class CalculatorPage : ContentPage
         const int dumbbellHeight = 50;
         const int dumbbellWidth = 100;
 
-        Rectangle horizontalLine;
-
         foreach (var (percent, closestWeight) in _dumbbellResults)
         {
             // Horizontal rule.
-            horizontalLine = new Rectangle
-            {
-                BackgroundColor = Colors.Grey,
-                WidthRequest = availWidth,
-                HeightRequest = 1,
-            };
-            CalculatorResults.Add(horizontalLine);
+            CalculatorResults.Add(GetHorizontalRule(availWidth));
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -532,12 +512,16 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Horizontal rule.
-        horizontalLine = new Rectangle
+        CalculatorResults.Add(GetHorizontalRule(availWidth));
+    }
+
+    private static Rectangle GetHorizontalRule(double width)
+    {
+        return new Rectangle
         {
             BackgroundColor = Colors.Grey,
-            WidthRequest = availWidth,
+            WidthRequest = width,
             HeightRequest = 1,
         };
-        CalculatorResults.Add(horizontalLine);
     }
 }
