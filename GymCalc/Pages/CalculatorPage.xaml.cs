@@ -17,6 +17,11 @@ public partial class CalculatorPage : ContentPage
 
     private bool _databaseInitialized;
 
+    /// <summary>
+    /// The currently selected exercise type.
+    /// </summary>
+    private static ExerciseType SelectedExerciseType = ExerciseType.Barbell;
+
     private Dictionary<double, List<double>> _barbellResults;
 
     private Dictionary<double, double> _dumbbellResults;
@@ -42,7 +47,7 @@ public partial class CalculatorPage : ContentPage
         UpdateLayoutOrientation();
 
         // Initialise the exercise type buttons.
-        UpdateExerciseType(App.SelectedExerciseType);
+        UpdateExerciseType(SelectedExerciseType);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
@@ -64,7 +69,7 @@ public partial class CalculatorPage : ContentPage
         SetExerciseTypeButtonWidths();
 
         // Re-render the results for the altered width.
-        switch (App.SelectedExerciseType)
+        switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
                 DisplayBarbellResults();
@@ -82,7 +87,7 @@ public partial class CalculatorPage : ContentPage
     private double GetAvailWidth()
     {
         const int padding = 10;
-        var nColumns = CalculatorLayout.Orientation == StackOrientation.Vertical ? 1 : 2;
+        var nColumns = App.GetNumColumns();
         var availWidth = (CalculatorLayout.Width / nColumns) - (2 * padding);
         return availWidth;
     }
@@ -107,7 +112,7 @@ public partial class CalculatorPage : ContentPage
 
     private void UpdateExerciseType(ExerciseType exerciseType)
     {
-        App.SelectedExerciseType = exerciseType;
+        SelectedExerciseType = exerciseType;
 
         switch (exerciseType)
         {
@@ -205,7 +210,7 @@ public partial class CalculatorPage : ContentPage
 
     private async void OnCalculateButtonClicked(object sender, EventArgs e)
     {
-        switch (App.SelectedExerciseType)
+        switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
                 // Get the weights from the calculator fields and validate them.
@@ -248,24 +253,13 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    /// <summary>
-    /// Clear the results.
-    /// </summary>
-    private void ClearResults()
-    {
-        while (CalculatorResults.Children.Count > 0)
-        {
-            CalculatorResults.RemoveAt(CalculatorResults.Count - 1);
-        }
-    }
-
     private void DisplayBarbellResults()
     {
         // Clear the error message.
         ErrorMessage.Text = "";
 
         // Clear the results.
-        ClearResults();
+        MauiUtilities.ClearStack(CalculatorResults);
 
         // Check if there aren't any results to render.
         if (_barbellResults == null)
@@ -422,7 +416,7 @@ public partial class CalculatorPage : ContentPage
         ErrorMessage.Text = "";
 
         // Clear the results.
-        ClearResults();
+        MauiUtilities.ClearStack(CalculatorResults);
 
         // Check if there aren't any results to render.
         if (_dumbbellResults == null)

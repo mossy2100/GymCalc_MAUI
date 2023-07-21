@@ -15,9 +15,14 @@ public partial class PlatesPage : ContentPage
 
     private bool _platesDisplayed;
 
+    internal static double PlatesGridRowSpacing = 10;
+
+    private static double _plateHeight = 30;
+
     public PlatesPage()
     {
         InitializeComponent();
+        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
     }
 
     /// <inheritdoc />
@@ -30,6 +35,12 @@ public partial class PlatesPage : ContentPage
         }
     }
 
+    private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    {
+        MauiUtilities.ClearGrid(PlatesGrid, true, true);
+        await DisplayPlates();
+    }
+
     /// <summary>
     /// Initialize the list of plates.
     /// </summary>
@@ -38,12 +49,27 @@ public partial class PlatesPage : ContentPage
         // Get all the plates, ordered by weight.
         var plates = await PlateRepository.GetAll();
 
+        // Set up the columns.
+        PlatesGrid.ColumnDefinitions = new ColumnDefinitionCollection();
+        var nCols = App.GetNumColumns() * 2;
+        for (var c = 0; c < nCols / 2; c++)
+        {
+            // Add 2 columns to the grid.
+            PlatesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            PlatesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+        }
+
+        // Set the stack height manually, because it doesn't resize automatically.
+        var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
+        PlatesStackLayout.HeightRequest = (_plateHeight + PlatesGridRowSpacing) * nRows + 20;
+
         var rowNum = 0;
-        var rowDefinition = new RowDefinition(new GridLength(30));
+        var colNum = 0;
+        var rowDefinition = new RowDefinition(new GridLength(_plateHeight));
         foreach (var plate in plates)
         {
             PlatesGrid.RowDefinitions.Add(rowDefinition);
-            AddPlateToGrid(plate, PlatesGrid, 0, rowNum);
+            AddPlateToGrid(plate, PlatesGrid, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox
@@ -51,13 +77,18 @@ public partial class PlatesPage : ContentPage
                 IsChecked = plate.Enabled,
             };
             cb.CheckedChanged += OnPlateCheckboxChanged;
-            PlatesGrid.Add(cb, 1, rowNum);
+            PlatesGrid.Add(cb, colNum + 1, rowNum);
 
             // Link the checkbox to the plate in the lookup table.
             _cbPlateMap[cb] = plate;
 
-            // Next row.
-            rowNum++;
+            // Next position.
+            colNum += 2;
+            if (colNum == nCols)
+            {
+                rowNum++;
+                colNum = 0;
+            }
         }
     }
 
@@ -76,7 +107,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 4,
             RadiusY = 4,
-            HeightRequest = 30,
+            HeightRequest = _plateHeight,
             WidthRequest = plateWidth,
             Fill = bgColor.AddLuminosity(-0.1f),
         };

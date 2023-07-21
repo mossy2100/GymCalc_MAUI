@@ -16,9 +16,12 @@ public partial class DumbbellsPage : ContentPage
 
     private bool _dumbbellsDisplayed;
 
+    internal static double DumbbellsGridRowSpacing = 20;
+
     public DumbbellsPage()
     {
         InitializeComponent();
+        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
     }
 
     /// <inheritdoc />
@@ -29,6 +32,12 @@ public partial class DumbbellsPage : ContentPage
             await DisplayDumbbells();
             _dumbbellsDisplayed = true;
         }
+    }
+
+    private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    {
+        MauiUtilities.ClearGrid(DumbbellsGrid, true, true);
+        await DisplayDumbbells();
     }
 
     /// <summary>
@@ -46,7 +55,22 @@ public partial class DumbbellsPage : ContentPage
         // Get the style.
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
-        // Display them all in a table with checkboxes.
+        // Set up the columns.
+        DumbbellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
+        var nCols = App.GetNumColumns() * 4;
+        for (var c = 0; c < nCols / 2; c++)
+        {
+            // Add 2 columns to the grid.
+            DumbbellsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            DumbbellsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+        }
+
+        // Set the stack height manually, because it doesn't resize automatically.
+        var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
+        DumbbellsStackLayout.HeightRequest =
+            (dumbbellHeight + DumbbellsGridRowSpacing) * nRows + 20;
+
+        // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;
         var colNum = 0;
         foreach (var dumbbell in dumbbells)
@@ -88,14 +112,11 @@ public partial class DumbbellsPage : ContentPage
             _cbDumbbellMap[cb] = dumbbell;
 
             // Next position.
-            if (colNum == 2)
+            colNum += 2;
+            if (colNum == nCols)
             {
                 rowNum++;
                 colNum = 0;
-            }
-            else
-            {
-                colNum = 2;
             }
         }
     }

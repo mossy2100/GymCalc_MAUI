@@ -2,18 +2,17 @@
 <ContentPage
     x:Class="GymCalc.Pages.DumbbellsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Dumbbells">
 
-    <ScrollView Padding="10" VerticalOptions="Fill">
-        <VerticalStackLayout Spacing="10">
+    <ScrollView Padding="10" VerticalOptions="Start">
+        <VerticalStackLayout x:Name="DumbbellsStackLayout" Spacing="10">
             <Label Text="Select which dumbbell weights (kg) are available:" />
             <Grid
                 x:Name="DumbbellsGrid"
-                ColumnDefinitions="*,Auto,*,Auto"
                 ColumnSpacing="10"
-                RowDefinitions="Auto"
-                RowSpacing="20" />
+                RowSpacing="{x:Static pages:DumbbellsPage.DumbbellsGridRowSpacing}" />
         </VerticalStackLayout>
     </ScrollView>
 

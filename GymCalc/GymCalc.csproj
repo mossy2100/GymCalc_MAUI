@@ -28,6 +28,7 @@
         <!--        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>-->
         <!--        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>-->
         <!--        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
+        <ReleaseVersion>1.0</ReleaseVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
@@ -40,7 +41,9 @@
     </PropertyGroup>
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White" />
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiIcon>
         <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_300.png">
           <BaseSize>30,30</BaseSize>
         </MauiImage>
@@ -95,6 +98,10 @@
         <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        <None Remove="Resources\AppIcon\appiconfg.svg" />
+        <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiIcon>
     </ItemGroup>
 
     <ItemGroup>
