@@ -1,4 +1,4 @@
-﻿using GymCalc.Data;
+using GymCalc.Data;
 
 namespace GymCalc.Pages;
 
