@@ -81,30 +81,26 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        double availWidth;
         const int padding = 10;
-        if (CalculatorLayout.Orientation == StackOrientation.Vertical)
-        {
-            availWidth = CalculatorLayout.Width - (2 * padding);
-        }
-        else
-        {
-            availWidth = (CalculatorLayout.Width - (4 * padding)) / 2;
-        }
+        var nColumns = CalculatorLayout.Orientation == StackOrientation.Vertical ? 1 : 2;
+        var availWidth = (CalculatorLayout.Width / nColumns) - (2 * padding);
         return availWidth;
     }
 
     private void SetExerciseTypeButtonWidths()
     {
-        // Reset the buttons to some small width so they don't make the form wider than it should be.
+        // Reset the button widths to some small value so they don't push the form out wider than
+        // the visible area.
         BarbellButton.WidthRequest = 100;
         DumbbellButton.WidthRequest = 100;
 
+        // Calculate the button width.
         const int padding = 10;
         const int nButtons = 2;
         var availWidth = GetAvailWidth();
         var buttonWidth = (availWidth - ((nButtons - 1) * padding)) / nButtons;
 
+        // Set the button widths.
         BarbellButton.WidthRequest = buttonWidth;
         DumbbellButton.WidthRequest = buttonWidth;
     }
@@ -232,7 +228,8 @@ public partial class CalculatorPage : ContentPage
 
                 // Calculate and display the results.
                 var barbellSolver = new BarbellSolver();
-                _barbellResults = barbellSolver.CalculateResults(_maxWeight, _barWeight, _availPlates);
+                _barbellResults =
+                    barbellSolver.CalculateResults(_maxWeight, _barWeight, _availPlates);
                 DisplayBarbellResults();
                 break;
 
