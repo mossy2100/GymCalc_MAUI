@@ -47,8 +47,8 @@ public partial class KettlebellsPage : ContentPage
         var kettlebells = await KettlebellRepository.GetAll();
 
         // Kettlebell graphic dimensions.
-        const float kettlebellHeight = 85.98f;
-        const float kettlebellWidth = 60f;
+        const int kettlebellHeight = 76;
+        const int kettlebellWidth = 60;
 
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
