@@ -2,6 +2,8 @@ using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Graphics;
+using GymCalc.Graphics.Objects;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -14,8 +16,6 @@ public partial class BarsPage : ContentPage
     private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
     private bool _barsDisplayed;
-
-    private const int _BarHeight = 22;
 
     public BarsPage()
     {
@@ -47,9 +47,6 @@ public partial class BarsPage : ContentPage
         // Get the bars.
         var bars = await BarRepository.GetAll();
 
-        // Get the steel bar gradient brush.
-        var brush = GetBarBrush();
-
         // Get the style.
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
@@ -66,7 +63,7 @@ public partial class BarsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(bars.Count / (nCols / 2.0));
         BarsStackLayout.HeightRequest =
-            (_BarHeight + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+            (BarGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
 
         // Get the min and max bar width.
         const int minBarWidth = 50;
@@ -80,7 +77,7 @@ public partial class BarsPage : ContentPage
         foreach (var bar in bars)
         {
             // Add a new row to the grid.
-            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_BarHeight)));
+            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(BarGraphic.Height)));
 
             // Calculate the bar width.
             var barWidth = minBarWidth + bar.Weight / maxBarWeight * (maxBarWidth - minBarWidth);
@@ -90,9 +87,9 @@ public partial class BarsPage : ContentPage
             {
                 RadiusX = 0,
                 RadiusY = 0,
-                HeightRequest = _BarHeight,
+                HeightRequest = BarGraphic.Height,
                 WidthRequest = barWidth,
-                Fill = brush,
+                Fill = CustomColors.StainlessSteel,
             };
             BarsGrid.Add(rect, colNum, rowNum);
 
@@ -139,18 +136,5 @@ public partial class BarsPage : ContentPage
         bar.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(bar);
-    }
-
-    /// <summary>
-    /// Create the steel bar gradient brush.
-    /// </summary>
-    /// <returns></returns>
-    internal static Brush GetBarBrush()
-    {
-        var brush = new LinearGradientBrush { EndPoint = new Point(0, 1) };
-        brush.GradientStops.Add(new GradientStop(Color.Parse("#aaa"), 0));
-        brush.GradientStops.Add(new GradientStop(Colors.White, 0.5f));
-        brush.GradientStops.Add(new GradientStop(Color.Parse("#aaa"), 1));
-        return brush;
     }
 }

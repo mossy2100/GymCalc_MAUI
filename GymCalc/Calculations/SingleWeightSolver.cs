@@ -1,17 +1,15 @@
 namespace GymCalc.Calculations;
 
-internal class SingleWeightSolver
+internal static class SingleWeightSolver
 {
-    private readonly List<double> _availWeights;
+    private static List<double> _availWeights;
 
-    public SingleWeightSolver(List<double> availWeights)
-    {
-        _availWeights = availWeights;
-    }
-
-    internal Dictionary<double, double> CalculateResults(double maxWeight)
+    internal static Dictionary<double, double> CalculateResults(double maxWeight,
+        List<double> availWeights)
     {
         var results = new Dictionary<double, double>();
+
+        _availWeights = availWeights;
 
         // For now we'll hard code that we want 50%, 60% ... 100%.
         // Later, this might be configurable.
@@ -31,7 +29,7 @@ internal class SingleWeightSolver
     /// </summary>
     /// <param name="idealWeight"></param>
     /// <returns>The closest weight to the ideal weight.</returns>
-    private double FindClosest(double idealWeight)
+    private static double FindClosest(double idealWeight)
     {
         double closestWeight = 0;
 

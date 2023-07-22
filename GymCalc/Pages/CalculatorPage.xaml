@@ -14,7 +14,7 @@
 
             <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
 
-                <!--  Exercise type selection  -->
+                <!--  Exercise type  -->
                 <Label FontSize="16" Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
@@ -51,15 +51,12 @@
                         Text="Kettlebell" />
                 </Grid>
 
-                <!--  Calculator form  -->
+                <!--  Max weight  -->
                 <Grid
-                    x:Name="CalculatorFormGrid"
+                    x:Name="MaxWeightGrid"
                     ColumnDefinitions="2*,*"
                     ColumnSpacing="{x:Static app:App.Spacing}"
-                    RowDefinitions="Auto,Auto"
-                    RowSpacing="{x:Static app:App.Spacing}">
-
-                    <!--  Row 0: Max weight  -->
+                    RowDefinitions="Auto">
                     <Label
                         x:Name="MaxWeightLabel"
                         Grid.Row="0"
@@ -68,6 +65,7 @@
                         Text="Maximum weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
+                        x:Name="MaxWeightFrame"
                         Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
@@ -79,18 +77,24 @@
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center" />
                     </Frame>
+                </Grid>
 
-                    <!--  Row 1: Bar weight  -->
+                <!--  Bar weight  -->
+                <Grid
+                    x:Name="BarWeightGrid"
+                    ColumnDefinitions="2*,*"
+                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    RowDefinitions="Auto">
                     <Label
                         x:Name="BarWeightLabel"
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
                         Text="Bar weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
                         x:Name="BarWeightPickerFrame"
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
@@ -100,6 +104,54 @@
                             FontSize="16"
                             VerticalTextAlignment="Center" />
                     </Frame>
+                </Grid>
+
+                <!--  Machine starting weight  -->
+                <Grid
+                    x:Name="StartingWeightGrid"
+                    ColumnDefinitions="2*,*"
+                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    RowDefinitions="Auto">
+                    <Label
+                        x:Name="StartingWeightLabel"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="16"
+                        Text="Starting weight (kg)"
+                        VerticalTextAlignment="Center" />
+                    <Frame
+                        x:Name="StartingWeightFrame"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource ControlFrameStyle}">
+                        <Entry
+                            x:Name="StartingWeightEntry"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
+                                                              Dark={StaticResource Tertiary}}"
+                            FontSize="16"
+                            Keyboard="Numeric"
+                            VerticalTextAlignment="Center" />
+                    </Frame>
+                </Grid>
+
+                <!--  Plates one side only  -->
+                <Grid
+                    x:Name="OneSideOnlyGrid"
+                    ColumnDefinitions="2*,*"
+                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    RowDefinitions="Auto">
+                    <Label
+                        x:Name="OneSideOnlyLabel"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        FontSize="16"
+                        Text="Get plates for one side only"
+                        VerticalTextAlignment="Center" />
+                    <CheckBox
+                        x:Name="OneSideOnlyCheckbox"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalOptions="Start" />
                 </Grid>
 
                 <!--  Calculate button  -->

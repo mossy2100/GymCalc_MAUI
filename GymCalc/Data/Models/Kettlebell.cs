@@ -1,12 +1,8 @@
 namespace GymCalc.Data.Models;
 
-public class Kettlebell : HeavyThing
+internal class Kettlebell : HeavyThing
 {
-    internal const int Height = 76;
+    internal string Color { get; set; }
 
-    internal const int Width = 60;
-
-    public string Color { get; set; }
-
-    public bool HasBlackBands { get; set; }
+    internal bool HasBlackBands { get; set; }
 }

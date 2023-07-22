@@ -2,6 +2,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
+using GymCalc.Graphics.Objects;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -58,7 +59,7 @@ public partial class KettlebellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
         KettlebellsStackLayout.HeightRequest =
-            (Kettlebell.Height + App.Spacing) * nRows + App.DoubleSpacing;
+            (KettlebellGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;
@@ -69,7 +70,7 @@ public partial class KettlebellsPage : ContentPage
             {
                 // Add a new row to the grid.
                 KettlebellsGrid.RowDefinitions.Add(
-                    new RowDefinition(new GridLength(Kettlebell.Height)));
+                    new RowDefinition(new GridLength(KettlebellGraphic.Height)));
             }
 
             // Draw the kettlebell.

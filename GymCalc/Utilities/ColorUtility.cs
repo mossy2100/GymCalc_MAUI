@@ -42,7 +42,7 @@ internal static class ColorUtility
     /// Returns black for a light background, white for a dark background.
     /// </summary>
     /// <param name="bgColor"></param>
-    internal static Color GetTextColor(this Color bgColor)
+    public static Color GetTextColor(this Color bgColor)
     {
         return bgColor.GetPerceivedLightness() >= 65 ? Colors.Black : Colors.White;
     }

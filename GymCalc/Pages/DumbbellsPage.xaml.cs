@@ -1,8 +1,8 @@
-using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
+using GymCalc.Graphics.Objects;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -46,9 +46,6 @@ public partial class DumbbellsPage : ContentPage
         // Get the dumbbells.
         var dumbbells = await DumbbellRepository.GetAll();
 
-        // Get the style.
-        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
-
         // Set up the columns.
         DumbbellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
         var nCols = App.GetNumColumns() * 4;
@@ -62,7 +59,7 @@ public partial class DumbbellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
         DumbbellsStackLayout.HeightRequest =
-            (Dumbbell.Height + App.Spacing) * nRows + App.DoubleSpacing;
+            (DumbbellGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;
@@ -73,7 +70,7 @@ public partial class DumbbellsPage : ContentPage
             {
                 // Add a new row to the grid.
                 DumbbellsGrid.RowDefinitions.Add(
-                    new RowDefinition(new GridLength(Dumbbell.Height)));
+                    new RowDefinition(new GridLength(DumbbellGraphic.Height)));
             }
 
             // Add the dumbbell graphic.

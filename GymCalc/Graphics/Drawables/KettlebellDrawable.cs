@@ -3,7 +3,7 @@ using GymCalc.Data.Models;
 using GymCalc.Utilities;
 using Font = Microsoft.Maui.Graphics.Font;
 
-namespace GymCalc.Graphics;
+namespace GymCalc.Graphics.Drawables;
 
 internal class KettlebellDrawable : IDrawable
 {
@@ -16,18 +16,11 @@ internal class KettlebellDrawable : IDrawable
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        // Background.
-        // var bg = new RectF(0, 0, dirtyRect.Width, dirtyRect.Height);
-        // canvas.FillColor = Color.Parse("#eee");
-        // canvas.FillRectangle(bg);
-
         // Colors.
-        var black = Color.Parse("#222");
-        var steel = Color.Parse("#ddd");
         var kettlebellColor = Color.Parse(_kettlebell.Color);
 
         // Handle top.
-        canvas.StrokeColor = steel;
+        canvas.StrokeColor = CustomColors.StainlessSteel;
         canvas.StrokeSize = 10;
         canvas.DrawLine(10, 15, 10, 20);
         canvas.DrawArc(10, 5, 20, 20, 90, 180, false, false);
@@ -43,7 +36,7 @@ internal class KettlebellDrawable : IDrawable
         // Black bands.
         if (_kettlebell.HasBlackBands)
         {
-            canvas.StrokeColor = black;
+            canvas.StrokeColor = CustomColors.CastIron;
             canvas.DrawLine(10, 16, 10, 24);
             canvas.DrawLine(50, 16, 50, 24);
         }

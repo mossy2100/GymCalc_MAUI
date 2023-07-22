@@ -2,6 +2,8 @@ using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Graphics;
+using GymCalc.Graphics.Objects;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -14,10 +16,6 @@ public partial class PlatesPage : ContentPage
     private readonly Dictionary<CheckBox, Plate> _cbPlateMap = new ();
 
     private bool _platesDisplayed;
-
-    private const int _PlateHeight = 30;
-
-    private const int _PlateInnerHeight = 22;
 
     public PlatesPage()
     {
@@ -61,7 +59,8 @@ public partial class PlatesPage : ContentPage
 
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
-        PlatesStackLayout.HeightRequest = (_PlateHeight + App.Spacing) * nRows + App.DoubleSpacing;
+        PlatesStackLayout.HeightRequest =
+            (PlateGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;
@@ -70,7 +69,7 @@ public partial class PlatesPage : ContentPage
         var colNum = 0;
         foreach (var plate in plates)
         {
-            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_PlateHeight)));
+            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(PlateGraphic.Height)));
             AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
 
             // Add the checkbox.
@@ -104,17 +103,16 @@ public partial class PlatesPage : ContentPage
         var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
 
         // Calculate the plate width.
-        const int minPlateWidth = 50;
         var maxPlateWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
-        var plateWidth =
-            minPlateWidth + plate.Weight / maxPlateWeight * (maxPlateWidth - minPlateWidth);
+        var plateWidth = PlateGraphic.MinWidth +
+            plate.Weight / maxPlateWeight * (maxPlateWidth - PlateGraphic.MinWidth);
 
         // Add the plate background.
         var rect = new Rectangle
         {
-            RadiusX = 4,
-            RadiusY = 4,
-            HeightRequest = _PlateHeight,
+            RadiusX = PlateGraphic.CornerRadius,
+            RadiusY = PlateGraphic.CornerRadius,
+            HeightRequest = PlateGraphic.Height,
             WidthRequest = plateWidth,
             Fill = bgColor.AddLuminosity(-0.1f),
         };
@@ -125,7 +123,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 0,
             RadiusY = 0,
-            HeightRequest = _PlateInnerHeight,
+            HeightRequest = PlateGraphic.InnerHeight,
             WidthRequest = plateWidth,
             Fill = bgColor,
         };

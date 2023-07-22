@@ -11,20 +11,32 @@ namespace GymCalc.Pages;
 
 public partial class CalculatorPage : ContentPage
 {
-    private static double _maxWeight;
-
-    private static double _barWeight;
-
     private bool _databaseInitialized;
 
     private static ExerciseType _selectedExerciseType = ExerciseType.Barbell;
 
-    private Dictionary<double, Plate> _platesLookup;
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Values extracted from the form.
+    private double _maxWeight;
 
-    private Dictionary<double, Dumbbell> _dumbbellsLookup;
+    private double _barWeight;
 
-    private Dictionary<double, Kettlebell> _kettlebellsLookup;
+    private double _startingWeight;
 
+    private bool _oneSideOnly;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Lookup tables with cached database objects (weights).
+    private Dictionary<double, Bar> _barLookup;
+
+    private Dictionary<double, Plate> _plateLookup;
+
+    private Dictionary<double, Dumbbell> _dumbbellLookup;
+
+    private Dictionary<double, Kettlebell> _kettlebellLookup;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Results.
     private Dictionary<double, List<double>> _barbellResults;
 
     private Dictionary<double, double> _dumbbellResults;
@@ -33,6 +45,9 @@ public partial class CalculatorPage : ContentPage
 
     private Dictionary<double, double> _kettlebellResults;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public CalculatorPage()
     {
         InitializeComponent();
@@ -49,6 +64,12 @@ public partial class CalculatorPage : ContentPage
             await Database.Initialize();
             _databaseInitialized = true;
         }
+
+        // Invalidate collections because they may have changed on one of the other pages.
+        _barLookup = null;
+        _plateLookup = null;
+        _dumbbellLookup = null;
+        _kettlebellLookup = null;
 
         // Initialise the exercise type buttons.
         UpdateExerciseType(_selectedExerciseType);
@@ -104,7 +125,7 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             case ExerciseType.Machine:
-                // DisplayMachineResults();
+                DisplayMachineResults();
                 break;
 
             case ExerciseType.Kettlebell:
@@ -146,13 +167,12 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum total weight (kg)";
 
-                // Show the bar weight fields.
-                BarWeightLabel.IsVisible = true;
-                BarWeightPickerFrame.IsVisible = true;
+                // Show relevant rows.
+                BarWeightGrid.IsVisible = true;
 
-                // Show the bar weight row and adjust the spacing.
-                CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
-                CalculatorFormGrid.RowSpacing = App.Spacing;
+                // Hide other rows.
+                StartingWeightGrid.IsVisible = false;
+                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             case ExerciseType.Dumbbell:
@@ -165,13 +185,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Max. weight per dumbbell (kg)";
 
-                // Hide the bar weight fields.
-                BarWeightLabel.IsVisible = false;
-                BarWeightPickerFrame.IsVisible = false;
-
-                // Hide the bar weight row and adjust the spacing.
-                CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
-                CalculatorFormGrid.RowSpacing = 0;
+                // Hide other rows.
+                BarWeightGrid.IsVisible = false;
+                StartingWeightGrid.IsVisible = false;
+                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             case ExerciseType.Machine:
@@ -183,15 +200,13 @@ public partial class CalculatorPage : ContentPage
 
                 // Update the label text.
                 MaxWeightLabel.Text = "Maximum total weight (kg)";
-                BarWeightLabel.Text = "Starting weight (kg)";
 
-                // Show the bar weight fields.
-                BarWeightLabel.IsVisible = true;
-                BarWeightPickerFrame.IsVisible = true;
+                // Show relevant rows.
+                StartingWeightGrid.IsVisible = true;
+                OneSideOnlyGrid.IsVisible = true;
 
-                // Show the bar weight row and adjust the spacing.
-                CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
-                CalculatorFormGrid.RowSpacing = App.Spacing;
+                // Hide other rows.
+                BarWeightGrid.IsVisible = false;
                 break;
 
             case ExerciseType.Kettlebell:
@@ -204,13 +219,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum weight (kg)";
 
-                // Hide the bar weight fields.
-                BarWeightLabel.IsVisible = false;
-                BarWeightPickerFrame.IsVisible = false;
-
-                // Hide the bar weight row and adjust the spacing.
-                CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
-                CalculatorFormGrid.RowSpacing = 0;
+                // Hide other rows.
+                BarWeightGrid.IsVisible = false;
+                StartingWeightGrid.IsVisible = false;
+                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             default:
@@ -254,15 +266,15 @@ public partial class CalculatorPage : ContentPage
         BarWeightPicker.SelectedIndex = -1;
 
         // Get the available bar weights ordered by weight.
-        var bars = await BarRepository.GetAll(true);
+        await GetBars();
 
         // Initialise the items in the bar weight picker.
         var i = 0;
         var valueSelected = false;
-        foreach (var bar in bars)
+        foreach (var (weight, bar) in _barLookup)
         {
             // Add the picker item.
-            var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
+            var weightString = weight.ToString(CultureInfo.InvariantCulture);
             BarWeightPicker.Items.Add(weightString);
 
             // Try to select the same weight that was selected before.
@@ -278,7 +290,7 @@ public partial class CalculatorPage : ContentPage
         // If the original selected bar weight is no longer present, try to select the default.
         if (!valueSelected)
         {
-            var weightString = BarRepository.DEFAULT_WEIGHT.ToString(CultureInfo.InvariantCulture);
+            var weightString = Bar.DefaultWeight.ToString(CultureInfo.InvariantCulture);
             for (i = 0; i < BarWeightPicker.Items.Count; i++)
             {
                 // Default selection.
@@ -298,33 +310,68 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
+    private async Task<Dictionary<double, Bar>> GetBars()
+    {
+        if (_barLookup == null)
+        {
+            var bars = await BarRepository.GetAll(true);
+            _barLookup = bars.ToDictionary(p => p.Weight, p => p);
+        }
+        return _barLookup;
+    }
+
+    private async Task<Dictionary<double, Plate>> GetPlates()
+    {
+        if (_plateLookup == null)
+        {
+            var plates = await PlateRepository.GetAll(true);
+            _plateLookup = plates.ToDictionary(p => p.Weight, p => p);
+        }
+        return _plateLookup;
+    }
+
+    private async Task<Dictionary<double, Dumbbell>> GetDumbbells()
+    {
+        if (_dumbbellLookup == null)
+        {
+            var dumbbells = await DumbbellRepository.GetAll(true);
+            _dumbbellLookup = dumbbells.ToDictionary(p => p.Weight, p => p);
+        }
+        return _dumbbellLookup;
+    }
+
+    private async Task<Dictionary<double, Kettlebell>> GetKettlebells()
+    {
+        if (_kettlebellLookup == null)
+        {
+            var kettlebells = await KettlebellRepository.GetAll(true);
+            _kettlebellLookup = kettlebells.ToDictionary(p => p.Weight, p => p);
+        }
+        return _kettlebellLookup;
+    }
+
     private async void OnCalculateButtonClicked(object sender, EventArgs e)
     {
         switch (_selectedExerciseType)
         {
             case ExerciseType.Barbell:
-                // Get the weights from the calculator fields and validate them.
-                _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
+                // Get the max weight.
                 if (!double.TryParse(MaxWeightEntry.Text, out _maxWeight))
                 {
                     ErrorMessage.Text = "Please enter the maximum total weight, including the bar.";
                     return;
                 }
-                if (_maxWeight < _barWeight)
-                {
-                    ErrorMessage.Text =
-                        "Make sure the maximum weight is greater than or equal to the bar weight.";
-                    return;
-                }
 
-                // Get the available plate weights ordered from heaviest to lightest.
-                var plates = await PlateRepository.GetAll(true, false);
-                _platesLookup = plates.ToDictionary(p => p.Weight, p => p);
-                var availPlateWeights = _platesLookup.Keys.ToList();
+                // Get the bar weight.
+                _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
+
+                // Get the available plate weights ordered from lightest to heaviest.
+                await GetPlates();
+                var availPlateWeights = _plateLookup.Keys.ToList();
 
                 // Calculate and display the results.
-                var barbellSolver = new BarbellSolver(availPlateWeights);
-                _barbellResults = barbellSolver.CalculateResults(_maxWeight, _barWeight);
+                _barbellResults =
+                    PlateSolver.CalculateResults(_maxWeight, _barWeight, true, availPlateWeights);
                 DisplayBarbellResults();
                 break;
 
@@ -337,18 +384,42 @@ public partial class CalculatorPage : ContentPage
                 }
 
                 // Get the available dumbbell weights ordered from lightest to heaviest.
-                var dumbbells = await DumbbellRepository.GetAll(true);
-                _dumbbellsLookup = dumbbells.ToDictionary(d => d.Weight, d => d);
-                var availDumbbells = _dumbbellsLookup.Keys.ToList();
+                await GetDumbbells();
+                var availDumbbells = _dumbbellLookup.Keys.ToList();
 
                 // Calculate and display the results.
-                var dumbbellSolver = new SingleWeightSolver(availDumbbells);
-                _dumbbellResults = dumbbellSolver.CalculateResults(_maxWeight);
+                _dumbbellResults = SingleWeightSolver.CalculateResults(_maxWeight, availDumbbells);
                 DisplayDumbbellResults();
                 break;
 
             case ExerciseType.Machine:
-                throw new NotImplementedException();
+                // Get the max weight.
+                if (!double.TryParse(MaxWeightEntry.Text, out _maxWeight))
+                {
+                    ErrorMessage.Text =
+                        "Please enter the maximum total weight, including the machine's starting weight.";
+                    return;
+                }
+
+                // Get the starting weight.
+                if (!double.TryParse(StartingWeightEntry.Text, out _startingWeight))
+                {
+                    ErrorMessage.Text = "Please enter the machine's starting weight.";
+                    return;
+                }
+
+                // Get if they want one side only.
+                _oneSideOnly = OneSideOnlyCheckbox.IsChecked;
+
+                // Get the available plate weights ordered from lightest to heaviest.
+                await GetPlates();
+                var availPlateWeights2 = _plateLookup.Keys.ToList();
+
+                // Calculate and display the results.
+                _machineResults = PlateSolver.CalculateResults(_maxWeight, _startingWeight,
+                    _oneSideOnly, availPlateWeights2);
+                DisplayMachineResults();
+                break;
 
             case ExerciseType.Kettlebell:
                 // Get the max kettlebell weight from the calculator field.
@@ -359,13 +430,12 @@ public partial class CalculatorPage : ContentPage
                 }
 
                 // Get the available kettlebell weights ordered from lightest to heaviest.
-                var kettlebells = await KettlebellRepository.GetAll(true);
-                _kettlebellsLookup = kettlebells.ToDictionary(d => d.Weight, d => d);
-                var availKettlebells = _kettlebellsLookup.Keys.ToList();
+                await GetKettlebells();
+                var availKettlebells = _kettlebellLookup.Keys.ToList();
 
                 // Calculate and display the results.
-                var kettlebellSolver = new SingleWeightSolver(availKettlebells);
-                _kettlebellResults = kettlebellSolver.CalculateResults(_maxWeight);
+                _kettlebellResults =
+                    SingleWeightSolver.CalculateResults(_maxWeight, availKettlebells);
                 DisplayKettlebellResults();
                 break;
 
@@ -374,7 +444,8 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private void DisplayBarbellResults()
+    private void DisplayPlateResults(Dictionary<double, List<double>> results,
+        double startingWeight, bool oneSideOnly, string totalHeadingText)
     {
         // Clear the error message.
         ErrorMessage.Text = "";
@@ -383,7 +454,7 @@ public partial class CalculatorPage : ContentPage
         MauiUtilities.ClearStack(CalculatorResults);
 
         // Check if there aren't any results to render.
-        if (_barbellResults == null)
+        if (results == null)
         {
             return;
         }
@@ -397,9 +468,9 @@ public partial class CalculatorPage : ContentPage
         // Get the available width in device-independent pixels.
         var availWidth = GetAvailWidth();
 
-        var maxPlateWeight = _platesLookup.Keys.Max();
+        var maxPlateWeight = _plateLookup.Keys.Max();
 
-        foreach (var (percent, platesResult) in _barbellResults)
+        foreach (var (percent, platesResult) in results)
         {
             // Horizontal rule.
             CalculatorResults.Add(GetHorizontalRule(availWidth));
@@ -454,13 +525,13 @@ public partial class CalculatorPage : ContentPage
             // Total including bar heading.
             var totalHeading = new Label
             {
-                FormattedText = TextUtility.StyleText("Total including bar", headerStyle),
+                FormattedText = TextUtility.StyleText(totalHeadingText, headerStyle),
             };
             textGrid.Add(totalHeading, 0, 1);
 
             // Ideal total weight.
             var idealTotal = _maxWeight * percent / 100.0;
-            var idealPlates = (idealTotal - _barWeight) / 2;
+            var idealPlates = (idealTotal - startingWeight) / (oneSideOnly ? 2 : 1);
             var idealTotalValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{idealTotal:F2} kg", weightStyle),
@@ -469,7 +540,7 @@ public partial class CalculatorPage : ContentPage
 
             // Closest total weight.
             var closestPlates = platesResult.Sum();
-            var closestTotal = 2 * closestPlates + _barWeight;
+            var closestTotal = (oneSideOnly ? 2 : 1) * closestPlates + startingWeight;
             var closestTotalValue = new Label
             {
                 FormattedText = TextUtility.StyleText($"{closestTotal:F2} kg", weightStyle),
@@ -479,12 +550,13 @@ public partial class CalculatorPage : ContentPage
             ///////////
             // Row 2.
 
-            // Plates per end heading.
-            var platesPerEndHeading = new Label
+            // Plates heading.
+            var platesHeadingText = oneSideOnly ? "Plates per end" : "Plates to select";
+            var platesHeading = new Label
             {
-                FormattedText = TextUtility.StyleText("Plates per end", headerStyle),
+                FormattedText = TextUtility.StyleText(platesHeadingText, headerStyle),
             };
-            textGrid.Add(platesPerEndHeading, 0, 2);
+            textGrid.Add(platesHeading, 0, 2);
 
             // Ideal plates weight.
             var idealPlatesValue = new Label
@@ -512,7 +584,7 @@ public partial class CalculatorPage : ContentPage
             foreach (var plateWeight in platesResult)
             {
                 platesGrid.RowDefinitions.Add(new RowDefinition());
-                PlatesPage.AddPlateToGrid(_platesLookup[plateWeight], platesGrid, 0, j,
+                PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
                     maxPlateWeight);
                 j++;
             }
@@ -620,11 +692,22 @@ public partial class CalculatorPage : ContentPage
         CalculatorResults.Add(GetHorizontalRule(availWidth));
     }
 
+    private void DisplayBarbellResults()
+    {
+        DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar");
+    }
+
+    private void DisplayMachineResults()
+    {
+        DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly,
+            "Total including starting weight");
+    }
+
     private void DisplayDumbbellResults()
     {
         var createGraphic = (double weight) =>
         {
-            return GraphicsFactory.CreateDumbbellGraphic(_dumbbellsLookup[weight]);
+            return GraphicsFactory.CreateDumbbellGraphic(_dumbbellLookup[weight]);
         };
         DisplaySingleWeightResults(_dumbbellResults, createGraphic);
     }
@@ -633,7 +716,7 @@ public partial class CalculatorPage : ContentPage
     {
         var createGraphic = (double weight) =>
         {
-            return GraphicsFactory.CreateKettlebellGraphic(_kettlebellsLookup[weight]);
+            return GraphicsFactory.CreateKettlebellGraphic(_kettlebellLookup[weight]);
         };
         DisplaySingleWeightResults(_kettlebellResults, createGraphic);
     }

@@ -1,4 +1,5 @@
 using GymCalc.Data.Models;
+using GymCalc.Graphics;
 
 namespace GymCalc.Data.Repositories;
 
@@ -12,7 +13,7 @@ internal static class PlateRepository
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
-    private static readonly Dictionary<double, bool> _DEFAULT_PLATES = new ()
+    private static readonly Dictionary<double, bool> _DefaultPlates = new ()
     {
         [0.25] = false,
         [0.5] = false,
@@ -32,31 +33,6 @@ internal static class PlateRepository
     };
 
     /// <summary>
-    /// Get the default plate color for a given plate weight.
-    /// </summary>
-    /// <param name="weight">The weight of the plate in kilograms.</param>
-    /// <returns>The default plate color.</returns>
-    private static string DefaultPlateColor(double weight)
-    {
-        while (weight < 5)
-        {
-            weight *= 10;
-        }
-
-        return weight switch
-        {
-            5 => "#e5e5e5", // white
-            7.5 => "#e57ec3", // pink
-            10 => "#24b324", // green
-            12.5 => "#ff5c26", // orange
-            15 => "#f2d024", // yellow
-            20 => "#203880", // blue
-            25 => "#b3000c", // red
-            _ => "#6950b3", // purple
-        };
-    }
-
-    /// <summary>
     /// Ensure the database table exist and contains some plates.
     /// </summary>
     internal static async Task Initialize()
@@ -72,13 +48,13 @@ internal static class PlateRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var (weight, enabled) in _DEFAULT_PLATES)
+            foreach (var (weight, enabled) in _DefaultPlates)
             {
                 var plate = new Plate
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Color = DefaultPlateColor(weight),
+                    Color = CustomColors.DefaultPlateColor(weight),
                     Enabled = enabled,
                 };
                 await db.InsertAsync(plate);
