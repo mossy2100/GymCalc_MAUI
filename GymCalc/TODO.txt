@@ -1,6 +1,6 @@
-* Make the bars page 2-column in landscape mode.
+* Fix bars, plates, and dumbbell pages on Android.
 * Make sure it works and looks right on portrait and landscape, mobile and tablet.
-* Fix exercise type button layout on Android.
+
 
 * Deploy to App store (TestFlight).
 * Deploy to Android store.

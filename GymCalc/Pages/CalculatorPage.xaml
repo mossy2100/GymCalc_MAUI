@@ -10,7 +10,6 @@
         <StackLayout
             x:Name="CalculatorLayout"
             Padding="{x:Static app:App.Padding}"
-            Orientation="Vertical"
             Spacing="{x:Static app:App.DoubleSpacing}">
 
             <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
@@ -26,6 +25,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
+                        FontSize="16"
                         Text="Select exercise type:" />
                     <Button
                         x:Name="BarbellButton"
@@ -57,7 +57,6 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
-                        LineBreakMode="WordWrap"
                         Text="Maximum weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame

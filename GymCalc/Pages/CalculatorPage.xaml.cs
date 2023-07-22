@@ -29,6 +29,7 @@ public partial class CalculatorPage : ContentPage
     {
         InitializeComponent();
         DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
+        CalculatorLayout.Loaded += CalculatorLayoutLoaded;
     }
 
     /// <inheritdoc />
@@ -41,8 +42,6 @@ public partial class CalculatorPage : ContentPage
             _databaseInitialized = true;
         }
 
-        UpdateLayoutOrientation();
-
         // Initialise the exercise type buttons.
         UpdateExerciseType(_selectedExerciseType);
 
@@ -51,18 +50,38 @@ public partial class CalculatorPage : ContentPage
         await ResetBarWeightPicker();
     }
 
+    private void CalculatorLayoutLoaded(object sender, EventArgs eventArgs)
+    {
+        UpdateLayoutOrientation(true);
+    }
+
     private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
     {
         UpdateLayoutOrientation();
     }
 
-    private void UpdateLayoutOrientation()
+    private void UpdateLayoutOrientation(bool forceRedraw = false)
     {
-        CalculatorLayout.Orientation =
+        // Get the device orientation.
+        var newOrientation =
             DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Landscape
                 ? StackOrientation.Horizontal
                 : StackOrientation.Vertical;
 
+        // Skip the redraw if we don't need to do it.
+        if (!forceRedraw && newOrientation == CalculatorLayout.Orientation)
+        {
+            return;
+        }
+
+        // If different, update the layout.
+        CalculatorLayout.Orientation = newOrientation;
+
+        // Redraws the page, which updates the CalculatorLayout orientation and width.
+        // This is only needed for Android, not iOS, but it doesn't do any harm.
+        InvalidateMeasure();
+
+        // Update the button widths.
         SetExerciseTypeButtonWidths();
 
         // Re-render the results for the altered width.
@@ -83,9 +102,7 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        var nColumns = App.GetNumColumns();
-        var availWidth = (CalculatorLayout.Width / nColumns) - (2 * App.Spacing);
-        return availWidth;
+        return (CalculatorLayout.Width / App.GetNumColumns()) - (2 * App.Spacing);
     }
 
     private void SetExerciseTypeButtonWidths()
@@ -97,8 +114,7 @@ public partial class CalculatorPage : ContentPage
 
         // Calculate the button width.
         const int nButtons = 2;
-        var availWidth = GetAvailWidth();
-        var buttonWidth = (availWidth - ((nButtons - 1) * App.Spacing)) / nButtons;
+        var buttonWidth = (GetAvailWidth() - ((nButtons - 1) * App.Spacing)) / nButtons;
 
         // Set the button widths.
         BarbellButton.WidthRequest = buttonWidth;
@@ -112,21 +128,35 @@ public partial class CalculatorPage : ContentPage
         switch (exerciseType)
         {
             case ExerciseType.Barbell:
+                // Update the button visual states.
                 VisualStateManager.GoToState(BarbellButton, "Selected");
                 VisualStateManager.GoToState(DumbbellButton, "Normal");
+
+                // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum total weight (kg)";
-                CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
-                CalculatorFormGrid.RowSpacing = App.Spacing;
+
+                // Show the bar weight fields.
                 BarWeightLabel.IsVisible = true;
                 BarWeightPickerFrame.IsVisible = true;
+
+                // Show the bar weight row and adjust the spacing.
+                CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
+                CalculatorFormGrid.RowSpacing = App.Spacing;
                 break;
 
             case ExerciseType.Dumbbell:
+                // Update the button visual states.
                 VisualStateManager.GoToState(DumbbellButton, "Selected");
                 VisualStateManager.GoToState(BarbellButton, "Normal");
-                MaxWeightLabel.Text = "Maximum weight per dumbbell (kg)";
+
+                // Update the max weight label text.
+                MaxWeightLabel.Text = "Max. weight per dumbbell (kg)";
+
+                // Hide the bar weight fields.
                 BarWeightLabel.IsVisible = false;
                 BarWeightPickerFrame.IsVisible = false;
+
+                // Hide the bar weight row and adjust the spacing.
                 CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
                 CalculatorFormGrid.RowSpacing = 0;
                 break;
