@@ -60,7 +60,7 @@ public partial class PlatesPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
         PlatesStackLayout.HeightRequest =
-            (PlateGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
+            (PlateGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;

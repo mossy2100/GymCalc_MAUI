@@ -59,7 +59,7 @@ public partial class KettlebellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
         KettlebellsStackLayout.HeightRequest =
-            (KettlebellGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
+            (KettlebellGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;

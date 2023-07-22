@@ -1,7 +1,6 @@
 * Make drawables for bars and plates (consistency).
-* Make the plates results a bit more spread out.
-* Add colour to selected tab bar icons in dark mode.
 * Add flyout menu with about text.
+* Add colour to selected tab bar icons in dark mode.
 
 * Fix bars, plates, etc. pages on Android.
 * Test on portrait and landscape, mobile and tablet.

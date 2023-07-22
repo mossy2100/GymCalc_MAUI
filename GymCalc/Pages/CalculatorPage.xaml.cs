@@ -402,15 +402,20 @@ public partial class CalculatorPage : ContentPage
                     return;
                 }
 
-                // Get the starting weight.
-                if (!double.TryParse(StartingWeightEntry.Text, out _startingWeight))
+                // Get the starting weight. If it's empty, default to 0.
+                if (string.IsNullOrWhiteSpace(StartingWeightEntry.Text))
+                {
+                    StartingWeightEntry.Text = "0";
+                    _startingWeight = 0;
+                }
+                else if (!double.TryParse(StartingWeightEntry.Text, out _startingWeight))
                 {
                     ErrorMessage.Text = "Please enter the machine's starting weight.";
                     return;
                 }
 
                 // Get if they want one side only.
-                _oneSideOnly = OneSideOnlyCheckbox.IsChecked;
+                _oneSideOnly = OneSideOnlySwitch.IsToggled;
 
                 // Get the available plate weights ordered from lightest to heaviest.
                 await GetPlates();
@@ -492,7 +497,6 @@ public partial class CalculatorPage : ContentPage
                 ),
                 ColumnSpacing = 15,
                 RowSpacing = 15,
-                Padding = new Thickness(0, App.DoubleSpacing, 0, 0),
             };
 
             ///////////
@@ -576,21 +580,21 @@ public partial class CalculatorPage : ContentPage
 
             CalculatorResults.Add(textGrid);
 
-            // Construct the plates grid and add it to the layout.
-            var platesGrid = new Grid
+            // If we have some plates, construct the plates grid and add it to the layout.
+            if (platesResult.Count > 0)
             {
-                Padding = new Thickness(0, App.Spacing, 0, App.DoubleSpacing),
-            };
-            var j = 0;
-            platesResult.Sort();
-            foreach (var plateWeight in platesResult)
-            {
-                platesGrid.RowDefinitions.Add(new RowDefinition());
-                PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
-                    maxPlateWeight);
-                j++;
+                var platesGrid = new Grid();
+                var j = 0;
+                platesResult.Sort();
+                foreach (var plateWeight in platesResult)
+                {
+                    platesGrid.RowDefinitions.Add(new RowDefinition());
+                    PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
+                        maxPlateWeight);
+                    j++;
+                }
+                CalculatorResults.Add(platesGrid);
             }
-            CalculatorResults.Add(platesGrid);
         }
 
         // Horizontal rule.

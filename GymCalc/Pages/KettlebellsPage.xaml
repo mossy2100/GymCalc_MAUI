@@ -7,12 +7,12 @@
     Title="Kettlebells">
 
     <ScrollView Padding="{x:Static app:App.Padding}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="KettlebellsStackLayout" Spacing="{x:Static app:App.Spacing}">
+        <VerticalStackLayout x:Name="KettlebellsStackLayout" Spacing="{x:Static app:App.DoubleSpacing}">
             <Label Text="Select which kettlebell weights (kg) are available:" />
             <Grid
                 x:Name="KettlebellsGrid"
                 ColumnSpacing="{x:Static app:App.Spacing}"
-                RowSpacing="{x:Static app:App.Spacing}" />
+                RowSpacing="{x:Static app:App.DoubleSpacing}" />
         </VerticalStackLayout>
     </ScrollView>
 

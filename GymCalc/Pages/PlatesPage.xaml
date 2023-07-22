@@ -7,12 +7,12 @@
     Title="Plates">
 
     <ScrollView Padding="{x:Static app:App.Padding}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="PlatesStackLayout" Spacing="{x:Static app:App.Spacing}">
+        <VerticalStackLayout x:Name="PlatesStackLayout" Spacing="{x:Static app:App.DoubleSpacing}">
             <Label Text="Select which plate weights (kg) are available:" />
             <Grid
                 x:Name="PlatesGrid"
                 ColumnSpacing="{x:Static app:App.Spacing}"
-                RowSpacing="{x:Static app:App.Spacing}" />
+                RowSpacing="{x:Static app:App.DoubleSpacing}" />
         </VerticalStackLayout>
     </ScrollView>
 

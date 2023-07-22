@@ -147,8 +147,8 @@
                         FontSize="16"
                         Text="Get plates for one side only"
                         VerticalTextAlignment="Center" />
-                    <CheckBox
-                        x:Name="OneSideOnlyCheckbox"
+                    <Switch
+                        x:Name="OneSideOnlySwitch"
                         Grid.Row="0"
                         Grid.Column="1"
                         HorizontalOptions="Start" />
@@ -170,7 +170,7 @@
                     TextColor="Red" />
             </VerticalStackLayout>
 
-            <VerticalStackLayout x:Name="CalculatorResults" />
+            <VerticalStackLayout x:Name="CalculatorResults" Spacing="{x:Static app:App.DoubleSpacing}" />
 
         </StackLayout>
     </ScrollView>

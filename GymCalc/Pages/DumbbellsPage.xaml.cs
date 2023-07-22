@@ -59,7 +59,7 @@ public partial class DumbbellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
         DumbbellsStackLayout.HeightRequest =
-            (DumbbellGraphic.Height + App.Spacing) * nRows + App.DoubleSpacing;
+            (DumbbellGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;

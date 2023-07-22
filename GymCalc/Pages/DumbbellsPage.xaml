@@ -7,12 +7,12 @@
     Title="Dumbbells">
 
     <ScrollView Padding="{x:Static app:App.Padding}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="DumbbellsStackLayout" Spacing="{x:Static app:App.Spacing}">
+        <VerticalStackLayout x:Name="DumbbellsStackLayout" Spacing="{x:Static app:App.DoubleSpacing}">
             <Label Text="Select which dumbbell weights (kg) are available:" />
             <Grid
                 x:Name="DumbbellsGrid"
                 ColumnSpacing="{x:Static app:App.Spacing}"
-                RowSpacing="{x:Static app:App.Spacing}" />
+                RowSpacing="{x:Static app:App.DoubleSpacing}" />
         </VerticalStackLayout>
     </ScrollView>
 
