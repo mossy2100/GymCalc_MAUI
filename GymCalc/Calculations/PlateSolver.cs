@@ -1,3 +1,5 @@
+using Galaxon.Core.Numbers;
+
 namespace GymCalc.Calculations;
 
 internal static class PlateSolver
@@ -10,8 +12,8 @@ internal static class PlateSolver
 
     private static double _smallestDiff;
 
-    internal static Dictionary<double, List<double>> CalculateResults(double maxWeight, double barWeight,
-        bool oneSideOnly, List<double> availWeights)
+    internal static Dictionary<double, List<double>> CalculateResults(double maxWeight,
+        double startingWeight, bool oneSideOnly, List<double> availWeights)
     {
         var results = new Dictionary<double, List<double>>();
 
@@ -23,7 +25,7 @@ internal static class PlateSolver
         for (var percent = 100; percent >= 50; percent -= 10)
         {
             var idealTotal = maxWeight * percent / 100.0;
-            var idealPlates = (idealTotal - barWeight) / (oneSideOnly ? 2 : 1);
+            var idealPlates = (idealTotal - startingWeight) / (oneSideOnly ? 2 : 1);
 
             // Get the set of plates that is closest to the ideal weight.
             results[percent] = FindBestPlates(idealPlates);
@@ -78,7 +80,7 @@ internal static class PlateSolver
 
             // Check if this is a new best solution.
             if (diff < _smallestDiff
-                || diff == _smallestDiff && newStack.Count < _bestSolution.Count)
+                || diff.FuzzyEquals(_smallestDiff) && newStack.Count < _bestSolution.Count)
             {
                 // Update the best solution found so far.
                 _bestSolution = newStack;

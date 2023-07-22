@@ -15,7 +15,7 @@ internal static class BarRepository
     /// <summary>
     /// Default bars weights to set up on app initialize.
     /// </summary>
-    private static readonly double[] _DefaultBars = { 7.5, 10, 15, 20, 25 };
+    private static readonly double[] _DefaultBars = { 10, 15, 20, 25 };
 
     /// <summary>
     /// Ensure the database table exist and contains some bars.

@@ -1,3 +1,5 @@
+using Galaxon.Core.Numbers;
+
 namespace GymCalc.Graphics;
 
 internal static class CustomColors
@@ -43,15 +45,15 @@ internal static class CustomColors
     {
         double weightForColor;
         bool hasBlackBands;
-        if (weight % 4 == 0)
-        {
-            weightForColor = weight;
-            hasBlackBands = false;
-        }
-        else
+        if ((weight % 4).FuzzyEquals(2))
         {
             weightForColor = weight - 2;
             hasBlackBands = true;
+        }
+        else
+        {
+            weightForColor = weight;
+            hasBlackBands = false;
         }
 
         var color = weightForColor switch

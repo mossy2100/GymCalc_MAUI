@@ -178,8 +178,9 @@ internal static class TextUtility
                 }
                 break;
 
+            case HtmlNodeType.Comment:
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(node.NodeType), "Unknown node type.");
         }
     }
 }

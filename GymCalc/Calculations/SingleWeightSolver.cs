@@ -1,3 +1,5 @@
+using Galaxon.Core.Numbers;
+
 namespace GymCalc.Calculations;
 
 internal static class SingleWeightSolver
@@ -38,7 +40,7 @@ internal static class SingleWeightSolver
             closestWeight = _availWeights[i];
 
             // Check for exact match.
-            if (closestWeight == idealWeight)
+            if (closestWeight.FuzzyEquals(idealWeight))
             {
                 return closestWeight;
             }

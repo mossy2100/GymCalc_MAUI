@@ -1,5 +1,7 @@
-* Test all calculations.
 * Make drawables for bars and plates (consistency).
+* Make the plates results a bit more spread out.
+* Add colour to selected tab bar icons in dark mode.
+* Add flyout menu with about text.
 
 * Fix bars, plates, etc. pages on Android.
 * Test on portrait and landscape, mobile and tablet.
@@ -10,7 +12,8 @@
 Future versions
 ===============
 * "Reset to default" button for bars, plates, and dumbbells.
-* Add support for lbs (which will necessitate a preferences page accessible from the flyout).
+* Add preferences page with option to select preferred unit of mass (kg or lb).
+* Add support for lbs including default weights.
 * Allow addition of custom weights/editing of existing weights.
 
 Maybe?

@@ -133,7 +133,8 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
+                    "Invalid exercise type.");
         }
     }
 
@@ -440,7 +441,8 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
+                    "Invalid exercise type.");
         }
     }
 

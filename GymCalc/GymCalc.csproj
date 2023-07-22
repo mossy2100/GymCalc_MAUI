@@ -145,6 +145,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Reference Include="Galaxon.Core">
+          <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.iOS">
           <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\packs\Microsoft.iOS.Ref\16.4.7089\ref\net7.0\Microsoft.iOS.dll</HintPath>
         </Reference>
