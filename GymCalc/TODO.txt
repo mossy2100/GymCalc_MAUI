@@ -1,20 +1,18 @@
-* Add kettlebells.
+* Add support for kettlebells.
+* Add support for plate-loaded machines.
 * Fix bars, plates, and dumbbell pages on Android.
-* Make sure it works and looks right on portrait and landscape, mobile and tablet.
+* Test on portrait and landscape, mobile and tablet.
 
 * Deploy to App store (TestFlight).
 * Deploy to Android store.
-
 
 Future versions
 ===============
 * "Reset to default" button for bars, plates, and dumbbells.
 * Add support for lbs (which will necessitate a preferences page accessible from the flyout).
-* Add support for plate-loaded machines.
 * Allow addition of custom weights/editing of existing weights.
 
 Maybe
 =====
-* Add support for kettlebells.
 * Add support for pin-loaded machines.
 * Add support for LOTE.

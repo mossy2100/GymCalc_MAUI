@@ -26,25 +26,31 @@ internal class KettlebellGraphic : IDrawable
 
         // Colors.
         var black = Color.Parse("#222");
+        // var chrome = Color.Parse("#ddd");
         var kettlebellColor = Color.Parse(_kettlebell.Color);
 
-        // Kettlebell handle lower.
-        canvas.StrokeColor = _kettlebell.HasBlackBands ? black : kettlebellColor;
+        // Handle.
+        canvas.StrokeColor = kettlebellColor;
         canvas.StrokeSize = 10;
         canvas.DrawLine(6.34f, 20f, 16.34f, 37.32f);
-        canvas.DrawLine(53.66f, 20f, 43.66f, 37.32f);
-
-        // Kettlebell handle upper.
-        canvas.StrokeColor = kettlebellColor;
         canvas.DrawArc(5f, 5f, 20f, 20f, 90, 210, false, false);
         canvas.DrawLine(15f, 5f, 45f, 5f);
         canvas.DrawArc(35f, 5f, 20f, 20f, 330, 90, false, false);
+        canvas.DrawLine(53.66f, 20f, 43.66f, 37.32f);
 
-        // Kettlebell ball.
+        // Black bands.
+        if (_kettlebell.HasBlackBands)
+        {
+            canvas.StrokeColor = black;
+            canvas.DrawLine(11.34f, 28.66f, 16.34f, 37.32f);
+            canvas.DrawLine(48.66f, 28.66f, 43.66f, 37.32f);
+        }
+
+        // Ball.
         canvas.FillColor = kettlebellColor;
         canvas.FillArc(0, r, w, w, 240, 300, true);
 
-        // Add the label.
+        // Weight label.
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 20;
         canvas.FontColor = kettlebellColor.GetTextColor();

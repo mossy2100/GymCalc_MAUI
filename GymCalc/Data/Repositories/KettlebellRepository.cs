@@ -9,6 +9,9 @@ internal static class KettlebellRepository
 {
     /// <summary>
     /// Get the default color for a given kettlebell weight.
+    ///
+    /// Best link I've found showing the competition colors with black bands:
+    /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1" />
     /// </summary>
     /// <param name="weight">The weight of the kettlebell in kilograms.</param>
     /// <returns>The default kettlebell color.</returns>
