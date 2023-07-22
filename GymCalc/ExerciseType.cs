@@ -6,7 +6,7 @@ internal enum ExerciseType
 
     Dumbbell,
 
-    PlateLoadedMachine,
+    Machine,
 
-    PinLoadedMachine,
+    Kettlebell,
 }

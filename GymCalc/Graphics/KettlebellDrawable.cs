@@ -5,11 +5,11 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics;
 
-internal class KettlebellGraphic : IDrawable
+internal class KettlebellDrawable : IDrawable
 {
-    private Kettlebell _kettlebell;
+    private readonly Kettlebell _kettlebell;
 
-    public KettlebellGraphic(Kettlebell kettlebell)
+    public KettlebellDrawable(Kettlebell kettlebell)
     {
         _kettlebell = kettlebell;
     }

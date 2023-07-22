@@ -1,11 +1,8 @@
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
-
 namespace GymCalc.Calculations;
 
 internal class BarbellSolver
 {
-    private List<double> _availPlateWeights;
+    private readonly List<double> _availPlateWeights;
 
     private List<double> _bestSolution;
 
@@ -13,13 +10,14 @@ internal class BarbellSolver
 
     private double _smallestDiff;
 
-    internal Dictionary<double, List<double>> CalculateResults(double maxWeight, double barWeight,
-        Dictionary<double, Plate> availPlates)
+    public BarbellSolver(List<double> availPlateWeights)
+    {
+        _availPlateWeights = availPlateWeights;
+    }
+
+    internal Dictionary<double, List<double>> CalculateResults(double maxWeight, double barWeight)
     {
         var results = new Dictionary<double, List<double>>();
-
-        // Get the available plate weights ordered from heaviest to lightest.
-        _availPlateWeights = availPlates.Keys.OrderByDescending(weight => weight).ToList();
 
         // Get the best solution for each percentage fraction of the maxWeight we're interested in.
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
@@ -29,7 +27,7 @@ internal class BarbellSolver
             var idealPlates = (idealTotal - barWeight) / 2.0;
 
             // Get the set of plates that is closest to the ideal weight.
-            results[percent] = GetBestPlates(idealPlates);
+            results[percent] = FindBestPlates(idealPlates);
         }
 
         return results;
@@ -39,7 +37,7 @@ internal class BarbellSolver
     /// Find the stack of plates that will produce the closest total weight to the ideal weight.
     /// </summary>
     /// <returns></returns>
-    private List<double> GetBestPlates(double idealWeight)
+    private List<double> FindBestPlates(double idealWeight)
     {
         // Initialize fields.
         _idealWeight = idealWeight;
@@ -47,7 +45,7 @@ internal class BarbellSolver
         _bestSolution = new List<double>();
 
         // Search the solutions space.
-        FindSolutions(_availPlateWeights[0], _bestSolution);
+        SearchSolutions(_availPlateWeights[0], _bestSolution);
 
         // Return the best solution found during the search.
         return _bestSolution;
@@ -58,7 +56,7 @@ internal class BarbellSolver
     /// </summary>
     /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
     /// <param name="currentStack">The stack of plates so far.</param>
-    private void FindSolutions(double maxPlateWeight, IReadOnlyList<double> currentStack)
+    private void SearchSolutions(double maxPlateWeight, IReadOnlyList<double> currentStack)
     {
         foreach (var newPlateWeight in _availPlateWeights)
         {
@@ -98,7 +96,7 @@ internal class BarbellSolver
             // solution.
             if (sum < _idealWeight)
             {
-                FindSolutions(newPlateWeight, newStack);
+                SearchSolutions(newPlateWeight, newStack);
             }
 
             // If the remaining difference is greater than the weight we just added, don't test

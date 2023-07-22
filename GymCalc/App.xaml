@@ -103,6 +103,20 @@
                 <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
             </Style>
 
+            <Style
+                x:Key="MachineButtonStyle"
+                BasedOn="{StaticResource ExerciseTypeButtonStyle}"
+                TargetType="Button">
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_100.png', Dark='deadlift_white_100.png'}" />
+            </Style>
+
+            <Style
+                x:Key="KettlebellButtonStyle"
+                BasedOn="{StaticResource ExerciseTypeButtonStyle}"
+                TargetType="Button">
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

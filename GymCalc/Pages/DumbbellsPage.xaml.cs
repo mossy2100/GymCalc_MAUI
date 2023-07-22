@@ -46,10 +46,6 @@ public partial class DumbbellsPage : ContentPage
         // Get the dumbbells.
         var dumbbells = await DumbbellRepository.GetAll();
 
-        // Dumbbell graphic dimensions.
-        const int dumbbellHeight = 50;
-        const int dumbbellWidth = 100;
-
         // Get the style.
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
@@ -66,7 +62,7 @@ public partial class DumbbellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
         DumbbellsStackLayout.HeightRequest =
-            (dumbbellHeight + App.Spacing) * nRows + App.DoubleSpacing;
+            (Dumbbell.Height + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;
@@ -76,27 +72,13 @@ public partial class DumbbellsPage : ContentPage
             if (colNum == 0)
             {
                 // Add a new row to the grid.
-                DumbbellsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(dumbbellHeight)));
+                DumbbellsGrid.RowDefinitions.Add(
+                    new RowDefinition(new GridLength(Dumbbell.Height)));
             }
 
-            // Get the dumbbell background.
-            var dumbbellGraphic = new GraphicsView
-            {
-                Drawable = new DumbbellGraphic(),
-                HeightRequest = dumbbellHeight,
-                WidthRequest = dumbbellWidth,
-            };
+            // Add the dumbbell graphic.
+            var dumbbellGraphic = GraphicsFactory.CreateDumbbellGraphic(dumbbell);
             DumbbellsGrid.Add(dumbbellGraphic, colNum, rowNum);
-
-            // Add the dumbbell weight text.
-            var labelText = dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
-            var label = new Label
-            {
-                FormattedText = TextUtility.StyleText(labelText, barLabelStyle),
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-            };
-            DumbbellsGrid.Add(label, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox

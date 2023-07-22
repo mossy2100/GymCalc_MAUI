@@ -145,7 +145,7 @@ internal static class TextUtility
                 {
                     "h1" => 24,
                     "h2" => 20,
-                    _ => parentFontSize
+                    _ => parentFontSize,
                 };
 
                 // Handle unordered lists.
@@ -177,6 +177,9 @@ internal static class TextUtility
                     ProcessHtmlDocument(childNode, parentFontSize, parentFontAttributes, ref spans);
                 }
                 break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }

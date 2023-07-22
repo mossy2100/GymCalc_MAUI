@@ -97,7 +97,7 @@ internal static class KettlebellRepository
                 Unit = "kg",
                 Enabled = enabled,
                 Color = color,
-                HasBlackBands = hasBlackBands
+                HasBlackBands = hasBlackBands,
             };
             await db.InsertAsync(kettlebell);
 

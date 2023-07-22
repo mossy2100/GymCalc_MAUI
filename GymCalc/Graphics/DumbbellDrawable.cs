@@ -1,7 +1,18 @@
+using System.Globalization;
+using GymCalc.Data.Models;
+using Font = Microsoft.Maui.Graphics.Font;
+
 namespace GymCalc.Graphics;
 
-internal class DumbbellGraphic : IDrawable
+internal class DumbbellDrawable : IDrawable
 {
+    private readonly Dumbbell _dumbbell;
+
+    public DumbbellDrawable(Dumbbell dumbbell)
+    {
+        _dumbbell = dumbbell;
+    }
+
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var width = dirtyRect.Width;
@@ -43,6 +54,16 @@ internal class DumbbellGraphic : IDrawable
         var rightLargePlate = new RectF(width - 2 * (gapWidth + plateWidth), 0, plateWidth, height);
         canvas.SetFillPaint(plateGradient, rightLargePlate);
         canvas.FillRoundedRectangle(rightLargePlate, cornerRadius);
+
+        // Weight label.
+        canvas.Font = Font.DefaultBold;
+        canvas.FontSize = 20;
+        canvas.FontColor = Colors.Black;
+        var weightString = _dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
+        const int m = (gapWidth + plateWidth) * 2;
+        canvas.DrawString(weightString, m, (height - barHeight) / 2, width - (m * 2), barHeight,
+            HorizontalAlignment.Center,
+            VerticalAlignment.Center);
     }
 
     /// <summary>

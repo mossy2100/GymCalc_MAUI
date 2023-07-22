@@ -1,4 +1,3 @@
-using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
@@ -46,10 +45,6 @@ public partial class KettlebellsPage : ContentPage
         // Get the kettlebells.
         var kettlebells = await KettlebellRepository.GetAll();
 
-        // Kettlebell graphic dimensions.
-        const int kettlebellHeight = 76;
-        const int kettlebellWidth = 60;
-
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
         var nCols = App.GetNumColumns() * 4;
@@ -63,7 +58,7 @@ public partial class KettlebellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
         KettlebellsStackLayout.HeightRequest =
-            (kettlebellHeight + App.Spacing) * nRows + App.DoubleSpacing;
+            (Kettlebell.Height + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;
@@ -73,16 +68,12 @@ public partial class KettlebellsPage : ContentPage
             if (colNum == 0)
             {
                 // Add a new row to the grid.
-                KettlebellsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(kettlebellHeight)));
+                KettlebellsGrid.RowDefinitions.Add(
+                    new RowDefinition(new GridLength(Kettlebell.Height)));
             }
 
             // Draw the kettlebell.
-            var kettlebellGraphic = new GraphicsView
-            {
-                Drawable = new KettlebellGraphic(kettlebell),
-                HeightRequest = kettlebellHeight,
-                WidthRequest = kettlebellWidth,
-            };
+            var kettlebellGraphic = GraphicsFactory.CreateKettlebellGraphic(kettlebell);
             KettlebellsGrid.Add(kettlebellGraphic, colNum, rowNum);
 
             // Add the checkbox.
@@ -113,7 +104,7 @@ public partial class KettlebellsPage : ContentPage
     /// <param name="e"></param>
     private async void OnKettlebellCheckboxChanged(object sender, EventArgs e)
     {
-        // Update the kettlebell's Enabled state.
+        // Update the enabled flag.
         var cb = (CheckBox)sender;
         var kettlebell = _cbKettlebellMap[cb];
         kettlebell.Enabled = cb.IsChecked;

@@ -15,9 +15,9 @@ public partial class PlatesPage : ContentPage
 
     private bool _platesDisplayed;
 
-    private const int _plateHeight = 30;
+    private const int _PlateHeight = 30;
 
-    private const int _plateInnerHeight = 22;
+    private const int _PlateInnerHeight = 22;
 
     public PlatesPage()
     {
@@ -61,7 +61,7 @@ public partial class PlatesPage : ContentPage
 
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
-        PlatesStackLayout.HeightRequest = (_plateHeight + App.Spacing) * nRows + App.DoubleSpacing;
+        PlatesStackLayout.HeightRequest = (_PlateHeight + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;
@@ -70,7 +70,7 @@ public partial class PlatesPage : ContentPage
         var colNum = 0;
         foreach (var plate in plates)
         {
-            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_plateHeight)));
+            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_PlateHeight)));
             AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
 
             // Add the checkbox.
@@ -114,7 +114,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 4,
             RadiusY = 4,
-            HeightRequest = _plateHeight,
+            HeightRequest = _PlateHeight,
             WidthRequest = plateWidth,
             Fill = bgColor.AddLuminosity(-0.1f),
         };
@@ -125,7 +125,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 0,
             RadiusY = 0,
-            HeightRequest = _plateInnerHeight,
+            HeightRequest = _PlateInnerHeight,
             WidthRequest = plateWidth,
             Fill = bgColor,
         };

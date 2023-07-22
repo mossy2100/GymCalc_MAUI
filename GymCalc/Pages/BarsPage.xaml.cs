@@ -15,7 +15,7 @@ public partial class BarsPage : ContentPage
 
     private bool _barsDisplayed;
 
-    private const int _barHeight = 22;
+    private const int _BarHeight = 22;
 
     public BarsPage()
     {
@@ -66,7 +66,7 @@ public partial class BarsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(bars.Count / (nCols / 2.0));
         BarsStackLayout.HeightRequest =
-            (_barHeight + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+            (_BarHeight + App.DoubleSpacing) * nRows + App.DoubleSpacing;
 
         // Get the min and max bar width.
         const int minBarWidth = 50;
@@ -80,7 +80,7 @@ public partial class BarsPage : ContentPage
         foreach (var bar in bars)
         {
             // Add a new row to the grid.
-            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_barHeight)));
+            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_BarHeight)));
 
             // Calculate the bar width.
             var barWidth = minBarWidth + bar.Weight / maxBarWeight * (maxBarWidth - minBarWidth);
@@ -90,7 +90,7 @@ public partial class BarsPage : ContentPage
             {
                 RadiusX = 0,
                 RadiusY = 0,
-                HeightRequest = _barHeight,
+                HeightRequest = _BarHeight,
                 WidthRequest = barWidth,
                 Fill = brush,
             };
