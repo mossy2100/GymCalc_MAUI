@@ -15,7 +15,7 @@
             <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
 
                 <!--  Exercise type selection  -->
-                <Label Text="Select exercise type:" />
+                <Label FontSize="16" Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
                     ColumnSpacing="{x:Static app:App.Spacing}"

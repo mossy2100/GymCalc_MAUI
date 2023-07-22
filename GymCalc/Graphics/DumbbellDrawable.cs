@@ -57,11 +57,12 @@ internal class DumbbellDrawable : IDrawable
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
-        canvas.FontSize = 20;
+        canvas.FontSize = 16;
         canvas.FontColor = Colors.Black;
         var weightString = _dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
         const int m = (gapWidth + plateWidth) * 2;
-        canvas.DrawString(weightString, m, (height - barHeight) / 2, width - (m * 2), barHeight,
+        var p = (height - barHeight) / 2 + 2;
+        canvas.DrawString(weightString, m, p, width - (m * 2), barHeight,
             HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }

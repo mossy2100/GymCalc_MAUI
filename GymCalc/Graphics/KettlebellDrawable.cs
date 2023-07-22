@@ -57,7 +57,7 @@ internal class KettlebellDrawable : IDrawable
         canvas.FontSize = 20;
         canvas.FontColor = kettlebellColor.GetTextColor();
         var weightString = _kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
-        canvas.DrawString(weightString, 10, 35, 40, 30, HorizontalAlignment.Center,
+        canvas.DrawString(weightString, 10, 37, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
 }
