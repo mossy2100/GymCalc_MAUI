@@ -15,45 +15,40 @@
             <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
 
                 <!--  Exercise type selection  -->
+                <Label Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
                     ColumnSpacing="{x:Static app:App.Spacing}"
                     RowDefinitions="Auto,Auto"
                     RowSpacing="{x:Static app:App.Spacing}">
-
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Text="Select exercise type:" />
                     <Button
                         x:Name="BarbellButton"
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="0"
                         Clicked="OnBarbellButtonClicked"
                         Style="{StaticResource BarbellButtonStyle}"
                         Text="Barbell" />
                     <Button
                         x:Name="DumbbellButton"
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="1"
                         Clicked="OnDumbbellButtonClicked"
                         Style="{StaticResource DumbbellButtonStyle}"
                         Text="Dumbbell" />
                     <Button
                         x:Name="MachineButton"
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Grid.Column="0"
                         Clicked="OnMachineButtonClicked"
                         Style="{StaticResource MachineButtonStyle}"
-                        Text="Barbell" />
+                        Text="Machine" />
                     <Button
                         x:Name="KettlebellButton"
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Clicked="OnKettlebellButtonClicked"
                         Style="{StaticResource KettlebellButtonStyle}"
-                        Text="Dumbbell" />
+                        Text="Kettlebell" />
                 </Grid>
 
                 <!--  Calculator form  -->

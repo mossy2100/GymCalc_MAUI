@@ -65,10 +65,12 @@
             <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
                 <Setter Property="ContentLayout" Value="Top,0" />
+                <Setter Property="WidthRequest" Value="140" />
                 <Setter Property="HeightRequest" Value="140" />
                 <Setter Property="Padding" Value="0,10,0,0" />
                 <Setter Property="BorderWidth" Value="1" />
                 <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Start" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -93,28 +95,28 @@
                 x:Key="BarbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_100.png', Dark='deadlift_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_black_100.png', Dark='deadlift_white_100.png'}" />
             </Style>
 
             <Style
                 x:Key="DumbbellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_black_100.png', Dark='dumbbell_press_white_100.png'}" />
             </Style>
 
             <Style
                 x:Key="MachineButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_100.png', Dark='deadlift_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='leg_press_black_100.png', Dark='leg_press_white_100.png'}" />
             </Style>
 
             <Style
                 x:Key="KettlebellButtonStyle"
                 BasedOn="{StaticResource ExerciseTypeButtonStyle}"
                 TargetType="Button">
-                <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_100.png', Dark='dumbbell_press_white_100.png'}" />
+                <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}" />
             </Style>
 
         </ResourceDictionary>

@@ -123,18 +123,11 @@ public partial class CalculatorPage : ContentPage
 
     private void SetExerciseTypeButtonWidths()
     {
-        // Reset the button widths to some small value so they don't push the form out wider than
-        // the visible area.
-        BarbellButton.WidthRequest = 100;
-        DumbbellButton.WidthRequest = 100;
-
-        // Calculate the button width.
-        const int nButtons = 2;
-        var buttonWidth = (GetAvailWidth() - ((nButtons - 1) * App.Spacing)) / nButtons;
-
-        // Set the button widths.
-        BarbellButton.WidthRequest = buttonWidth;
-        DumbbellButton.WidthRequest = buttonWidth;
+        var width = (GetAvailWidth() - App.Spacing) / 2;
+        BarbellButton.WidthRequest = width;
+        DumbbellButton.WidthRequest = width;
+        MachineButton.WidthRequest = width;
+        KettlebellButton.WidthRequest = width;
     }
 
     private void UpdateExerciseType(ExerciseType exerciseType)
