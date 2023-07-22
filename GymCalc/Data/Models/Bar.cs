@@ -1,6 +1,5 @@
 namespace GymCalc.Data.Models;
 
-internal class Bar : HeavyThing
+public class Bar : HeavyThing
 {
-    internal const double DefaultWeight = 20;
 }

@@ -1,6 +1,5 @@
-* Make dumbbells and bars "flat"; remove gradients.
-
-* Add support for plate-loaded machines.
+* Test all calculations.
+* Make drawables for bars and plates (consistency).
 
 * Fix bars, plates, etc. pages on Android.
 * Test on portrait and landscape, mobile and tablet.

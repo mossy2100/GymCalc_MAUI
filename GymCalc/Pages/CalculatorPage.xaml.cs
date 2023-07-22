@@ -290,7 +290,7 @@ public partial class CalculatorPage : ContentPage
         // If the original selected bar weight is no longer present, try to select the default.
         if (!valueSelected)
         {
-            var weightString = Bar.DefaultWeight.ToString(CultureInfo.InvariantCulture);
+            var weightString = BarRepository.DefaultWeight.ToString(CultureInfo.InvariantCulture);
             for (i = 0; i < BarWeightPicker.Items.Count; i++)
             {
                 // Default selection.

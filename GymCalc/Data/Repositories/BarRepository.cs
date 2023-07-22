@@ -8,7 +8,12 @@ namespace GymCalc.Data.Repositories;
 internal static class BarRepository
 {
     /// <summary>
-    /// Default bars.
+    /// Default selected bar weight.
+    /// </summary>
+    internal const double DefaultWeight = 20;
+
+    /// <summary>
+    /// Default bars weights to set up on app initialize.
     /// </summary>
     private static readonly double[] _DefaultBars = { 7.5, 10, 15, 20, 25 };
 

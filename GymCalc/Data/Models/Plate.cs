@@ -1,6 +1,6 @@
 namespace GymCalc.Data.Models;
 
-internal class Plate : HeavyThing
+public class Plate : HeavyThing
 {
-    internal string Color { get; set; }
+    public string Color { get; set; }
 }

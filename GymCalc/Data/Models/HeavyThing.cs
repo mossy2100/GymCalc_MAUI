@@ -2,14 +2,14 @@ using SQLite;
 
 namespace GymCalc.Data.Models;
 
-internal class HeavyThing
+public class HeavyThing
 {
     [PrimaryKey, AutoIncrement]
-    internal int Id { get; set; }
+    public int Id { get; set; }
 
-    internal double Weight { get; set; }
+    public double Weight { get; set; }
 
-    internal string Unit { get; set; }
+    public string Unit { get; set; }
 
-    internal bool Enabled { get; set; }
+    public bool Enabled { get; set; }
 }
