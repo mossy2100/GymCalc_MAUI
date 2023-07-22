@@ -47,11 +47,8 @@ public partial class KettlebellsPage : ContentPage
         var kettlebells = await KettlebellRepository.GetAll();
 
         // Kettlebell graphic dimensions.
-        const int kettlebellHeight = 50;
-        const int kettlebellWidth = 100;
-
-        // Get the style.
-        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
+        const float kettlebellHeight = 85.98f;
+        const float kettlebellWidth = 60f;
 
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -79,24 +76,14 @@ public partial class KettlebellsPage : ContentPage
                 KettlebellsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(kettlebellHeight)));
             }
 
-            // Get the kettlebell background.
+            // Draw the kettlebell.
             var kettlebellGraphic = new GraphicsView
             {
-                Drawable = new KettlebellGraphic(),
+                Drawable = new KettlebellGraphic(kettlebell),
                 HeightRequest = kettlebellHeight,
                 WidthRequest = kettlebellWidth,
             };
             KettlebellsGrid.Add(kettlebellGraphic, colNum, rowNum);
-
-            // Add the kettlebell weight text.
-            var labelText = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
-            var label = new Label
-            {
-                FormattedText = TextUtility.StyleText(labelText, barLabelStyle),
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-            };
-            KettlebellsGrid.Add(label, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox

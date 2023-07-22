@@ -4,7 +4,6 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    FlyoutBehavior="Disabled"
     NavBarHasShadow="true">
 
     <!-- <ShellContent ContentTemplate="{DataTemplate pages:InitializationPage}" Route="init" /> -->
@@ -22,9 +21,12 @@
         <Tab Title="Dumbbells" Icon="dumbbell_icon_300.png">
             <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
         </Tab>
-        <Tab Title="About" Icon="about_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
+        <Tab Title="Kettlebells" Icon="kettlebell_icon_300.png">
+            <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" />
         </Tab>
+        <!-- <Tab Title="About" Icon="about_icon_300.png"> -->
+        <!--     <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" /> -->
+        <!-- </Tab> -->
     </TabBar>
 
 </Shell>

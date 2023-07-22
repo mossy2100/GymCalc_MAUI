@@ -53,9 +53,11 @@ internal static class Database
     /// </summary>
     internal static async Task Initialize()
     {
+        // Not sure if the database will let me initialize tables in parallel, but we can try.
         var barTask = BarRepository.Initialize();
         var plateTask = PlateRepository.Initialize();
         var dumbbellTask = DumbbellRepository.Initialize();
-        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask });
+        var kettlebellTask = KettlebellRepository.Initialize();
+        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
     }
 }
