@@ -102,6 +102,7 @@
         <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
+        <None Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -120,6 +121,29 @@
     <ItemGroup>
       <None Include="Platforms\Android\AndroidManifest.xml" />
       <None Include="Platforms\iOS\Info.plist" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="old\InitializationPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="old\InitializationPage.xaml.cs">
+        <DependentUpon>InitializationPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiCss Remove="old\**" />
     </ItemGroup>
 
 </Project>

@@ -16,8 +16,6 @@ public partial class DumbbellsPage : ContentPage
 
     private bool _dumbbellsDisplayed;
 
-    internal static double DumbbellsGridRowSpacing = 20;
-
     public DumbbellsPage()
     {
         InitializeComponent();
@@ -68,7 +66,7 @@ public partial class DumbbellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
         DumbbellsStackLayout.HeightRequest =
-            (dumbbellHeight + DumbbellsGridRowSpacing) * nRows + 20;
+            (dumbbellHeight + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;

@@ -15,9 +15,9 @@ public partial class PlatesPage : ContentPage
 
     private bool _platesDisplayed;
 
-    internal static double PlatesGridRowSpacing = 10;
+    private const int _plateHeight = 30;
 
-    private static double _plateHeight = 30;
+    private const int _plateInnerHeight = 22;
 
     public PlatesPage()
     {
@@ -61,17 +61,16 @@ public partial class PlatesPage : ContentPage
 
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
-        PlatesStackLayout.HeightRequest = (_plateHeight + PlatesGridRowSpacing) * nRows + 20;
+        PlatesStackLayout.HeightRequest = (_plateHeight + App.Spacing) * nRows + App.DoubleSpacing;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;
 
         var rowNum = 0;
         var colNum = 0;
-        var rowDefinition = new RowDefinition(new GridLength(_plateHeight));
         foreach (var plate in plates)
         {
-            PlatesGrid.RowDefinitions.Add(rowDefinition);
+            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_plateHeight)));
             AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
 
             // Add the checkbox.
@@ -104,11 +103,13 @@ public partial class PlatesPage : ContentPage
         // Get the style.
         var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
 
-        // Add the plate background.
+        // Calculate the plate width.
         const int minPlateWidth = 50;
         var maxPlateWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
-        var plateWidth = minPlateWidth
-            + plate.Weight / maxPlateWeight * (maxPlateWidth - minPlateWidth);
+        var plateWidth =
+            minPlateWidth + plate.Weight / maxPlateWeight * (maxPlateWidth - minPlateWidth);
+
+        // Add the plate background.
         var rect = new Rectangle
         {
             RadiusX = 4,
@@ -124,7 +125,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 0,
             RadiusY = 0,
-            HeightRequest = 22,
+            HeightRequest = _plateInnerHeight,
             WidthRequest = plateWidth,
             Fill = bgColor,
         };

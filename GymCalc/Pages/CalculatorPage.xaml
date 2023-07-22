@@ -2,24 +2,26 @@
 <ContentPage
     x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:app="clr-namespace:GymCalc"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
     <ScrollView>
         <StackLayout
             x:Name="CalculatorLayout"
-            Padding="10"
+            Padding="{x:Static app:App.Padding}"
             Orientation="Vertical"
-            Spacing="20">
+            Spacing="{x:Static app:App.DoubleSpacing}">
 
-            <VerticalStackLayout x:Name="CalculatorForm" Spacing="10">
+            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
+
                 <!--  Exercise type selection  -->
                 <Grid
-                    Padding="0,0,0,10"
                     ColumnDefinitions="*,*"
-                    ColumnSpacing="10"
+                    ColumnSpacing="{x:Static app:App.Spacing}"
                     RowDefinitions="Auto,Auto"
-                    RowSpacing="10">
+                    RowSpacing="{x:Static app:App.Spacing}">
+
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -44,11 +46,10 @@
                 <!--  Calculator form  -->
                 <Grid
                     x:Name="CalculatorFormGrid"
-                    Padding="0"
                     ColumnDefinitions="2*,*"
-                    ColumnSpacing="10"
+                    ColumnSpacing="{x:Static app:App.Spacing}"
                     RowDefinitions="Auto,Auto"
-                    RowSpacing="10">
+                    RowSpacing="{x:Static app:App.Spacing}">
 
                     <!--  Row 0: Max weight  -->
                     <Label
@@ -56,6 +57,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
+                        LineBreakMode="WordWrap"
                         Text="Maximum weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame

@@ -2,18 +2,17 @@
 <ContentPage
     x:Class="GymCalc.Pages.BarsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:app="clr-namespace:GymCalc"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Bars">
 
-    <ScrollView Padding="10" VerticalOptions="Fill">
-        <VerticalStackLayout Spacing="10">
+    <ScrollView Padding="{x:Static app:App.Padding}" VerticalOptions="Start">
+        <VerticalStackLayout x:Name="BarsStackLayout" Spacing="{x:Static app:App.DoubleSpacing}">
             <Label Text="Select which bar weights (kg) are available:" />
             <Grid
                 x:Name="BarsGrid"
-                ColumnDefinitions="*,Auto"
-                ColumnSpacing="10"
-                RowDefinitions="Auto"
-                RowSpacing="10" />
+                ColumnSpacing="{x:Static app:App.Spacing}"
+                RowSpacing="{x:Static app:App.DoubleSpacing}" />
         </VerticalStackLayout>
     </ScrollView>
 

@@ -17,16 +17,13 @@ public partial class CalculatorPage : ContentPage
 
     private bool _databaseInitialized;
 
-    /// <summary>
-    /// The currently selected exercise type.
-    /// </summary>
-    private static ExerciseType SelectedExerciseType = ExerciseType.Barbell;
+    private static ExerciseType _selectedExerciseType = ExerciseType.Barbell;
+
+    private Dictionary<double, Plate> _availPlates;
 
     private Dictionary<double, List<double>> _barbellResults;
 
     private Dictionary<double, double> _dumbbellResults;
-
-    private Dictionary<double, Plate> _availPlates;
 
     public CalculatorPage()
     {
@@ -47,7 +44,7 @@ public partial class CalculatorPage : ContentPage
         UpdateLayoutOrientation();
 
         // Initialise the exercise type buttons.
-        UpdateExerciseType(SelectedExerciseType);
+        UpdateExerciseType(_selectedExerciseType);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
@@ -69,7 +66,7 @@ public partial class CalculatorPage : ContentPage
         SetExerciseTypeButtonWidths();
 
         // Re-render the results for the altered width.
-        switch (SelectedExerciseType)
+        switch (_selectedExerciseType)
         {
             case ExerciseType.Barbell:
                 DisplayBarbellResults();
@@ -86,9 +83,8 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        const int padding = 10;
         var nColumns = App.GetNumColumns();
-        var availWidth = (CalculatorLayout.Width / nColumns) - (2 * padding);
+        var availWidth = (CalculatorLayout.Width / nColumns) - (2 * App.Spacing);
         return availWidth;
     }
 
@@ -100,10 +96,9 @@ public partial class CalculatorPage : ContentPage
         DumbbellButton.WidthRequest = 100;
 
         // Calculate the button width.
-        const int padding = 10;
         const int nButtons = 2;
         var availWidth = GetAvailWidth();
-        var buttonWidth = (availWidth - ((nButtons - 1) * padding)) / nButtons;
+        var buttonWidth = (availWidth - ((nButtons - 1) * App.Spacing)) / nButtons;
 
         // Set the button widths.
         BarbellButton.WidthRequest = buttonWidth;
@@ -112,7 +107,7 @@ public partial class CalculatorPage : ContentPage
 
     private void UpdateExerciseType(ExerciseType exerciseType)
     {
-        SelectedExerciseType = exerciseType;
+        _selectedExerciseType = exerciseType;
 
         switch (exerciseType)
         {
@@ -121,7 +116,7 @@ public partial class CalculatorPage : ContentPage
                 VisualStateManager.GoToState(DumbbellButton, "Normal");
                 MaxWeightLabel.Text = "Maximum total weight (kg)";
                 CalculatorFormGrid.RowDefinitions[1].Height = GridLength.Auto;
-                CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 10);
+                CalculatorFormGrid.RowSpacing = App.Spacing;
                 BarWeightLabel.IsVisible = true;
                 BarWeightPickerFrame.IsVisible = true;
                 break;
@@ -133,7 +128,7 @@ public partial class CalculatorPage : ContentPage
                 BarWeightLabel.IsVisible = false;
                 BarWeightPickerFrame.IsVisible = false;
                 CalculatorFormGrid.RowDefinitions[1].Height = new GridLength(0);
-                CalculatorFormGrid.Padding = new Thickness(0, 0, 0, 0);
+                CalculatorFormGrid.RowSpacing = 0;
                 break;
         }
     }
@@ -210,7 +205,7 @@ public partial class CalculatorPage : ContentPage
 
     private async void OnCalculateButtonClicked(object sender, EventArgs e)
     {
-        switch (SelectedExerciseType)
+        switch (_selectedExerciseType)
         {
             case ExerciseType.Barbell:
                 // Get the weights from the calculator fields and validate them.
@@ -298,7 +293,7 @@ public partial class CalculatorPage : ContentPage
                 ),
                 ColumnSpacing = 15,
                 RowSpacing = 15,
-                Padding = new Thickness(0, 20, 0, 0),
+                Padding = new Thickness(0, App.DoubleSpacing, 0, 0),
             };
 
             ///////////
@@ -382,13 +377,17 @@ public partial class CalculatorPage : ContentPage
             CalculatorResults.Add(textGrid);
 
             // Construct the plates grid and add it to the layout.
-            var platesGrid = new Grid { Padding = new Thickness(0, 10, 0, 20) };
+            var platesGrid = new Grid
+            {
+                Padding = new Thickness(0, App.Spacing, 0, App.DoubleSpacing)
+            };
             var j = 0;
             platesResult.Sort();
             foreach (var plateWeight in platesResult)
             {
                 platesGrid.RowDefinitions.Add(new RowDefinition());
-                PlatesPage.AddPlateToGrid(_availPlates[plateWeight], platesGrid, 0, j, maxPlateWeight);
+                PlatesPage.AddPlateToGrid(_availPlates[plateWeight], platesGrid, 0, j,
+                    maxPlateWeight);
                 j++;
             }
             CalculatorResults.Add(platesGrid);
@@ -444,7 +443,7 @@ public partial class CalculatorPage : ContentPage
                 ),
                 ColumnSpacing = 15,
                 RowSpacing = 15,
-                Padding = new Thickness(0, 20, 0, 20),
+                Padding = new Thickness(0, App.DoubleSpacing, 0, App.DoubleSpacing),
             };
 
             ///////////

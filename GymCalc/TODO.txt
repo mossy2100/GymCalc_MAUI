@@ -1,3 +1,4 @@
+* Make the bars page 2-column in landscape mode.
 * Make sure it works and looks right on portrait and landscape, mobile and tablet.
 * Fix exercise type button layout on Android.
 

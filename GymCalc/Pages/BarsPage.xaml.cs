@@ -15,9 +15,12 @@ public partial class BarsPage : ContentPage
 
     private bool _barsDisplayed;
 
+    private const int _barHeight = 22;
+
     public BarsPage()
     {
         InitializeComponent();
+        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
     }
 
     /// <inheritdoc />
@@ -28,6 +31,12 @@ public partial class BarsPage : ContentPage
             await DisplayBars();
             _barsDisplayed = true;
         }
+    }
+
+    private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    {
+        MauiUtilities.ClearGrid(BarsGrid, true, true);
+        await DisplayBars();
     }
 
     /// <summary>
@@ -44,23 +53,48 @@ public partial class BarsPage : ContentPage
         // Get the style.
         var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
 
+        // Set up the columns.
+        BarsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
+        var nCols = App.GetNumColumns() * 2;
+        for (var c = 0; c < nCols / 2; c++)
+        {
+            // Add 2 columns to the grid.
+            BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+        }
+
+        // Set the stack height manually, because it doesn't resize automatically.
+        var nRows = (int)double.Ceiling(bars.Count / (nCols / 2.0));
+        BarsStackLayout.HeightRequest =
+            (_barHeight + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+
+        // Get the min and max bar width.
+        const int minBarWidth = 50;
+        var maxBarWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
+
+        // Get the maximum bar weight.
+        var maxBarWeight = bars.Last().Weight;
+
         var rowNum = 0;
+        var colNum = 0;
         foreach (var bar in bars)
         {
             // Add a new row to the grid.
-            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(30)));
+            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(_barHeight)));
+
+            // Calculate the bar width.
+            var barWidth = minBarWidth + bar.Weight / maxBarWeight * (maxBarWidth - minBarWidth);
 
             // Add the bar background.
-            var barLength = 50 + bar.Weight / 25 * 250;
             var rect = new Rectangle
             {
                 RadiusX = 0,
                 RadiusY = 0,
-                HeightRequest = 22,
-                WidthRequest = barLength,
+                HeightRequest = _barHeight,
+                WidthRequest = barWidth,
                 Fill = brush,
             };
-            BarsGrid.Add(rect, 0, rowNum);
+            BarsGrid.Add(rect, colNum, rowNum);
 
             // Add the bar weight text.
             var label = new Label
@@ -69,7 +103,7 @@ public partial class BarsPage : ContentPage
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             };
-            BarsGrid.Add(label, 0, rowNum);
+            BarsGrid.Add(label, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox
@@ -77,13 +111,18 @@ public partial class BarsPage : ContentPage
                 IsChecked = bar.Enabled,
             };
             cb.CheckedChanged += OnBarCheckboxChanged;
-            BarsGrid.Add(cb, 1, rowNum);
+            BarsGrid.Add(cb, colNum + 1, rowNum);
 
             // Remember the bar weight in the lookup table.
             _cbBarMap[cb] = bar;
 
-            // Next row.
-            rowNum++;
+            // Next position.
+            colNum += 2;
+            if (colNum == nCols)
+            {
+                rowNum++;
+                colNum = 0;
+            }
         }
     }
 
