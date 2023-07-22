@@ -46,18 +46,23 @@
         </MauiIcon>
         <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_300.png">
           <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_300.png">
           <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_300.png">
           <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_300.png">
           <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_300.png">
           <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
         <!-- Splash Screen -->
@@ -70,6 +75,7 @@
         <MauiImage Update="Resources\Images\tab_bar_icons\barbell_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\tab_bar_icons\plate_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\tab_bar_icons\dumbbell_icon_300.png" BaseSize="30,30" />
+        <MauiImage Update="Resources\Images\tab_bar_icons\kettlebell_icon_300.png" BaseSize="30,30" />
         <MauiImage Update="Resources\Images\tab_bar_icons\about_icon_300.png" BaseSize="30,30" />
         <!-- Images for exercise type buttons -->
         <MauiImage Update="Resources\Images\exercise_types\deadlift_100.png" BaseSize="100,100" />
@@ -103,6 +109,10 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
         <None Remove="old\**" />
+        <None Remove="Resources\Images\tab_bar_icons\kettlebell_icon_300.png" />
+        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_300.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
     </ItemGroup>
 
     <ItemGroup>
@@ -128,6 +138,9 @@
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Remove="old\**" />
+      <MauiXaml Update="Pages\KettlebellsPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -136,6 +149,10 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Remove="old\**" />
+      <Compile Update="Pages\KettlebellsPage.xaml.cs">
+        <DependentUpon>KettlebellsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

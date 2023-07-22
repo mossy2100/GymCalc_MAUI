@@ -1,6 +1,6 @@
+* Add kettlebells.
 * Fix bars, plates, and dumbbell pages on Android.
 * Make sure it works and looks right on portrait and landscape, mobile and tablet.
-
 
 * Deploy to App store (TestFlight).
 * Deploy to Android store.
