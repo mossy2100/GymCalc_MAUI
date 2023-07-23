@@ -6,27 +6,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     NavBarHasShadow="true">
 
-    <!-- <ShellContent ContentTemplate="{DataTemplate pages:InitializationPage}" Route="init" /> -->
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout
+            Padding="20"
+            BackgroundColor="{StaticResource Primary}"
+            Spacing="10"
+            VerticalOptions="Start">
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                Text="GymCalc"
+                TextColor="White" />
+            <Label
+                FontAttributes="Bold"
+                FontSize="16"
+                Text="by Shaun Moss"
+                TextColor="White" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
 
-    <TabBar>
-        <Tab Title="Calculator" Icon="calculator_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" Route="calculator" />
-        </Tab>
-        <Tab Title="Bars" Icon="barbell_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" />
-        </Tab>
-        <Tab Title="Plates" Icon="plate_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" />
-        </Tab>
-        <Tab Title="Dumbbells" Icon="dumbbell_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
-        </Tab>
-        <Tab Title="Kettlebells" Icon="kettlebell_icon_300.png">
-            <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" />
-        </Tab>
-        <!-- <Tab Title="About" Icon="about_icon_300.png"> -->
-        <!--     <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" /> -->
-        <!-- </Tab> -->
-    </TabBar>
+    <FlyoutItem Title="Calculator" Icon="calculator_icon_300.png">
+        <ShellContent
+            Title="Calculator"
+            ContentTemplate="{DataTemplate pages:CalculatorPage}"
+            Icon="calculator_icon_300.png" />
+        <ShellContent
+            Title="Bars"
+            ContentTemplate="{DataTemplate pages:BarsPage}"
+            Icon="barbell_icon_300.png" />
+        <ShellContent
+            Title="Plates"
+            ContentTemplate="{DataTemplate pages:PlatesPage}"
+            Icon="plate_icon_300.png" />
+        <ShellContent
+            Title="Dumbbells"
+            ContentTemplate="{DataTemplate pages:DumbbellsPage}"
+            Icon="dumbbell_icon_300.png" />
+        <ShellContent
+            Title="Kettlebells"
+            ContentTemplate="{DataTemplate pages:KettlebellsPage}"
+            Icon="kettlebell_icon_300.png" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="About GymCalc" Icon="about_icon_300.png">
+        <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
+    </FlyoutItem>
 
 </Shell>
