@@ -141,12 +141,17 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        return (CalculatorLayout.Width / PageLayout.GetNumColumns()) - PageLayout.DoubleSpacing;
+        if (PageLayout.GetNumColumns() == 2)
+        {
+            return (CalculatorLayout.Width - CalculatorLayout.Spacing) / 2;
+        }
+
+        return CalculatorLayout.Width;
     }
 
     private void ResetExerciseTypeButtonWidths()
     {
-        var width = GetAvailWidth() / 2 - PageLayout.Spacing;
+        var width = (GetAvailWidth() - PageLayout.Spacing) / 2;
         BarbellButton.WidthRequest = width;
         DumbbellButton.WidthRequest = width;
         MachineButton.WidthRequest = width;
