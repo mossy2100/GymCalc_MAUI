@@ -1,3 +1,4 @@
+* Update and reduce about text.
 * Add colour to selected tab bar icons in dark mode. Review colours throughout app.
 * Create a palette of 16 colours for use as plate and kettlebell colours.
 * Change the app colour to orange. Need 3 different shades of orange. Primary (middle), Secondary (light), and

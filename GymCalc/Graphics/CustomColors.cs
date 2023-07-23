@@ -6,7 +6,7 @@ internal static class CustomColors
 {
     internal static readonly Color StainlessSteel = Color.Parse("#ddd");
 
-    internal static readonly Color CastIron = Color.Parse("#222");
+    internal static readonly Color CastIron = Color.Parse("#333");
 
     /// <summary>
     /// Get the default plate color for a given plate weight.
