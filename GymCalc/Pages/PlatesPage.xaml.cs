@@ -3,7 +3,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
-using GymCalc.Graphics.Objects;
+using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -49,7 +49,7 @@ public partial class PlatesPage : ContentPage
 
         // Set up the columns.
         PlatesGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nCols = App.GetNumColumns() * 2;
+        var nCols = PageLayout.GetNumColumns() * 2;
         for (var c = 0; c < nCols / 2; c++)
         {
             // Add 2 columns to the grid.
@@ -60,7 +60,7 @@ public partial class PlatesPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
         PlatesStackLayout.HeightRequest =
-            (PlateGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+            (PlateDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;
@@ -69,8 +69,17 @@ public partial class PlatesPage : ContentPage
         var colNum = 0;
         foreach (var plate in plates)
         {
-            PlatesGrid.RowDefinitions.Add(new RowDefinition(new GridLength(PlateGraphic.Height)));
-            AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
+            // If we're at the start of a new row, create one and add it to the grid.
+            if (colNum == 0)
+            {
+                PlatesGrid.RowDefinitions.Add(
+                    new RowDefinition(new GridLength(PlateDrawable.Height)));
+            }
+
+            // Add plate graphic to grid.
+            // AddPlateToGrid(plate, PlatesGrid, colNum, rowNum, maxPlateWeight);
+            var plateGraphic = PlateDrawable.CreateGraphic(plate, maxPlateWeight);
+            PlatesGrid.Add(plateGraphic, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox
@@ -103,16 +112,16 @@ public partial class PlatesPage : ContentPage
         var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
 
         // Calculate the plate width.
-        var maxPlateWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
-        var plateWidth = PlateGraphic.MinWidth +
-            plate.Weight / maxPlateWeight * (maxPlateWidth - PlateGraphic.MinWidth);
+        var maxPlateWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.75;
+        var plateWidth = PlateDrawable.MinWidth +
+            plate.Weight / maxPlateWeight * (maxPlateWidth - PlateDrawable.MinWidth);
 
         // Add the plate background.
         var rect = new Rectangle
         {
-            RadiusX = PlateGraphic.CornerRadius,
-            RadiusY = PlateGraphic.CornerRadius,
-            HeightRequest = PlateGraphic.Height,
+            RadiusX = PlateDrawable.CornerRadius,
+            RadiusY = PlateDrawable.CornerRadius,
+            HeightRequest = PlateDrawable.Height,
             WidthRequest = plateWidth,
             Fill = bgColor.AddLuminosity(-0.1f),
         };
@@ -123,7 +132,7 @@ public partial class PlatesPage : ContentPage
         {
             RadiusX = 0,
             RadiusY = 0,
-            HeightRequest = PlateGraphic.InnerHeight,
+            HeightRequest = PlateDrawable.InnerHeight,
             WidthRequest = plateWidth,
             Fill = bgColor,
         };

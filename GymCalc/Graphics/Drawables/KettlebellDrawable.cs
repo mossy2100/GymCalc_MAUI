@@ -7,6 +7,10 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class KettlebellDrawable : IDrawable
 {
+    internal const int Height = 76;
+
+    internal const int Width = 60;
+
     private readonly Kettlebell _kettlebell;
 
     public KettlebellDrawable(Kettlebell kettlebell)
@@ -52,5 +56,15 @@ internal class KettlebellDrawable : IDrawable
         var weightString = _kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
         canvas.DrawString(weightString, 10, 37, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
+    }
+
+    internal static GraphicsView CreateGraphic(Kettlebell kettlebell)
+    {
+        return new GraphicsView
+        {
+            Drawable = new KettlebellDrawable(kettlebell),
+            HeightRequest = Height,
+            WidthRequest = Width,
+        };
     }
 }

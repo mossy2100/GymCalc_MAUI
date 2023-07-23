@@ -2,7 +2,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
-using GymCalc.Graphics.Objects;
+using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -48,7 +48,7 @@ public partial class KettlebellsPage : ContentPage
 
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nCols = App.GetNumColumns() * 4;
+        var nCols = PageLayout.GetNumColumns() * 4;
         for (var c = 0; c < nCols / 2; c++)
         {
             // Add 2 columns to the grid.
@@ -59,22 +59,23 @@ public partial class KettlebellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
         KettlebellsStackLayout.HeightRequest =
-            (KettlebellGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+            (KettlebellDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;
         var colNum = 0;
         foreach (var kettlebell in kettlebells)
         {
+            // If we're at the start of a new row, create one and add it to the grid.
             if (colNum == 0)
             {
                 // Add a new row to the grid.
                 KettlebellsGrid.RowDefinitions.Add(
-                    new RowDefinition(new GridLength(KettlebellGraphic.Height)));
+                    new RowDefinition(new GridLength(KettlebellDrawable.Height)));
             }
 
             // Draw the kettlebell.
-            var kettlebellGraphic = GraphicsFactory.CreateKettlebellGraphic(kettlebell);
+            var kettlebellGraphic = KettlebellDrawable.CreateGraphic(kettlebell);
             KettlebellsGrid.Add(kettlebellGraphic, colNum, rowNum);
 
             // Add the checkbox.

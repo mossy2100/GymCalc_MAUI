@@ -4,9 +4,9 @@ namespace GymCalc.Graphics;
 
 internal static class CustomColors
 {
-    internal static Color StainlessSteel = Color.Parse("#ddd");
+    internal static readonly Color StainlessSteel = Color.Parse("#ddd");
 
-    internal static Color CastIron = Color.Parse("#222");
+    internal static readonly Color CastIron = Color.Parse("#222");
 
     /// <summary>
     /// Get the default plate color for a given plate weight.
@@ -36,7 +36,7 @@ internal static class CustomColors
     /// <summary>
     /// Get the default color for a given kettlebell weight.
     ///
-    /// Best image I've found showing the competition colors with black bands:
+    /// Best image I've found showing a competition kettlebell with black bands:
     /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1" />
     /// </summary>
     /// <param name="weight">The weight of the kettlebell in kilograms.</param>

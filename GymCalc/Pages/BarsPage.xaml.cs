@@ -3,7 +3,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
-using GymCalc.Graphics.Objects;
+using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -52,7 +52,7 @@ public partial class BarsPage : ContentPage
 
         // Set up the columns.
         BarsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nCols = App.GetNumColumns() * 2;
+        var nCols = PageLayout.GetNumColumns() * 2;
         for (var c = 0; c < nCols / 2; c++)
         {
             // Add 2 columns to the grid.
@@ -63,11 +63,7 @@ public partial class BarsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(bars.Count / (nCols / 2.0));
         BarsStackLayout.HeightRequest =
-            (BarGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
-
-        // Get the min and max bar width.
-        const int minBarWidth = 50;
-        var maxBarWidth = MauiUtilities.GetDeviceWidth() / App.GetNumColumns() * 0.75;
+            (BarDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
 
         // Get the maximum bar weight.
         var maxBarWeight = bars.Last().Weight;
@@ -76,31 +72,15 @@ public partial class BarsPage : ContentPage
         var colNum = 0;
         foreach (var bar in bars)
         {
-            // Add a new row to the grid.
-            BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(BarGraphic.Height)));
-
-            // Calculate the bar width.
-            var barWidth = minBarWidth + bar.Weight / maxBarWeight * (maxBarWidth - minBarWidth);
-
-            // Add the bar background.
-            var rect = new Rectangle
+            // If we're at the start of a new row, create one and add it to the grid.
+            if (colNum == 0)
             {
-                RadiusX = 0,
-                RadiusY = 0,
-                HeightRequest = BarGraphic.Height,
-                WidthRequest = barWidth,
-                Fill = CustomColors.StainlessSteel,
-            };
-            BarsGrid.Add(rect, colNum, rowNum);
+                BarsGrid.RowDefinitions.Add(new RowDefinition(new GridLength(BarDrawable.Height)));
+            }
 
-            // Add the bar weight text.
-            var label = new Label
-            {
-                FormattedText = TextUtility.StyleText($"{bar.Weight}", barLabelStyle),
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-            };
-            BarsGrid.Add(label, colNum, rowNum);
+            // Add the bar graphic.
+            var barGraphic = BarDrawable.CreateGraphic(bar, maxBarWeight);
+            BarsGrid.Add(barGraphic, colNum, rowNum);
 
             // Add the checkbox.
             var cb = new CheckBox

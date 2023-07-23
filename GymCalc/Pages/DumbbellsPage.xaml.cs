@@ -2,7 +2,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
-using GymCalc.Graphics.Objects;
+using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -48,7 +48,7 @@ public partial class DumbbellsPage : ContentPage
 
         // Set up the columns.
         DumbbellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nCols = App.GetNumColumns() * 4;
+        var nCols = PageLayout.GetNumColumns() * 4;
         for (var c = 0; c < nCols / 2; c++)
         {
             // Add 2 columns to the grid.
@@ -59,22 +59,22 @@ public partial class DumbbellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
         DumbbellsStackLayout.HeightRequest =
-            (DumbbellGraphic.Height + App.DoubleSpacing) * nRows + App.DoubleSpacing;
+            (DumbbellDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;
         var colNum = 0;
         foreach (var dumbbell in dumbbells)
         {
+            // If we're at the start of a new row, create one and add it to the grid.
             if (colNum == 0)
             {
-                // Add a new row to the grid.
                 DumbbellsGrid.RowDefinitions.Add(
-                    new RowDefinition(new GridLength(DumbbellGraphic.Height)));
+                    new RowDefinition(new GridLength(DumbbellDrawable.Height)));
             }
 
             // Add the dumbbell graphic.
-            var dumbbellGraphic = GraphicsFactory.CreateDumbbellGraphic(dumbbell);
+            var dumbbellGraphic = DumbbellDrawable.CreateGraphic(dumbbell);
             DumbbellsGrid.Add(dumbbellGraphic, colNum, rowNum);
 
             // Add the checkbox.

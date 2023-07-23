@@ -5,6 +5,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
+using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 
 namespace GymCalc.Pages;
@@ -111,7 +112,7 @@ public partial class CalculatorPage : ContentPage
         InvalidateMeasure();
 
         // Update the button widths.
-        SetExerciseTypeButtonWidths();
+        ResetExerciseTypeButtonWidths();
 
         // Re-render the results for the altered width.
         switch (_selectedExerciseType)
@@ -140,12 +141,12 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        return (CalculatorLayout.Width / App.GetNumColumns()) - (2 * App.Spacing);
+        return (CalculatorLayout.Width / PageLayout.GetNumColumns()) - PageLayout.DoubleSpacing;
     }
 
-    private void SetExerciseTypeButtonWidths()
+    private void ResetExerciseTypeButtonWidths()
     {
-        var width = (GetAvailWidth() - App.Spacing) / 2;
+        var width = GetAvailWidth() / 2 - PageLayout.Spacing;
         BarbellButton.WidthRequest = width;
         DumbbellButton.WidthRequest = width;
         MachineButton.WidthRequest = width;
@@ -589,8 +590,13 @@ public partial class CalculatorPage : ContentPage
                 foreach (var plateWeight in platesResult)
                 {
                     platesGrid.RowDefinitions.Add(new RowDefinition());
-                    PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
+
+                    // Add the plate graphic.
+                    var plateGraphic = PlateDrawable.CreateGraphic(_plateLookup[plateWeight],
                         maxPlateWeight);
+                    platesGrid.Add(plateGraphic, 0, j);
+                    // PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
+                    //     maxPlateWeight);
                     j++;
                 }
                 CalculatorResults.Add(platesGrid);
@@ -643,7 +649,7 @@ public partial class CalculatorPage : ContentPage
                 ),
                 ColumnSpacing = 15,
                 RowSpacing = 15,
-                Padding = new Thickness(0, App.DoubleSpacing, 0, App.DoubleSpacing),
+                Padding = new Thickness(0, PageLayout.DoubleSpacing, 0, PageLayout.DoubleSpacing),
             };
 
             ///////////
@@ -713,7 +719,7 @@ public partial class CalculatorPage : ContentPage
     {
         var createGraphic = (double weight) =>
         {
-            return GraphicsFactory.CreateDumbbellGraphic(_dumbbellLookup[weight]);
+            return DumbbellDrawable.CreateGraphic(_dumbbellLookup[weight]);
         };
         DisplaySingleWeightResults(_dumbbellResults, createGraphic);
     }
@@ -722,7 +728,7 @@ public partial class CalculatorPage : ContentPage
     {
         var createGraphic = (double weight) =>
         {
-            return GraphicsFactory.CreateKettlebellGraphic(_kettlebellLookup[weight]);
+            return KettlebellDrawable.CreateGraphic(_kettlebellLookup[weight]);
         };
         DisplaySingleWeightResults(_kettlebellResults, createGraphic);
     }

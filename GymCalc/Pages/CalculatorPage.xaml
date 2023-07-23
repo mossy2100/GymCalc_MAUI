@@ -2,25 +2,22 @@
 <ContentPage
     x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:app="clr-namespace:GymCalc"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
-    <ScrollView>
-        <StackLayout
-            x:Name="CalculatorLayout"
-            Padding="{x:Static app:App.Padding}"
-            Spacing="{x:Static app:App.DoubleSpacing}">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
+        <StackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static app:App.Spacing}">
+            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label FontSize="16" Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
-                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto,Auto"
-                    RowSpacing="{x:Static app:App.Spacing}">
+                    RowSpacing="{x:Static graphics:PageLayout.Spacing}">
                     <Button
                         x:Name="BarbellButton"
                         Grid.Row="0"
@@ -55,7 +52,7 @@
                 <Grid
                     x:Name="MaxWeightGrid"
                     ColumnDefinitions="2*,*"
-                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         x:Name="MaxWeightLabel"
@@ -83,7 +80,7 @@
                 <Grid
                     x:Name="BarWeightGrid"
                     ColumnDefinitions="2*,*"
-                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         x:Name="BarWeightLabel"
@@ -110,7 +107,7 @@
                 <Grid
                     x:Name="StartingWeightGrid"
                     ColumnDefinitions="2*,*"
-                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         x:Name="StartingWeightLabel"
@@ -138,7 +135,7 @@
                 <Grid
                     x:Name="OneSideOnlyGrid"
                     ColumnDefinitions="2*,*"
-                    ColumnSpacing="{x:Static app:App.Spacing}"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         x:Name="OneSideOnlyLabel"
@@ -163,14 +160,13 @@
                 <!--  Error message  -->
                 <Label
                     x:Name="ErrorMessage"
-                    Padding="0"
                     FontAttributes="Bold"
                     FontSize="16"
                     Text=""
                     TextColor="Red" />
             </VerticalStackLayout>
 
-            <VerticalStackLayout x:Name="CalculatorResults" Spacing="{x:Static app:App.DoubleSpacing}" />
+            <VerticalStackLayout x:Name="CalculatorResults" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
 
         </StackLayout>
     </ScrollView>
