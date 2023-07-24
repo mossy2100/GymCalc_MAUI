@@ -17,6 +17,13 @@
                 <Setter Property="Type" Value="Material" />
             </Style>
 
+            <Style TargetType="input:RadioButton">
+                <Setter Property="Color" Value="{StaticResource Primary}" />
+                <Setter Property="CircleColor" Value="{StaticResource Primary}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                <Setter Property="TextFontSize" Value="16" />
+            </Style>
+
             <Style x:Key="ControlFrameStyle" TargetType="Frame">
                 <Setter Property="BorderColor" Value="{StaticResource Primary}" />
                 <Setter Property="Padding" Value="0" />
@@ -123,6 +130,10 @@
 
             <Style x:Key="CalculatorFlyoutItem" TargetType="FlyoutItem">
                 <Setter Property="FlyoutIcon" Value="{AppThemeBinding Light='calculator_icon_black_300.png', Dark='calculator_icon_white_300.png'}" />
+            </Style>
+
+            <Style x:Key="SettingsFlyoutItem" TargetType="FlyoutItem">
+                <Setter Property="FlyoutIcon" Value="{AppThemeBinding Light='settings_icon_black_300.png', Dark='settings_icon_white_300.png'}" />
             </Style>
 
             <Style x:Key="AboutFlyoutItem" TargetType="FlyoutItem">

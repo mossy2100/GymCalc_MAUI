@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="GymCalc.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Settings">
+
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
+        <Grid
+            ColumnDefinitions="*,*"
+            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+            RowDefinitions="Auto"
+            RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                FontSize="16"
+                Text="Units" />
+
+            <input:RadioButtonGroupView
+                x:Name="Units"
+                Grid.Row="0"
+                Grid.Column="1"
+                SelectedItem="{Binding SelectedItem}"
+                SelectedItemChanged="OnUnitsSelectedItemChanged">
+                <input:RadioButton Text="kilograms (kg)" Value="kg" />
+                <input:RadioButton Text="pounds (lb)" Value="lb" />
+            </input:RadioButtonGroupView>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

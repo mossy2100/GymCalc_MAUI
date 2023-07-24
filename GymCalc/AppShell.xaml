@@ -48,6 +48,10 @@
             Icon="kettlebell_icon_black_300.png" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="About GymCalc" Style="{StaticResource AboutFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
     </FlyoutItem>
