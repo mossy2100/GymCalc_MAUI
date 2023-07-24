@@ -42,31 +42,6 @@ internal static class CustomColors
     public static readonly Color OffBlack = Color.Parse("#333");
 
     /// <summary>
-    /// Get the default plate color for a given plate weight.
-    /// </summary>
-    /// <param name="weight">The weight of the plate in kilograms.</param>
-    /// <returns>The default plate color.</returns>
-    internal static Color DefaultPlateColor(double weight)
-    {
-        while (weight < 5)
-        {
-            weight *= 10;
-        }
-
-        return weight switch
-        {
-            5 => OffWhite,
-            7.5 => Pink,
-            10 => Green,
-            12.5 => Orange,
-            15 => Yellow,
-            20 => Indigo,
-            25 => Red,
-            _ => OffBlack,
-        };
-    }
-
-    /// <summary>
     /// Get the default color for a given kettlebell weight.
     ///
     /// Best image I've found showing a competition kettlebell with black bands:
@@ -74,32 +49,65 @@ internal static class CustomColors
     /// </summary>
     /// <param name="weight">The weight of the kettlebell in kilograms.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (Color, bool, Color) DefaultKettlebellColor(double weight)
+    internal static (Color, bool, Color) DefaultKettlebellColor(double weight, string units)
     {
-        var hasBands = (weight % 4).FuzzyEquals(2);
-        var weightForColor = weight;
-        if (hasBands)
-        {
-            weightForColor -= 2;
-        }
+        Color ballColor;
+        bool hasBands;
 
-        // Get ball colour.
-        var ballColor = weightForColor switch
+        var weightForColor = weight;
+
+        if (units == Units.Kilograms)
         {
-            4 => Cyan,
-            8 => Pink,
-            12 => Blue,
-            16 => Yellow,
-            20 => Purple,
-            24 => Green,
-            28 => Orange,
-            32 => Red,
-            36 => Gray,
-            40 => OffWhite,
-            44 => Silver,
-            48 => Gold,
-            _ => OffBlack,
-        };
+            hasBands = (weight % 4).FuzzyEquals(2);
+            if (hasBands)
+            {
+                weightForColor -= 2;
+            }
+
+            // Get ball colour.
+            ballColor = weightForColor switch
+            {
+                4 => Cyan,
+                8 => Pink,
+                12 => Blue,
+                16 => Yellow,
+                20 => Purple,
+                24 => Green,
+                28 => Orange,
+                32 => Red,
+                36 => Gray,
+                40 => OffWhite,
+                44 => Silver,
+                48 => Gold,
+                _ => OffBlack,
+            };
+        }
+        else
+        {
+            hasBands = (weight % 10).FuzzyEquals(0);
+            if (hasBands)
+            {
+                weightForColor -= 5;
+            }
+
+            // Get ball colour.
+            ballColor = weightForColor switch
+            {
+                5 => Cyan,
+                15 => Pink,
+                25 => Blue,
+                35 => Yellow,
+                45 => Purple,
+                55 => Green,
+                65 => Orange,
+                75 => Red,
+                85 => Gray,
+                95 => OffWhite,
+                105 => Silver,
+                115 => Gold,
+                _ => OffBlack,
+            };
+        }
 
         // Get band color.
         var bandColor = hasBands ? OffBlack : null;

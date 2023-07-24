@@ -8,7 +8,7 @@
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
         <VerticalStackLayout x:Name="DumbbellsStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label Text="Select which dumbbell weights (kg) are available:" />
+            <Label x:Name="DumbbellsGridLabel" />
             <Grid
                 x:Name="DumbbellsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"

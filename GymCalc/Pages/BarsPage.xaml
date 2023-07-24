@@ -8,7 +8,7 @@
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
         <VerticalStackLayout x:Name="BarsStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label Text="Select which bar weights (kg) are available:" />
+            <Label x:Name="BarsGridLabel" />
             <Grid
                 x:Name="BarsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"

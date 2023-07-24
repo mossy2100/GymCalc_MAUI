@@ -60,7 +60,7 @@ internal class DumbbellDrawable : IDrawable
         var weightString = _dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
         const int m = (gapWidth + plateWidth) * 2;
         var p = (height - BarDrawable.Height) / 2 + 2;
-        canvas.DrawString(weightString, m, p, width - (m * 2), BarDrawable.Height,
+        canvas.DrawString(weightString, m, p, width - m * 2, BarDrawable.Height,
             HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }

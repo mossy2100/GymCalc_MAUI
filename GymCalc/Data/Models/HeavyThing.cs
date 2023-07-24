@@ -9,7 +9,7 @@ public class HeavyThing
 
     public double Weight { get; set; }
 
-    public string Unit { get; set; }
+    public string Units { get; set; }
 
     public bool Enabled { get; set; }
 }

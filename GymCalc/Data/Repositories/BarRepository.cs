@@ -15,7 +15,20 @@ internal static class BarRepository
     /// <summary>
     /// Default bars weights to set up on app initialize.
     /// </summary>
-    private static readonly double[] _DefaultBars = { 10, 15, 20, 25 };
+    private static readonly (int, string, bool)[] _DefaultBars =
+    {
+        // Metric.
+        (10, Units.Kilograms, true),
+        (15, Units.Kilograms, true),
+        (20, Units.Kilograms, true),
+        (25, Units.Kilograms, true),
+        // US units.
+        (15, Units.Pounds, true),
+        (25, Units.Pounds, true),
+        (35, Units.Pounds, true),
+        (45, Units.Pounds, true),
+        (55, Units.Pounds, true),
+    };
 
     /// <summary>
     /// Ensure the database table exist and contains some bars.
@@ -33,13 +46,13 @@ internal static class BarRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var weight in _DefaultBars)
+            foreach (var (weight, units, enable) in _DefaultBars)
             {
                 var bar = new Bar
                 {
                     Weight = weight,
-                    Unit = "kg",
-                    Enabled = true,
+                    Units = units,
+                    Enabled = enable,
                 };
                 await db.InsertAsync(bar);
             }
@@ -50,8 +63,9 @@ internal static class BarRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Bar>> GetAll(bool onlyEnabled = false, bool ascending = true)
+    public static async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false,
+        bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Bar>(onlyEnabled, ascending);
+        return await HeavyThingRepository.GetAll<Bar>(units, onlyEnabled, ascending);
     }
 }

@@ -15,8 +15,6 @@ public partial class KettlebellsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Kettlebell> _cbKettlebellMap = new ();
 
-    private bool _kettlebellsDisplayed;
-
     public KettlebellsPage()
     {
         InitializeComponent();
@@ -26,16 +24,13 @@ public partial class KettlebellsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        if (!_kettlebellsDisplayed)
-        {
-            await DisplayKettlebells();
-            _kettlebellsDisplayed = true;
-        }
+        KettlebellsGridLabel.Text =
+            $"Select which kettlebell weights ({Units.GetUnits()}) are available:";
+        await DisplayKettlebells();
     }
 
     private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
     {
-        MauiUtilities.ClearGrid(KettlebellsGrid, true, true);
         await DisplayKettlebells();
     }
 
@@ -44,8 +39,11 @@ public partial class KettlebellsPage : ContentPage
     /// </summary>
     private async Task DisplayKettlebells()
     {
+        // Clear the grid.
+        MauiUtilities.ClearGrid(KettlebellsGrid, true, true);
+
         // Get the kettlebells.
-        var kettlebells = await KettlebellRepository.GetAll();
+        var kettlebells = await KettlebellRepository.GetAll(Units.GetUnits());
 
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -60,7 +58,8 @@ public partial class KettlebellsPage : ContentPage
         // Set the stack height manually, because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
         KettlebellsStackLayout.HeightRequest =
-            (KettlebellDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
+            (KettlebellDrawable.Height + PageLayout.DoubleSpacing) * nRows
+            + PageLayout.DoubleSpacing;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;

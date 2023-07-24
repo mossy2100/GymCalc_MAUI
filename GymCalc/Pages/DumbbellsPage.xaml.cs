@@ -15,8 +15,6 @@ public partial class DumbbellsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Dumbbell> _cbDumbbellMap = new ();
 
-    private bool _dumbbellsDisplayed;
-
     public DumbbellsPage()
     {
         InitializeComponent();
@@ -26,16 +24,13 @@ public partial class DumbbellsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        if (!_dumbbellsDisplayed)
-        {
-            await DisplayDumbbells();
-            _dumbbellsDisplayed = true;
-        }
+        DumbbellsGridLabel.Text =
+            $"Select which dumbbell weights ({Units.GetUnits()}) are available:";
+        await DisplayDumbbells();
     }
 
     private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
     {
-        MauiUtilities.ClearGrid(DumbbellsGrid, true, true);
         await DisplayDumbbells();
     }
 
@@ -44,8 +39,11 @@ public partial class DumbbellsPage : ContentPage
     /// </summary>
     private async Task DisplayDumbbells()
     {
+        // Clear the grid.
+        MauiUtilities.ClearGrid(DumbbellsGrid, true, true);
+
         // Get the dumbbells.
-        var dumbbells = await DumbbellRepository.GetAll();
+        var dumbbells = await DumbbellRepository.GetAll(Units.GetUnits());
 
         // Set up the columns.
         DumbbellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();

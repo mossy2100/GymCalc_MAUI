@@ -15,8 +15,6 @@ public partial class BarsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
-    private bool _barsDisplayed;
-
     public BarsPage()
     {
         InitializeComponent();
@@ -26,16 +24,12 @@ public partial class BarsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        if (!_barsDisplayed)
-        {
-            await DisplayBars();
-            _barsDisplayed = true;
-        }
+        BarsGridLabel.Text = $"Select which bar weights ({Units.GetUnits()}) are available:";
+        await DisplayBars();
     }
 
     private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
     {
-        MauiUtilities.ClearGrid(BarsGrid, true, true);
         await DisplayBars();
     }
 
@@ -44,11 +38,11 @@ public partial class BarsPage : ContentPage
     /// </summary>
     private async Task DisplayBars()
     {
-        // Get the bars.
-        var bars = await BarRepository.GetAll();
+        // Clear the grid.
+        MauiUtilities.ClearGrid(BarsGrid, true, true);
 
-        // Get the style.
-        var barLabelStyle = MauiUtilities.LookupStyle("BarLabelStyle");
+        // Get the bars.
+        var bars = await BarRepository.GetAll(Units.GetUnits());
 
         // Set up the columns.
         BarsGrid.ColumnDefinitions = new ColumnDefinitionCollection();

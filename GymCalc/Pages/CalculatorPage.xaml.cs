@@ -17,6 +17,10 @@ public partial class CalculatorPage : ContentPage
     private static ExerciseType _selectedExerciseType = ExerciseType.Barbell;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Values extracted from user preferences.
+    private string _units;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from the form.
     private double _maxWeight;
 
@@ -66,6 +70,12 @@ public partial class CalculatorPage : ContentPage
             await Database.Initialize();
             _databaseInitialized = true;
         }
+
+        // Set the user's preferred units, which may have changed on the settings page.
+        _units = Units.GetUnits();
+        MaxWeightUnit.Text = _units;
+        BarWeightUnit.Text = _units;
+        StartingWeightUnit.Text = _units;
 
         // Invalidate collections because they may have changed on one of the other pages.
         _barLookup = null;
@@ -381,7 +391,7 @@ public partial class CalculatorPage : ContentPage
                 VisualStateManager.GoToState(KettlebellButton, "Normal");
 
                 // Update the max weight label text.
-                MaxWeightLabel.Text = "Maximum total weight (kg)";
+                MaxWeightLabel.Text = "Maximum total weight";
 
                 // Show relevant rows.
                 BarWeightGrid.IsVisible = true;
@@ -399,7 +409,7 @@ public partial class CalculatorPage : ContentPage
                 VisualStateManager.GoToState(KettlebellButton, "Normal");
 
                 // Update the max weight label text.
-                MaxWeightLabel.Text = "Max. weight per dumbbell (kg)";
+                MaxWeightLabel.Text = "Maximum weight per dumbbell";
 
                 // Hide other rows.
                 BarWeightGrid.IsVisible = false;
@@ -415,7 +425,7 @@ public partial class CalculatorPage : ContentPage
                 VisualStateManager.GoToState(KettlebellButton, "Normal");
 
                 // Update the label text.
-                MaxWeightLabel.Text = "Maximum total weight (kg)";
+                MaxWeightLabel.Text = "Maximum total weight";
 
                 // Show relevant rows.
                 StartingWeightGrid.IsVisible = true;
@@ -433,7 +443,7 @@ public partial class CalculatorPage : ContentPage
                 VisualStateManager.GoToState(MachineButton, "Normal");
 
                 // Update the max weight label text.
-                MaxWeightLabel.Text = "Maximum weight (kg)";
+                MaxWeightLabel.Text = "Maximum weight";
 
                 // Hide other rows.
                 BarWeightGrid.IsVisible = false;
@@ -454,7 +464,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_barLookup == null)
         {
-            var bars = await BarRepository.GetAll(true);
+            var bars = await BarRepository.GetAll(_units, true);
             _barLookup = bars.ToDictionary(p => p.Weight, p => p);
         }
         return _barLookup;
@@ -464,7 +474,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_plateLookup == null)
         {
-            var plates = await PlateRepository.GetAll(true);
+            var plates = await PlateRepository.GetAll(_units, true);
             _plateLookup = plates.ToDictionary(p => p.Weight, p => p);
         }
         return _plateLookup;
@@ -474,7 +484,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_dumbbellLookup == null)
         {
-            var dumbbells = await DumbbellRepository.GetAll(true);
+            var dumbbells = await DumbbellRepository.GetAll(_units, true);
             _dumbbellLookup = dumbbells.ToDictionary(p => p.Weight, p => p);
         }
         return _dumbbellLookup;
@@ -484,7 +494,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_kettlebellLookup == null)
         {
-            var kettlebells = await KettlebellRepository.GetAll(true);
+            var kettlebells = await KettlebellRepository.GetAll(_units, true);
             _kettlebellLookup = kettlebells.ToDictionary(p => p.Weight, p => p);
         }
         return _kettlebellLookup;
@@ -496,13 +506,14 @@ public partial class CalculatorPage : ContentPage
 
     private void DisplayBarbellResults()
     {
-        DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar");
+        DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar",
+            "Plates per end");
     }
 
     private void DisplayMachineResults()
     {
         DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly,
-            "Total including starting weight");
+            "Total including starting weight", "Plates per side");
     }
 
     private void DisplayDumbbellResults()
@@ -518,7 +529,7 @@ public partial class CalculatorPage : ContentPage
     }
 
     private void DisplayPlateResults(Dictionary<double, List<double>> results,
-        double startingWeight, bool oneSideOnly, string totalHeadingText)
+        double startingWeight, bool oneSideOnly, string totalHeadingText, string platesPerSideText)
     {
         // Clear the error message.
         ErrorMessage.Text = "";
@@ -606,7 +617,7 @@ public partial class CalculatorPage : ContentPage
             var idealPlates = (idealTotal - startingWeight) / (oneSideOnly ? 2 : 1);
             var idealTotalValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{idealTotal:F2} kg", weightStyle),
+                FormattedText = TextUtility.StyleText($"{idealTotal:F2} {_units}", weightStyle),
             };
             textGrid.Add(idealTotalValue, 1, 1);
 
@@ -615,7 +626,7 @@ public partial class CalculatorPage : ContentPage
             var closestTotal = (oneSideOnly ? 2 : 1) * closestPlates + startingWeight;
             var closestTotalValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{closestTotal:F2} kg", weightStyle),
+                FormattedText = TextUtility.StyleText($"{closestTotal:F2} {_units}", weightStyle),
             };
             textGrid.Add(closestTotalValue, 2, 1);
 
@@ -623,7 +634,7 @@ public partial class CalculatorPage : ContentPage
             // Row 2.
 
             // Plates heading.
-            var platesHeadingText = oneSideOnly ? "Plates per end" : "Plates to select";
+            var platesHeadingText = oneSideOnly ? platesPerSideText : "Plates to select";
             var platesHeading = new Label
             {
                 FormattedText = TextUtility.StyleText(platesHeadingText, headerStyle),
@@ -633,14 +644,15 @@ public partial class CalculatorPage : ContentPage
             // Ideal plates weight.
             var idealPlatesValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{idealPlates:F2} kg", weightStyle),
+                FormattedText = TextUtility.StyleText($"{idealPlates:F2} {_units}", weightStyle),
             };
             textGrid.Add(idealPlatesValue, 1, 2);
 
             // Closest plates weight.
             var closestPlatesValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{closestPlates:F2} kg", focusWeightStyle),
+                FormattedText =
+                    TextUtility.StyleText($"{closestPlates:F2} {_units}", focusWeightStyle),
             };
             textGrid.Add(closestPlatesValue, 2, 2);
 
@@ -752,7 +764,7 @@ public partial class CalculatorPage : ContentPage
             var idealWeight = _maxWeight * percent / 100.0;
             var idealValue = new Label
             {
-                FormattedText = TextUtility.StyleText($"{idealWeight:F2} kg", weightStyle),
+                FormattedText = TextUtility.StyleText($"{idealWeight:F2} {_units}", weightStyle),
                 VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = TextAlignment.Center,
             };

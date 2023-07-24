@@ -54,7 +54,7 @@
 
                 <!--  Max weight  -->
                 <Grid
-                    ColumnDefinitions="2*,*"
+                    ColumnDefinitions="7*,2*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -62,7 +62,8 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
-                        Text="Maximum weight (kg)"
+                        HorizontalTextAlignment="Start"
+                        Text="Maximum weight"
                         VerticalTextAlignment="Center" />
                     <Frame
                         Grid.Row="0"
@@ -73,21 +74,31 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
                             FontSize="16"
+                            HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center" />
                     </Frame>
+                    <Label
+                        x:Name="MaxWeightUnit"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        FontSize="16"
+                        HorizontalTextAlignment="Start"
+                        Text="kg"
+                        VerticalTextAlignment="Center" />
                 </Grid>
 
                 <!--  Bar weight  -->
                 <Grid
                     x:Name="BarWeightGrid"
-                    ColumnDefinitions="2*,*"
+                    ColumnDefinitions="7*,2*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
+                        HorizontalTextAlignment="Start"
                         Text="Bar weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
@@ -99,20 +110,30 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
                             FontSize="16"
+                            HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center" />
                     </Frame>
+                    <Label
+                        x:Name="BarWeightUnit"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        FontSize="16"
+                        HorizontalTextAlignment="Start"
+                        Text="kg"
+                        VerticalTextAlignment="Center" />
                 </Grid>
 
                 <!--  Machine starting weight  -->
                 <Grid
                     x:Name="StartingWeightGrid"
-                    ColumnDefinitions="2*,*"
+                    ColumnDefinitions="7*,2*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
+                        HorizontalTextAlignment="Start"
                         Text="Starting weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
@@ -124,15 +145,24 @@
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
                             FontSize="16"
+                            HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center" />
                     </Frame>
+                    <Label
+                        x:Name="StartingWeightUnit"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        FontSize="16"
+                        HorizontalTextAlignment="Start"
+                        Text="kg"
+                        VerticalTextAlignment="Center" />
                 </Grid>
 
                 <!--  Plates one side only  -->
                 <Grid
                     x:Name="OneSideOnlyGrid"
-                    ColumnDefinitions="2*,*"
+                    ColumnDefinitions="7*,3*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label

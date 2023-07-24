@@ -71,7 +71,7 @@ public partial class AboutPage : ContentPage
         // Change the color of every span.
         foreach (var item in AboutLayout)
         {
-            if (!(item is Label label))
+            if (item is not Label label)
             {
                 continue;
             }

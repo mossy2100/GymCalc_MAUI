@@ -16,8 +16,6 @@ public partial class PlatesPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Plate> _cbPlateMap = new ();
 
-    private bool _platesDisplayed;
-
     public PlatesPage()
     {
         InitializeComponent();
@@ -27,16 +25,13 @@ public partial class PlatesPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        if (!_platesDisplayed)
-        {
-            await DisplayPlates();
-            _platesDisplayed = true;
-        }
+        PlatesGridLabel.Text =
+            $"Select which plate weights ({Units.GetUnits()}) are available:";
+        await DisplayPlates();
     }
 
     private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
     {
-        MauiUtilities.ClearGrid(PlatesGrid, true, true);
         await DisplayPlates();
     }
 
@@ -45,8 +40,11 @@ public partial class PlatesPage : ContentPage
     /// </summary>
     private async Task DisplayPlates()
     {
+        // Clear the grid.
+        MauiUtilities.ClearGrid(PlatesGrid, true, true);
+
         // Get all the plates, ordered by weight.
-        var plates = await PlateRepository.GetAll();
+        var plates = await PlateRepository.GetAll(Units.GetUnits());
 
         // Set up the columns.
         PlatesGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -101,56 +99,6 @@ public partial class PlatesPage : ContentPage
                 colNum = 0;
             }
         }
-    }
-
-    internal static void AddPlateToGrid(Plate plate, Grid platesGrid, int columnNum, int rowNum, double maxPlateWeight)
-    {
-        // Get the colors.
-        var bgColor = Color.Parse(plate.Color);
-        var textColor = bgColor.GetTextColor();
-
-        // Get the style.
-        var plateLabelStyle = MauiUtilities.LookupStyle("PlateLabelStyle");
-
-        // Calculate the plate width.
-        var maxPlateWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.75;
-        var plateWidth = PlateDrawable.MinWidth +
-            plate.Weight / maxPlateWeight * (maxPlateWidth - PlateDrawable.MinWidth);
-
-        // Add the plate background.
-        var rect = new Rectangle
-        {
-            RadiusX = PlateDrawable.CornerRadius,
-            RadiusY = PlateDrawable.CornerRadius,
-            HeightRequest = PlateDrawable.Height,
-            WidthRequest = plateWidth,
-            Fill = bgColor.AddLuminosity(-0.1f),
-        };
-        platesGrid.Add(rect, columnNum, rowNum);
-
-        // Add the plate edge.
-        var rect2 = new Rectangle
-        {
-            RadiusX = 0,
-            RadiusY = 0,
-            HeightRequest = PlateDrawable.InnerHeight,
-            WidthRequest = plateWidth,
-            Fill = bgColor,
-        };
-        platesGrid.Add(rect2, columnNum, rowNum);
-
-        // Add the plate weight text.
-        var label = new Label
-        {
-            FormattedText = TextUtility.CreateFormattedString($"{plate.Weight}", true, false,
-                textColor, plateLabelStyle),
-            // TextColor = textColor,
-            // FontSize = 16,
-            // FontAttributes = FontAttributes.Bold,
-            VerticalTextAlignment = TextAlignment.Center,
-            HorizontalTextAlignment = TextAlignment.Center,
-        };
-        platesGrid.Add(label, columnNum, rowNum);
     }
 
     /// <summary>

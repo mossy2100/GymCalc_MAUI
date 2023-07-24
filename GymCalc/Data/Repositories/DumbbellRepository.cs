@@ -23,29 +23,27 @@ internal static class DumbbellRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            var addedSoFar = new List<double>();
-            // Common weights, enabled by default.
-            addedSoFar = await AddDumbbellSet(1, 10, 1, true, addedSoFar);
-            addedSoFar = await AddDumbbellSet(2.5, 50, 2.5, true, addedSoFar);
-            // Less common weights. I may provide buttons to add sets later.
-            // addedSoFar = await AddDumbbellSet(11, 14, 1, false, addedSoFar);
-            // addedSoFar = await AddDumbbellSet(52.5, 70, 2.5, false, addedSoFar);
-            // addedSoFar = await AddDumbbellSet(75, 80, 5, false, addedSoFar);
-            // addedSoFar = await AddDumbbellSet(90, 100, 10, false, addedSoFar);
-            // Kettlebell weights.
-            // addedSoFar = await AddDumbbellSet(4, 48, 2, false, addedSoFar);
+            var addedSoFar = new List<(double, string)>();
+
+            // Kilograms.
+            addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
+            addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
+
+            // Pounds.
+            addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
+            addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
         }
     }
 
-    private static async Task<List<double>> AddDumbbellSet(double min, double max, double step, bool enabled,
-        List<double> addedSoFar)
+    private static async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
+        double step, string units, bool enabled, List<(double, string)> addedSoFar)
     {
         var db = Database.GetConnection();
 
         for (var weight = min; weight <= max; weight += step)
         {
             // Check we didn't add this one already.
-            if (addedSoFar.Contains(weight))
+            if (addedSoFar.Contains((weight, units)))
             {
                 continue;
             }
@@ -54,13 +52,13 @@ internal static class DumbbellRepository
             var dumbbell = new Dumbbell
             {
                 Weight = weight,
-                Unit = "kg",
+                Units = units,
                 Enabled = enabled,
             };
             await db.InsertAsync(dumbbell);
 
             // Remember it.
-            addedSoFar.Add(weight);
+            addedSoFar.Add((weight, units));
         }
 
         return addedSoFar;
@@ -70,8 +68,9 @@ internal static class DumbbellRepository
     /// Get the dumbbells.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Dumbbell>> GetAll(bool onlyEnabled = false, bool ascending = true)
+    public static async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
+        bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Dumbbell>(onlyEnabled, ascending);
+        return await HeavyThingRepository.GetAll<Dumbbell>(units, onlyEnabled, ascending);
     }
 }

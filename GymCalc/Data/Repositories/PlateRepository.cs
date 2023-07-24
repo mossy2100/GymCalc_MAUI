@@ -13,23 +13,38 @@ internal static class PlateRepository
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
-    private static readonly Dictionary<double, bool> _DefaultPlates = new ()
+    private static readonly (double, string, bool, Color)[] _DefaultPlates =
     {
-        [0.25] = false,
-        [0.5] = false,
-        [0.75] = false,
-        [1] = false,
-        [1.25] = true,
-        [1.5] = false,
-        [2] = false,
-        [2.5] = true,
-        [5] = true,
-        [7.5] = true,
-        [10] = true,
-        [12.5] = false,
-        [15] = true,
-        [20] = true,
-        [25] = true,
+        // Metric.
+        (0.25, Units.Kilograms, false, CustomColors.Red),
+        (0.5, Units.Kilograms, false, CustomColors.OffWhite),
+        (0.75, Units.Kilograms, false, CustomColors.Pink),
+        (1, Units.Kilograms, false, CustomColors.Green),
+        (1.25, Units.Kilograms, true, CustomColors.Orange),
+        (1.5, Units.Kilograms, false, CustomColors.Yellow),
+        (2, Units.Kilograms, false, CustomColors.Indigo),
+        (2.5, Units.Kilograms, true, CustomColors.Red),
+        (5, Units.Kilograms, true, CustomColors.OffWhite),
+        (7.5, Units.Kilograms, true, CustomColors.Pink),
+        (10, Units.Kilograms, true, CustomColors.Green),
+        (12.5, Units.Kilograms, false, CustomColors.Orange),
+        (15, Units.Kilograms, true, CustomColors.Yellow),
+        (20, Units.Kilograms, true, CustomColors.Indigo),
+        (25, Units.Kilograms, true, CustomColors.Red),
+        // Pounds.
+        (0.25, Units.Pounds, false, CustomColors.Green),
+        (0.5, Units.Pounds, false, CustomColors.Blue),
+        (0.75, Units.Pounds, false, CustomColors.Pink),
+        (1, Units.Pounds, false, CustomColors.OffWhite),
+        (1.25, Units.Pounds, true, CustomColors.Orange),
+        (2.5, Units.Pounds, true, CustomColors.Green),
+        (5, Units.Pounds, true, CustomColors.Blue),
+        (10, Units.Pounds, true, CustomColors.OffWhite),
+        (15, Units.Pounds, true, CustomColors.Purple),
+        (25, Units.Pounds, true, CustomColors.Green),
+        (35, Units.Pounds, true, CustomColors.Yellow),
+        (45, Units.Pounds, true, CustomColors.Indigo),
+        (55, Units.Pounds, true, CustomColors.Red),
     };
 
     /// <summary>
@@ -48,14 +63,14 @@ internal static class PlateRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var (weight, enabled) in _DefaultPlates)
+            foreach (var (weight, units, enabled, color) in _DefaultPlates)
             {
                 var plate = new Plate
                 {
                     Weight = weight,
-                    Unit = "kg",
-                    Color = CustomColors.DefaultPlateColor(weight).ToHex(),
+                    Units = units,
                     Enabled = enabled,
+                    Color = color.ToHex(),
                 };
                 await db.InsertAsync(plate);
             }
@@ -66,8 +81,9 @@ internal static class PlateRepository
     /// Get the plates.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Plate>> GetAll(bool onlyEnabled = false, bool ascending = true)
+    public static async Task<List<Plate>> GetAll(string units, bool onlyEnabled = false,
+        bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Plate>(onlyEnabled, ascending);
+        return await HeavyThingRepository.GetAll<Plate>(units, onlyEnabled, ascending);
     }
 }

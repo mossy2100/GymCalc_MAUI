@@ -8,7 +8,7 @@
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
         <VerticalStackLayout x:Name="PlatesStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label Text="Select which plate weights (kg) are available:" />
+            <Label x:Name="PlatesGridLabel" />
             <Grid
                 x:Name="PlatesGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"

@@ -13,7 +13,7 @@ internal class PlateDrawable : IDrawable
 
     internal const int Height = 30;
 
-    internal const int InnerHeight = Height - (2 * CornerRadius);
+    internal const int InnerHeight = Height - 2 * CornerRadius;
 
     private readonly Plate _plate;
 
@@ -59,7 +59,7 @@ internal class PlateDrawable : IDrawable
         {
             Drawable = new PlateDrawable(plate),
             HeightRequest = Height,
-            WidthRequest = plateWidth
+            WidthRequest = plateWidth,
         };
     }
 }

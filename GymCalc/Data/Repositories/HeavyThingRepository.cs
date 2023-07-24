@@ -8,22 +8,25 @@ internal abstract class HeavyThingRepository
     /// Get all the heavy things of a given type.
     /// </summary>
     /// <returns></returns>
-    internal static async Task<List<T>> GetAll<T>(bool onlyEnabled = false, bool ascending = true)
+    internal static async Task<List<T>> GetAll<T>(string units, bool onlyEnabled = false,
+        bool ascending = true)
         where T : HeavyThing, new()
     {
         var db = Database.GetConnection();
-        var query = db.Table<T>();
+
+        // Get all the heavy things with in the preferred units.
+        var query = db.Table<T>().Where(ht => ht.Units == units);
 
         // Add where clause if needed.
         if (onlyEnabled)
         {
-            query = query.Where(p => p.Enabled);
+            query = query.Where(ht => ht.Enabled);
         }
 
         // Add order by clause.
         query = ascending
-            ? query.OrderBy(p => p.Weight)
-            : query.OrderByDescending(p => p.Weight);
+            ? query.OrderBy(ht => ht.Weight)
+            : query.OrderByDescending(ht => ht.Weight);
 
         return await query.ToListAsync();
     }

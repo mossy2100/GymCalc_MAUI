@@ -21,10 +21,9 @@
                 Text="Units" />
 
             <input:RadioButtonGroupView
-                x:Name="Units"
+                x:Name="UnitsRadio"
                 Grid.Row="0"
                 Grid.Column="1"
-                SelectedItem="{Binding SelectedItem}"
                 SelectedItemChanged="OnUnitsSelectedItemChanged">
                 <input:RadioButton Text="kilograms (kg)" Value="kg" />
                 <input:RadioButton Text="pounds (lb)" Value="lb" />

@@ -8,7 +8,7 @@
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
         <VerticalStackLayout x:Name="KettlebellsStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label Text="Select which kettlebell weights (kg) are available:" />
+            <Label x:Name="KettlebellsGridLabel" />
             <Grid
                 x:Name="KettlebellsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"

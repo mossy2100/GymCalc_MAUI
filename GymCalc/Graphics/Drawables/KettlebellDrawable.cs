@@ -24,17 +24,21 @@ internal class KettlebellDrawable : IDrawable
         var ballColor = Color.Parse(_kettlebell.BallColor);
         var bandColor = _kettlebell.HasBands ? Color.Parse(_kettlebell.BandColor) : ballColor;
 
+        // Useful dimensions.
+        const int y0 = 5;
+        const int y1 = 15;
+        const int y2 = 25;
+        const int y3 = 35;
+
         // Handle top.
         canvas.StrokeColor = CustomColors.PaleGray;
         canvas.StrokeSize = 10;
-        canvas.DrawArc(10, 5, 20, 20, 90, 180, false, false);
-        canvas.DrawLine(20, 5, 40, 5);
-        canvas.DrawArc(30, 5, 20, 20, 0, 90, false, false);
+        const int diam = 20;
+        canvas.DrawArc(10, y0, diam, diam, 90, 180, false, false);
+        canvas.DrawLine(20, y0, 40, y0);
+        canvas.DrawArc(30, y0, diam, diam, 0, 90, false, false);
 
         // Bands.
-        var y1 = 15;
-        var y2 = 25;
-        var y3 = 35;
         canvas.StrokeColor = bandColor;
         canvas.DrawLine(10, y1, 10, y2);
         canvas.DrawLine(50, y1, 50, y2);
@@ -46,7 +50,7 @@ internal class KettlebellDrawable : IDrawable
 
         // Ball.
         canvas.FillColor = ballColor;
-        canvas.FillArc(0, 20, 60, 60, 240, 300, true);
+        canvas.FillArc(0, 20, Width, Width, 240, 300, true);
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
