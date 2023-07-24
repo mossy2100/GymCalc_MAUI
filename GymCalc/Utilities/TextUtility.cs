@@ -11,7 +11,7 @@ internal static class TextUtility
     /// <param name="text">The text.</param>
     /// <param name="bold">If it should be bold.</param>
     /// <param name="italic">If it should be italic.</param>
-    /// <param name="color">What colour it should be.</param>
+    /// <param name="color">What color it should be.</param>
     /// <param name="style">What style it should use.</param>
     /// <returns></returns>
     public static FormattedString CreateFormattedString(string text, bool bold = false,

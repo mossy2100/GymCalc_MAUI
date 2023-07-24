@@ -64,7 +64,7 @@ internal static class CustomColors
                 weightForColor -= 2;
             }
 
-            // Get ball colour.
+            // Get ball color.
             ballColor = weightForColor switch
             {
                 4 => Cyan,
@@ -90,7 +90,7 @@ internal static class CustomColors
                 weightForColor -= 5;
             }
 
-            // Get ball colour.
+            // Get ball color.
             ballColor = weightForColor switch
             {
                 5 => Cyan,

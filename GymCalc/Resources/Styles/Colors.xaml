@@ -9,8 +9,8 @@
     <!-- <Color x:Key="Quaternary">#6687ff</Color> -->
 
     <Color x:Key="Primary">#ff6c00</Color>
-    <Color x:Key="Secondary">#ffb580</Color>
-    <Color x:Key="Tertiary">#803500</Color>
+    <Color x:Key="Secondary">#ffd2b2</Color>
+    <Color x:Key="Tertiary">#4d2000</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

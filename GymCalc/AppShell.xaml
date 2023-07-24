@@ -26,26 +26,23 @@
     </Shell.FlyoutHeader>
 
     <FlyoutItem Title="Calculator" Style="{StaticResource CalculatorFlyoutItem}">
-        <ShellContent
-            Title="Calculator"
-            ContentTemplate="{DataTemplate pages:CalculatorPage}"
-            Icon="calculator_icon_black_300.png" />
-        <ShellContent
-            Title="Bars"
-            ContentTemplate="{DataTemplate pages:BarsPage}"
-            Icon="barbell_icon_black_300.png" />
-        <ShellContent
-            Title="Plates"
-            ContentTemplate="{DataTemplate pages:PlatesPage}"
-            Icon="plate_icon_black_300.png" />
-        <ShellContent
-            Title="Dumbbells"
-            ContentTemplate="{DataTemplate pages:DumbbellsPage}"
-            Icon="dumbbell_icon_black_300.png" />
-        <ShellContent
-            Title="Kettlebells"
-            ContentTemplate="{DataTemplate pages:KettlebellsPage}"
-            Icon="kettlebell_icon_black_300.png" />
+        <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Bars" Style="{StaticResource BarsFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Plates" Style="{StaticResource PlatesFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Dumbbells" Style="{StaticResource DumbbellsFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Kettlebells" Style="{StaticResource KettlebellsFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">

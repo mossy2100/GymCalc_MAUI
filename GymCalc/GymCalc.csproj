@@ -44,39 +44,75 @@
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
-        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_white_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
+        <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiIcon>
+        
+        <!-- Flyout icons -->
+
         <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_white_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_black_300.png">
-          <BaseSize>30,30</BaseSize>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
+        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
         <!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="White" BaseSize="128,128" />
 
@@ -140,19 +176,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
         
-        <None Remove="Resources\AppIcon\appiconfg.svg" />
-        <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiIcon>
         <None Remove="old\**" />
-        <None Remove="Resources\Images\tab_bar_icons\settings_icon_black_300.png" />
-        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_black_300.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <None Remove="Resources\Images\tab_bar_icons\settings_icon_white_300.png" />
-        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_white_300.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
     </ItemGroup>
 
     <ItemGroup>
@@ -175,28 +199,6 @@
     <ItemGroup>
       <None Include="Platforms\Android\AndroidManifest.xml" />
       <None Include="Platforms\iOS\Info.plist" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <MauiXaml Update="old\InitializationPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Remove="old\**" />
-      <MauiXaml Update="Pages\KettlebellsPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="old\InitializationPage.xaml.cs">
-        <DependentUpon>InitializationPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Remove="old\**" />
-      <Compile Update="Pages\KettlebellsPage.xaml.cs">
-        <DependentUpon>KettlebellsPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

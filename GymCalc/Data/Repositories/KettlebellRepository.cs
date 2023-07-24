@@ -47,7 +47,7 @@ internal static class KettlebellRepository
                 continue;
             }
 
-            // Get the default colour parameters.
+            // Get the default color parameters.
             var (ballColor, hasBands, bandColor) =
                 CustomColors.DefaultKettlebellColor(weight, units);
 
