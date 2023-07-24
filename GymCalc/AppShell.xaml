@@ -30,19 +30,19 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Bars" Style="{StaticResource BarsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" Route="bars" />
     </FlyoutItem>
 
     <FlyoutItem Title="Plates" Style="{StaticResource PlatesFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" />
+        <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" Route="plates" />
     </FlyoutItem>
 
     <FlyoutItem Title="Dumbbells" Style="{StaticResource DumbbellsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" Route="dumbbells" />
     </FlyoutItem>
 
     <FlyoutItem Title="Kettlebells" Style="{StaticResource KettlebellsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" Route="kettlebells" />
     </FlyoutItem>
 
     <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
@@ -52,5 +52,9 @@
     <FlyoutItem Title="About GymCalc" Style="{StaticResource AboutFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
     </FlyoutItem>
+
+    <ShellContent ContentTemplate="{DataTemplate pages:EditPage}" Route="edit" />
+    <ShellContent ContentTemplate="{DataTemplate pages:DeletePage}" Route="delete" />
+    <ShellContent ContentTemplate="{DataTemplate pages:ResetPage}" Route="reset" />
 
 </Shell>

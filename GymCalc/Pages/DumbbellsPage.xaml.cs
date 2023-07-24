@@ -24,8 +24,8 @@ public partial class DumbbellsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        DumbbellsGridLabel.Text =
-            $"Select which dumbbell weights ({Units.GetUnits()}) are available:";
+        DumbbellsLabel.Text =
+            $"Select which dumbbell weights ({Units.GetPreferred()}) are available:";
         await DisplayDumbbells();
     }
 
@@ -43,7 +43,7 @@ public partial class DumbbellsPage : ContentPage
         MauiUtilities.ClearGrid(DumbbellsGrid, true, true);
 
         // Get the dumbbells.
-        var dumbbells = await DumbbellRepository.GetAll(Units.GetUnits());
+        var dumbbells = await DumbbellRepository.GetAll(Units.GetPreferred());
 
         // Set up the columns.
         DumbbellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -55,10 +55,11 @@ public partial class DumbbellsPage : ContentPage
             DumbbellsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
         }
 
-        // Set the stack height manually, because it doesn't resize automatically.
+        // Calculate and set the stack height because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(dumbbells.Count / (nCols / 2.0));
-        DumbbellsStackLayout.HeightRequest =
-            (DumbbellDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
+        var gridHeight = (DumbbellDrawable.Height + PageLayout.DoubleSpacing) * nRows
+            + PageLayout.DoubleSpacing;
+        DumbbellsStack.HeightRequest = DumbbellsLabel.Height + gridHeight + DumbbellsButtons.Height;
 
         // Display the dumbbells in a table with checkboxes.
         var rowNum = 0;
@@ -110,5 +111,20 @@ public partial class DumbbellsPage : ContentPage
         dumbbell.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(dumbbell);
+    }
+
+    private async void AddButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//edit?type=dumbbell");
+    }
+
+    private void EditButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void ResetButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
     }
 }

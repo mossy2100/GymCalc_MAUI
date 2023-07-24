@@ -6,13 +6,41 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Dumbbells">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="DumbbellsStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label x:Name="DumbbellsGridLabel" />
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}">
+        <VerticalStackLayout x:Name="DumbbellsStack" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+
+            <Label x:Name="DumbbellsLabel" />
+
             <Grid
                 x:Name="DumbbellsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
+
+            <Grid
+                x:Name="DumbbellsButtons"
+                ColumnDefinitions="*,*,*"
+                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                RowDefinitions="Auto">
+                <Button
+                    x:Name="AddButton"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Clicked="AddButton_OnClicked"
+                    Text="Add" />
+                <Button
+                    x:Name="EditButton"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Clicked="EditButton_OnClicked"
+                    Text="Edit" />
+                <Button
+                    x:Name="ResetButton"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Clicked="ResetButton_OnClicked"
+                    Text="Reset" />
+            </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 

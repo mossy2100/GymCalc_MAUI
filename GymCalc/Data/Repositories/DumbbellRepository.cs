@@ -73,4 +73,13 @@ internal static class DumbbellRepository
     {
         return await HeavyThingRepository.GetAll<Dumbbell>(units, onlyEnabled, ascending);
     }
+
+    /// <summary>
+    /// Get a dumbbell by id.
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<Dumbbell> Get(int id)
+    {
+        return await HeavyThingRepository.Get<Dumbbell>(id);
+    }
 }

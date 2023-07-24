@@ -79,4 +79,13 @@ internal static class KettlebellRepository
     {
         return await HeavyThingRepository.GetAll<Kettlebell>(units, onlyEnabled, ascending);
     }
+
+    /// <summary>
+    /// Get a kettlebell by id.
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<Kettlebell> Get(int id)
+    {
+        return await HeavyThingRepository.Get<Kettlebell>(id);
+    }
 }

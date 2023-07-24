@@ -86,4 +86,13 @@ internal static class PlateRepository
     {
         return await HeavyThingRepository.GetAll<Plate>(units, onlyEnabled, ascending);
     }
+
+    /// <summary>
+    /// Get a plate by id.
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<Plate> Get(int id)
+    {
+        return await HeavyThingRepository.Get<Plate>(id);
+    }
 }

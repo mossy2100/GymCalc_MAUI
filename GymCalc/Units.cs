@@ -8,7 +8,7 @@ internal static class Units
 
     internal const double PoundsPerKilogram = 2.2;
 
-    internal static string GetUnits()
+    internal static string GetPreferred()
     {
         return Preferences.Default.Get("Units", Kilograms);
     }

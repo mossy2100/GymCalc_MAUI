@@ -72,7 +72,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Set the user's preferred units, which may have changed on the settings page.
-        _units = Units.GetUnits();
+        _units = Units.GetPreferred();
         MaxWeightUnit.Text = _units;
         BarWeightUnit.Text = _units;
         StartingWeightUnit.Text = _units;

@@ -24,8 +24,8 @@ public partial class KettlebellsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        KettlebellsGridLabel.Text =
-            $"Select which kettlebell weights ({Units.GetUnits()}) are available:";
+        KettlebellsLabel.Text =
+            $"Select which kettlebell weights ({Units.GetPreferred()}) are available:";
         await DisplayKettlebells();
     }
 
@@ -43,7 +43,7 @@ public partial class KettlebellsPage : ContentPage
         MauiUtilities.ClearGrid(KettlebellsGrid, true, true);
 
         // Get the kettlebells.
-        var kettlebells = await KettlebellRepository.GetAll(Units.GetUnits());
+        var kettlebells = await KettlebellRepository.GetAll(Units.GetPreferred());
 
         // Set up the columns.
         KettlebellsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -55,11 +55,12 @@ public partial class KettlebellsPage : ContentPage
             KettlebellsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
         }
 
-        // Set the stack height manually, because it doesn't resize automatically.
+        // Calculate and set the stack height because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(kettlebells.Count / (nCols / 2.0));
-        KettlebellsStackLayout.HeightRequest =
-            (KettlebellDrawable.Height + PageLayout.DoubleSpacing) * nRows
+        var gridHeight = (KettlebellDrawable.Height + PageLayout.DoubleSpacing) * nRows
             + PageLayout.DoubleSpacing;
+        KettlebellsStack.HeightRequest =
+            KettlebellsLabel.Height + gridHeight + KettlebellsButtons.Height;
 
         // Display the kettlebells in a table with checkboxes.
         var rowNum = 0;
@@ -112,5 +113,20 @@ public partial class KettlebellsPage : ContentPage
         kettlebell.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(kettlebell);
+    }
+
+    private async void AddButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//edit?type=kettlebell");
+    }
+
+    private void EditButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void ResetButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
     }
 }

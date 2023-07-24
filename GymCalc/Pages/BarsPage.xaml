@@ -7,12 +7,39 @@
     Title="Bars">
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="BarsStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label x:Name="BarsGridLabel" />
+        <VerticalStackLayout x:Name="BarsStack" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+            <Label x:Name="BarsLabel" />
+
             <Grid
                 x:Name="BarsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
+
+            <Grid
+                x:Name="BarsButtons"
+                ColumnDefinitions="*,*,*"
+                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                RowDefinitions="Auto">
+                <Button
+                    x:Name="AddButton"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Clicked="AddButton_OnClicked"
+                    Text="Add" />
+                <Button
+                    x:Name="EditButton"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Clicked="EditButton_OnClicked"
+                    Text="Edit" />
+                <Button
+                    x:Name="ResetButton"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Clicked="ResetButton_OnClicked"
+                    Text="Reset" />
+            </Grid>
+
         </VerticalStackLayout>
     </ScrollView>
 

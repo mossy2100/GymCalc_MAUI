@@ -68,4 +68,13 @@ internal static class BarRepository
     {
         return await HeavyThingRepository.GetAll<Bar>(units, onlyEnabled, ascending);
     }
+
+    /// <summary>
+    /// Get a bar by id.
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<Bar> Get(int id)
+    {
+        return await HeavyThingRepository.Get<Bar>(id);
+    }
 }

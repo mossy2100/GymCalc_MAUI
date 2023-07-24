@@ -8,7 +8,7 @@ public partial class SettingsPage : ContentPage
     {
         InitializeComponent();
 
-        UnitsRadio.SelectedItem = Units.GetUnits();
+        UnitsRadio.SelectedItem = Units.GetPreferred();
     }
 
     private void OnUnitsSelectedItemChanged(object sender, EventArgs e)

@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}">
         <StackLayout
             x:Name="CalculatorLayout"
             Loaded="OnCalculatorLayoutLoaded"
@@ -71,9 +71,6 @@
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
                             x:Name="MaxWeightEntry"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
-                                                              Dark={StaticResource Tertiary}}"
-                            FontSize="16"
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center" />
@@ -180,10 +177,7 @@
                 </Grid>
 
                 <!--  Calculate button  -->
-                <Button
-                    Clicked="OnCalculateButtonClicked"
-                    Style="{StaticResource ButtonStyle}"
-                    Text="Calculate" />
+                <Button Clicked="OnCalculateButtonClicked" Text="Calculate" />
 
                 <!--  Error message  -->
                 <Label

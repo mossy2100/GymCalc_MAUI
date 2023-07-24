@@ -25,8 +25,8 @@ public partial class PlatesPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        PlatesGridLabel.Text =
-            $"Select which plate weights ({Units.GetUnits()}) are available:";
+        PlatesLabel.Text =
+            $"Select which plate weights ({Units.GetPreferred()}) are available:";
         await DisplayPlates();
     }
 
@@ -44,7 +44,7 @@ public partial class PlatesPage : ContentPage
         MauiUtilities.ClearGrid(PlatesGrid, true, true);
 
         // Get all the plates, ordered by weight.
-        var plates = await PlateRepository.GetAll(Units.GetUnits());
+        var plates = await PlateRepository.GetAll(Units.GetPreferred());
 
         // Set up the columns.
         PlatesGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -56,10 +56,11 @@ public partial class PlatesPage : ContentPage
             PlatesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
         }
 
-        // Set the stack height manually, because it doesn't resize automatically.
+        // Calculate and set the stack height because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(plates.Count / (nCols / 2.0));
-        PlatesStackLayout.HeightRequest =
-            (PlateDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
+        var gridHeight = (PlateDrawable.Height + PageLayout.DoubleSpacing) * nRows
+            + PageLayout.DoubleSpacing;
+        PlatesStackLayout.HeightRequest = PlatesLabel.Height + gridHeight + PlatesButtons.Height;
 
         // Get the maximum plate weight.
         var maxPlateWeight = plates.Last().Weight;
@@ -116,13 +117,18 @@ public partial class PlatesPage : ContentPage
         await db.UpdateAsync(plate);
     }
 
-    // private void AddNewPlateWeightClicked(object sender, EventArgs e)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // private void SavePlateWeightsClicked(object sender, EventArgs e)
-    // {
-    //     throw new NotImplementedException();
-    // }
+    private async void AddButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//edit?type=plate");
+    }
+
+    private void EditButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void ResetButton_OnClicked(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }

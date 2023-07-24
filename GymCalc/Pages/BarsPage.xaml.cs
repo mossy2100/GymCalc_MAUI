@@ -24,7 +24,7 @@ public partial class BarsPage : ContentPage
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
-        BarsGridLabel.Text = $"Select which bar weights ({Units.GetUnits()}) are available:";
+        BarsLabel.Text = $"Select which bar weights ({Units.GetPreferred()}) are available:";
         await DisplayBars();
     }
 
@@ -42,7 +42,7 @@ public partial class BarsPage : ContentPage
         MauiUtilities.ClearGrid(BarsGrid, true, true);
 
         // Get the bars.
-        var bars = await BarRepository.GetAll(Units.GetUnits());
+        var bars = await BarRepository.GetAll(Units.GetPreferred());
 
         // Set up the columns.
         BarsGrid.ColumnDefinitions = new ColumnDefinitionCollection();
@@ -54,10 +54,11 @@ public partial class BarsPage : ContentPage
             BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
         }
 
-        // Set the stack height manually, because it doesn't resize automatically.
+        // Calculate and set the stack height because it doesn't resize automatically.
         var nRows = (int)double.Ceiling(bars.Count / (nCols / 2.0));
-        BarsStackLayout.HeightRequest =
-            (BarDrawable.Height + PageLayout.DoubleSpacing) * nRows + PageLayout.DoubleSpacing;
+        var gridHeight = (BarDrawable.Height + PageLayout.DoubleSpacing) * nRows
+            + PageLayout.DoubleSpacing;
+        BarsStack.HeightRequest = BarsLabel.Height + gridHeight + BarsButtons.Height;
 
         // Get the maximum bar weight.
         var maxBarWeight = bars.Last().Weight;
@@ -111,4 +112,39 @@ public partial class BarsPage : ContentPage
         var db = Database.GetConnection();
         await db.UpdateAsync(bar);
     }
+
+    #region Event handlers
+
+    private async void AddButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//edit?type=bar");
+    }
+
+    private void EditButton_OnClicked(object sender, EventArgs e)
+    {
+        // Replace checkboxes with Edit and Delete icons.
+        throw new NotImplementedException();
+    }
+
+    private async void ResetButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//reset?class=Bar");
+        throw new NotImplementedException();
+    }
+
+    private async void EditIcon_OnClicked(object sender, EventArgs e)
+    {
+        // Get the bar id.
+        var id = 0;
+        await Shell.Current.GoToAsync($"//edit?class=Bar&Id={id}");
+    }
+
+    private async void DeleteIcon_OnClicked(object sender, EventArgs e)
+    {
+        // Get the bar id.
+        var id = 0;
+        await Shell.Current.GoToAsync($"//delete?class=Bar&Id={id}");
+    }
+
+    #endregion Event handlers
 }

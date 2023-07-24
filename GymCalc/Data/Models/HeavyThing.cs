@@ -4,7 +4,8 @@ namespace GymCalc.Data.Models;
 
 public class HeavyThing
 {
-    [PrimaryKey, AutoIncrement]
+    [PrimaryKey]
+    [AutoIncrement]
     public int Id { get; set; }
 
     public double Weight { get; set; }
