@@ -46,7 +46,7 @@ internal static class KettlebellRepository
             }
 
             // Get the default colour parameters.
-            var (color, hasBlackBands) = CustomColors.DefaultKettlebellColor(weight);
+            var (ballColor, hasBands, bandColor) = CustomColors.DefaultKettlebellColor(weight);
 
             // Add the kettlebell.
             var kettlebell = new Kettlebell
@@ -54,8 +54,9 @@ internal static class KettlebellRepository
                 Weight = weight,
                 Unit = "kg",
                 Enabled = enabled,
-                Color = color,
-                HasBlackBands = hasBlackBands,
+                BallColor = ballColor.ToHex(),
+                HasBands = hasBands,
+                BandColor = bandColor?.ToHex(),
             };
             await db.InsertAsync(kettlebell);
 

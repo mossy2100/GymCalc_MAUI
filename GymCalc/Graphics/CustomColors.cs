@@ -4,16 +4,49 @@ namespace GymCalc.Graphics;
 
 internal static class CustomColors
 {
-    internal static readonly Color StainlessSteel = Color.Parse("#ddd");
+    /// <summary>
+    /// Color palette for graphics.
+    /// </summary>
+    public static readonly Color Red = Color.Parse("#b3000c");
 
-    internal static readonly Color CastIron = Color.Parse("#333");
+    public static readonly Color Orange = Color.Parse("#ff6c00");
+
+    public static readonly Color Gold = Color.Parse("#d9a300");
+
+    public static readonly Color Yellow = Color.Parse("#f2f224");
+
+    public static readonly Color Lime = Color.Parse("#bfff00");
+
+    public static readonly Color Green = Color.Parse("#0fb300");
+
+    public static readonly Color Cyan = Color.Parse("#73d8e6");
+
+    public static readonly Color Blue = Color.Parse("#2e4eec");
+
+    public static readonly Color Indigo = Color.Parse("#203880");
+
+    public static readonly Color Violet = Color.Parse("#7052cc");
+
+    public static readonly Color Purple = Color.Parse("#75147c");
+
+    public static readonly Color Pink = Color.Parse("#ff9aff");
+
+    public static readonly Color OffWhite = Color.Parse("#eee");
+
+    public static readonly Color PaleGray = Color.Parse("#d7d7d7");
+
+    public static readonly Color Silver = Color.Parse("#c0c0c0");
+
+    public static readonly Color Gray = Color.Parse("#808080");
+
+    public static readonly Color OffBlack = Color.Parse("#333");
 
     /// <summary>
     /// Get the default plate color for a given plate weight.
     /// </summary>
     /// <param name="weight">The weight of the plate in kilograms.</param>
     /// <returns>The default plate color.</returns>
-    internal static string DefaultPlateColor(double weight)
+    internal static Color DefaultPlateColor(double weight)
     {
         while (weight < 5)
         {
@@ -22,14 +55,14 @@ internal static class CustomColors
 
         return weight switch
         {
-            5 => "#e5e5e5", // white
-            7.5 => "#e57ec3", // pink
-            10 => "#24b324", // green
-            12.5 => "#ff5c26", // orange
-            15 => "#f2d024", // yellow
-            20 => "#203880", // blue
-            25 => "#b3000c", // red
-            _ => "#6950b3", // purple
+            5 => OffWhite,
+            7.5 => Pink,
+            10 => Green,
+            12.5 => Orange,
+            15 => Yellow,
+            20 => Indigo,
+            25 => Red,
+            _ => OffBlack,
         };
     }
 
@@ -41,38 +74,36 @@ internal static class CustomColors
     /// </summary>
     /// <param name="weight">The weight of the kettlebell in kilograms.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (string, bool) DefaultKettlebellColor(double weight)
+    internal static (Color, bool, Color) DefaultKettlebellColor(double weight)
     {
-        double weightForColor;
-        bool hasBlackBands;
-        if ((weight % 4).FuzzyEquals(2))
+        var hasBands = (weight % 4).FuzzyEquals(2);
+        var weightForColor = weight;
+        if (hasBands)
         {
-            weightForColor = weight - 2;
-            hasBlackBands = true;
-        }
-        else
-        {
-            weightForColor = weight;
-            hasBlackBands = false;
+            weightForColor -= 2;
         }
 
-        var color = weightForColor switch
+        // Get ball colour.
+        var ballColor = weightForColor switch
         {
-            4 => "#7fcfda", // cyan
-            8 => "#ff9aff", // pink
-            12 => "#0000f5", // blue
-            16 => "#ffff54", // yellow
-            20 => "#75147c", // purple
-            24 => "#00af50", // green
-            28 => "#ed7d31", // orange
-            32 => "#ea3323", // red
-            36 => "#808080", // grey
-            40 => "#eee", // off-white
-            44 => "#c0c0c0", // silver
-            48 => "#ab8300", // gold
-            _ => "#222", // cast iron
+            4 => Cyan,
+            8 => Pink,
+            12 => Blue,
+            16 => Yellow,
+            20 => Purple,
+            24 => Green,
+            28 => Orange,
+            32 => Red,
+            36 => Gray,
+            40 => OffWhite,
+            44 => Silver,
+            48 => Gold,
+            _ => OffBlack,
         };
 
-        return (color, hasBlackBands);
+        // Get band color.
+        var bandColor = hasBands ? OffBlack : null;
+
+        return (ballColor, hasBands, bandColor);
     }
 }

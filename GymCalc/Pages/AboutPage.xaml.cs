@@ -10,6 +10,17 @@ public partial class AboutPage : ContentPage
     public AboutPage()
     {
         InitializeComponent();
+
+        var app = Application.Current;
+        if (app != null)
+        {
+            app.RequestedThemeChanged += OnThemeChange;
+        }
+    }
+
+    private void OnThemeChange(object sender, AppThemeChangedEventArgs e)
+    {
+        SetTextColor();
     }
 
     /// <inheritdoc />
@@ -45,6 +56,30 @@ public partial class AboutPage : ContentPage
             }
             label.FormattedText = fstr;
             AboutLayout.Add(label);
+        }
+
+        SetTextColor();
+    }
+
+    private void SetTextColor()
+    {
+        // Get the text color.
+        var textColor = Application.Current!.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
+
+        // Change the color of every span.
+        foreach (var item in AboutLayout)
+        {
+            if (!(item is Label label))
+            {
+                continue;
+            }
+
+            foreach (var span in label.FormattedText.Spans)
+            {
+                span.TextColor = textColor;
+            }
         }
     }
 }

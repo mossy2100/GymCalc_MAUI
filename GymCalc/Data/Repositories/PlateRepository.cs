@@ -54,7 +54,7 @@ internal static class PlateRepository
                 {
                     Weight = weight,
                     Unit = "kg",
-                    Color = CustomColors.DefaultPlateColor(weight),
+                    Color = CustomColors.DefaultPlateColor(weight).ToHex(),
                     Enabled = enabled,
                 };
                 await db.InsertAsync(plate);
