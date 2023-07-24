@@ -4,6 +4,7 @@ using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
+using CheckBox = InputKit.Shared.Controls.CheckBox;
 
 namespace GymCalc.Pages;
 
@@ -83,7 +84,7 @@ public partial class KettlebellsPage : ContentPage
             {
                 IsChecked = kettlebell.Enabled,
             };
-            cb.CheckedChanged += OnKettlebellCheckboxChanged;
+            cb.CheckChanged += OnKettlebellCheckboxChanged;
             KettlebellsGrid.Add(cb, colNum + 1, rowNum);
 
             // Remember the kettlebell weight in the lookup table.

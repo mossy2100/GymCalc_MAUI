@@ -4,6 +4,7 @@ using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
+using CheckBox = InputKit.Shared.Controls.CheckBox;
 
 namespace GymCalc.Pages;
 
@@ -82,7 +83,7 @@ public partial class DumbbellsPage : ContentPage
             {
                 IsChecked = dumbbell.Enabled,
             };
-            cb.CheckedChanged += OnDumbbellCheckboxChanged;
+            cb.CheckChanged += OnDumbbellCheckboxChanged;
             DumbbellsGrid.Add(cb, colNum + 1, rowNum);
 
             // Remember the dumbbell weight in the lookup table.

@@ -53,7 +53,6 @@ public partial class CalculatorPage : ContentPage
     {
         InitializeComponent();
         DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
-        CalculatorLayout.Loaded += OnCalculatorLayoutLoaded;
     }
 
     #region Event handlers
@@ -205,7 +204,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Get if they want one side only.
-        _oneSideOnly = OneSideOnlySwitch.IsToggled;
+        _oneSideOnly = OneSideOnlySwitch.IsChecked;
 
         // Get the available plate weights ordered from lightest to heaviest.
         await GetPlates();

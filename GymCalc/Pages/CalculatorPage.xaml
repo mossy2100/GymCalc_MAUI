@@ -3,13 +3,17 @@
     x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
-        <StackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+        <StackLayout
+            x:Name="CalculatorLayout"
+            Loaded="OnCalculatorLayoutLoaded"
+            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
@@ -50,7 +54,6 @@
 
                 <!--  Max weight  -->
                 <Grid
-                    x:Name="MaxWeightGrid"
                     ColumnDefinitions="2*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
@@ -62,7 +65,6 @@
                         Text="Maximum weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        x:Name="MaxWeightFrame"
                         Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
@@ -83,14 +85,12 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        x:Name="BarWeightLabel"
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
                         Text="Bar weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        x:Name="BarWeightPickerFrame"
                         Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
@@ -110,14 +110,12 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        x:Name="StartingWeightLabel"
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
                         Text="Starting weight (kg)"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        x:Name="StartingWeightFrame"
                         Grid.Row="0"
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
@@ -138,17 +136,17 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        x:Name="OneSideOnlyLabel"
                         Grid.Row="0"
                         Grid.Column="0"
                         FontSize="16"
                         Text="Get plates for one side only"
                         VerticalTextAlignment="Center" />
-                    <Switch
+                    <input:CheckBox
                         x:Name="OneSideOnlySwitch"
                         Grid.Row="0"
                         Grid.Column="1"
-                        HorizontalOptions="Start" />
+                        HorizontalOptions="Start"
+                        Type="Material" />
                 </Grid>
 
                 <!--  Calculate button  -->

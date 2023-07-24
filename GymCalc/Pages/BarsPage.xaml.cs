@@ -1,10 +1,10 @@
-using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
+using CheckBox = InputKit.Shared.Controls.CheckBox;
 
 namespace GymCalc.Pages;
 
@@ -87,7 +87,7 @@ public partial class BarsPage : ContentPage
             {
                 IsChecked = bar.Enabled,
             };
-            cb.CheckedChanged += OnBarCheckboxChanged;
+            cb.CheckChanged += OnBarCheckboxChanged;
             BarsGrid.Add(cb, colNum + 1, rowNum);
 
             // Remember the bar weight in the lookup table.
