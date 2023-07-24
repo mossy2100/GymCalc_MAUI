@@ -44,27 +44,35 @@
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
-        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_black_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_white_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_black_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_white_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_black_300.png">
+          <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_black_300.png">
+          <BaseSize>30,30</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_black_300.png">
           <BaseSize>30,30</BaseSize>
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
@@ -75,28 +83,30 @@
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
         <!-- Tab bar icons -->
-        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\tab_bar_icons\barbell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\tab_bar_icons\plate_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\tab_bar_icons\dumbbell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\tab_bar_icons\kettlebell_icon_300.png" BaseSize="30,30" />
-        <MauiImage Update="Resources\Images\tab_bar_icons\about_icon_300.png" BaseSize="30,30" />
-        <!-- Images for exercise type buttons -->
-        <MauiImage Update="Resources\Images\exercise_types\deadlift_black_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_black_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_white_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\leg_press_black_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\leg_press_white_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_black_100.png" BaseSize="100,100" />
-        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_white_100.png" BaseSize="100,100" />
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_white_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\barbell_icon_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\plate_icon_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\dumbbell_icon_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\kettlebell_icon_300.png" BaseSize="30,30" />-->
+<!--        <MauiImage Update="Resources\Images\tab_bar_icons\about_icon_300.png" BaseSize="30,30" />-->
+<!--        &lt;!&ndash; Images for exercise type buttons &ndash;&gt;-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\deadlift_black_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_black_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_white_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\leg_press_black_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\leg_press_white_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_black_100.png" BaseSize="100,100" />-->
+<!--        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_white_100.png" BaseSize="100,100" />-->
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-        
+
+        <!-- Exercise type images -->
         <None Remove="Resources\Images\exercise_types\deadlift_black_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\deadlift_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
