@@ -3,6 +3,7 @@ using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using SQLite;
+using CheckBox = InputKit.Shared.Controls.CheckBox;
 
 namespace GymCalc.Pages;
 
@@ -42,24 +43,6 @@ public partial class EditPage : ContentPage
         BindingContext = this;
     }
 
-    public void SetFormFields(HeavyThing ht)
-    {
-        if (ht == null)
-        {
-            // Set form fields to defaults.
-            WeightEntry.Text = "";
-            UnitsRadio.SelectedItem = Units.GetPreferred();
-            EnabledCheckBox.IsChecked = true;
-        }
-        else
-        {
-            // Set form fields from object.
-            WeightEntry.Text = ht.Weight.ToString(CultureInfo.InvariantCulture);
-            UnitsRadio.SelectedItem = ht.Units;
-            EnabledCheckBox.IsChecked = ht.Enabled;
-        }
-    }
-
     /// <inheritdoc />
     protected override async void OnAppearing()
     {
@@ -78,42 +61,101 @@ public partial class EditPage : ContentPage
     }
 
     /// <summary>
+    /// Clear the form.
+    /// </summary>
+    public void ClearForm()
+    {
+        WeightEntry.Text = "";
+        UnitsRadio.SelectedItem = Units.GetPreferred();
+        EnabledCheckBox.IsChecked = true;
+        MainColor.Selected = "OffBlack";
+        HasBandsCheckBox.IsChecked = false;
+        BandColor.Selected = "OffBlack";
+    }
+
+    /// <summary>
+    /// Set the fields common to all heavy things.
+    /// </summary>
+    /// <param name="ht"></param>
+    public void SetCommonFields(HeavyThing ht)
+    {
+        WeightEntry.Text = ht.Weight.ToString(CultureInfo.InvariantCulture);
+        UnitsRadio.SelectedItem = ht.Units;
+        EnabledCheckBox.IsChecked = ht.Enabled;
+    }
+
+    /// <summary>
     /// Initialize the form fields.
     /// </summary>
     private async Task InitializeForm()
     {
+        // Clear the form.
+        ClearForm();
+
+        // If we have an object type, modify the form accordingly. If we have an id, set the values.
         switch (ObjectType)
         {
             case "bar":
-                var bar = await BarRepository.Get(ObjectId);
-                SetFormFields(bar);
-                ColorGrid.IsVisible = false;
+                MainColorGrid.IsVisible = false;
                 HasBandsGrid.IsVisible = false;
                 BandColorGrid.IsVisible = false;
+
+                var bar = await BarRepository.Get(ObjectId);
+                if (bar != null)
+                {
+                    SetCommonFields(bar);
+                }
                 break;
 
             case "plate":
-                var plate = await PlateRepository.Get(ObjectId);
-                SetFormFields(plate);
-                ColorGrid.IsVisible = true;
+                MainColorGrid.IsVisible = true;
                 HasBandsGrid.IsVisible = false;
                 BandColorGrid.IsVisible = false;
+
+                var plate = await PlateRepository.Get(ObjectId);
+                if (plate != null)
+                {
+                    SetCommonFields(plate);
+                    MainColor.Selected = plate.Color;
+                }
                 break;
 
             case "dumbbell":
-                var dumbbell = await DumbbellRepository.Get(ObjectId);
-                SetFormFields(dumbbell);
-                ColorGrid.IsVisible = false;
+                MainColorGrid.IsVisible = false;
                 HasBandsGrid.IsVisible = false;
                 BandColorGrid.IsVisible = false;
+
+                var dumbbell = await DumbbellRepository.Get(ObjectId);
+                if (dumbbell != null)
+                {
+                    SetCommonFields(dumbbell);
+                }
                 break;
 
             case "kettlebell":
-                var kettlebell = await KettlebellRepository.Get(ObjectId);
-                SetFormFields(kettlebell);
-                ColorGrid.IsVisible = true;
+                MainColorGrid.IsVisible = true;
                 HasBandsGrid.IsVisible = true;
-                BandColorGrid.IsVisible = kettlebell is { HasBands: true };
+                BandColorGrid.IsVisible = true;
+
+                var kettlebell = await KettlebellRepository.Get(ObjectId);
+                if (kettlebell != null)
+                {
+                    SetCommonFields(kettlebell);
+                    MainColor.Selected = kettlebell.BallColor;
+                    HasBandsCheckBox.IsChecked = kettlebell.HasBands;
+                    if (kettlebell.HasBands)
+                    {
+                        BandColor.Selected = kettlebell.BandColor;
+                    }
+                    else
+                    {
+                        BandColorGrid.IsVisible = false;
+                    }
+                }
+                else
+                {
+                    BandColorGrid.IsVisible = false;
+                }
                 break;
         }
     }
@@ -184,7 +226,7 @@ public partial class EditPage : ContentPage
             Weight = weight,
             Units = (string)UnitsRadio.SelectedItem,
             Enabled = EnabledCheckBox.IsChecked,
-            // Color =
+            Color = MainColor.Selected,
         };
 
         if (ObjectId == 0)
@@ -229,9 +271,9 @@ public partial class EditPage : ContentPage
             Weight = weight,
             Units = (string)UnitsRadio.SelectedItem,
             Enabled = EnabledCheckBox.IsChecked,
-            // BallColor =
+            BallColor = MainColor.Selected,
             HasBands = HasBandsCheckBox.IsChecked,
-            // BandColor =
+            BandColor = BandColor.Selected,
         };
 
         if (ObjectId == 0)
@@ -245,5 +287,10 @@ public partial class EditPage : ContentPage
         }
 
         await Shell.Current.GoToAsync("//kettlebells");
+    }
+
+    private void HasBandsCheckBox_OnCheckChanged(object sender, EventArgs e)
+    {
+        BandColorGrid.IsVisible = ((CheckBox)sender).IsChecked;
     }
 }

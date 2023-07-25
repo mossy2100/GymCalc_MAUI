@@ -2,6 +2,7 @@
 <ContentPage
     x:Class="GymCalc.Pages.EditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:controls="clr-namespace:GymCalc.Controls"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
@@ -15,7 +16,7 @@
             <Label x:Name="ErrorMessage" Style="{StaticResource ErrorMessageStyle}" />
 
             <!--  Weight  -->
-            <Grid x:Name="WeightGrid" ColumnDefinitions="2*,*,*">
+            <Grid x:Name="WeightGrid" ColumnDefinitions="*,*,*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
@@ -25,12 +26,15 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     Style="{StaticResource ControlFrameStyle}">
-                    <Entry x:Name="WeightEntry" VerticalTextAlignment="Center" />
+                    <Entry
+                        x:Name="WeightEntry"
+                        Keyboard="Numeric"
+                        VerticalTextAlignment="Center" />
                 </Frame>
             </Grid>
 
             <!--  Units  -->
-            <Grid x:Name="UnitsGrid" ColumnDefinitions="*,*">
+            <Grid x:Name="UnitsGrid" ColumnDefinitions="*,2*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
@@ -45,7 +49,7 @@
             </Grid>
 
             <!--  Enabled  -->
-            <Grid x:Name="EnabledGrid" ColumnDefinitions="*,*">
+            <Grid x:Name="EnabledGrid" ColumnDefinitions="*,2*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
@@ -59,16 +63,19 @@
             </Grid>
 
             <!--  Plate color or ball color for kettlebells  -->
-            <Grid x:Name="ColorGrid" ColumnDefinitions="*,*">
+            <Grid x:Name="MainColorGrid" ColumnDefinitions="*,2*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
                     Text="Color" />
-                <!--  Custom color picker goes here  -->
+                <controls:ColorPicker
+                    x:Name="MainColor"
+                    Grid.Row="0"
+                    Grid.Column="1" />
             </Grid>
 
             <!--  Has bands  -->
-            <Grid x:Name="HasBandsGrid" ColumnDefinitions="*,*">
+            <Grid x:Name="HasBandsGrid" ColumnDefinitions="*,2*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
@@ -78,16 +85,20 @@
                     x:Name="HasBandsCheckBox"
                     Grid.Row="0"
                     Grid.Column="1"
+                    CheckChanged="HasBandsCheckBox_OnCheckChanged"
                     VerticalOptions="Center" />
             </Grid>
 
             <!--  Band color  -->
-            <Grid x:Name="BandColorGrid" ColumnDefinitions="*,*">
+            <Grid x:Name="BandColorGrid" ColumnDefinitions="*,2*">
                 <Label
                     Grid.Row="0"
                     Grid.Column="0"
                     Text="Band color" />
-                <!--  Custom color picker goes here  -->
+                <controls:ColorPicker
+                    x:Name="BandColor"
+                    Grid.Row="0"
+                    Grid.Column="1" />
             </Grid>
 
             <!--  Buttons  -->

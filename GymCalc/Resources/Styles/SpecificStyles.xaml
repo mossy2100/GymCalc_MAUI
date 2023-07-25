@@ -19,7 +19,7 @@
         <Setter Property="TextFontSize" Value="16" />
     </Style>
 
-    <!--  Form styles  -->
+    <!--  Frame and border styles  -->
 
     <Style x:Key="ControlFrameStyle" TargetType="Frame">
         <Setter Property="BorderColor" Value="{StaticResource Primary}" />
@@ -27,32 +27,12 @@
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 
-    <Style x:Key="ErrorMessageStyle" TargetType="Label">
-        <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
-    </Style>
-
-    <!--  Results table styles  -->
-
-    <Style x:Key="ResultsTablePercent" TargetType="Label">
-        <Setter Property="FontSize" Value="24" />
-        <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-    </Style>
-
-    <Style x:Key="ResultsTableHeader" TargetType="Label">
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-    </Style>
-
-    <Style x:Key="ResultsTableWeight" TargetType="Label">
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-    </Style>
-
-    <Style x:Key="ResultsTableFocusWeight" TargetType="Label">
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+    <Style x:Key="ColorPickerFrameStyle" TargetType="Frame">
+        <Setter Property="WidthRequest" Value="46" />
+        <Setter Property="HeightRequest" Value="46" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="CornerRadius" Value="10" />
     </Style>
 
     <!--  Buttons  -->
@@ -63,6 +43,17 @@
 
     <Style x:Key="DeleteButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
+    </Style>
+
+    <Style x:Key="ColorPickerButtonStyle" TargetType="Button">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinimumHeightRequest" Value="-1" />
+        <Setter Property="MinimumWidthRequest" Value="-1" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="CornerRadius" Value="7" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="BorderWidth" Value="3" />
     </Style>
 
     <!--  Exercise type buttons  -->
@@ -123,6 +114,34 @@
         BasedOn="{StaticResource ExerciseTypeButtonStyle}"
         TargetType="Button">
         <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}" />
+    </Style>
+
+    <!--  Text styles  -->
+
+    <Style x:Key="ErrorMessageStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
+    </Style>
+
+    <Style x:Key="ResultsTablePercent" TargetType="Label">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+    </Style>
+
+    <Style x:Key="ResultsTableHeader" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+    </Style>
+
+    <Style x:Key="ResultsTableWeight" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+    </Style>
+
+    <Style x:Key="ResultsTableFocusWeight" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
     </Style>
 
     <!--  FlyoutItems  -->

@@ -23,7 +23,7 @@ internal class BarDrawable : IDrawable
         var width = dirtyRect.Width;
 
         // Bar background.
-        canvas.FillColor = CustomColors.PaleGray;
+        canvas.FillColor = CustomColors.Get("PaleGray");
         var barBackground = new RectF(0, 0, width, Height);
         canvas.FillRectangle(barBackground);
 

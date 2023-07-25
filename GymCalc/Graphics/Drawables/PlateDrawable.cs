@@ -26,8 +26,8 @@ internal class PlateDrawable : IDrawable
     {
         var width = dirtyRect.Width;
 
-        // Get the colors.
-        var bgColor = Color.Parse(_plate.Color);
+        // Get the color.
+        var bgColor = CustomColors.Get(_plate.Color);
 
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);

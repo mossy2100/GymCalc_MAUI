@@ -57,9 +57,9 @@ internal static class KettlebellRepository
                 Weight = weight,
                 Units = units,
                 Enabled = enabled,
-                BallColor = ballColor.ToHex(),
+                BallColor = ballColor,
                 HasBands = hasBands,
-                BandColor = bandColor?.ToHex(),
+                BandColor = bandColor,
             };
             await db.InsertAsync(kettlebell);
 

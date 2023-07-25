@@ -21,8 +21,11 @@ internal class KettlebellDrawable : IDrawable
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         // Colors.
-        var ballColor = Color.Parse(_kettlebell.BallColor);
-        var bandColor = _kettlebell.HasBands ? Color.Parse(_kettlebell.BandColor) : ballColor;
+        var ballColor = CustomColors.Get(_kettlebell.BallColor);
+        var bandColor = (_kettlebell.HasBands && _kettlebell.BandColor != null)
+            ? CustomColors.Get(_kettlebell.BandColor)
+            : ballColor;
+        bandColor ??= ballColor;
 
         // Useful dimensions.
         const int y0 = 5;
@@ -31,7 +34,7 @@ internal class KettlebellDrawable : IDrawable
         const int y3 = 35;
 
         // Handle top.
-        canvas.StrokeColor = CustomColors.PaleGray;
+        canvas.StrokeColor = CustomColors.Get("PaleGray");
         canvas.StrokeSize = 10;
         const int diam = 20;
         canvas.DrawArc(10, y0, diam, diam, 90, 180, false, false);

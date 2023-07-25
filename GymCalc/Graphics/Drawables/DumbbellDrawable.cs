@@ -25,7 +25,7 @@ internal class DumbbellDrawable : IDrawable
         // Bar.
         var barTop = (height - BarDrawable.Height) / 2;
         var bar = new RectF(0, barTop, width, BarDrawable.Height);
-        canvas.FillColor = CustomColors.PaleGray;
+        canvas.FillColor = CustomColors.Get("PaleGray");
         canvas.FillRectangle(bar);
 
         // Plates.
@@ -34,7 +34,7 @@ internal class DumbbellDrawable : IDrawable
         const int cornerRadius = 2;
         var smallPlateTop = barTop / 3;
         var smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = CustomColors.OffBlack;
+        canvas.FillColor = CustomColors.Get("OffBlack");
 
         // Left small plate.
         var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);
