@@ -25,18 +25,21 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Clicked="AddButton_OnClicked"
+                    ImageSource="plus_icon_white_16.png"
                     Text="Add" />
                 <Button
                     x:Name="EditButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="EditButton_OnClicked"
+                    ImageSource="edit_icon_white_16.png"
                     Text="Edit" />
                 <Button
                     x:Name="ResetButton"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="ResetButton_OnClicked"
+                    ImageSource="reset_icon_white_16.png"
                     Text="Reset" />
             </Grid>
 

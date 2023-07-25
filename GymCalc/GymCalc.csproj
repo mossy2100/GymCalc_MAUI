@@ -177,6 +177,33 @@
         </MauiImage>
         
         <None Remove="old\**" />
+
+        <!-- Button icons -->
+        
+        <None Remove="Resources\Images\button_icons\edit_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\button_icons\plus_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\button_icons\cancel_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\button_icons\delete_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\button_icons\reset_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <None Remove="Resources\Images\button_icons\check_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
     </ItemGroup>
 
     <ItemGroup>

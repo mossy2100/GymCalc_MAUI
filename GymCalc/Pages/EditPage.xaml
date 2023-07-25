@@ -111,12 +111,14 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Clicked="CancelButton_OnClicked"
+                    ImageSource="cancel_icon_white_16.png"
                     Text="Cancel" />
                 <Button
                     x:Name="SaveButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="SaveButton_OnClicked"
+                    ImageSource="check_icon_white_16.png"
                     Style="{StaticResource SaveButtonStyle}"
                     Text="Save" />
             </Grid>
