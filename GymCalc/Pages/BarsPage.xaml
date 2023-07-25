@@ -35,6 +35,14 @@
                     ImageSource="edit_icon_white_16.png"
                     Text="Edit" />
                 <Button
+                    x:Name="ViewButton"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Clicked="ViewButton_OnClicked"
+                    ImageSource="view_icon_white_16.png"
+                    IsVisible="False"
+                    Text="View" />
+                <Button
                     x:Name="ResetButton"
                     Grid.Row="0"
                     Grid.Column="2"

@@ -204,6 +204,10 @@
         <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        <None Remove="Resources\Images\button_icons\view_icon_white_16.png" />
+        <MauiImage Include="Resources\Images\button_icons\view_icon_white_16.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
     </ItemGroup>
 
     <ItemGroup>

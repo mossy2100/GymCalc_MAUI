@@ -15,6 +15,8 @@ public partial class BarsPage : ContentPage
     /// </summary>
     private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
+    private readonly Dictionary<HorizontalStackLayout, Bar> _stackBarMap = new ();
+
     public BarsPage()
     {
         InitializeComponent();
@@ -51,7 +53,7 @@ public partial class BarsPage : ContentPage
         {
             // Add 2 columns to the grid.
             BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-            BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            BarsGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(70)));
         }
 
         // Calculate and set the stack height because it doesn't resize automatically.
@@ -62,6 +64,9 @@ public partial class BarsPage : ContentPage
 
         // Get the maximum bar weight.
         var maxBarWeight = bars.Last().Weight;
+
+        var editIconButtonStyle = MauiUtilities.LookupStyle("EditIconButtonStyle");
+        var deleteIconButtonStyle = MauiUtilities.LookupStyle("DeleteIconButtonStyle");
 
         var rowNum = 0;
         var colNum = 0;
@@ -77,7 +82,7 @@ public partial class BarsPage : ContentPage
             var barGraphic = BarDrawable.CreateGraphic(bar, maxBarWeight);
             BarsGrid.Add(barGraphic, colNum, rowNum);
 
-            // Add the checkbox.
+            // Add the checkbox to the grid.
             var cb = new CheckBox
             {
                 IsChecked = bar.Enabled,
@@ -85,8 +90,37 @@ public partial class BarsPage : ContentPage
             cb.CheckChanged += OnBarCheckboxChanged;
             BarsGrid.Add(cb, colNum + 1, rowNum);
 
-            // Remember the bar weight in the lookup table.
+            // Link the checkbox to the bar.
             _cbBarMap[cb] = bar;
+
+            // Create a horizontal stack for the edit and delete icon buttons.
+            var stack = new HorizontalStackLayout
+            {
+                Spacing = 5,
+                IsVisible = false,
+            };
+
+            // Add the edit button to the stack.
+            var editBtn = new Button
+            {
+                Style = editIconButtonStyle,
+            };
+            editBtn.Clicked += EditIcon_OnClicked;
+            stack.Add(editBtn);
+
+            // Add the delete button to the stack.
+            var deleteBtn = new Button
+            {
+                Style = deleteIconButtonStyle,
+            };
+            deleteBtn.Clicked += DeleteIcon_OnClicked;
+            stack.Add(deleteBtn);
+
+            // Link the icon button group to the bar.
+            _stackBarMap[stack] = bar;
+
+            // Add the stack to the grid.
+            BarsGrid.Add(stack, colNum + 1, rowNum);
 
             // Next position.
             colNum += 2;
@@ -122,8 +156,30 @@ public partial class BarsPage : ContentPage
 
     private void EditButton_OnClicked(object sender, EventArgs e)
     {
-        // Replace checkboxes with Edit and Delete icons.
-        throw new NotImplementedException();
+        foreach (var (cb, bar) in _cbBarMap)
+        {
+            cb.IsVisible = false;
+        }
+        foreach (var (stack, bar) in _stackBarMap)
+        {
+            stack.IsVisible = true;
+        }
+        EditButton.IsVisible = false;
+        ViewButton.IsVisible = true;
+    }
+
+    private void ViewButton_OnClicked(object sender, EventArgs e)
+    {
+        foreach (var (cb, bar) in _cbBarMap)
+        {
+            cb.IsVisible = true;
+        }
+        foreach (var (stack, bar) in _stackBarMap)
+        {
+            stack.IsVisible = false;
+        }
+        EditButton.IsVisible = true;
+        ViewButton.IsVisible = false;
     }
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
@@ -134,9 +190,11 @@ public partial class BarsPage : ContentPage
 
     private async void EditIcon_OnClicked(object sender, EventArgs e)
     {
-        // Get the bar id.
-        var id = 0;
-        await Shell.Current.GoToAsync($"//edit?class=Bar&Id={id}");
+        // Get the Bar Id and go to the edit form.
+        var editBtn = (Button)sender;
+        var stack = (HorizontalStackLayout)editBtn.Parent;
+        var bar = _stackBarMap[stack];
+        await Shell.Current.GoToAsync($"//edit?class=Bar&Id={bar.Id}");
     }
 
     private async void DeleteIcon_OnClicked(object sender, EventArgs e)

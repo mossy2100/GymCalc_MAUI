@@ -56,6 +56,24 @@
         <Setter Property="BorderWidth" Value="3" />
     </Style>
 
+    <Style x:Key="EditIconButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="-1" />
+        <Setter Property="MinimumWidthRequest" Value="-1" />
+        <Setter Property="HeightRequest" Value="32" />
+        <Setter Property="WidthRequest" Value="32" />
+        <Setter Property="ImageSource" Value="edit_icon_white_16.png" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style
+        x:Key="DeleteIconButtonStyle"
+        BasedOn="{StaticResource EditIconButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
+        <Setter Property="ImageSource" Value="delete_icon_white_16.png" />
+    </Style>
+
     <!--  Exercise type buttons  -->
 
     <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
