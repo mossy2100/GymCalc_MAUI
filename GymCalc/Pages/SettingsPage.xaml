@@ -11,7 +11,7 @@
         <Grid
             ColumnDefinitions="*,*"
             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-            RowDefinitions="Auto,Auto"
+            RowDefinitions="Auto"
             RowSpacing="{x:Static graphics:PageLayout.Spacing}">
 
             <Label
@@ -29,20 +29,20 @@
                 <input:RadioButton Text="pounds (lb)" Value="lb" />
             </input:RadioButtonGroupView>
 
-            <Label
-                Grid.Row="1"
-                Grid.Column="0"
-                FontSize="16"
-                Text="Colour scheme" />
-
-            <input:RadioButtonGroupView
-                x:Name="ColorSchemeRadio"
-                Grid.Row="1"
-                Grid.Column="1"
-                SelectedItemChanged="OnColorSchemeSelectedItemChanged">
-                <input:RadioButton Text="orange" Value="orange" />
-                <input:RadioButton Text="pink" Value="pink" />
-            </input:RadioButtonGroupView>
+            <!--  <Label  -->
+            <!--  Grid.Row="1"  -->
+            <!--  Grid.Column="0"  -->
+            <!--  FontSize="16"  -->
+            <!--  Text="Colour scheme" />  -->
+            <!--    -->
+            <!--  <input:RadioButtonGroupView  -->
+            <!--  x:Name="ColorSchemeRadio"  -->
+            <!--  Grid.Row="1"  -->
+            <!--  Grid.Column="1"  -->
+            <!--  SelectedItemChanged="OnColorSchemeSelectedItemChanged">  -->
+            <!--     <input:RadioButton Text="orange" Value="orange" /> -->
+            <!--     <input:RadioButton Text="pink" Value="pink" /> -->
+            <!-- </input:RadioButtonGroupView> -->
 
         </Grid>
     </ScrollView>
