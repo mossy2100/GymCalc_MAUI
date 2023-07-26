@@ -121,7 +121,7 @@
                     Grid.Column="1"
                     Clicked="SaveButton_OnClicked"
                     ImageSource="check_icon_white_16.png"
-                    Style="{StaticResource SaveButtonStyle}"
+                    Style="{StaticResource SuccessButtonStyle}"
                     Text="Save" />
             </Grid>
 

@@ -40,16 +40,21 @@ internal class DumbbellRepository : GymObjectRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            var addedSoFar = new List<(double, string)>();
-
-            // Kilograms.
-            addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
-            addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
-
-            // Pounds.
-            addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
-            addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
+            await InsertDefaults();
         }
+    }
+
+    internal override async Task InsertDefaults()
+    {
+        var addedSoFar = new List<(double, string)>();
+
+        // Kilograms.
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
+
+        // Pounds.
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
     }
 
     private async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
@@ -98,5 +103,11 @@ internal class DumbbellRepository : GymObjectRepository
     public async Task<Dumbbell> Get(int id)
     {
         return await base.Get<Dumbbell>(id);
+    }
+
+    /// <inheritdoc />
+    internal override async Task DeleteAll()
+    {
+        await base.DeleteAll<Dumbbell>();
     }
 }

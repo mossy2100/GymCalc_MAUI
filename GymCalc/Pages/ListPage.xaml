@@ -12,7 +12,7 @@
             Spacing="{x:Static graphics:PageLayout.DoubleSpacing}"
             VerticalOptions="Start">
 
-            <Label x:Name="ListLabel" />
+            <Label x:Name="ListLabel" FontSize="16" />
 
             <Grid
                 x:Name="ListGrid"

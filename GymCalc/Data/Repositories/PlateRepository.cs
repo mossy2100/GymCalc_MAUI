@@ -79,17 +79,24 @@ internal class PlateRepository : GymObjectRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var (weight, units, enabled, color) in _DefaultPlates)
+            await InsertDefaults();
+        }
+    }
+
+    internal override async Task InsertDefaults()
+    {
+        var db = Database.GetConnection();
+
+        foreach (var (weight, units, enabled, color) in _DefaultPlates)
+        {
+            var plate = new Plate
             {
-                var plate = new Plate
-                {
-                    Weight = weight,
-                    Units = units,
-                    Enabled = enabled,
-                    Color = color,
-                };
-                await db.InsertAsync(plate);
-            }
+                Weight = weight,
+                Units = units,
+                Enabled = enabled,
+                Color = color,
+            };
+            await db.InsertAsync(plate);
         }
     }
 
@@ -110,5 +117,11 @@ internal class PlateRepository : GymObjectRepository
     public async Task<Plate> Get(int id)
     {
         return await base.Get<Plate>(id);
+    }
+
+    /// <inheritdoc />
+    internal override async Task DeleteAll()
+    {
+        await base.DeleteAll<Plate>();
     }
 }

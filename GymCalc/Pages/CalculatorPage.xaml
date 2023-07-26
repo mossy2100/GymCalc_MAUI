@@ -16,7 +16,7 @@
             <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
-                <Label Text="Select exercise type:" />
+                <Label FontSize="16" Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"

@@ -9,6 +9,8 @@ internal abstract class GymObjectRepository
     /// </summary>
     internal abstract Task Initialize();
 
+    internal abstract Task InsertDefaults();
+
     /// <summary>
     /// Get all the gym objects of a given type.
     /// </summary>
@@ -59,4 +61,12 @@ internal abstract class GymObjectRepository
             .Where(ht => ht.Id == id)
             .FirstOrDefaultAsync();
     }
+
+    internal async Task DeleteAll<T>()
+    {
+        var db = Database.GetConnection();
+        await db.DeleteAllAsync<T>();
+    }
+
+    internal abstract Task DeleteAll();
 }

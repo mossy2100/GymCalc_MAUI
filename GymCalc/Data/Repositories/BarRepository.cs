@@ -63,16 +63,23 @@ internal class BarRepository : GymObjectRepository
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
-            foreach (var (weight, units, enable) in _DefaultBars)
+            await InsertDefaults();
+        }
+    }
+
+    internal override async Task InsertDefaults()
+    {
+        var db = Database.GetConnection();
+
+        foreach (var (weight, units, enable) in _DefaultBars)
+        {
+            var bar = new Bar
             {
-                var bar = new Bar
-                {
-                    Weight = weight,
-                    Units = units,
-                    Enabled = enable,
-                };
-                await db.InsertAsync(bar);
-            }
+                Weight = weight,
+                Units = units,
+                Enabled = enable,
+            };
+            await db.InsertAsync(bar);
         }
     }
 
@@ -93,5 +100,11 @@ internal class BarRepository : GymObjectRepository
     public async Task<Bar> Get(int id)
     {
         return await base.Get<Bar>(id);
+    }
+
+    /// <inheritdoc />
+    internal override async Task DeleteAll()
+    {
+        await base.DeleteAll<Bar>();
     }
 }

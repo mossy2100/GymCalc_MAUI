@@ -53,14 +53,21 @@ public partial class EditPage : ContentPage
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                Title = $"Edit {GymObjectTypeName}";
+                SetTitle();
                 InitializeForm();
                 break;
 
             case nameof(GymObjectId):
+                SetTitle();
                 await PopulateForm();
                 break;
         }
+    }
+
+    private void SetTitle()
+    {
+        var verb = GymObjectId == 0 ? "Add" : "Edit";
+        Title = $"{verb} {GymObjectTypeName}";
     }
 
     /// <summary>

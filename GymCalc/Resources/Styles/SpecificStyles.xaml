@@ -37,11 +37,11 @@
 
     <!--  Buttons  -->
 
-    <Style x:Key="SaveButtonStyle" TargetType="Button">
+    <Style x:Key="SuccessButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
     </Style>
 
-    <Style x:Key="DeleteButtonStyle" TargetType="Button">
+    <Style x:Key="DangerButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
     </Style>
 

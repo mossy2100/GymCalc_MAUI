@@ -247,8 +247,8 @@ public partial class ListPage : ContentPage
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
     {
+        // Go to the reset confirmation page.
         await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
-        throw new NotImplementedException();
     }
 
     private async void EditIcon_OnClicked(object sender, EventArgs e)
@@ -262,7 +262,7 @@ public partial class ListPage : ContentPage
 
     private async void DeleteIcon_OnClicked(object sender, EventArgs e)
     {
-        // Get the gym object id and go to the edit form.
+        // Get the gym object id and go to the delete confirmation page.
         var deleteBtn = (Button)sender;
         var stack = (HorizontalStackLayout)deleteBtn.Parent;
         var gymObject = _stackObjectMap[stack];
