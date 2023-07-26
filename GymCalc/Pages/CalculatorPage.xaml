@@ -7,7 +7,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
         <StackLayout
             x:Name="CalculatorLayout"
             Loaded="OnCalculatorLayoutLoaded"

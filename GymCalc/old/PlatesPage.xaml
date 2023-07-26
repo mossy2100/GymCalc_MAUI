@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.DumbbellsPage"
+    x:Class="GymCalc.Pages.PlatesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Dumbbells">
+    Title="Plates">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}">
-        <VerticalStackLayout x:Name="DumbbellsStack" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+        <VerticalStackLayout x:Name="PlatesStackLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <Label x:Name="DumbbellsLabel" />
+            <Label x:Name="PlatesLabel" />
 
             <Grid
-                x:Name="DumbbellsGrid"
+                x:Name="PlatesGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
 
             <Grid
-                x:Name="DumbbellsButtons"
+                x:Name="PlatesButtons"
                 ColumnDefinitions="*,*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">

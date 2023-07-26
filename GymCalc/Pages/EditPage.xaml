@@ -6,11 +6,8 @@
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
-        <VerticalStackLayout
-            x:Name="EditForm"
-            Loaded="EditForm_OnLoaded"
-            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+        <VerticalStackLayout x:Name="EditForm" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
             <!--  Error message  -->
             <Label x:Name="ErrorMessage" Style="{StaticResource ErrorMessageStyle}" />

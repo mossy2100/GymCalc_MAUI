@@ -1,6 +1,7 @@
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
@@ -16,6 +17,8 @@ public partial class BarsPage : ContentPage
     private readonly Dictionary<CheckBox, Bar> _cbBarMap = new ();
 
     private readonly Dictionary<HorizontalStackLayout, Bar> _stackBarMap = new ();
+
+    private bool _editMode;
 
     public BarsPage()
     {
@@ -86,6 +89,8 @@ public partial class BarsPage : ContentPage
             var cb = new CheckBox
             {
                 IsChecked = bar.Enabled,
+                IsVisible = !_editMode,
+                HorizontalOptions = LayoutOptions.Center,
             };
             cb.CheckChanged += OnBarCheckboxChanged;
             BarsGrid.Add(cb, colNum + 1, rowNum);
@@ -97,7 +102,7 @@ public partial class BarsPage : ContentPage
             var stack = new HorizontalStackLayout
             {
                 Spacing = 5,
-                IsVisible = false,
+                IsVisible = _editMode,
             };
 
             // Add the edit button to the stack.
@@ -151,11 +156,12 @@ public partial class BarsPage : ContentPage
 
     private async void AddButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//edit?type=bar");
+        await Shell.Current.GoToAsync("//edit?type=Bar");
     }
 
     private void EditButton_OnClicked(object sender, EventArgs e)
     {
+        _editMode = true;
         foreach (var (cb, bar) in _cbBarMap)
         {
             cb.IsVisible = false;
@@ -170,6 +176,7 @@ public partial class BarsPage : ContentPage
 
     private void ViewButton_OnClicked(object sender, EventArgs e)
     {
+        _editMode = false;
         foreach (var (cb, bar) in _cbBarMap)
         {
             cb.IsVisible = true;
@@ -184,7 +191,7 @@ public partial class BarsPage : ContentPage
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//reset?class=Bar");
+        await Shell.Current.GoToAsync("//reset?type=Bar");
         throw new NotImplementedException();
     }
 
@@ -194,14 +201,14 @@ public partial class BarsPage : ContentPage
         var editBtn = (Button)sender;
         var stack = (HorizontalStackLayout)editBtn.Parent;
         var bar = _stackBarMap[stack];
-        await Shell.Current.GoToAsync($"//edit?class=Bar&Id={bar.Id}");
+        await Shell.Current.GoToAsync($"//edit?type=Bar&id={bar.Id}");
     }
 
     private async void DeleteIcon_OnClicked(object sender, EventArgs e)
     {
         // Get the bar id.
         var id = 0;
-        await Shell.Current.GoToAsync($"//delete?class=Bar&Id={id}");
+        await Shell.Current.GoToAsync($"//delete?type=Bar&id={id}");
     }
 
     #endregion Event handlers

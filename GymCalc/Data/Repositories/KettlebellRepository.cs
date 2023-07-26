@@ -1,4 +1,5 @@
 using GymCalc.Data.Models;
+using GymCalc.Constants;
 using GymCalc.Graphics;
 
 namespace GymCalc.Data.Repositories;
@@ -6,12 +7,28 @@ namespace GymCalc.Data.Repositories;
 /// <summary>
 /// Methods for CRUD operations on kettlebells.
 /// </summary>
-internal static class KettlebellRepository
+internal class KettlebellRepository : GymObjectRepository
 {
+    private static KettlebellRepository _instance;
+
+    // Prevent instantiation from outside the class.
+    private KettlebellRepository()
+    {
+    }
+
+    public static KettlebellRepository GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new KettlebellRepository();
+        }
+        return _instance;
+    }
+
     /// <summary>
     /// Ensure the database table exist and contains some kettlebells.
     /// </summary>
-    internal static async Task Initialize()
+    internal override async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -34,7 +51,7 @@ internal static class KettlebellRepository
         }
     }
 
-    private static async Task<List<(double, string)>> AddKettlebellSet(double min, double max,
+    private async Task<List<(double, string)>> AddKettlebellSet(double min, double max,
         double step, string units, bool enabled, List<(double, string)> addedSoFar)
     {
         var db = Database.GetConnection();
@@ -74,18 +91,18 @@ internal static class KettlebellRepository
     /// Get the kettlebells.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Kettlebell>> GetAll(string units, bool onlyEnabled = false,
+    public async Task<List<Kettlebell>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Kettlebell>(units, onlyEnabled, ascending);
+        return await base.GetAll<Kettlebell>(units, onlyEnabled, ascending);
     }
 
     /// <summary>
     /// Get a kettlebell by id.
     /// </summary>
     /// <returns></returns>
-    public static async Task<Kettlebell> Get(int id)
+    public async Task<Kettlebell> Get(int id)
     {
-        return await HeavyThingRepository.Get<Kettlebell>(id);
+        return await base.Get<Kettlebell>(id);
     }
 }

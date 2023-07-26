@@ -1,11 +1,12 @@
 using GymCalc.Data.Models;
+using GymCalc.Constants;
 
 namespace GymCalc.Data.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on bars.
 /// </summary>
-internal static class BarRepository
+internal class BarRepository : GymObjectRepository
 {
     /// <summary>
     /// Default selected bar weight.
@@ -30,10 +31,26 @@ internal static class BarRepository
         (55, Units.Pounds, true),
     };
 
+    private static BarRepository _instance;
+
+    // Prevent instantiation from outside the class.
+    private BarRepository()
+    {
+    }
+
+    public static BarRepository GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new BarRepository();
+        }
+        return _instance;
+    }
+
     /// <summary>
     /// Ensure the database table exist and contains some bars.
     /// </summary>
-    internal static async Task Initialize()
+    internal override async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -63,18 +80,18 @@ internal static class BarRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false,
+    public async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Bar>(units, onlyEnabled, ascending);
+        return await base.GetAll<Bar>(units, onlyEnabled, ascending);
     }
 
     /// <summary>
     /// Get a bar by id.
     /// </summary>
     /// <returns></returns>
-    public static async Task<Bar> Get(int id)
+    public async Task<Bar> Get(int id)
     {
-        return await HeavyThingRepository.Get<Bar>(id);
+        return await base.Get<Bar>(id);
     }
 }

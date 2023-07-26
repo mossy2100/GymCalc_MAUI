@@ -1,4 +1,4 @@
-namespace GymCalc;
+namespace GymCalc.Constants;
 
 internal static class Units
 {

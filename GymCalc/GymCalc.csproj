@@ -59,11 +59,11 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\bar_icon_black_300.png">
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_white_300.png">
+        <MauiImage Include="Resources\Images\tab_bar_icons\bar_icon_white_300.png">
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
@@ -238,6 +238,49 @@
 
     <ItemGroup>
       <MauiCss Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Pages\ListPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="old\BarsPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="old\DumbbellsPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="old\KettlebellsPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="old\PlatesPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Pages\ListPage.xaml.cs">
+        <DependentUpon>ListPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="old\BarsPage.xaml.cs">
+        <DependentUpon>BarsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="old\DumbbellsPage.xaml.cs">
+        <DependentUpon>DumbbellsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="old\KettlebellsPage.xaml.cs">
+        <DependentUpon>KettlebellsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="old\PlatesPage.xaml.cs">
+        <DependentUpon>PlatesPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="old\**" />
     </ItemGroup>
 
 </Project>

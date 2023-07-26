@@ -2,21 +2,25 @@ using GymCalc.Data.Models;
 
 namespace GymCalc.Data.Repositories;
 
-internal abstract class HeavyThingRepository
+internal abstract class GymObjectRepository
 {
     /// <summary>
-    /// Get all the heavy things of a given type.
+    /// Ensure the database table exist and contains some objects.
+    /// </summary>
+    internal abstract Task Initialize();
+
+    /// <summary>
+    /// Get all the gym objects of a given type.
     /// </summary>
     /// <returns></returns>
-    internal static async Task<List<T>> GetAll<T>(string units, bool onlyEnabled = false,
+    internal async Task<List<T>> GetAll<T>(string units, bool onlyEnabled = false,
         bool ascending = true)
-        where T : HeavyThing, new()
+        where T : GymObject, new()
     {
         var db = Database.GetConnection();
 
-        // Get all the heavy things with in the preferred units.
-        var query = db.Table<T>()
-            .Where(ht => ht.Units == units);
+        // Get all the gym objects in the preferred units.
+        var query = db.Table<T>().Where(ht => ht.Units == units);
 
         // Add where clause if needed.
         if (onlyEnabled)
@@ -33,11 +37,11 @@ internal abstract class HeavyThingRepository
     }
 
     /// <summary>
-    /// Get a heavy thing of a given type and id.
+    /// Get a gym object of a given type and id.
     /// It's convenient to accept a 0 parameter for this.
     /// </summary>
     /// <returns></returns>
-    internal static async Task<T> Get<T>(int id) where T : HeavyThing, new()
+    internal async Task<T> Get<T>(int id) where T : GymObject, new()
     {
         if (id < 0)
         {

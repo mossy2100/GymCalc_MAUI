@@ -29,21 +29,29 @@
         <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Bars" Style="{StaticResource BarsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:BarsPage}" Route="bars" />
-    </FlyoutItem>
+    <MenuItem
+        Clicked="Bars_OnClick"
+        IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
+                                          Dark='bar_icon_white_300.png'}"
+        Text="Bars" />
 
-    <FlyoutItem Title="Plates" Style="{StaticResource PlatesFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:PlatesPage}" Route="plates" />
-    </FlyoutItem>
+    <MenuItem
+        Clicked="Plates_OnClick"
+        IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
+                                          Dark='plate_icon_white_300.png'}"
+        Text="Plates" />
 
-    <FlyoutItem Title="Dumbbells" Style="{StaticResource DumbbellsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:DumbbellsPage}" Route="dumbbells" />
-    </FlyoutItem>
+    <MenuItem
+        Clicked="Dumbbells_OnClick"
+        IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                          Dark='dumbbell_icon_white_300.png'}"
+        Text="Dumbbells" />
 
-    <FlyoutItem Title="Kettlebells" Style="{StaticResource KettlebellsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:KettlebellsPage}" Route="kettlebells" />
-    </FlyoutItem>
+    <MenuItem
+        Clicked="Kettlebells_OnClick"
+        IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
+                                          Dark='kettlebell_icon_white_300.png'}"
+        Text="Kettlebells" />
 
     <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
@@ -52,9 +60,5 @@
     <FlyoutItem Title="About GymCalc" Style="{StaticResource AboutFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
     </FlyoutItem>
-
-    <ShellContent ContentTemplate="{DataTemplate pages:EditPage}" Route="edit" />
-    <ShellContent ContentTemplate="{DataTemplate pages:DeletePage}" Route="delete" />
-    <ShellContent ContentTemplate="{DataTemplate pages:ResetPage}" Route="reset" />
 
 </Shell>

@@ -4,6 +4,7 @@ using GymCalc.Calculations;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
@@ -464,7 +465,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_barLookup == null)
         {
-            var bars = await BarRepository.GetAll(_units, true);
+            var bars = await BarRepository.GetInstance().GetAll(_units, true);
             _barLookup = bars.ToDictionary(p => p.Weight, p => p);
         }
         return _barLookup;
@@ -474,7 +475,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_plateLookup == null)
         {
-            var plates = await PlateRepository.GetAll(_units, true);
+            var plates = await PlateRepository.GetInstance().GetAll(_units, true);
             _plateLookup = plates.ToDictionary(p => p.Weight, p => p);
         }
         return _plateLookup;
@@ -484,7 +485,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_dumbbellLookup == null)
         {
-            var dumbbells = await DumbbellRepository.GetAll(_units, true);
+            var dumbbells = await DumbbellRepository.GetInstance().GetAll(_units, true);
             _dumbbellLookup = dumbbells.ToDictionary(p => p.Weight, p => p);
         }
         return _dumbbellLookup;
@@ -494,7 +495,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (_kettlebellLookup == null)
         {
-            var kettlebells = await KettlebellRepository.GetAll(_units, true);
+            var kettlebells = await KettlebellRepository.GetInstance().GetAll(_units, true);
             _kettlebellLookup = kettlebells.ToDictionary(p => p.Weight, p => p);
         }
         return _kettlebellLookup;
@@ -519,13 +520,19 @@ public partial class CalculatorPage : ContentPage
     private void DisplayDumbbellResults()
     {
         DisplaySingleWeightResults(_dumbbellResults, weight =>
-            DumbbellDrawable.CreateGraphic(_dumbbellLookup[weight]));
+        {
+            var drawable = new DumbbellDrawable { GymObject = _dumbbellLookup[weight] };
+            return drawable.CreateGraphic();
+        });
     }
 
     private void DisplayKettlebellResults()
     {
         DisplaySingleWeightResults(_kettlebellResults, weight =>
-            KettlebellDrawable.CreateGraphic(_kettlebellLookup[weight]));
+        {
+            var drawable = new KettlebellDrawable { GymObject = _kettlebellLookup[weight] };
+            return drawable.CreateGraphic();
+        });
     }
 
     private void DisplayPlateResults(Dictionary<double, List<double>> results,
@@ -669,11 +676,13 @@ public partial class CalculatorPage : ContentPage
                     platesGrid.RowDefinitions.Add(new RowDefinition());
 
                     // Add the plate graphic.
-                    var plateGraphic = PlateDrawable.CreateGraphic(_plateLookup[plateWeight],
-                        maxPlateWeight);
+                    var drawable = new PlateDrawable
+                    {
+                        GymObject = _plateLookup[plateWeight],
+                        MaxWeight = maxPlateWeight,
+                    };
+                    var plateGraphic = drawable.CreateGraphic();
                     platesGrid.Add(plateGraphic, 0, j);
-                    // PlatesPage.AddPlateToGrid(_plateLookup[plateWeight], platesGrid, 0, j,
-                    //     maxPlateWeight);
                     j++;
                 }
                 CalculatorResults.Add(platesGrid);

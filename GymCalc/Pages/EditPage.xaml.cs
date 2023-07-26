@@ -1,38 +1,40 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Constants;
 using SQLite;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
 
 namespace GymCalc.Pages;
 
-[QueryProperty(nameof(ObjectType), "type")]
-[QueryProperty(nameof(ObjectId), "id")]
+[QueryProperty(nameof(GymObjectTypeName), "type")]
+[QueryProperty(nameof(GymObjectId), "id")]
 public partial class EditPage : ContentPage
 {
-    private string _type;
+    private string _gymObjectTypeName;
 
-    public string ObjectType
+    public string GymObjectTypeName
     {
-        get => _type;
+        get => _gymObjectTypeName;
 
         set
         {
-            _type = value;
+            _gymObjectTypeName = value;
             OnPropertyChanged();
         }
     }
 
-    private int _id;
+    private int _gymObjectId;
 
-    public int ObjectId
+    public int GymObjectId
     {
-        get => _id;
+        get => _gymObjectId;
 
         set
         {
-            _id = value;
+            _gymObjectId = value;
             OnPropertyChanged();
         }
     }
@@ -44,26 +46,26 @@ public partial class EditPage : ContentPage
     }
 
     /// <inheritdoc />
-    protected override async void OnAppearing()
+    protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        // The first time the page appears, ObjectType won't be set, so this won't do anything.
-        // But also, the first time the page appears, the Loaded event will fire on the EditForm
-        // (and other views).
-        await InitializeForm();
-    }
+        base.OnPropertyChanged(propertyName);
 
-    private async void EditForm_OnLoaded(object sender, EventArgs e)
-    {
-        // This event only fires the first time the page appears, so it handles the fact that the
-        // first time the page appears, ObjectType isn't known at the time of the OnAppearing()
-        // event.
-        await InitializeForm();
+        switch (propertyName)
+        {
+            case nameof(GymObjectTypeName):
+                InitializeForm();
+                break;
+
+            case nameof(GymObjectId):
+                await PopulateForm();
+                break;
+        }
     }
 
     /// <summary>
     /// Clear the form.
     /// </summary>
-    public void ClearForm()
+    private void ClearForm()
     {
         WeightEntry.Text = "";
         UnitsRadio.SelectedItem = Units.GetPreferred();
@@ -74,10 +76,10 @@ public partial class EditPage : ContentPage
     }
 
     /// <summary>
-    /// Set the fields common to all heavy things.
+    /// Set the fields common to all gym objects.
     /// </summary>
     /// <param name="ht"></param>
-    public void SetCommonFields(HeavyThing ht)
+    private void SetCommonFields(GymObject ht)
     {
         WeightEntry.Text = ht.Weight.ToString(CultureInfo.InvariantCulture);
         UnitsRadio.SelectedItem = ht.Units;
@@ -85,34 +87,60 @@ public partial class EditPage : ContentPage
     }
 
     /// <summary>
-    /// Initialize the form fields.
+    /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    private async Task InitializeForm()
+    private void InitializeForm()
     {
         // Clear the form.
         ClearForm();
 
-        // If we have an object type, modify the form accordingly. If we have an id, set the values.
-        switch (ObjectType)
-        {
-            case "bar":
-                MainColorGrid.IsVisible = false;
-                HasBandsGrid.IsVisible = false;
-                BandColorGrid.IsVisible = false;
+        // Hide extended fields, as they mostly aren't needed.
+        MainColorGrid.IsVisible = false;
+        HasBandsGrid.IsVisible = false;
+        BandColorGrid.IsVisible = false;
 
-                var bar = await BarRepository.Get(ObjectId);
+        // If we have an object type, modify the form accordingly.
+        // If we don't, that's an error.
+        switch (GymObjectTypeName)
+        {
+            case GymObjectType.Bar:
+                break;
+
+            case GymObjectType.Plate:
+                MainColorGrid.IsVisible = true;
+                break;
+
+            case GymObjectType.Dumbbell:
+                break;
+
+            case GymObjectType.Kettlebell:
+                MainColorGrid.IsVisible = true;
+                HasBandsGrid.IsVisible = true;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(GymObjectTypeName), "Invalid object type.");
+        }
+    }
+
+    /// <summary>
+    /// Copy the object values into the form fields.
+    /// </summary>
+    private async Task PopulateForm()
+    {
+        // If we have an id, set the values.
+        switch (GymObjectTypeName)
+        {
+            case GymObjectType.Bar:
+                var bar = await BarRepository.GetInstance().Get(GymObjectId);
                 if (bar != null)
                 {
                     SetCommonFields(bar);
                 }
                 break;
 
-            case "plate":
-                MainColorGrid.IsVisible = true;
-                HasBandsGrid.IsVisible = false;
-                BandColorGrid.IsVisible = false;
-
-                var plate = await PlateRepository.Get(ObjectId);
+            case GymObjectType.Plate:
+                var plate = await PlateRepository.GetInstance().Get(GymObjectId);
                 if (plate != null)
                 {
                     SetCommonFields(plate);
@@ -120,24 +148,16 @@ public partial class EditPage : ContentPage
                 }
                 break;
 
-            case "dumbbell":
-                MainColorGrid.IsVisible = false;
-                HasBandsGrid.IsVisible = false;
-                BandColorGrid.IsVisible = false;
-
-                var dumbbell = await DumbbellRepository.Get(ObjectId);
+            case "Dumbbell":
+                var dumbbell = await DumbbellRepository.GetInstance().Get(GymObjectId);
                 if (dumbbell != null)
                 {
                     SetCommonFields(dumbbell);
                 }
                 break;
 
-            case "kettlebell":
-                MainColorGrid.IsVisible = true;
-                HasBandsGrid.IsVisible = true;
-                BandColorGrid.IsVisible = true;
-
-                var kettlebell = await KettlebellRepository.Get(ObjectId);
+            case GymObjectType.Kettlebell:
+                var kettlebell = await KettlebellRepository.GetInstance().Get(GymObjectId);
                 if (kettlebell != null)
                 {
                     SetCommonFields(kettlebell);
@@ -146,15 +166,8 @@ public partial class EditPage : ContentPage
                     if (kettlebell.HasBands)
                     {
                         BandColor.Selected = kettlebell.BandColor;
+                        BandColorGrid.IsVisible = true;
                     }
-                    else
-                    {
-                        BandColorGrid.IsVisible = false;
-                    }
-                }
-                else
-                {
-                    BandColorGrid.IsVisible = false;
                 }
                 break;
         }
@@ -162,7 +175,7 @@ public partial class EditPage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{ObjectType}s");
+        await Shell.Current.GoToAsync("..");
     }
 
     private async void SaveButton_OnClicked(object sender, EventArgs e)
@@ -177,21 +190,21 @@ public partial class EditPage : ContentPage
 
         var db = Database.GetConnection();
 
-        switch (ObjectType)
+        switch (GymObjectTypeName)
         {
-            case "bar":
+            case GymObjectType.Bar:
                 await SaveBar(weight, db);
                 break;
 
-            case "plate":
+            case GymObjectType.Plate:
                 await SavePlate(weight, db);
                 break;
 
-            case "dumbbell":
+            case GymObjectType.Dumbbell:
                 await SaveDumbbell(weight, db);
                 break;
 
-            case "kettlebell":
+            case GymObjectType.Kettlebell:
                 await SaveKettlebell(weight, db);
                 break;
         }
@@ -206,17 +219,17 @@ public partial class EditPage : ContentPage
             Enabled = EnabledCheckBox.IsChecked,
         };
 
-        if (ObjectId == 0)
+        if (GymObjectId == 0)
         {
             await db.InsertAsync(bar);
         }
         else
         {
-            bar.Id = ObjectId;
+            bar.Id = GymObjectId;
             await db.UpdateAsync(bar);
         }
 
-        await Shell.Current.GoToAsync("//bars");
+        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SavePlate(double weight, SQLiteAsyncConnection db)
@@ -229,17 +242,17 @@ public partial class EditPage : ContentPage
             Color = MainColor.Selected,
         };
 
-        if (ObjectId == 0)
+        if (GymObjectId == 0)
         {
             await db.InsertAsync(plate);
         }
         else
         {
-            plate.Id = ObjectId;
+            plate.Id = GymObjectId;
             await db.UpdateAsync(plate);
         }
 
-        await Shell.Current.GoToAsync("//plates");
+        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SaveDumbbell(double weight, SQLiteAsyncConnection db)
@@ -251,17 +264,17 @@ public partial class EditPage : ContentPage
             Enabled = EnabledCheckBox.IsChecked,
         };
 
-        if (ObjectId == 0)
+        if (GymObjectId == 0)
         {
             await db.InsertAsync(dumbbell);
         }
         else
         {
-            dumbbell.Id = ObjectId;
+            dumbbell.Id = GymObjectId;
             await db.UpdateAsync(dumbbell);
         }
 
-        await Shell.Current.GoToAsync("//dumbbells");
+        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SaveKettlebell(double weight, SQLiteAsyncConnection db)
@@ -276,17 +289,17 @@ public partial class EditPage : ContentPage
             BandColor = BandColor.Selected,
         };
 
-        if (ObjectId == 0)
+        if (GymObjectId == 0)
         {
             await db.InsertAsync(kettlebell);
         }
         else
         {
-            kettlebell.Id = ObjectId;
+            kettlebell.Id = GymObjectId;
             await db.UpdateAsync(kettlebell);
         }
 
-        await Shell.Current.GoToAsync("//kettlebells");
+        await Shell.Current.GoToAsync("..");
     }
 
     private void HasBandsCheckBox_OnCheckChanged(object sender, EventArgs e)

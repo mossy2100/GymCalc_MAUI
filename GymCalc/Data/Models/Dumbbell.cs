@@ -1,5 +1,5 @@
 namespace GymCalc.Data.Models;
 
-public class Dumbbell : HeavyThing
+public class Dumbbell : GymObject
 {
 }

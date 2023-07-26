@@ -2,6 +2,7 @@ using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Data;
 using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
+using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
@@ -119,7 +120,7 @@ public partial class PlatesPage : ContentPage
 
     private async void AddButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("//edit?type=plate");
+        await Shell.Current.GoToAsync("//edit?type=Plate");
     }
 
     private void EditButton_OnClicked(object sender, EventArgs e)

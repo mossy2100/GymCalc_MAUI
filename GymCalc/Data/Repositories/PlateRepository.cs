@@ -1,11 +1,12 @@
 using GymCalc.Data.Models;
+using GymCalc.Constants;
 
 namespace GymCalc.Data.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on plates.
 /// </summary>
-internal static class PlateRepository
+internal class PlateRepository : GymObjectRepository
 {
     /// <summary>
     /// Default plates.
@@ -46,10 +47,26 @@ internal static class PlateRepository
         (55, Units.Pounds, true, "Red"),
     };
 
+    private static PlateRepository _instance;
+
+    // Prevent instantiation from outside the class.
+    private PlateRepository()
+    {
+    }
+
+    public static PlateRepository GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new PlateRepository();
+        }
+        return _instance;
+    }
+
     /// <summary>
     /// Ensure the database table exist and contains some plates.
     /// </summary>
-    internal static async Task Initialize()
+    internal override async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -80,18 +97,18 @@ internal static class PlateRepository
     /// Get the plates.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Plate>> GetAll(string units, bool onlyEnabled = false,
+    public async Task<List<Plate>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Plate>(units, onlyEnabled, ascending);
+        return await base.GetAll<Plate>(units, onlyEnabled, ascending);
     }
 
     /// <summary>
     /// Get a plate by id.
     /// </summary>
     /// <returns></returns>
-    public static async Task<Plate> Get(int id)
+    public async Task<Plate> Get(int id)
     {
-        return await HeavyThingRepository.Get<Plate>(id);
+        return await base.Get<Plate>(id);
     }
 }

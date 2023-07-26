@@ -1,4 +1,5 @@
 using Galaxon.Core.Numbers;
+using GymCalc.Constants;
 
 namespace GymCalc.Graphics;
 

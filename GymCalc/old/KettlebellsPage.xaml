@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.BarsPage"
+    x:Class="GymCalc.Pages.KettlebellsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Bars">
+    Title="Kettlebells">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Start">
-        <VerticalStackLayout x:Name="BarsStack" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
-            <Label x:Name="BarsLabel" />
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+        <VerticalStackLayout x:Name="KettlebellsStack" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+
+            <Label x:Name="KettlebellsLabel" />
 
             <Grid
-                x:Name="BarsGrid"
+                x:Name="KettlebellsGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
 
             <Grid
-                x:Name="BarsButtons"
+                x:Name="KettlebellsButtons"
                 ColumnDefinitions="*,*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
@@ -25,29 +26,18 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Clicked="AddButton_OnClicked"
-                    ImageSource="plus_icon_white_16.png"
                     Text="Add" />
                 <Button
                     x:Name="EditButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="EditButton_OnClicked"
-                    ImageSource="edit_icon_white_16.png"
                     Text="Edit" />
-                <Button
-                    x:Name="ViewButton"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Clicked="ViewButton_OnClicked"
-                    ImageSource="view_icon_white_16.png"
-                    IsVisible="False"
-                    Text="View" />
                 <Button
                     x:Name="ResetButton"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="ResetButton_OnClicked"
-                    ImageSource="reset_icon_white_16.png"
                     Text="Reset" />
             </Grid>
 

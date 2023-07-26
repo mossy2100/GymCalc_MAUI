@@ -2,7 +2,7 @@ using SQLite;
 
 namespace GymCalc.Data.Models;
 
-public class HeavyThing
+public class GymObject
 {
     [PrimaryKey]
     [AutoIncrement]

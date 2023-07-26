@@ -1,6 +1,6 @@
 namespace GymCalc.Data.Models;
 
-public class Kettlebell : HeavyThing
+public class Kettlebell : GymObject
 {
     public string BallColor { get; set; }
 

@@ -1,16 +1,33 @@
 using GymCalc.Data.Models;
+using GymCalc.Constants;
 
 namespace GymCalc.Data.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on dumbbells.
 /// </summary>
-internal static class DumbbellRepository
+internal class DumbbellRepository : GymObjectRepository
 {
+    private static DumbbellRepository _instance;
+
+    // Prevent instantiation from outside the class.
+    private DumbbellRepository()
+    {
+    }
+
+    public static DumbbellRepository GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new DumbbellRepository();
+        }
+        return _instance;
+    }
+
     /// <summary>
     /// Ensure the database table exist and contains some dumbbells.
     /// </summary>
-    internal static async Task Initialize()
+    internal override async Task Initialize()
     {
         var db = Database.GetConnection();
 
@@ -35,7 +52,7 @@ internal static class DumbbellRepository
         }
     }
 
-    private static async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
+    private async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
         double step, string units, bool enabled, List<(double, string)> addedSoFar)
     {
         var db = Database.GetConnection();
@@ -68,18 +85,18 @@ internal static class DumbbellRepository
     /// Get the dumbbells.
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
+    public async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
-        return await HeavyThingRepository.GetAll<Dumbbell>(units, onlyEnabled, ascending);
+        return await base.GetAll<Dumbbell>(units, onlyEnabled, ascending);
     }
 
     /// <summary>
     /// Get a dumbbell by id.
     /// </summary>
     /// <returns></returns>
-    public static async Task<Dumbbell> Get(int id)
+    public async Task<Dumbbell> Get(int id)
     {
-        return await HeavyThingRepository.Get<Dumbbell>(id);
+        return await base.Get<Dumbbell>(id);
     }
 }

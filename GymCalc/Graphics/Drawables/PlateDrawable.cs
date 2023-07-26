@@ -5,7 +5,7 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal class PlateDrawable : IDrawable
+internal class PlateDrawable : GymObjectDrawable
 {
     internal const int MinWidth = 50;
 
@@ -13,21 +13,19 @@ internal class PlateDrawable : IDrawable
 
     internal const int Height = 30;
 
-    internal const int InnerHeight = Height - 2 * CornerRadius;
+    internal static int InnerHeight => Height - 2 * CornerRadius;
 
-    private readonly Plate _plate;
-
-    public PlateDrawable(Plate plate)
+    public PlateDrawable()
     {
-        _plate = plate;
     }
 
-    public void Draw(ICanvas canvas, RectF dirtyRect)
+    public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
+        var plate = (Plate)GymObject;
         var width = dirtyRect.Width;
 
         // Get the color.
-        var bgColor = CustomColors.Get(_plate.Color);
+        var bgColor = CustomColors.Get(plate.Color);
 
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
@@ -43,21 +41,21 @@ internal class PlateDrawable : IDrawable
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 16;
         canvas.FontColor = bgColor.GetTextColor();
-        var weightString = _plate.Weight.ToString(CultureInfo.InvariantCulture);
+        var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         canvas.DrawString(weightString, 0, CornerRadius + 2, width, InnerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
-    internal static GraphicsView CreateGraphic(Plate plate, double maxPlateWeight)
+    internal override GraphicsView CreateGraphic()
     {
         // Calculate the plate width.
         var maxPlateWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.7;
-        var plateWidth = MinWidth + plate.Weight / maxPlateWeight * (maxPlateWidth - MinWidth);
+        var plateWidth = MinWidth + GymObject.Weight / MaxWeight * (maxPlateWidth - MinWidth);
 
         // Construct the graphic.
         return new GraphicsView
         {
-            Drawable = new PlateDrawable(plate),
+            Drawable = this,
             HeightRequest = Height,
             WidthRequest = plateWidth,
         };

@@ -5,25 +5,24 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal class KettlebellDrawable : IDrawable
+internal class KettlebellDrawable : GymObjectDrawable
 {
-    internal const int Height = 76;
-
     internal const int Width = 60;
 
-    private readonly Kettlebell _kettlebell;
+    internal const int Height = 76;
 
-    public KettlebellDrawable(Kettlebell kettlebell)
+    public KettlebellDrawable()
     {
-        _kettlebell = kettlebell;
     }
 
-    public void Draw(ICanvas canvas, RectF dirtyRect)
+    public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
+        var kettlebell = (Kettlebell)GymObject;
+
         // Colors.
-        var ballColor = CustomColors.Get(_kettlebell.BallColor);
-        var bandColor = (_kettlebell.HasBands && _kettlebell.BandColor != null)
-            ? CustomColors.Get(_kettlebell.BandColor)
+        var ballColor = CustomColors.Get(kettlebell.BallColor);
+        var bandColor = (kettlebell.HasBands && kettlebell.BandColor != null)
+            ? CustomColors.Get(kettlebell.BandColor)
             : ballColor;
         bandColor ??= ballColor;
 
@@ -59,16 +58,16 @@ internal class KettlebellDrawable : IDrawable
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 20;
         canvas.FontColor = ballColor.GetTextColor();
-        var weightString = _kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
+        var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
         canvas.DrawString(weightString, 10, 37, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
 
-    internal static GraphicsView CreateGraphic(Kettlebell kettlebell)
+    internal override GraphicsView CreateGraphic()
     {
         return new GraphicsView
         {
-            Drawable = new KettlebellDrawable(kettlebell),
+            Drawable = this,
             HeightRequest = Height,
             WidthRequest = Width,
         };
