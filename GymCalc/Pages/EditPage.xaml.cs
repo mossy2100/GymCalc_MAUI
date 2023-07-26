@@ -53,6 +53,7 @@ public partial class EditPage : ContentPage
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
+                Title = $"Edit {GymObjectTypeName}";
                 InitializeForm();
                 break;
 

@@ -2,6 +2,40 @@
 <ContentPage
     x:Class="GymCalc.Pages.DeletePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <ContentPage.Content />
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Delete">
+
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+        <VerticalStackLayout
+            x:Name="DeleteForm"
+            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}"
+            VerticalOptions="Start">
+
+            <Label x:Name="DeleteMessage" />
+
+            <Grid
+                ColumnDefinitions="*,*"
+                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                RowDefinitions="Auto">
+                <Button
+                    x:Name="CancelButton"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Clicked="CancelButton_OnClicked"
+                    ImageSource="cancel_icon_white_16.png"
+                    Text="Cancel" />
+                <Button
+                    x:Name="SaveButton"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Clicked="DeleteButton_OnClicked"
+                    ImageSource="delete_icon_white_16.png"
+                    Style="{StaticResource DeleteButtonStyle}"
+                    Text="Delete" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>
