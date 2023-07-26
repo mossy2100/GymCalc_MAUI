@@ -8,10 +8,6 @@ internal abstract class GymObjectDrawable : IDrawable
 
     internal double MaxWeight { get; set; }
 
-    protected GymObjectDrawable()
-    {
-    }
-
     /// <inheritdoc />
     public abstract void Draw(ICanvas canvas, RectF dirtyRect);
 

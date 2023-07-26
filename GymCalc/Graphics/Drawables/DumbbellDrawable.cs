@@ -6,13 +6,9 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class DumbbellDrawable : GymObjectDrawable
 {
-    internal const int Width = 100;
-
     internal const int Height = 50;
 
-    public DumbbellDrawable()
-    {
-    }
+    private const int _Width = 100;
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -69,7 +65,7 @@ internal class DumbbellDrawable : GymObjectDrawable
         {
             Drawable = this,
             HeightRequest = Height,
-            WidthRequest = Width,
+            WidthRequest = _Width,
         };
     }
 }

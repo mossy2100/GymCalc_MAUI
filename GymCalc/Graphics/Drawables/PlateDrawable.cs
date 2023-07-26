@@ -7,17 +7,13 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class PlateDrawable : GymObjectDrawable
 {
-    internal const int MinWidth = 50;
-
-    internal const int CornerRadius = 4;
-
     internal const int Height = 30;
 
-    internal static int InnerHeight => Height - 2 * CornerRadius;
+    private const int _MinWidth = 50;
 
-    public PlateDrawable()
-    {
-    }
+    private const int _CornerRadius = 4;
+
+    private static int InnerHeight => Height - 2 * _CornerRadius;
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -30,11 +26,11 @@ internal class PlateDrawable : GymObjectDrawable
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
         var plateBackground = new RectF(0, 0, width, Height);
-        canvas.FillRoundedRectangle(plateBackground, CornerRadius);
+        canvas.FillRoundedRectangle(plateBackground, _CornerRadius);
 
         // Plate edge.
         canvas.FillColor = bgColor;
-        var plateEdge = new RectF(0, CornerRadius, width, InnerHeight);
+        var plateEdge = new RectF(0, _CornerRadius, width, InnerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -42,7 +38,7 @@ internal class PlateDrawable : GymObjectDrawable
         canvas.FontSize = 16;
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
-        canvas.DrawString(weightString, 0, CornerRadius + 2, width, InnerHeight,
+        canvas.DrawString(weightString, 0, _CornerRadius + 2, width, InnerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
@@ -50,7 +46,7 @@ internal class PlateDrawable : GymObjectDrawable
     {
         // Calculate the plate width.
         var maxPlateWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.7;
-        var plateWidth = MinWidth + GymObject.Weight / MaxWeight * (maxPlateWidth - MinWidth);
+        var plateWidth = _MinWidth + GymObject.Weight / MaxWeight * (maxPlateWidth - _MinWidth);
 
         // Construct the graphic.
         return new GraphicsView

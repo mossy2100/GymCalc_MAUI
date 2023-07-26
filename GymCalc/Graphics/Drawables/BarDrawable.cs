@@ -7,13 +7,9 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class BarDrawable : GymObjectDrawable
 {
-    private const int _MinWidth = 50;
-
     internal const int Height = 20;
 
-    public BarDrawable()
-    {
-    }
+    private const int _MinWidth = 50;
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
