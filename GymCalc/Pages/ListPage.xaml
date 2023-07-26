@@ -29,30 +29,26 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Clicked="AddButton_OnClicked"
-                    ImageSource="plus_icon_white_16.png"
-                    Text="Add" />
+                    Style="{StaticResource AddButtonStyle}" />
                 <Button
                     x:Name="EditButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="EditButton_OnClicked"
-                    ImageSource="edit_icon_white_16.png"
-                    Text="Edit" />
+                    Style="{StaticResource EditButtonStyle}" />
                 <Button
                     x:Name="ViewButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="ViewButton_OnClicked"
-                    ImageSource="view_icon_white_16.png"
                     IsVisible="False"
-                    Text="View" />
+                    Style="{StaticResource ViewButtonStyle}" />
                 <Button
                     x:Name="ResetButton"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="ResetButton_OnClicked"
-                    ImageSource="reset_icon_white_16.png"
-                    Text="Reset" />
+                    Style="{StaticResource ResetButtonStyle}" />
             </Grid>
         </VerticalStackLayout>
     </ScrollView>

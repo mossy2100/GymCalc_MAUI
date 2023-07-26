@@ -21,7 +21,7 @@ internal static class CustomColors
         { "Indigo", "#0033cc" },
         { "Violet", "#7e5ce5" },
         { "Purple", "#9e19a7" },
-        { "Pink", "#ff9aff" },
+        { "Pink", "#ff4cff" },
         { "OffWhite", "#eee" },
         { "Silver", "#c0c0c0" },
         { "Gray", "#808080" },

@@ -8,8 +8,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/BaseStyles.xaml" />
-                <ResourceDictionary Source="Resources/Styles/SpecificStyles.xaml" />
+                <ResourceDictionary Source="Themes/OrangeTheme.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Implicit.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Explicit.xaml" />
+                <ResourceDictionary Source="Resources/Styles/InputKit.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

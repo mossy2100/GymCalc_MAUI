@@ -14,6 +14,7 @@
 
             <Label x:Name="ResetMessage" FontSize="16" />
 
+            <!--  Buttons  -->
             <Grid
                 ColumnDefinitions="*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
@@ -23,16 +24,13 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Clicked="CancelButton_OnClicked"
-                    ImageSource="cancel_icon_white_16.png"
-                    Text="Cancel" />
+                    Style="{StaticResource CancelButtonStyle}" />
                 <Button
-                    x:Name="SaveButton"
+                    x:Name="ResetButton"
                     Grid.Row="0"
                     Grid.Column="1"
                     Clicked="ResetButton_OnClicked"
-                    ImageSource="reset_icon_white_16.png"
-                    Style="{StaticResource DangerButtonStyle}"
-                    Text="Reset" />
+                    Style="{StaticResource ResetButtonStyle}" />
             </Grid>
 
         </VerticalStackLayout>

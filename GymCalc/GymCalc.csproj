@@ -184,30 +184,37 @@
         <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\plus_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\cancel_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\delete_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\reset_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\check_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
         <None Remove="Resources\Images\button_icons\view_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\view_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
+        
     </ItemGroup>
 
     <ItemGroup>
@@ -257,6 +264,12 @@
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Remove="old\**" />
+      <MauiXaml Update="Themes\OrangeTheme.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="Themes\PinkTheme.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -281,6 +294,10 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Remove="old\**" />
+      <Compile Update="Themes\OrangeTheme.xaml.cs">
+        <DependentUpon>OrangeTheme.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>
