@@ -29,7 +29,7 @@ internal class DumbbellDrawable : GymObjectDrawable
         const int cornerRadius = 2;
         var smallPlateTop = barTop / 3;
         var smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = CustomColors.Get("OffBlack");
+        canvas.FillColor = CustomColors.Get(dumbbell.Color);
 
         // Left small plate.
         var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);

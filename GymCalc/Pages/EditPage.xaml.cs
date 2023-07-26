@@ -119,6 +119,7 @@ public partial class EditPage : ContentPage
                 break;
 
             case GymObjectType.Dumbbell:
+                MainColorGrid.IsVisible = true;
                 break;
 
             case GymObjectType.Kettlebell:
@@ -161,6 +162,7 @@ public partial class EditPage : ContentPage
                 if (dumbbell != null)
                 {
                     SetCommonFields(dumbbell);
+                    MainColor.Selected = dumbbell.Color;
                 }
                 break;
 
@@ -270,6 +272,7 @@ public partial class EditPage : ContentPage
             Weight = weight,
             Units = (string)UnitsRadio.SelectedItem,
             Enabled = EnabledCheckBox.IsChecked,
+            Color = MainColor.Selected,
         };
 
         if (GymObjectId == 0)

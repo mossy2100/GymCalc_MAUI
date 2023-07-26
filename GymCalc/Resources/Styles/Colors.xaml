@@ -7,7 +7,7 @@
     <Color x:Key="Tertiary">#4d2000</Color>
 
     <Color x:Key="SuccessColor">#0fb300</Color>
-    <Color x:Key="DangerColor">#b3000c</Color>
+    <Color x:Key="DangerColor">#cc0022</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

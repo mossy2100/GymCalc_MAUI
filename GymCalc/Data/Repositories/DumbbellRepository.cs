@@ -1,5 +1,6 @@
 using GymCalc.Data.Models;
 using GymCalc.Constants;
+using GymCalc.Graphics;
 
 namespace GymCalc.Data.Repositories;
 
@@ -76,6 +77,7 @@ internal class DumbbellRepository : GymObjectRepository
                 Weight = weight,
                 Units = units,
                 Enabled = enabled,
+                Color = "OffBlack",
             };
             await db.InsertAsync(dumbbell);
 
