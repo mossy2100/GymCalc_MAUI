@@ -11,6 +11,8 @@ internal class BarDrawable : GymObjectDrawable
 
     private const int _MinWidth = 50;
 
+    private const int _MaxWidth = 250;
+
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var bar = (Bar)GymObject;
@@ -33,8 +35,7 @@ internal class BarDrawable : GymObjectDrawable
     internal override GraphicsView CreateGraphic()
     {
         // Calculate the bar width.
-        var maxBarWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.7;
-        var barWidth = _MinWidth + GymObject.Weight / MaxWeight * (maxBarWidth - _MinWidth);
+        var barWidth = _MinWidth + GymObject.Weight / MaxWeight * (_MaxWidth - _MinWidth);
 
         // Construct the graphic.
         return new GraphicsView

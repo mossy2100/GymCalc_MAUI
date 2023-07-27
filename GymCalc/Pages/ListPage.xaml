@@ -3,54 +3,61 @@
     x:Class="GymCalc.Pages.ListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="List">
+    Title="List"
+    BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
+                                      Dark={StaticResource Gray950}}">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
-        <VerticalStackLayout
-            x:Name="ListStack"
-            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}"
-            VerticalOptions="Start">
+    <Grid x:Name="ListStack" RowDefinitions="Auto,*,Auto">
 
-            <Label x:Name="ListLabel" FontSize="16" />
+        <Label
+            x:Name="ListLabel"
+            Grid.Row="0"
+            Padding="{x:Static graphics:PageLayout.Spacing}"
+            FontSize="16" />
 
+        <ScrollView
+            Grid.Row="1"
+            Padding="{x:Static graphics:PageLayout.DoubleSpacing}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                              Dark={StaticResource Black}}">
             <Grid
                 x:Name="ListGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
+        </ScrollView>
 
-            <Grid
-                x:Name="ListButtons"
-                ColumnDefinitions="*,*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                RowDefinitions="Auto">
-                <Button
-                    x:Name="AddButton"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Clicked="AddButton_OnClicked"
-                    Style="{StaticResource AddButtonStyle}" />
-                <Button
-                    x:Name="EditButton"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Clicked="EditButton_OnClicked"
-                    Style="{StaticResource EditButtonStyle}" />
-                <Button
-                    x:Name="ViewButton"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Clicked="ViewButton_OnClicked"
-                    IsVisible="False"
-                    Style="{StaticResource ViewButtonStyle}" />
-                <Button
-                    x:Name="ResetButton"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Clicked="ResetButton_OnClicked"
-                    Style="{StaticResource ResetButtonStyle}" />
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+        <Grid
+            x:Name="ListButtons"
+            Grid.Row="2"
+            Padding="{x:Static graphics:PageLayout.Spacing}"
+            ColumnDefinitions="*,Auto,Auto"
+            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+            RowDefinitions="Auto">
+            <input:CheckBox
+                x:Name="EditModeCheckBox"
+                Grid.Row="0"
+                Grid.Column="0"
+                CheckChanged="EditModeCheckBox_OnCheckChanged"
+                HeightRequest="36"
+                HorizontalOptions="Start"
+                Text="Edit mode" />
+            <Button
+                x:Name="AddButton"
+                Grid.Row="0"
+                Grid.Column="1"
+                Clicked="AddButton_OnClicked"
+                IsVisible="False"
+                Style="{StaticResource AddButtonStyle}" />
+            <Button
+                x:Name="ResetButton"
+                Grid.Row="0"
+                Grid.Column="2"
+                Clicked="ResetButton_OnClicked"
+                IsVisible="False"
+                Style="{StaticResource ResetButtonStyle}" />
+        </Grid>
+    </Grid>
 
 </ContentPage>

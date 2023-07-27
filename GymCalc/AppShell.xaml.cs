@@ -14,29 +14,36 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("reset", typeof(ResetPage));
     }
 
-    private async Task GoToList(string gymObjectTypeName)
+    internal static async Task GoToList(string gymObjectTypeName, bool editMode)
     {
-        FlyoutIsPresented = false;
-        await Current.GoToAsync($"//list?type={gymObjectTypeName}");
+        await Current.GoToAsync($"//list", new Dictionary<string, object>
+        {
+            { "type", gymObjectTypeName },
+            { "editMode", editMode },
+        });
     }
 
     private async void Bars_OnClick(object sender, EventArgs e)
     {
-        await GoToList("Bar");
+        FlyoutIsPresented = false;
+        await GoToList("Bar", false);
     }
 
     private async void Plates_OnClick(object sender, EventArgs e)
     {
-        await GoToList("Plate");
+        FlyoutIsPresented = false;
+        await GoToList("Plate", false);
     }
 
     private async void Dumbbells_OnClick(object sender, EventArgs e)
     {
-        await GoToList("Dumbbell");
+        FlyoutIsPresented = false;
+        await GoToList("Dumbbell", false);
     }
 
     private async void Kettlebells_OnClick(object sender, EventArgs e)
     {
-        await GoToList("Kettlebell");
+        FlyoutIsPresented = false;
+        await GoToList("Kettlebell", false);
     }
 }

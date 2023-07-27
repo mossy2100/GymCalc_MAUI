@@ -53,7 +53,7 @@ public partial class ResetPage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("..");
+        await AppShell.GoToList(GymObjectTypeName, true);
     }
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
@@ -70,6 +70,6 @@ public partial class ResetPage : ContentPage
         await repo.DeleteAll();
         await repo.InsertDefaults();
 
-        await Shell.Current.GoToAsync("..");
+        await AppShell.GoToList(GymObjectTypeName, false);
     }
 }

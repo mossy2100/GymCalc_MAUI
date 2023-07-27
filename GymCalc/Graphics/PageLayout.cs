@@ -11,8 +11,7 @@ internal static class PageLayout
 
     /// <summary>
     /// Get the number of columns to use for laying out a page.
-    /// If portrait, 1.
-    /// If landscape, 2.
+    /// If portrait, 1. If landscape, 2.
     /// </summary>
     internal static int GetNumColumns()
     {

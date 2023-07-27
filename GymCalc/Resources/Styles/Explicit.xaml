@@ -63,48 +63,54 @@
         <Setter Property="ImageSource" Value="delete_icon_white_16.png" />
     </Style>
 
-    <Style x:Key="CancelButtonStyle" TargetType="Button">
-        <Setter Property="ImageSource" Value="cancel_icon_white_16.png" />
-        <Setter Property="Text" Value="Cancel" />
+    <Style x:Key="AdminButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="-1" />
+        <Setter Property="WidthRequest" Value="108" />
+        <Setter Property="HeightRequest" Value="36" />
+        <Setter Property="Padding" Value="0" />
     </Style>
 
-    <Style x:Key="AddButtonStyle" TargetType="Button">
+    <Style
+        x:Key="AddButtonStyle"
+        BasedOn="{StaticResource AdminButtonStyle}"
+        TargetType="Button">
         <Setter Property="ImageSource" Value="plus_icon_white_16.png" />
         <Setter Property="Text" Value="Add" />
     </Style>
 
-    <Style x:Key="EditButtonStyle" TargetType="Button">
-        <Setter Property="ImageSource" Value="edit_icon_white_16.png" />
-        <Setter Property="Text" Value="Edit" />
+    <Style
+        x:Key="ResetButtonStyle"
+        BasedOn="{StaticResource AdminButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
+        <Setter Property="ImageSource" Value="reset_icon_white_16.png" />
+        <Setter Property="Text" Value="Reset" />
     </Style>
 
-    <Style x:Key="ViewButtonStyle" TargetType="Button">
-        <Setter Property="ImageSource" Value="view_icon_white_16.png" />
-        <Setter Property="Text" Value="View" />
+    <Style
+        x:Key="CancelButtonStyle"
+        BasedOn="{StaticResource AdminButtonStyle}"
+        TargetType="Button">
+        <Setter Property="ImageSource" Value="cancel_icon_white_16.png" />
+        <Setter Property="Text" Value="Cancel" />
     </Style>
 
     <Style
         x:Key="SaveButtonStyle"
-        BasedOn="{StaticResource SuccessButtonStyle}"
+        BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
         <Setter Property="ImageSource" Value="check_icon_white_16.png" />
         <Setter Property="Text" Value="Save" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
     </Style>
 
     <Style
         x:Key="DeleteButtonStyle"
-        BasedOn="{StaticResource DangerButtonStyle}"
+        BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
         <Setter Property="ImageSource" Value="delete_icon_white_16.png" />
         <Setter Property="Text" Value="Delete" />
-    </Style>
-
-    <Style
-        x:Key="ResetButtonStyle"
-        BasedOn="{StaticResource DangerButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="reset_icon_white_16.png" />
-        <Setter Property="Text" Value="Reset" />
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
     </Style>
 
     <!--  Exercise type buttons  -->

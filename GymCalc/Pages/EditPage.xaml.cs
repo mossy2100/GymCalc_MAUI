@@ -189,7 +189,7 @@ public partial class EditPage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("..");
+        await AppShell.GoToList(GymObjectTypeName, true);
     }
 
     private async void SaveButton_OnClicked(object sender, EventArgs e)
@@ -222,6 +222,8 @@ public partial class EditPage : ContentPage
                 await SaveKettlebell(weight, db);
                 break;
         }
+
+        await AppShell.GoToList(GymObjectTypeName, true);
     }
 
     private async Task SaveBar(double weight, SQLiteAsyncConnection db)
@@ -242,8 +244,6 @@ public partial class EditPage : ContentPage
             bar.Id = GymObjectId;
             await db.UpdateAsync(bar);
         }
-
-        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SavePlate(double weight, SQLiteAsyncConnection db)
@@ -265,8 +265,6 @@ public partial class EditPage : ContentPage
             plate.Id = GymObjectId;
             await db.UpdateAsync(plate);
         }
-
-        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SaveDumbbell(double weight, SQLiteAsyncConnection db)
@@ -288,8 +286,6 @@ public partial class EditPage : ContentPage
             dumbbell.Id = GymObjectId;
             await db.UpdateAsync(dumbbell);
         }
-
-        await Shell.Current.GoToAsync("..");
     }
 
     private async Task SaveKettlebell(double weight, SQLiteAsyncConnection db)
@@ -313,8 +309,6 @@ public partial class EditPage : ContentPage
             kettlebell.Id = GymObjectId;
             await db.UpdateAsync(kettlebell);
         }
-
-        await Shell.Current.GoToAsync("..");
     }
 
     private void HasBandsCheckBox_OnCheckChanged(object sender, EventArgs e)

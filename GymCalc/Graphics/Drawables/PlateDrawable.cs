@@ -11,6 +11,8 @@ internal class PlateDrawable : GymObjectDrawable
 
     private const int _MinWidth = 50;
 
+    private const int _MaxWidth = 250;
+
     private const int _CornerRadius = 4;
 
     private static int InnerHeight => Height - 2 * _CornerRadius;
@@ -45,8 +47,7 @@ internal class PlateDrawable : GymObjectDrawable
     internal override GraphicsView CreateGraphic()
     {
         // Calculate the plate width.
-        var maxPlateWidth = MauiUtilities.GetDeviceWidth() / PageLayout.GetNumColumns() * 0.7;
-        var plateWidth = _MinWidth + GymObject.Weight / MaxWeight * (maxPlateWidth - _MinWidth);
+        var plateWidth = _MinWidth + GymObject.Weight / MaxWeight * (_MaxWidth - _MinWidth);
 
         // Construct the graphic.
         return new GraphicsView

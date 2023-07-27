@@ -11,6 +11,7 @@ using CheckBox = InputKit.Shared.Controls.CheckBox;
 namespace GymCalc.Pages;
 
 [QueryProperty(nameof(GymObjectTypeName), "type")]
+[QueryProperty(nameof(EditMode), "editMode")]
 public partial class ListPage : ContentPage
 {
     private string _gymObjectTypeName;
@@ -28,6 +29,17 @@ public partial class ListPage : ContentPage
 
     private bool _editMode;
 
+    public bool EditMode
+    {
+        get => _editMode;
+
+        set
+        {
+            _editMode = value;
+            OnPropertyChanged();
+        }
+    }
+
     /// <summary>
     /// Dictionary mapping checkboxes to gym objects.
     /// </summary>
@@ -42,23 +54,33 @@ public partial class ListPage : ContentPage
     {
         InitializeComponent();
         BindingContext = this;
+        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
     }
 
-    /// <inheritdoc />
-    protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    private void EditModeChanged()
     {
-        base.OnPropertyChanged(propertyName);
-
-        if (propertyName == nameof(GymObjectTypeName))
+        var editMode = EditModeCheckBox.IsChecked;
+        ListLabel.Text = editMode
+            ? $"Use the edit and delete icon buttons to make changes. Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset button to reset to the defaults."
+            : $"Select which {GymObjectTypeName.ToLower()} weights ({Units.GetPreferred()}) are available:";
+        ListLabel.FontSize = editMode ? 14 : 16;
+        AddButton.IsVisible = editMode;
+        ResetButton.IsVisible = editMode;
+        foreach (var (cb, gymObject) in _cbObjectMap)
         {
-            Title = $"{GymObjectTypeName}s";
-            await DisplayList();
+            cb.IsVisible = !editMode;
+        }
+        foreach (var (stack, gymObject) in _stackObjectMap)
+        {
+            stack.IsVisible = editMode;
         }
     }
 
     private async Task DisplayList()
     {
+        Title = $"{GymObjectTypeName}s";
         var units = Units.GetPreferred();
+
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
@@ -81,6 +103,8 @@ public partial class ListPage : ContentPage
                 DisplayList<Kettlebell, KettlebellDrawable>(kettlebells, KettlebellDrawable.Height);
                 break;
         }
+
+        EditModeChanged();
     }
 
     /// <summary>
@@ -99,22 +123,22 @@ public partial class ListPage : ContentPage
 
         // Set up the column definitions, which will vary with device orientation.
         ListGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nItemCols = PageLayout.GetNumColumns()
-            * (GymObjectTypeName is GymObjectType.Dumbbell or GymObjectType.Kettlebell ? 2 : 1);
+        var nItemCols = PageLayout.GetNumColumns();
         var nGridCols = nItemCols * 2;
+        var iconButtonsWidth = 70;
         for (var c = 0; c < nItemCols; c++)
         {
             // Add column for the graphic.
             ListGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
             // Add column for the checkbox and icon buttons.
-            ListGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(70)));
+            ListGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(iconButtonsWidth)));
         }
 
         // Calculate and set the stack height because it doesn't resize automatically.
-        var nRows = (int)double.Ceiling(gymObjects.Count / (double)nItemCols);
-        var gridHeight =
-            (graphicHeight + PageLayout.DoubleSpacing) * nRows + (PageLayout.DoubleSpacing * 2);
-        ListStack.HeightRequest = ListLabel.Height + gridHeight + ListButtons.Height;
+        // var nRows = (int)double.Ceiling(gymObjects.Count / (double)nItemCols);
+        // ListStack.HeightRequest = ListStack.Sum(child => child == ListGrid
+        //     ? (graphicHeight + PageLayout.DoubleSpacing) * nRows
+        //     : child.Height + ListStack.RowSpacing);
 
         // Get the maximum bar weight.
         var maxWeight = gymObjects.Last().Weight;
@@ -146,9 +170,9 @@ public partial class ListPage : ContentPage
             var cb = new CheckBox
             {
                 IsChecked = gymObject.Enabled,
-                IsVisible = !_editMode,
+                HorizontalOptions = LayoutOptions.Center,
             };
-            cb.CheckChanged += OnCheckboxChanged;
+            cb.CheckChanged += EnabledCheckBox_OnCheckChanged;
             ListGrid.Add(cb, colNum + 1, rowNum);
 
             // Link the checkbox to the bar.
@@ -158,7 +182,6 @@ public partial class ListPage : ContentPage
             var stack = new HorizontalStackLayout
             {
                 Spacing = 5,
-                IsVisible = _editMode,
             };
 
             // Add the edit button to the stack.
@@ -193,12 +216,37 @@ public partial class ListPage : ContentPage
         }
     }
 
+    #region Event handlers
+
+    private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    {
+        await DisplayList();
+    }
+
+    /// <inheritdoc />
+    protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(GymObjectTypeName):
+                await DisplayList();
+                break;
+
+            case nameof(EditMode):
+                EditModeCheckBox.IsChecked = EditMode;
+                EditModeChanged();
+                break;
+        }
+    }
+
     /// <summary>
     /// When the checkbox next to a bar is changed, update the database.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private async void OnCheckboxChanged(object sender, EventArgs e)
+    private async void EnabledCheckBox_OnCheckChanged(object sender, EventArgs e)
     {
         // Update the bar's Enabled state.
         var cb = (CheckBox)sender;
@@ -206,49 +254,6 @@ public partial class ListPage : ContentPage
         gymObject.Enabled = cb.IsChecked;
         var db = Database.GetConnection();
         await db.UpdateAsync(gymObject);
-    }
-
-    #region Event handlers
-
-    private async void AddButton_OnClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}");
-    }
-
-    private void EditButton_OnClicked(object sender, EventArgs e)
-    {
-        foreach (var (cb, gymObject) in _cbObjectMap)
-        {
-            cb.IsVisible = false;
-        }
-        foreach (var (stack, gymObject) in _stackObjectMap)
-        {
-            stack.IsVisible = true;
-        }
-        EditButton.IsVisible = false;
-        ViewButton.IsVisible = true;
-        _editMode = true;
-    }
-
-    private void ViewButton_OnClicked(object sender, EventArgs e)
-    {
-        foreach (var (cb, gymObject) in _cbObjectMap)
-        {
-            cb.IsVisible = true;
-        }
-        foreach (var (stack, gymObject) in _stackObjectMap)
-        {
-            stack.IsVisible = false;
-        }
-        EditButton.IsVisible = true;
-        ViewButton.IsVisible = false;
-        _editMode = false;
-    }
-
-    private async void ResetButton_OnClicked(object sender, EventArgs e)
-    {
-        // Go to the reset confirmation page.
-        await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
     }
 
     private async void EditIcon_OnClicked(object sender, EventArgs e)
@@ -267,6 +272,22 @@ public partial class ListPage : ContentPage
         var stack = (HorizontalStackLayout)deleteBtn.Parent;
         var gymObject = _stackObjectMap[stack];
         await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
+    }
+
+    private void EditModeCheckBox_OnCheckChanged(object sender, EventArgs e)
+    {
+        EditModeChanged();
+    }
+
+    private async void AddButton_OnClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}");
+    }
+
+    private async void ResetButton_OnClicked(object sender, EventArgs e)
+    {
+        // Go to the reset confirmation page.
+        await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
     }
 
     #endregion Event handlers

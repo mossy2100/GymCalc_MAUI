@@ -16,7 +16,7 @@
 
             <!--  Buttons  -->
             <Grid
-                ColumnDefinitions="*,*"
+                ColumnDefinitions="Auto,Auto"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
                 <Button
