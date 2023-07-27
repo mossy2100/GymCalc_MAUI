@@ -43,6 +43,10 @@ public partial class EditPage : ContentPage
     {
         InitializeComponent();
         BindingContext = this;
+
+        // Workaround for issue with Back button label.
+        // <see href="https://github.com/dotnet/maui/issues/8335" />
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior() { IsVisible = false });
     }
 
     /// <inheritdoc />

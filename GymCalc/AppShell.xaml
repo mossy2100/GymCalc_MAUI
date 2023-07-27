@@ -61,4 +61,6 @@
         <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
     </FlyoutItem>
 
+    <ShellContent ContentTemplate="{DataTemplate pages:ListPage}" Route="list" />
+
 </Shell>

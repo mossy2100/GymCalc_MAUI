@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using GymCalc.Pages;
 
 namespace GymCalc;
@@ -9,8 +8,7 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        // Register routes not specified in the xaml.
-        Routing.RegisterRoute("list", typeof(ListPage));
+        // Register routes for navigation pages.
         Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("delete", typeof(DeletePage));
         Routing.RegisterRoute("reset", typeof(ResetPage));
@@ -19,7 +17,7 @@ public partial class AppShell : Shell
     private async Task GoToList(string gymObjectTypeName)
     {
         FlyoutIsPresented = false;
-        await Current.GoToAsync($"list?type={gymObjectTypeName}");
+        await Current.GoToAsync($"//list?type={gymObjectTypeName}");
     }
 
     private async void Bars_OnClick(object sender, EventArgs e)
