@@ -111,4 +111,13 @@ public static class MauiUtilities
     {
         return DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
     }
+
+    /// <summary>
+    /// Get the device orientation.
+    /// </summary>
+    /// <returns></returns>
+    public static DisplayOrientation GetOrientation()
+    {
+        return DeviceDisplay.Current.MainDisplayInfo.Orientation;
+    }
 }

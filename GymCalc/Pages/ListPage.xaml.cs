@@ -63,7 +63,8 @@ public partial class ListPage : ContentPage
     {
         InitializeComponent();
         BindingContext = this;
-        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
+
+        SizeChanged += OnSizeChanged;
     }
 
     private void EditModeChanged()
@@ -235,7 +236,7 @@ public partial class ListPage : ContentPage
 
     #region Event handlers
 
-    private async void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
+    private async void OnSizeChanged(object sender, EventArgs e)
     {
         await DisplayList();
     }

@@ -7,17 +7,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
-        <StackLayout
-            x:Name="CalculatorLayout"
-            Loaded="OnCalculatorLayoutLoaded"
-            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+    <ScrollView
+        x:Name="CalculatorScrollView"
+        Padding="{x:Static graphics:PageLayout.Spacing}"
+        VerticalOptions="Fill">
+        <StackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
             <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
                 <Grid
+                    x:Name="ExerciseTypeButtonGrid"
                     ColumnDefinitions="*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto,Auto"

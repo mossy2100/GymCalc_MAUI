@@ -1,3 +1,5 @@
+using GymCalc.Utilities;
+
 namespace GymCalc.Graphics;
 
 /// <summary>
@@ -12,11 +14,12 @@ internal static class PageLayout
     /// <summary>
     /// Get the number of columns to use for laying out a page.
     /// If portrait, 1. If landscape, 2.
+    /// TODO If I add support for tablets, this result will be larger.
+    /// Another approach would be to set the number of layout columns based on the width,
+    /// e.g. nCols = Floor(deviceWidth / 300)
     /// </summary>
     internal static int GetNumColumns()
     {
-        return DeviceDisplay.Current.MainDisplayInfo.Orientation == DisplayOrientation.Portrait
-            ? 1
-            : 2;
+        return MauiUtilities.GetOrientation() == DisplayOrientation.Portrait ? 1 : 2;
     }
 }

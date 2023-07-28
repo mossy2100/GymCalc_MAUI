@@ -16,6 +16,8 @@ public partial class CalculatorPage : ContentPage
 
     private static ExerciseType _selectedExerciseType = ExerciseType.Barbell;
 
+    private bool _layoutInitialized;
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
     private string _units;
@@ -56,10 +58,21 @@ public partial class CalculatorPage : ContentPage
     public CalculatorPage()
     {
         InitializeComponent();
-        DeviceDisplay.MainDisplayInfoChanged += OnMainDisplayInfoChanged;
+
+        SizeChanged += OnSizeChanged;
     }
 
     #region Event handlers
+
+    /// <summary>
+    /// This runs whenever the page is displayed, and also when the orientation changes.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void OnSizeChanged(object sender, EventArgs e)
+    {
+        await UpdateLayoutOrientation();
+    }
 
     /// <inheritdoc />
     protected override async void OnAppearing()
@@ -89,16 +102,6 @@ public partial class CalculatorPage : ContentPage
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
         await ResetBarWeightPicker();
-    }
-
-    private void OnCalculatorLayoutLoaded(object sender, EventArgs eventArgs)
-    {
-        UpdateLayoutOrientation();
-    }
-
-    private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
-    {
-        UpdateLayoutOrientation();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -164,13 +167,13 @@ public partial class CalculatorPage : ContentPage
         _barWeight = double.Parse(BarWeightPicker.Items[BarWeightPicker.SelectedIndex]);
 
         // Get the available plate weights ordered from lightest to heaviest.
-        await GetPlates();
+        await LoadPlates();
         var availPlateWeights = _plateLookup.Keys.ToList();
 
         // Calculate and display the results.
         _barbellResults =
             PlateSolver.CalculateResults(_maxWeight, _barWeight, true, availPlateWeights);
-        DisplayBarbellResults();
+        await DisplayBarbellResults();
     }
 
     private async Task DoDumbbellCalculations()
@@ -183,12 +186,12 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Get the available dumbbell weights ordered from lightest to heaviest.
-        await GetDumbbells();
+        await LoadDumbbells();
         var availDumbbells = _dumbbellLookup.Keys.ToList();
 
         // Calculate and display the results.
         _dumbbellResults = SingleWeightSolver.CalculateResults(_maxWeight, availDumbbells);
-        DisplayDumbbellResults();
+        await DisplayDumbbellResults();
     }
 
     private async Task DoMachineCalculations()
@@ -217,13 +220,13 @@ public partial class CalculatorPage : ContentPage
         _oneSideOnly = OneSideOnlySwitch.IsChecked;
 
         // Get the available plate weights ordered from lightest to heaviest.
-        await GetPlates();
+        await LoadPlates();
         var availPlateWeights2 = _plateLookup.Keys.ToList();
 
         // Calculate and display the results.
         _machineResults = PlateSolver.CalculateResults(_maxWeight, _startingWeight,
             _oneSideOnly, availPlateWeights2);
-        DisplayMachineResults();
+        await DisplayMachineResults();
     }
 
     private async Task DoKettlebellCalculations()
@@ -236,13 +239,13 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Get the available kettlebell weights ordered from lightest to heaviest.
-        await GetKettlebells();
+        await LoadKettlebells();
         var availKettlebells = _kettlebellLookup.Keys.ToList();
 
         // Calculate and display the results.
         _kettlebellResults =
             SingleWeightSolver.CalculateResults(_maxWeight, availKettlebells);
-        DisplayKettlebellResults();
+        await DisplayKettlebellResults();
     }
 
     #endregion Calculations
@@ -265,7 +268,7 @@ public partial class CalculatorPage : ContentPage
         BarWeightPicker.SelectedIndex = -1;
 
         // Get the available bar weights ordered by weight.
-        await GetBars();
+        await LoadBars();
 
         // Initialise the items in the bar weight picker.
         var i = 0;
@@ -309,16 +312,15 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private void UpdateLayoutOrientation(bool forceRedraw = false)
+    private async Task UpdateLayoutOrientation()
     {
         // Get the device orientation.
-        var newOrientation =
-            DeviceDisplay.MainDisplayInfo.Orientation == DisplayOrientation.Landscape
-                ? StackOrientation.Horizontal
-                : StackOrientation.Vertical;
+        var newOrientation = MauiUtilities.GetOrientation() == DisplayOrientation.Landscape
+            ? StackOrientation.Horizontal
+            : StackOrientation.Vertical;
 
         // Skip the redraw if we don't need to do it.
-        if (!forceRedraw && newOrientation == CalculatorLayout.Orientation)
+        if (_layoutInitialized && newOrientation == CalculatorLayout.Orientation)
         {
             return;
         }
@@ -337,37 +339,41 @@ public partial class CalculatorPage : ContentPage
         switch (_selectedExerciseType)
         {
             case ExerciseType.Barbell:
-                DisplayBarbellResults();
+                await DisplayBarbellResults();
                 break;
 
             case ExerciseType.Dumbbell:
-                DisplayDumbbellResults();
+                await DisplayDumbbellResults();
                 break;
 
             case ExerciseType.Machine:
-                DisplayMachineResults();
+                await DisplayMachineResults();
                 break;
 
             case ExerciseType.Kettlebell:
-                DisplayKettlebellResults();
+                await DisplayKettlebellResults();
                 break;
 
             default:
                 throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
                     "Invalid exercise type.");
         }
+
+        _layoutInitialized = true;
     }
 
     private double GetAvailWidth()
     {
-        return PageLayout.GetNumColumns() == 2
-            ? (CalculatorLayout.Width - CalculatorLayout.Spacing) / 2
-            : CalculatorLayout.Width;
+        var scrollViewWidth = CalculatorScrollView.Width - CalculatorScrollView.Padding.Left
+            - CalculatorScrollView.Padding.Right;
+        return MauiUtilities.GetOrientation() == DisplayOrientation.Landscape
+            ? (scrollViewWidth - CalculatorLayout.Spacing) / 2
+            : scrollViewWidth;
     }
 
     private void ResetExerciseTypeButtonWidths()
     {
-        var width = (GetAvailWidth() - PageLayout.Spacing) / 2;
+        var width = (GetAvailWidth() - ExerciseTypeButtonGrid.ColumnSpacing) / 2;
         BarbellButton.WidthRequest = width;
         DumbbellButton.WidthRequest = width;
         MachineButton.WidthRequest = width;
@@ -457,7 +463,7 @@ public partial class CalculatorPage : ContentPage
 
     #region Lookup tables
 
-    private async Task GetBars()
+    private async Task LoadBars()
     {
         if (_barLookup == null)
         {
@@ -466,7 +472,7 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private async Task GetPlates()
+    private async Task LoadPlates()
     {
         if (_plateLookup == null)
         {
@@ -475,7 +481,7 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private async Task GetDumbbells()
+    private async Task LoadDumbbells()
     {
         if (_dumbbellLookup == null)
         {
@@ -484,7 +490,7 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private async Task GetKettlebells()
+    private async Task LoadKettlebells()
     {
         if (_kettlebellLookup == null)
         {
@@ -497,20 +503,21 @@ public partial class CalculatorPage : ContentPage
 
     #region Display results
 
-    private void DisplayBarbellResults()
+    private async Task DisplayBarbellResults()
     {
-        DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar",
+        await DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar",
             "Plates per end");
     }
 
-    private void DisplayMachineResults()
+    private async Task DisplayMachineResults()
     {
-        DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly,
+        await DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly,
             "Total including starting weight", "Plates per side");
     }
 
-    private void DisplayDumbbellResults()
+    private async Task DisplayDumbbellResults()
     {
+        await LoadDumbbells();
         DisplaySingleWeightResults(_dumbbellResults, weight =>
         {
             var drawable = new DumbbellDrawable { GymObject = _dumbbellLookup[weight] };
@@ -518,8 +525,9 @@ public partial class CalculatorPage : ContentPage
         });
     }
 
-    private void DisplayKettlebellResults()
+    private async Task DisplayKettlebellResults()
     {
+        await LoadKettlebells();
         DisplaySingleWeightResults(_kettlebellResults, weight =>
         {
             var drawable = new KettlebellDrawable { GymObject = _kettlebellLookup[weight] };
@@ -527,7 +535,7 @@ public partial class CalculatorPage : ContentPage
         });
     }
 
-    private void DisplayPlateResults(Dictionary<double, List<double>> results,
+    private async Task DisplayPlateResults(Dictionary<double, List<double>> results,
         double startingWeight, bool oneSideOnly, string totalHeadingText, string platesPerSideText)
     {
         // Clear the error message.
@@ -551,6 +559,7 @@ public partial class CalculatorPage : ContentPage
         // Get the available width in device-independent pixels.
         var availWidth = GetAvailWidth();
 
+        await LoadPlates();
         var maxPlateWeight = _plateLookup.Keys.Max();
 
         foreach (var (percent, platesResult) in results)
