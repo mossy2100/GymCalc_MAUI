@@ -8,7 +8,6 @@
     Title="List">
 
     <Grid RowDefinitions="*,Auto">
-
         <ScrollView Grid.Row="0" Padding="{x:Static graphics:PageLayout.Spacing}">
             <Grid
                 x:Name="ListGrid"
@@ -18,12 +17,8 @@
 
         <Grid
             Grid.Row="1"
-            Padding="{x:Static graphics:PageLayout.Spacing}"
-            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
-                                              Dark={StaticResource Gray900}}"
             ColumnDefinitions="*,Auto,Auto"
-            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-            RowDefinitions="Auto">
+            Style="{StaticResource ButtonGridStyle}">
             <input:CheckBox
                 x:Name="EditModeCheckBox"
                 Grid.Row="0"

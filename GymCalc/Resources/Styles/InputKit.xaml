@@ -8,20 +8,19 @@
     <!--  InputKit styles  -->
 
     <Style ApplyToDerivedTypes="True" TargetType="input:CheckBox">
+        <Setter Property="TextFontSize" Value="16" />
+        <Setter Property="Color" Value="{StaticResource Primary}" />
+        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal">
                         <VisualState.Setters>
-                            <Setter Property="Color" Value="{StaticResource Primary}" />
-                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
                             <Setter Property="IconColor" Value="{StaticResource Primary}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Selected">
                         <VisualState.Setters>
-                            <Setter Property="Color" Value="{StaticResource Primary}" />
-                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
                             <Setter Property="IconColor" Value="{StaticResource White}" />
                             <Setter Property="BoxBackgroundColor" Value="{StaticResource Primary}" />
                         </VisualState.Setters>

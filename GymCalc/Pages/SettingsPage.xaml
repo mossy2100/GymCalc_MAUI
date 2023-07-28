@@ -17,7 +17,6 @@
             <Label
                 Grid.Row="0"
                 Grid.Column="0"
-                FontSize="16"
                 Text="Units" />
 
             <input:RadioButtonGroupView
@@ -32,7 +31,6 @@
             <!--  <Label  -->
             <!--  Grid.Row="1"  -->
             <!--  Grid.Column="0"  -->
-            <!--  FontSize="16"  -->
             <!--  Text="Colour scheme" />  -->
             <!--    -->
             <!--  <input:RadioButtonGroupView  -->

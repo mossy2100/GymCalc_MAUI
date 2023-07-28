@@ -16,7 +16,7 @@
             <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
-                <Label FontSize="16" Text="Select exercise type:" />
+                <Label Text="Select exercise type:" />
                 <Grid
                     ColumnDefinitions="*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
@@ -61,7 +61,6 @@
                         x:Name="MaxWeightLabel"
                         Grid.Row="0"
                         Grid.Column="0"
-                        FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="Maximum weight"
                         VerticalTextAlignment="Center" />
@@ -79,7 +78,6 @@
                         x:Name="MaxWeightUnit"
                         Grid.Row="0"
                         Grid.Column="2"
-                        FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="kg"
                         VerticalTextAlignment="Center" />
@@ -106,7 +104,6 @@
                             x:Name="BarWeightPicker"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
-                            FontSize="16"
                             HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center" />
                     </Frame>
@@ -114,7 +111,6 @@
                         x:Name="BarWeightUnit"
                         Grid.Row="0"
                         Grid.Column="2"
-                        FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="kg"
                         VerticalTextAlignment="Center" />
@@ -129,7 +125,6 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="Starting weight (kg)"
                         VerticalTextAlignment="Center" />
@@ -141,7 +136,6 @@
                             x:Name="StartingWeightEntry"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
-                            FontSize="16"
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center" />
@@ -150,7 +144,6 @@
                         x:Name="StartingWeightUnit"
                         Grid.Row="0"
                         Grid.Column="2"
-                        FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="kg"
                         VerticalTextAlignment="Center" />
@@ -165,7 +158,6 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        FontSize="16"
                         Text="Get plates for one side only"
                         VerticalTextAlignment="Center" />
                     <input:CheckBox
@@ -183,7 +175,6 @@
                 <Label
                     x:Name="ErrorMessage"
                     FontAttributes="Bold"
-                    FontSize="16"
                     Text=""
                     TextColor="Red" />
             </VerticalStackLayout>
