@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.AboutPage"
+    x:Class="GymCalc.Pages.InstructionsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="About GymCalc">
+    Title="Instructions">
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
-        <VerticalStackLayout x:Name="AboutLayout" />
+        <VerticalStackLayout x:Name="InstructionsLayout" Spacing="{x:Static graphics:PageLayout.Spacing}" />
     </ScrollView>
 
 </ContentPage>

@@ -5,23 +5,11 @@
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="List"
-    BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
-                                      Dark={StaticResource Gray950}}">
+    Title="List">
 
-    <Grid x:Name="ListStack" RowDefinitions="Auto,*,Auto">
+    <Grid RowDefinitions="*,Auto">
 
-        <Label
-            x:Name="ListLabel"
-            Grid.Row="0"
-            Padding="{x:Static graphics:PageLayout.Spacing}"
-            FontSize="16" />
-
-        <ScrollView
-            Grid.Row="1"
-            Padding="{x:Static graphics:PageLayout.DoubleSpacing}"
-            BackgroundColor="{AppThemeBinding Light={StaticResource White},
-                                              Dark={StaticResource Black}}">
+        <ScrollView Grid.Row="0" Padding="{x:Static graphics:PageLayout.Spacing}">
             <Grid
                 x:Name="ListGrid"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
@@ -29,9 +17,10 @@
         </ScrollView>
 
         <Grid
-            x:Name="ListButtons"
-            Grid.Row="2"
+            Grid.Row="1"
             Padding="{x:Static graphics:PageLayout.Spacing}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource Gray50},
+                                              Dark={StaticResource Gray900}}"
             ColumnDefinitions="*,Auto,Auto"
             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
             RowDefinitions="Auto">

@@ -1,5 +1,4 @@
 using System.Globalization;
-using Microsoft.Maui.Controls.Shapes;
 using GymCalc.Calculations;
 using GymCalc.Data;
 using GymCalc.Data.Models;
@@ -94,7 +93,7 @@ public partial class CalculatorPage : ContentPage
 
     private void OnCalculatorLayoutLoaded(object sender, EventArgs eventArgs)
     {
-        UpdateLayoutOrientation(true);
+        UpdateLayoutOrientation();
     }
 
     private void OnMainDisplayInfoChanged(object sender, DisplayInfoChangedEventArgs e)
@@ -361,12 +360,9 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        if (PageLayout.GetNumColumns() == 2)
-        {
-            return (CalculatorLayout.Width - CalculatorLayout.Spacing) / 2;
-        }
-
-        return CalculatorLayout.Width;
+        return PageLayout.GetNumColumns() == 2
+            ? (CalculatorLayout.Width - CalculatorLayout.Spacing) / 2
+            : CalculatorLayout.Width;
     }
 
     private void ResetExerciseTypeButtonWidths()
@@ -461,44 +457,40 @@ public partial class CalculatorPage : ContentPage
 
     #region Lookup tables
 
-    private async Task<Dictionary<double, Bar>> GetBars()
+    private async Task GetBars()
     {
         if (_barLookup == null)
         {
             var bars = await BarRepository.GetInstance().GetAll(_units, true);
             _barLookup = bars.ToDictionary(p => p.Weight, p => p);
         }
-        return _barLookup;
     }
 
-    private async Task<Dictionary<double, Plate>> GetPlates()
+    private async Task GetPlates()
     {
         if (_plateLookup == null)
         {
             var plates = await PlateRepository.GetInstance().GetAll(_units, true);
             _plateLookup = plates.ToDictionary(p => p.Weight, p => p);
         }
-        return _plateLookup;
     }
 
-    private async Task<Dictionary<double, Dumbbell>> GetDumbbells()
+    private async Task GetDumbbells()
     {
         if (_dumbbellLookup == null)
         {
             var dumbbells = await DumbbellRepository.GetInstance().GetAll(_units, true);
             _dumbbellLookup = dumbbells.ToDictionary(p => p.Weight, p => p);
         }
-        return _dumbbellLookup;
     }
 
-    private async Task<Dictionary<double, Kettlebell>> GetKettlebells()
+    private async Task GetKettlebells()
     {
         if (_kettlebellLookup == null)
         {
             var kettlebells = await KettlebellRepository.GetInstance().GetAll(_units, true);
             _kettlebellLookup = kettlebells.ToDictionary(p => p.Weight, p => p);
         }
-        return _kettlebellLookup;
     }
 
     #endregion Lookup tables
@@ -564,7 +556,7 @@ public partial class CalculatorPage : ContentPage
         foreach (var (percent, platesResult) in results)
         {
             // Horizontal rule.
-            CalculatorResults.Add(GetHorizontalRule(availWidth));
+            CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -690,7 +682,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Horizontal rule.
-        CalculatorResults.Add(GetHorizontalRule(availWidth));
+        CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
     }
 
     private void DisplaySingleWeightResults(Dictionary<double, double> results,
@@ -719,7 +711,7 @@ public partial class CalculatorPage : ContentPage
         foreach (var (percent, closestWeight) in results)
         {
             // Horizontal rule.
-            CalculatorResults.Add(GetHorizontalRule(availWidth));
+            CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
             // Table of results for this percentage.
             var textGrid = new Grid
@@ -787,17 +779,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Horizontal rule.
-        CalculatorResults.Add(GetHorizontalRule(availWidth));
-    }
-
-    private static Rectangle GetHorizontalRule(double width)
-    {
-        return new Rectangle
-        {
-            BackgroundColor = Colors.Grey,
-            WidthRequest = width,
-            HeightRequest = 1,
-        };
+        CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
     }
 
     #endregion Display results

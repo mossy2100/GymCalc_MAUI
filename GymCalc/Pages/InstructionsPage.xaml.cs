@@ -1,13 +1,12 @@
 using GymCalc.Utilities;
-using HtmlAgilityPack;
 
 namespace GymCalc.Pages;
 
-public partial class AboutPage : ContentPage
+public partial class InstructionsPage : ContentPage
 {
     private bool _textLoaded;
 
-    public AboutPage()
+    public InstructionsPage()
     {
         InitializeComponent();
 
@@ -16,7 +15,7 @@ public partial class AboutPage : ContentPage
 
     private void OnThemeChange(object sender, AppThemeChangedEventArgs e)
     {
-        TextUtility.SetLayoutTextColor(AboutLayout);
+        TextUtility.SetLayoutTextColor(InstructionsLayout);
     }
 
     /// <inheritdoc />
@@ -24,7 +23,7 @@ public partial class AboutPage : ContentPage
     {
         if (!_textLoaded)
         {
-            await TextUtility.LoadHtmlIntoLayout("About.html", AboutLayout);
+            await TextUtility.LoadHtmlIntoLayout("Instructions.html", InstructionsLayout);
             _textLoaded = true;
         }
     }

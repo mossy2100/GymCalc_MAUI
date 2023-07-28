@@ -1,10 +1,13 @@
 using System.Text.RegularExpressions;
+using Microsoft.Maui.Controls.Shapes;
 using HtmlAgilityPack;
 
 namespace GymCalc.Utilities;
 
 internal static class TextUtility
 {
+    private const int _DefaultMargin = 5;
+
     /// <summary>
     /// Easily construct a formatted string.
     /// </summary>
@@ -88,7 +91,7 @@ internal static class TextUtility
     }
 
     private static void AddSpan(string text, int fontSize, FontAttributes fontAttributes,
-        ref List<List<Span>> spans)
+        Layout layout)
     {
         // Ignore empty spans.
         if (string.IsNullOrWhiteSpace(text))
@@ -104,27 +107,63 @@ internal static class TextUtility
             FontAttributes = fontAttributes,
         };
 
-        // Add it to the last span group.
-        spans.Last().Add(newSpan);
+        // Get the last label in the layout.
+        var lastLabel = (Label)layout.LastOrDefault(child => child is Label);
+
+        // If there are no labels in the layout, add one.
+        if (lastLabel == null)
+        {
+            lastLabel = new Label();
+            layout.Add(lastLabel);
+        }
+
+        // Create the FormattedString if necessary.
+        if (lastLabel.FormattedText == null)
+        {
+            lastLabel.FormattedText = new FormattedString();
+        }
+
+        // Add the span to the label.
+        lastLabel.FormattedText.Spans.Add(newSpan);
     }
 
-    public static void ProcessHtmlDocument(HtmlNode node,
-        int parentFontSize,
-        FontAttributes parentFontAttributes,
-        ref List<List<Span>> spans)
+    public static void ProcessHtmlDocument(HtmlNode node, int parentFontSize,
+        FontAttributes parentFontAttributes, Layout layout)
     {
         // var node = doc.DocumentNode;
         switch (node.NodeType)
         {
             case HtmlNodeType.Text:
-                AddSpan(node.InnerText, parentFontSize, parentFontAttributes, ref spans);
+                AddSpan(node.InnerText, parentFontSize, parentFontAttributes, layout);
                 break;
 
             case HtmlNodeType.Element:
-                // Block-level elements require a new span group (which becomes a Label).
-                if (node.Name is "p" or "h1" or "h2" or "li")
+                // Handle horizontal rules.
+                if (node.Name is "hr")
                 {
-                    spans.Add(new List<Span>());
+                    layout.Add(GetHorizontalRule(layout.Width));
+                    break;
+                }
+
+                // Create a new Label if necessary.
+                if (node.Name is "p" or "h1" or "h2" or "li" or "br")
+                {
+                    var topMargin = node.Name switch
+                    {
+                        "br" => 0,
+                        "li" => node == node.ParentNode.ChildNodes[0] ? _DefaultMargin : 0,
+                        _ => _DefaultMargin,
+                    };
+                    var bottomMargin = node.Name switch
+                    {
+                        "br" => 0,
+                        "li" => node == node.ParentNode.ChildNodes[^1] ? _DefaultMargin : 0,
+                        _ => _DefaultMargin,
+                    };
+                    layout.Add(new Label
+                    {
+                        Margin = new Thickness(0, topMargin, 0, bottomMargin),
+                    });
                 }
 
                 // Determine the font attributes.
@@ -151,22 +190,21 @@ internal static class TextUtility
                 // Handle unordered lists.
                 if (node.Name == "li" && node.ParentNode.Name == "ul")
                 {
-                    // Add a new span for the bullet.
-                    var bullSpan = new Span { Text = "\u2022 " };
-                    spans.Last().Add(bullSpan);
+                    // Add a span for the bullet.
+                    AddSpan("\u2022 ", fontSize, FontAttributes.None, layout);
                 }
 
                 if (node.HasChildNodes)
                 {
-                    // Add new spans for each child node.
+                    // Add new labels and spans for each child node.
                     foreach (var childNode in node.ChildNodes)
                     {
-                        ProcessHtmlDocument(childNode, fontSize, fontAttributes, ref spans);
+                        ProcessHtmlDocument(childNode, fontSize, fontAttributes, layout);
                     }
                 }
-                else
+                else if (node.InnerText != "")
                 {
-                    AddSpan(node.InnerText, fontSize, fontAttributes, ref spans);
+                    AddSpan(node.InnerText, fontSize, fontAttributes, layout);
                 }
                 break;
 
@@ -174,13 +212,67 @@ internal static class TextUtility
                 // Add new spans for each child node.
                 foreach (var childNode in node.ChildNodes)
                 {
-                    ProcessHtmlDocument(childNode, parentFontSize, parentFontAttributes, ref spans);
+                    ProcessHtmlDocument(childNode, parentFontSize, parentFontAttributes, layout);
                 }
                 break;
 
-            case HtmlNodeType.Comment:
             default:
-                throw new ArgumentOutOfRangeException(nameof(node.NodeType), "Unknown node type.");
+                // Do nothing.
+                break;
         }
+    }
+
+    public static async Task LoadHtmlIntoLayout(string filename, Layout layout)
+    {
+        await using var stream = await FileSystem.OpenAppPackageFileAsync(filename);
+
+        var doc = new HtmlDocument();
+        doc.Load(stream);
+
+        // Recursively process HTML document.
+        ProcessHtmlDocument(doc.DocumentNode, 14, FontAttributes.None, layout);
+
+        // Set the text color according to the theme.
+        SetLayoutTextColor(layout);
+    }
+
+    public static void SetLayoutTextColor(Layout layout)
+    {
+        // Get the text color.
+        var textColor = Application.Current!.RequestedTheme == AppTheme.Light
+            ? Colors.Black
+            : Colors.White;
+
+        // Change the color of every span.
+        foreach (var item in layout)
+        {
+            // Ignore non-labels.
+            if (item is not Label label)
+            {
+                continue;
+            }
+
+            // Update the label color.
+            label.TextColor = textColor;
+
+            // Update the color of any spans in the label.
+            if (label.FormattedText is { Spans.Count: > 0 })
+            {
+                foreach (var span in label.FormattedText.Spans)
+                {
+                    span.TextColor = textColor;
+                }
+            }
+        }
+    }
+
+    public static Rectangle GetHorizontalRule(double width)
+    {
+        return new Rectangle
+        {
+            BackgroundColor = Colors.Grey,
+            WidthRequest = width,
+            HeightRequest = 1,
+        };
     }
 }

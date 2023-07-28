@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Markup;
 using Microsoft.Extensions.Logging;
 using InputKit.Handlers;
 
@@ -17,8 +18,9 @@ public static class MauiProgram
             })
             .ConfigureMauiHandlers(handlers =>
             {
-                handlers.AddInputKitHandlers(); // 👈
-            });
+                handlers.AddInputKitHandlers();
+            })
+            .UseMauiCommunityToolkitMarkup();
 
 #if DEBUG
         builder.Logging.AddDebug();

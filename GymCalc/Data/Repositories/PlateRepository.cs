@@ -25,7 +25,7 @@ internal class PlateRepository : GymObjectRepository
         (2, Units.Kilograms, false, "Indigo"),
         (2.5, Units.Kilograms, true, "Red"),
         (5, Units.Kilograms, true, "OffWhite"),
-        (7.5, Units.Kilograms, true, "Pink"),
+        (7.5, Units.Kilograms, false, "Pink"),
         (10, Units.Kilograms, true, "Green"),
         (12.5, Units.Kilograms, false, "Orange"),
         (15, Units.Kilograms, true, "Yellow"),

@@ -7,6 +7,7 @@ using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
+using CommunityToolkit.Maui.Markup;
 
 namespace GymCalc.Pages;
 
@@ -16,6 +17,8 @@ public partial class ListPage : ContentPage
 {
     private string _gymObjectTypeName;
 
+    private bool _isGymObjectTypeNameSet;
+
     public string GymObjectTypeName
     {
         get => _gymObjectTypeName;
@@ -24,10 +27,13 @@ public partial class ListPage : ContentPage
         {
             _gymObjectTypeName = value;
             OnPropertyChanged();
+            _isGymObjectTypeNameSet = true;
         }
     }
 
     private bool _editMode;
+
+    private bool _isEditModeSet;
 
     public bool EditMode
     {
@@ -37,8 +43,11 @@ public partial class ListPage : ContentPage
         {
             _editMode = value;
             OnPropertyChanged();
+            _isEditModeSet = true;
         }
     }
+
+    public Label InstructionsLabel { get; set; }
 
     /// <summary>
     /// Dictionary mapping checkboxes to gym objects.
@@ -59,13 +68,26 @@ public partial class ListPage : ContentPage
 
     private void EditModeChanged()
     {
+        // Make sure both properties have been set.
+        if (!_isGymObjectTypeNameSet || !_isEditModeSet)
+        {
+            return;
+        }
+
+        // Get the edit mode from the checkbox.
         var editMode = EditModeCheckBox.IsChecked;
-        ListLabel.Text = editMode
+
+        // Update the instructions label.
+        InstructionsLabel.Text = editMode
             ? $"Use the edit and delete icon buttons to make changes. Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset button to reset to the defaults."
             : $"Select which {GymObjectTypeName.ToLower()} weights ({Units.GetPreferred()}) are available:";
-        ListLabel.FontSize = editMode ? 14 : 16;
+        InstructionsLabel.FontSize = editMode ? 14 : 16;
+
+        // Hide or show the Add and Reset buttons.
         AddButton.IsVisible = editMode;
         ResetButton.IsVisible = editMode;
+
+        // Hide or show the Edit and Delete buttons.
         foreach (var (cb, gymObject) in _cbObjectMap)
         {
             cb.IsVisible = !editMode;
@@ -114,10 +136,6 @@ public partial class ListPage : ContentPage
         where T : GymObject
         where TDrawable : GymObjectDrawable, new()
     {
-        // Set the label text.
-        ListLabel.Text =
-            $"Select which {GymObjectTypeName.ToLower()} weights ({Units.GetPreferred()}) are available:";
-
         // Clear the grid.
         MauiUtilities.ClearGrid(ListGrid, true, true);
 
@@ -134,11 +152,10 @@ public partial class ListPage : ContentPage
             ListGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(iconButtonsWidth)));
         }
 
-        // Calculate and set the stack height because it doesn't resize automatically.
-        // var nRows = (int)double.Ceiling(gymObjects.Count / (double)nItemCols);
-        // ListStack.HeightRequest = ListStack.Sum(child => child == ListGrid
-        //     ? (graphicHeight + PageLayout.DoubleSpacing) * nRows
-        //     : child.Height + ListStack.RowSpacing);
+        // Add the instructions label at the top. The text and font size will be set later.
+        ListGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+        InstructionsLabel = new Label().ColumnSpan(nGridCols);
+        ListGrid.Add(InstructionsLabel, 0, 0);
 
         // Get the maximum bar weight.
         var maxWeight = gymObjects.Last().Weight;
@@ -147,7 +164,7 @@ public partial class ListPage : ContentPage
         var editIconButtonStyle = MauiUtilities.LookupStyle("EditIconButtonStyle");
         var deleteIconButtonStyle = MauiUtilities.LookupStyle("DeleteIconButtonStyle");
 
-        var rowNum = 0;
+        var rowNum = 1;
         var colNum = 0;
         foreach (var gymObject in gymObjects)
         {
@@ -161,7 +178,7 @@ public partial class ListPage : ContentPage
             var drawable = new TDrawable
             {
                 GymObject = gymObject,
-                MaxWeight = maxWeight
+                MaxWeight = maxWeight,
             };
             var gymObjectGraphic = drawable.CreateGraphic();
             ListGrid.Add(gymObjectGraphic, colNum, rowNum);

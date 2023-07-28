@@ -57,6 +57,10 @@
         <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </FlyoutItem>
 
+    <FlyoutItem Title="Instructions" Style="{StaticResource InstructionsFlyoutItem}">
+        <ShellContent ContentTemplate="{DataTemplate pages:InstructionsPage}" />
+    </FlyoutItem>
+
     <FlyoutItem Title="About GymCalc" Style="{StaticResource AboutFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
     </FlyoutItem>

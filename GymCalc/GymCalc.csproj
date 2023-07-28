@@ -104,6 +104,15 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
+        <MauiImage Include="Resources\Images\tab_bar_icons\help_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\help_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
         <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_black_300.png">
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -118,23 +127,6 @@
 
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
-        <!-- Tab bar icons -->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\calculator_icon_white_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\barbell_icon_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\plate_icon_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\dumbbell_icon_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\kettlebell_icon_300.png" BaseSize="30,30" />-->
-<!--        <MauiImage Update="Resources\Images\tab_bar_icons\about_icon_300.png" BaseSize="30,30" />-->
-<!--        &lt;!&ndash; Images for exercise type buttons &ndash;&gt;-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\deadlift_black_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\deadlift_white_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_black_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\dumbbell_press_white_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\leg_press_black_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\leg_press_white_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_black_100.png" BaseSize="100,100" />-->
-<!--        <MauiImage Update="Resources\Images\exercise_types\kettlebell_swing_white_100.png" BaseSize="100,100" />-->
 
         <!-- Custom Fonts -->
         <MauiFont Include="Resources\Fonts\*" />
@@ -213,6 +205,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.2.0" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.50" />
         <PackageReference Include="InputKit.Maui" Version="4.3.4" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
