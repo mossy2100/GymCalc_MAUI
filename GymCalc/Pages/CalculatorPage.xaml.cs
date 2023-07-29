@@ -7,6 +7,7 @@ using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
+using Microsoft.Maui.Layouts;
 
 namespace GymCalc.Pages;
 
@@ -17,6 +18,8 @@ public partial class CalculatorPage : ContentPage
     private static ExerciseType _selectedExerciseType = ExerciseType.Barbell;
 
     private bool _layoutInitialized;
+
+    private bool _resultsDisplayed;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
@@ -148,6 +151,8 @@ public partial class CalculatorPage : ContentPage
                 throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
                     "Invalid exercise type.");
         }
+
+        await ScrollToResults();
     }
 
     #endregion Event handlers
@@ -330,7 +335,7 @@ public partial class CalculatorPage : ContentPage
 
         // Redraws the page, which updates the CalculatorLayout orientation and width.
         // This is only needed for Android, not iOS, but it doesn't do any harm.
-        InvalidateMeasure();
+        // InvalidateMeasure();
 
         // Update the button widths.
         ResetExerciseTypeButtonWidths();
@@ -358,6 +363,8 @@ public partial class CalculatorPage : ContentPage
                 throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
                     "Invalid exercise type.");
         }
+
+        await ScrollToResults();
 
         _layoutInitialized = true;
     }
@@ -459,6 +466,14 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
+    private async Task ScrollToResults()
+    {
+        var y = MauiUtilities.GetOrientation() == DisplayOrientation.Portrait && _resultsDisplayed
+            ? CalculatorLayout.Y
+            : 0;
+        await CalculatorScrollView.ScrollToAsync(0, y, true);
+    }
+
     #endregion UI
 
     #region Lookup tables
@@ -517,7 +532,7 @@ public partial class CalculatorPage : ContentPage
     private async Task DisplayDumbbellResults()
     {
         await LoadDumbbells();
-        await DisplaySingleWeightResults(_dumbbellResults, weight =>
+        DisplaySingleWeightResults(_dumbbellResults, weight =>
         {
             var drawable = new DumbbellDrawable { GymObject = _dumbbellLookup[weight] };
             return drawable.CreateGraphic();
@@ -527,7 +542,7 @@ public partial class CalculatorPage : ContentPage
     private async Task DisplayKettlebellResults()
     {
         await LoadKettlebells();
-        await DisplaySingleWeightResults(_kettlebellResults, weight =>
+        DisplaySingleWeightResults(_kettlebellResults, weight =>
         {
             var drawable = new KettlebellDrawable { GymObject = _kettlebellLookup[weight] };
             return drawable.CreateGraphic();
@@ -543,9 +558,10 @@ public partial class CalculatorPage : ContentPage
         // Clear the results.
         MauiUtilities.ClearStack(CalculatorResults);
 
-        // Check if there aren't any results to render.
+        // Check if there are any results to render.
         if (results == null)
         {
+            _resultsDisplayed = false;
             return;
         }
 
@@ -696,11 +712,10 @@ public partial class CalculatorPage : ContentPage
         // Horizontal rule.
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
-        // Scroll to results.
-        await CalculatorScrollView.ScrollToAsync(0, CalculatorResults.Y, true);
+        _resultsDisplayed = true;
     }
 
-    private async Task DisplaySingleWeightResults(Dictionary<double, double> results,
+    private void DisplaySingleWeightResults(Dictionary<double, double> results,
         Func<double, GraphicsView> createGraphic)
     {
         // Clear the error message.
@@ -709,9 +724,10 @@ public partial class CalculatorPage : ContentPage
         // Clear the results.
         MauiUtilities.ClearStack(CalculatorResults);
 
-        // Check if there aren't any results to render.
+        // Check if there are any results to render.
         if (results == null)
         {
+            _resultsDisplayed = false;
             return;
         }
 
@@ -796,8 +812,7 @@ public partial class CalculatorPage : ContentPage
         // Horizontal rule.
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
-        // Scroll to results.
-        await CalculatorScrollView.ScrollToAsync(0, CalculatorResults.Y, true);
+        _resultsDisplayed = true;
     }
 
     #endregion Display results
