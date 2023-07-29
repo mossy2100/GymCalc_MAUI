@@ -559,7 +559,7 @@ public partial class CalculatorPage : ContentPage
         var availWidth = GetAvailWidth();
 
         // Get the maximum plate width.
-        var maxWidth = (int)(availWidth - 30);
+        var maxWidth = (int)(availWidth - 50);
 
         await LoadPlates();
         var maxPlateWeight = _plateLookup.Keys.Max();
@@ -697,7 +697,7 @@ public partial class CalculatorPage : ContentPage
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
         // Scroll to results.
-        await CalculatorScrollView.ScrollToAsync(CalculatorResults, ScrollToPosition.Start, true);
+        await CalculatorScrollView.ScrollToAsync(0, CalculatorResults.Y, true);
     }
 
     private async Task DisplaySingleWeightResults(Dictionary<double, double> results,
@@ -797,7 +797,7 @@ public partial class CalculatorPage : ContentPage
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
 
         // Scroll to results.
-        await CalculatorScrollView.ScrollToAsync(CalculatorResults, ScrollToPosition.Start, true);
+        await CalculatorScrollView.ScrollToAsync(0, CalculatorResults.Y, true);
     }
 
     #endregion Display results
