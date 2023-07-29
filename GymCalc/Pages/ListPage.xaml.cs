@@ -27,7 +27,6 @@ public partial class ListPage : ContentPage
         {
             _gymObjectTypeName = value;
             OnPropertyChanged();
-            _isGymObjectTypeNameSet = true;
         }
     }
 
@@ -43,11 +42,18 @@ public partial class ListPage : ContentPage
         {
             _editMode = value;
             OnPropertyChanged();
-            _isEditModeSet = true;
         }
     }
 
     public Label InstructionsLabel { get; set; }
+
+    private const int _IconButtonWidth = 32;
+
+    private const int _IconButtonHeight = 32;
+
+    private const int _IconButtonSpacing = 5;
+
+    private const int _IconButtonsLayoutWidth = _IconButtonWidth * 2 + _IconButtonSpacing;
 
     /// <summary>
     /// Dictionary mapping checkboxes to gym objects.
@@ -108,22 +114,22 @@ public partial class ListPage : ContentPage
         {
             case GymObjectType.Bar:
                 var bars = await BarRepository.GetInstance().GetAll(units);
-                DisplayList<Bar, BarDrawable>(bars, BarDrawable.Height);
+                DisplayList<Bar, BarDrawable>(bars);
                 break;
 
             case GymObjectType.Plate:
                 var plates = await PlateRepository.GetInstance().GetAll(units);
-                DisplayList<Plate, PlateDrawable>(plates, PlateDrawable.Height);
+                DisplayList<Plate, PlateDrawable>(plates);
                 break;
 
             case GymObjectType.Dumbbell:
                 var dumbbells = await DumbbellRepository.GetInstance().GetAll(units);
-                DisplayList<Dumbbell, DumbbellDrawable>(dumbbells, DumbbellDrawable.Height);
+                DisplayList<Dumbbell, DumbbellDrawable>(dumbbells);
                 break;
 
             case GymObjectType.Kettlebell:
                 var kettlebells = await KettlebellRepository.GetInstance().GetAll(units);
-                DisplayList<Kettlebell, KettlebellDrawable>(kettlebells, KettlebellDrawable.Height);
+                DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
                 break;
         }
 
@@ -133,7 +139,7 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Initialize the list of gym objects.
     /// </summary>
-    private void DisplayList<T, TDrawable>(List<T> gymObjects, int graphicHeight)
+    private void DisplayList<T, TDrawable>(List<T> gymObjects)
         where T : GymObject
         where TDrawable : GymObjectDrawable, new()
     {
@@ -144,13 +150,13 @@ public partial class ListPage : ContentPage
         ListGrid.ColumnDefinitions = new ColumnDefinitionCollection();
         var nItemCols = PageLayout.GetNumColumns();
         var nGridCols = nItemCols * 2;
-        var iconButtonsWidth = 70;
         for (var c = 0; c < nItemCols; c++)
         {
             // Add column for the graphic.
             ListGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
             // Add column for the checkbox and icon buttons.
-            ListGrid.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(iconButtonsWidth)));
+            ListGrid.ColumnDefinitions.Add(
+                new ColumnDefinition(new GridLength(_IconButtonsLayoutWidth)));
         }
 
         // Add the instructions label at the top. The text and font size will be set later.
@@ -161,6 +167,14 @@ public partial class ListPage : ContentPage
         // Get the maximum bar weight.
         var maxWeight = gymObjects.Last().Weight;
 
+        // Calculate the maximum graphic width.
+        var maxWidth = (int)(ListGrid.Width - ListGrid.Padding.Left - ListGrid.Padding.Right);
+        if (nItemCols == 2)
+        {
+            maxWidth = (maxWidth - (int)ListGrid.ColumnSpacing) / 2;
+        }
+        maxWidth = maxWidth - (int)ListGrid.ColumnSpacing - _IconButtonsLayoutWidth - 30;
+
         // Get the icon styles.
         var editIconButtonStyle = MauiUtilities.LookupStyle("EditIconButtonStyle");
         var deleteIconButtonStyle = MauiUtilities.LookupStyle("DeleteIconButtonStyle");
@@ -169,18 +183,22 @@ public partial class ListPage : ContentPage
         var colNum = 0;
         foreach (var gymObject in gymObjects)
         {
-            // If we're at the start of a new row, create one and add it to the grid.
-            if (colNum == 0)
-            {
-                ListGrid.RowDefinitions.Add(new RowDefinition(new GridLength(graphicHeight)));
-            }
-
-            // Add the graphic.
+            // Construct the drawable.
             var drawable = new TDrawable
             {
                 GymObject = gymObject,
+                MaxWidth = maxWidth,
                 MaxWeight = maxWeight,
             };
+
+            // If we're at the start of a new row, create one and add it to the grid.
+            if (colNum == 0)
+            {
+                var rowHeight = Math.Max(drawable.Height, _IconButtonHeight);
+                ListGrid.RowDefinitions.Add(new RowDefinition(new GridLength(rowHeight)));
+            }
+
+            // Add the graphic.
             var gymObjectGraphic = drawable.CreateGraphic();
             ListGrid.Add(gymObjectGraphic, colNum, rowNum);
 
@@ -197,10 +215,7 @@ public partial class ListPage : ContentPage
             _cbObjectMap[cb] = gymObject;
 
             // Create a horizontal stack for the edit and delete icon buttons.
-            var stack = new HorizontalStackLayout
-            {
-                Spacing = 5,
-            };
+            var stack = new HorizontalStackLayout { Spacing = 5 };
 
             // Add the edit button to the stack.
             var editBtn = new Button
@@ -250,11 +265,13 @@ public partial class ListPage : ContentPage
         {
             case nameof(GymObjectTypeName):
                 await DisplayList();
+                _isGymObjectTypeNameSet = true;
                 break;
 
             case nameof(EditMode):
                 EditModeCheckBox.IsChecked = EditMode;
                 EditModeChanged();
+                _isEditModeSet = true;
                 break;
         }
     }

@@ -224,12 +224,12 @@ internal static class TextUtility
 
     public static async Task LoadHtmlIntoLayout(string filename, Layout layout)
     {
+        // Load the HTML.
         await using var stream = await FileSystem.OpenAppPackageFileAsync(filename);
-
         var doc = new HtmlDocument();
         doc.Load(stream);
 
-        // Recursively process HTML document.
+        // Recursively process the HTML document into the layout.
         ProcessHtmlDocument(doc.DocumentNode, 14, FontAttributes.None, layout);
 
         // Set the text color according to the theme.
@@ -243,7 +243,7 @@ internal static class TextUtility
             ? Colors.Black
             : Colors.White;
 
-        // Change the color of every span.
+        // Change the color of every label and span in the layout.
         foreach (var item in layout)
         {
             // Ignore non-labels.

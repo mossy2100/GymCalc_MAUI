@@ -7,15 +7,13 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class PlateDrawable : GymObjectDrawable
 {
-    internal const int Height = 30;
+    internal const int CornerRadius = 4;
 
-    private const int _MinWidth = 50;
-
-    private const int _MaxWidth = 250;
-
-    private const int _CornerRadius = 4;
-
-    private static int InnerHeight => Height - 2 * _CornerRadius;
+    public PlateDrawable()
+    {
+        Height = 30;
+        MinWidth = 50;
+    }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -28,11 +26,12 @@ internal class PlateDrawable : GymObjectDrawable
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
         var plateBackground = new RectF(0, 0, width, Height);
-        canvas.FillRoundedRectangle(plateBackground, _CornerRadius);
+        canvas.FillRoundedRectangle(plateBackground, CornerRadius);
 
         // Plate edge.
         canvas.FillColor = bgColor;
-        var plateEdge = new RectF(0, _CornerRadius, width, InnerHeight);
+        var innerHeight = Height - 2 * CornerRadius;
+        var plateEdge = new RectF(0, CornerRadius, width, innerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -40,14 +39,15 @@ internal class PlateDrawable : GymObjectDrawable
         canvas.FontSize = 16;
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
-        canvas.DrawString(weightString, 0, _CornerRadius + 2, width, InnerHeight,
+        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        canvas.DrawString(weightString, 0, CornerRadius + offset, width, innerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
     internal override GraphicsView CreateGraphic()
     {
         // Calculate the plate width.
-        var plateWidth = _MinWidth + GymObject.Weight / MaxWeight * (_MaxWidth - _MinWidth);
+        var plateWidth = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
 
         // Construct the graphic.
         return new GraphicsView

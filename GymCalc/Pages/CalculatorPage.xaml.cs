@@ -505,20 +505,19 @@ public partial class CalculatorPage : ContentPage
 
     private async Task DisplayBarbellResults()
     {
-        await DisplayPlateResults(_barbellResults, _barWeight, true, "Total including bar",
-            "Plates per end");
+        await DisplayPlateResults(_barbellResults, _barWeight, true, "Total", "Plates per end");
     }
 
     private async Task DisplayMachineResults()
     {
-        await DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly,
-            "Total including starting weight", "Plates per side");
+        await DisplayPlateResults(_machineResults, _startingWeight, _oneSideOnly, "Total",
+            "Plates per side");
     }
 
     private async Task DisplayDumbbellResults()
     {
         await LoadDumbbells();
-        DisplaySingleWeightResults(_dumbbellResults, weight =>
+        await DisplaySingleWeightResults(_dumbbellResults, weight =>
         {
             var drawable = new DumbbellDrawable { GymObject = _dumbbellLookup[weight] };
             return drawable.CreateGraphic();
@@ -528,7 +527,7 @@ public partial class CalculatorPage : ContentPage
     private async Task DisplayKettlebellResults()
     {
         await LoadKettlebells();
-        DisplaySingleWeightResults(_kettlebellResults, weight =>
+        await DisplaySingleWeightResults(_kettlebellResults, weight =>
         {
             var drawable = new KettlebellDrawable { GymObject = _kettlebellLookup[weight] };
             return drawable.CreateGraphic();
@@ -558,6 +557,9 @@ public partial class CalculatorPage : ContentPage
 
         // Get the available width in device-independent pixels.
         var availWidth = GetAvailWidth();
+
+        // Get the maximum plate width.
+        var maxWidth = (int)(availWidth - 30);
 
         await LoadPlates();
         var maxPlateWeight = _plateLookup.Keys.Max();
@@ -680,6 +682,7 @@ public partial class CalculatorPage : ContentPage
                     var drawable = new PlateDrawable
                     {
                         GymObject = _plateLookup[plateWeight],
+                        MaxWidth = maxWidth,
                         MaxWeight = maxPlateWeight,
                     };
                     var plateGraphic = drawable.CreateGraphic();
@@ -692,9 +695,12 @@ public partial class CalculatorPage : ContentPage
 
         // Horizontal rule.
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
+
+        // Scroll to results.
+        await CalculatorScrollView.ScrollToAsync(CalculatorResults, ScrollToPosition.Start, true);
     }
 
-    private void DisplaySingleWeightResults(Dictionary<double, double> results,
+    private async Task DisplaySingleWeightResults(Dictionary<double, double> results,
         Func<double, GraphicsView> createGraphic)
     {
         // Clear the error message.
@@ -789,6 +795,9 @@ public partial class CalculatorPage : ContentPage
 
         // Horizontal rule.
         CalculatorResults.Add(TextUtility.GetHorizontalRule(availWidth));
+
+        // Scroll to results.
+        await CalculatorScrollView.ScrollToAsync(CalculatorResults, ScrollToPosition.Start, true);
     }
 
     #endregion Display results

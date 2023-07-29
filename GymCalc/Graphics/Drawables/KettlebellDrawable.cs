@@ -7,9 +7,11 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class KettlebellDrawable : GymObjectDrawable
 {
-    internal const int Height = 76;
-
-    private const int _Width = 60;
+    public KettlebellDrawable()
+    {
+        Height = 76;
+        Width = 60;
+    }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -48,14 +50,15 @@ internal class KettlebellDrawable : GymObjectDrawable
 
         // Ball.
         canvas.FillColor = ballColor;
-        canvas.FillArc(0, 20, _Width, _Width, 240, 300, true);
+        canvas.FillArc(0, 20, Width, Width, 240, 300, true);
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 20;
         canvas.FontColor = ballColor.GetTextColor();
         var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
-        canvas.DrawString(weightString, 10, 37, 40, 30, HorizontalAlignment.Center,
+        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        canvas.DrawString(weightString, 10, 35 + offset, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
 
@@ -65,7 +68,7 @@ internal class KettlebellDrawable : GymObjectDrawable
         {
             Drawable = this,
             HeightRequest = Height,
-            WidthRequest = _Width,
+            WidthRequest = Width,
         };
     }
 }

@@ -6,9 +6,11 @@ namespace GymCalc.Graphics.Drawables;
 
 internal class DumbbellDrawable : GymObjectDrawable
 {
-    internal const int Height = 50;
-
-    private const int _Width = 100;
+    public DumbbellDrawable()
+    {
+        Height = 50;
+        Width = 100;
+    }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -54,7 +56,8 @@ internal class DumbbellDrawable : GymObjectDrawable
         canvas.FontColor = Colors.Black;
         var weightString = dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
         const int m = (gapWidth + plateWidth) * 2;
-        var p = (height - barHeight) / 2 + 2;
+        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        var p = (height - barHeight) / 2 + offset;
         canvas.DrawString(weightString, m, p, width - m * 2, barHeight, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
@@ -65,7 +68,7 @@ internal class DumbbellDrawable : GymObjectDrawable
         {
             Drawable = this,
             HeightRequest = Height,
-            WidthRequest = _Width,
+            WidthRequest = Width,
         };
     }
 }
