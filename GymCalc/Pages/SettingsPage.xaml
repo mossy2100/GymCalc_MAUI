@@ -31,6 +31,25 @@
             <!--  <Label  -->
             <!--  Grid.Row="1"  -->
             <!--  Grid.Column="0"  -->
+            <!--  Text="Theme" />  -->
+            <!--    -->
+            <!--  <Picker  -->
+            <!--  x:Name="ThemePicker"  -->
+            <!--  Grid.Row="1"  -->
+            <!--  Grid.Column="1"  -->
+            <!--  SelectedIndexChanged="ThemePicker_OnSelectedIndexChanged">  -->
+            <!--     <Picker.ItemsSource> -->
+            <!--         <x:Array Type="{x:Type x:String}"> -->
+            <!--             <x:String>System</x:String> -->
+            <!--             <x:String>Light</x:String> -->
+            <!--             <x:String>Dark</x:String> -->
+            <!--         </x:Array> -->
+            <!--     </Picker.ItemsSource> -->
+            <!-- </Picker> -->
+
+            <!--  <Label  -->
+            <!--  Grid.Row="1"  -->
+            <!--  Grid.Column="0"  -->
             <!--  Text="Colour scheme" />  -->
             <!--    -->
             <!--  <input:RadioButtonGroupView  -->

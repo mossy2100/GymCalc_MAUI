@@ -333,38 +333,38 @@ public partial class CalculatorPage : ContentPage
         // If different, update the layout.
         CalculatorLayout.Orientation = newOrientation;
 
-        // Redraws the page, which updates the CalculatorLayout orientation and width.
-        // This is only needed for Android, not iOS, but it doesn't do any harm.
-        // InvalidateMeasure();
-
         // Update the button widths.
         ResetExerciseTypeButtonWidths();
 
-        // Re-render the results for the altered width.
-        switch (_selectedExerciseType)
+        // If there are any results, re-render them for the altered width.
+        if (_resultsDisplayed)
         {
-            case ExerciseType.Barbell:
-                await DisplayBarbellResults();
-                break;
+            switch (_selectedExerciseType)
+            {
+                case ExerciseType.Barbell:
+                    await DisplayBarbellResults();
+                    break;
 
-            case ExerciseType.Dumbbell:
-                await DisplayDumbbellResults();
-                break;
+                case ExerciseType.Dumbbell:
+                    await DisplayDumbbellResults();
+                    break;
 
-            case ExerciseType.Machine:
-                await DisplayMachineResults();
-                break;
+                case ExerciseType.Machine:
+                    await DisplayMachineResults();
+                    break;
 
-            case ExerciseType.Kettlebell:
-                await DisplayKettlebellResults();
-                break;
+                case ExerciseType.Kettlebell:
+                    await DisplayKettlebellResults();
+                    break;
 
-            default:
-                throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
-                    "Invalid exercise type.");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(_selectedExerciseType),
+                        "Invalid exercise type.");
+            }
+
+            // Scroll to the top of the results.
+            await ScrollToResults();
         }
-
-        await ScrollToResults();
 
         _layoutInitialized = true;
     }
@@ -389,8 +389,13 @@ public partial class CalculatorPage : ContentPage
 
     private void UpdateExerciseType(ExerciseType exerciseType)
     {
+        // Clear the error message.
+        ErrorMessage.Text = "";
+
+        // Update the field.
         _selectedExerciseType = exerciseType;
 
+        // Update the button states.
         switch (exerciseType)
         {
             case ExerciseType.Barbell:
@@ -469,7 +474,7 @@ public partial class CalculatorPage : ContentPage
     private async Task ScrollToResults()
     {
         var y = MauiUtilities.GetOrientation() == DisplayOrientation.Portrait && _resultsDisplayed
-            ? CalculatorLayout.Y
+            ? CalculatorResults.Y
             : 0;
         await CalculatorScrollView.ScrollToAsync(0, y, true);
     }
@@ -518,6 +523,12 @@ public partial class CalculatorPage : ContentPage
 
     #region Display results
 
+    private void ClearResults()
+    {
+        MauiUtilities.ClearStack(CalculatorResults);
+        _resultsDisplayed = false;
+    }
+
     private async Task DisplayBarbellResults()
     {
         await DisplayPlateResults(_barbellResults, _barWeight, true, "Total", "Plates per end");
@@ -556,12 +567,11 @@ public partial class CalculatorPage : ContentPage
         ErrorMessage.Text = "";
 
         // Clear the results.
-        MauiUtilities.ClearStack(CalculatorResults);
+        ClearResults();
 
         // Check if there are any results to render.
         if (results == null)
         {
-            _resultsDisplayed = false;
             return;
         }
 
@@ -722,12 +732,11 @@ public partial class CalculatorPage : ContentPage
         ErrorMessage.Text = "";
 
         // Clear the results.
-        MauiUtilities.ClearStack(CalculatorResults);
+        ClearResults();
 
         // Check if there are any results to render.
         if (results == null)
         {
-            _resultsDisplayed = false;
             return;
         }
 

@@ -103,8 +103,6 @@
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
                             x:Name="BarWeightPicker"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
-                                                              Dark={StaticResource Tertiary}}"
                             HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center" />
                     </Frame>

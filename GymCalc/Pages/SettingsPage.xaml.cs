@@ -55,4 +55,9 @@ public partial class SettingsPage : ContentPage
     //         }
     //     }
     // }
+
+    private void ThemePicker_OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }
