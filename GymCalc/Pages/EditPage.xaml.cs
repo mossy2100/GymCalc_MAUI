@@ -192,15 +192,28 @@ public partial class EditPage : ContentPage
         await AppShell.GoToList(GymObjectTypeName, true);
     }
 
+    private void ClearErrorMessage()
+    {
+        ErrorMessage.Text = "";
+        ErrorMessage.IsVisible = false;
+    }
+
+    private void SetErrorMessage(string errorMessage)
+    {
+        ErrorMessage.Text = errorMessage;
+        ErrorMessage.IsVisible = true;
+    }
+
     private async void SaveButton_OnClicked(object sender, EventArgs e)
     {
         // Validate the form.
         var weightOk = double.TryParse(WeightEntry.Text, out var weight) && weight > 0;
         if (!weightOk)
         {
-            ErrorMessage.Text = "Please ensure the weight is a number greater than 0.";
+            SetErrorMessage("Please ensure the weight is a number greater than 0.");
             return;
         }
+        ClearErrorMessage();
 
         var db = Database.GetConnection();
 

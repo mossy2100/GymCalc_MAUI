@@ -25,12 +25,12 @@ internal class PlateDrawable : GymObjectDrawable
 
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
-        var plateBackground = new RectF(0, 0, width, Height);
+        var plateBackground = new RectF(0, 0, width, (float)Height);
         canvas.FillRoundedRectangle(plateBackground, CornerRadius);
 
         // Plate edge.
         canvas.FillColor = bgColor;
-        var innerHeight = Height - 2 * CornerRadius;
+        var innerHeight = (float)Height - 2 * CornerRadius;
         var plateEdge = new RectF(0, CornerRadius, width, innerHeight);
         canvas.FillRectangle(plateEdge);
 
@@ -44,17 +44,11 @@ internal class PlateDrawable : GymObjectDrawable
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
-    internal override GraphicsView CreateGraphic()
+    /// <inheritdoc />
+    internal override GraphicsView CreateGraphicsView()
     {
         // Calculate the plate width.
-        var plateWidth = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
-
-        // Construct the graphic.
-        return new GraphicsView
-        {
-            Drawable = this,
-            HeightRequest = Height,
-            WidthRequest = plateWidth,
-        };
+        Width = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
+        return base.CreateGraphicsView();
     }
 }

@@ -50,7 +50,7 @@ internal class KettlebellDrawable : GymObjectDrawable
 
         // Ball.
         canvas.FillColor = ballColor;
-        canvas.FillArc(0, 20, Width, Width, 240, 300, true);
+        canvas.FillArc(0, 20, (float)Width, (float)Width, 240, 300, true);
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
@@ -60,15 +60,5 @@ internal class KettlebellDrawable : GymObjectDrawable
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         canvas.DrawString(weightString, 10, 35 + offset, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
-    }
-
-    internal override GraphicsView CreateGraphic()
-    {
-        return new GraphicsView
-        {
-            Drawable = this,
-            HeightRequest = Height,
-            WidthRequest = Width,
-        };
     }
 }

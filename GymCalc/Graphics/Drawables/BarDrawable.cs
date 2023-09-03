@@ -18,7 +18,7 @@ internal class BarDrawable : GymObjectDrawable
 
         // Bar background.
         canvas.FillColor = CustomColors.Get("PaleGray");
-        var barBackground = new RectF(0, 0, width, Height);
+        var barBackground = new RectF(0, 0, width, (float)Height);
         canvas.FillRectangle(barBackground);
 
         // Weight label.
@@ -27,21 +27,15 @@ internal class BarDrawable : GymObjectDrawable
         canvas.FontColor = Colors.Black;
         var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, 0, offset, width, Height, HorizontalAlignment.Center,
+        canvas.DrawString(weightString, 0, offset, width, (float)Height, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
 
-    internal override GraphicsView CreateGraphic()
+    /// <inheritdoc />
+    internal override GraphicsView CreateGraphicsView()
     {
         // Calculate the bar width.
-        var barWidth = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
-
-        // Construct the graphic.
-        return new GraphicsView
-        {
-            Drawable = this,
-            HeightRequest = Height,
-            WidthRequest = barWidth,
-        };
+        Width = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
+        return base.CreateGraphicsView();
     }
 }

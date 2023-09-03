@@ -61,14 +61,4 @@ internal class DumbbellDrawable : GymObjectDrawable
         canvas.DrawString(weightString, m, p, width - m * 2, barHeight, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
-
-    internal override GraphicsView CreateGraphic()
-    {
-        return new GraphicsView
-        {
-            Drawable = this,
-            HeightRequest = Height,
-            WidthRequest = Width,
-        };
-    }
 }

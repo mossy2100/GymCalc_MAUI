@@ -5,6 +5,10 @@
     <Color x:Key="SuccessColor">#0fb300</Color>
     <Color x:Key="DangerColor">#cc0022</Color>
 
+    <Color x:Key="ErrorMessageText">#ff002b</Color>
+    <Color x:Key="ErrorMessageBackgroundLight">#ffe5ea</Color>
+    <Color x:Key="ErrorMessageBackgroundDark">#330008</Color>
+
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="Gray50">#f0f0f0</Color>

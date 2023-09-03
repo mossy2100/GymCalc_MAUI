@@ -1,26 +1,32 @@
 ﻿<Properties StartupConfiguration="{0D430C5C-124A-425D-9FE1-FB40C1C1BEE7}|Default">
-  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <AuthorInfo Name="Shaun Moss" Email="shaun@astromultimedia.com" Copyright="(c) 2023 Shaun Moss" Company="Galaxon Software" Trademark="" />
-  <MonoDevelop.Ide.ItemProperties.GymCalc automaticSigning="True" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.00008110-0010353211E1401E">
+  <MonoDevelop.Ide.ItemProperties.GymCalc PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" automaticSigning="True">
     <MonoDevelop.MacDev.AppleDevelopmentTeam DeveloperId="N3XGHKGW9J" TeamId="N3XGHKGW9J" />
   </MonoDevelop.Ide.ItemProperties.GymCalc>
   <Debugger.DebugSourceFolders />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="MonoDevelop.IPhone.IPhoneDeviceTarget" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="GymCalc" expanded="True" selected="True">
-            <Node name="GymCalc" expanded="True" />
+          <Node name="GymCalc" expanded="True">
+            <Node name="GymCalc">
+              <Node name="Pages" expanded="True">
+                <Node name="CalculatorPage.xaml" expanded="True">
+                  <Node name="CalculatorPage.xaml.cs" selected="True" />
+                </Node>
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <Xamarin.Addins.Core.Project ActiveDebugTarget="MonoDevelop.IPhone.IPhoneDeviceTarget.00008110-0010353211E1401E" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="33.0.68" />
+  <AuthorInfo Name="Shaun Moss" Email="shaun@astromultimedia.com" Copyright="(c) 2023 Shaun Moss" Company="Galaxon Software" Trademark="" />
 </Properties>

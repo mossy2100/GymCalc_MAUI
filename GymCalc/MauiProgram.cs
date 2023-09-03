@@ -1,4 +1,6 @@
-using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Maui;
+using GymCalc.Pages;
+using GymCalc.ViewModels;
 using Microsoft.Extensions.Logging;
 using InputKit.Handlers;
 
@@ -11,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,7 +23,20 @@ public static class MauiProgram
             {
                 handlers.AddInputKitHandlers();
             })
-            .UseMauiCommunityToolkitMarkup();
+            .Services
+            // Singleton pages
+            .AddSingleton<CalculatorPage>()
+            .AddSingleton<AboutPage>()
+            .AddSingleton<InstructionsPage>()
+            .AddSingleton<SettingsPage>()
+            // Transient pages
+            .AddTransient<ListPage>()
+            .AddTransient<EditPage>()
+            .AddTransient<DeletePage>()
+            .AddTransient<ResetPage>()
+            // ViewModels
+            .AddSingleton<CalculatorViewModel>()
+            ;
 
 #if DEBUG
         builder.Logging.AddDebug();

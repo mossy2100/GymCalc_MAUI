@@ -5,6 +5,8 @@
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:DataType="viewModels:CalculatorViewModel"
     Title="Calculator">
 
     <ScrollView
@@ -13,7 +15,7 @@
         VerticalOptions="Fill">
         <StackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
@@ -70,10 +72,11 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
-                            x:Name="MaxWeightEntry"
+                            x:Name="MaxWeight"
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
-                            VerticalTextAlignment="Center" />
+                            VerticalTextAlignment="Center"
+                            Text="{Binding MaxWeight, Mode=TwoWay}" />
                     </Frame>
                     <Label
                         x:Name="MaxWeightUnit"
@@ -102,7 +105,8 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
-                            x:Name="BarWeightPicker"
+                            x:Name="BarWeight"
+                            SelectedItem="{Binding BarWeight, Mode=TwoWay}"
                             HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center" />
                     </Frame>
@@ -132,7 +136,8 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
-                            x:Name="StartingWeightEntry"
+                            x:Name="StartingWeight"
+                            Text="{Binding StartingWeight, Mode=TwoWay}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
                             HorizontalTextAlignment="End"
@@ -160,7 +165,8 @@
                         Text="Get plates for one side only"
                         VerticalTextAlignment="Center" />
                     <input:CheckBox
-                        x:Name="OneSideOnlySwitch"
+                        x:Name="OneSideOnly"
+                        IsChecked="{Binding OneSideOnly, Mode=TwoWay}"
                         Grid.Row="0"
                         Grid.Column="1"
                         HorizontalOptions="Start"
@@ -173,9 +179,9 @@
                 <!--  Error message  -->
                 <Label
                     x:Name="ErrorMessage"
-                    FontAttributes="Bold"
-                    Text=""
-                    TextColor="Red" />
+                    IsVisible="False"
+                    Style="{StaticResource ErrorMessageStyle}" />
+
             </VerticalStackLayout>
 
             <VerticalStackLayout x:Name="CalculatorResults" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" />

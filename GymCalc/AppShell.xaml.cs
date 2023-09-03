@@ -12,12 +12,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("delete", typeof(DeletePage));
         Routing.RegisterRoute("reset", typeof(ResetPage));
-
-        // Respond to theme changes.
-        //Application.Current.RequestedThemeChanged += OnRequestedThemeChanged;
     }
-
-    //private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e) => throw new NotImplementedException();
 
     internal static async Task GoToList(string gymObjectTypeName, bool editMode)
     {

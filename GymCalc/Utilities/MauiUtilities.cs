@@ -1,3 +1,5 @@
+using ILayout = Microsoft.Maui.Controls.ILayout;
+
 namespace GymCalc.Utilities;
 
 public static class MauiUtilities
@@ -53,7 +55,7 @@ public static class MauiUtilities
     /// <summary>
     /// Remove all the children from a StackLayout, VerticalStackLayout, or HorizontalStackLayout.
     /// </summary>
-    public static void ClearStack(StackBase stack)
+    public static void ClearLayout(Layout stack)
     {
         // Remove children.
         while (stack.Children.Count > 0)
@@ -70,11 +72,9 @@ public static class MauiUtilities
     public static void ClearGrid(Grid grid, bool removeCols = false, bool removeRows = false)
     {
         // Remove children.
-        while (grid.Children.Count > 0)
-        {
-            grid.Children.RemoveAt(grid.Children.Count - 1);
-        }
+        ClearLayout(grid);
 
+        // Remove column definitions.
         if (removeCols)
         {
             // Remove column definitions.
@@ -84,6 +84,7 @@ public static class MauiUtilities
             }
         }
 
+        // Remove row definitions.
         if (removeRows)
         {
             // Remove row definitions.
@@ -95,7 +96,7 @@ public static class MauiUtilities
     }
 
     /// <summary>
-    /// Get the device width in device-independent units, which are the units used by MAUI.
+    /// Get the device width in device-independent units.
     /// </summary>
     /// <returns></returns>
     public static double GetDeviceWidth()
@@ -104,7 +105,7 @@ public static class MauiUtilities
     }
 
     /// <summary>
-    /// Get the device height in device-independent units, which are the units used by MAUI.
+    /// Get the device height in device-independent units.
     /// </summary>
     /// <returns></returns>
     public static double GetDeviceHeight()
@@ -119,5 +120,14 @@ public static class MauiUtilities
     public static DisplayOrientation GetOrientation()
     {
         return DeviceDisplay.Current.MainDisplayInfo.Orientation;
+    }
+
+    /// <summary>
+    /// Get the device platform (e.g. iOS, Android).
+    /// </summary>
+    /// <returns></returns>
+    public static DevicePlatform GetPlatform()
+    {
+        return DeviceInfo.Current.Platform;
     }
 }

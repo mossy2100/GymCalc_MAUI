@@ -105,7 +105,11 @@
                 </Grid>
 
                 <!--  Error message  -->
-                <Label x:Name="ErrorMessage" Style="{StaticResource ErrorMessageStyle}" />
+                <Label
+                    x:Name="ErrorMessage"
+                    IsVisible="False"
+                    Style="{StaticResource ErrorMessageStyle}" />
+
             </VerticalStackLayout>
         </ScrollView>
 

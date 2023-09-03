@@ -199,7 +199,7 @@ public partial class ListPage : ContentPage
             }
 
             // Add the graphic.
-            var gymObjectGraphic = drawable.CreateGraphic();
+            var gymObjectGraphic = drawable.CreateGraphicsView();
             ListGrid.Add(gymObjectGraphic, colNum, rowNum);
 
             // Add the checkbox to the grid.
