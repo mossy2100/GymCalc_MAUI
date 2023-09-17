@@ -19,7 +19,7 @@ public partial class ColorPicker : ContentView
     /// <summary>
     /// Dictionary mapping buttons to color names.
     /// </summary>
-    public Dictionary<Button, string> _buttonToColor = new ();
+    private readonly Dictionary<Button, string> _buttonToColor = new ();
 
     public ColorPicker()
     {

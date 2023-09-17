@@ -2,7 +2,7 @@ using GymCalc.Data.Models;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal abstract class GymObjectDrawable : IDrawable
+public abstract class GymObjectDrawable : IDrawable
 {
     internal GymObject GymObject { get; set; }
 

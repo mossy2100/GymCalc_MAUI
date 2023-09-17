@@ -5,7 +5,7 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal class KettlebellDrawable : GymObjectDrawable
+public class KettlebellDrawable : GymObjectDrawable
 {
     public KettlebellDrawable()
     {

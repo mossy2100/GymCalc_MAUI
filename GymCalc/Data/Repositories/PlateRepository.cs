@@ -64,23 +64,11 @@ internal class PlateRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some plates.
+    /// Ensure the database table exist and contains some bars.
     /// </summary>
     internal override async Task Initialize()
     {
-        var db = Database.GetConnection();
-
-        // Create the table if it doesn't already exist.
-        await db.CreateTableAsync<Plate>();
-
-        // Count how many rows there are.
-        var n = await db.Table<Plate>().CountAsync();
-
-        // If there aren't any rows, initialize with the defaults.
-        if (n == 0)
-        {
-            await InsertDefaults();
-        }
+        await base.Initialize<Plate>();
     }
 
     internal override async Task InsertDefaults()

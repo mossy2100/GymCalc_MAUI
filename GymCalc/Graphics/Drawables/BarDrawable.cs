@@ -4,7 +4,7 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal class BarDrawable : GymObjectDrawable
+public class BarDrawable : GymObjectDrawable
 {
     public BarDrawable()
     {

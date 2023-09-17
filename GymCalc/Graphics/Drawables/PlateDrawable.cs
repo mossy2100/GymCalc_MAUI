@@ -5,7 +5,7 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Graphics.Drawables;
 
-internal class PlateDrawable : GymObjectDrawable
+public class PlateDrawable : GymObjectDrawable
 {
     internal const int CornerRadius = 4;
 
@@ -48,6 +48,8 @@ internal class PlateDrawable : GymObjectDrawable
     internal override GraphicsView CreateGraphicsView()
     {
         // Calculate the plate width.
+        MaxWidth = 250;
+        MaxWeight = 25;
         Width = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
         return base.CreateGraphicsView();
     }

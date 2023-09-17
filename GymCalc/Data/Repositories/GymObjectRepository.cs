@@ -5,11 +5,35 @@ namespace GymCalc.Data.Repositories;
 internal abstract class GymObjectRepository
 {
     /// <summary>
+    /// To be implemented by concrete classes.
+    /// </summary>
+    internal abstract Task InsertDefaults();
+
+    /// <summary>
     /// Ensure the database table exist and contains some objects.
     /// </summary>
-    internal abstract Task Initialize();
+    internal async Task Initialize<T>() where T : new()
+    {
+        var db = Database.GetConnection();
 
-    internal abstract Task InsertDefaults();
+        // Create the table if it doesn't already exist.
+        await db.CreateTableAsync<T>();
+
+        // Count how many rows there are.
+        var n = await db.Table<T>().CountAsync();
+
+        // If there aren't any rows, initialize with the defaults.
+        if (n == 0)
+        {
+            await InsertDefaults();
+        }
+    }
+
+    /// <summary>
+    /// Ensure the database table exist and contains some objects.
+    /// This version has the type specified in the implementation.
+    /// </summary>
+    internal abstract Task Initialize();
 
     /// <summary>
     /// Get all the gym objects of a given type.

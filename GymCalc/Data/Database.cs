@@ -1,3 +1,4 @@
+using GymCalc.Data.Models;
 using GymCalc.Data.Repositories;
 using SQLite;
 

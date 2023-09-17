@@ -26,23 +26,11 @@ internal class KettlebellRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some kettlebells.
+    /// Ensure the database table exist and contains some bars.
     /// </summary>
     internal override async Task Initialize()
     {
-        var db = Database.GetConnection();
-
-        // Create the table if it doesn't already exist.
-        await db.CreateTableAsync<Kettlebell>();
-
-        // Count how many rows there are.
-        var n = await db.Table<Kettlebell>().CountAsync();
-
-        // If there aren't any rows, initialize with the defaults.
-        if (n == 0)
-        {
-            await InsertDefaults();
-        }
+        await base.Initialize<Kettlebell>();
     }
 
     internal override async Task InsertDefaults()

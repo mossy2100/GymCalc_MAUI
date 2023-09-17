@@ -13,9 +13,11 @@
         x:Name="CalculatorScrollView"
         Padding="{x:Static graphics:PageLayout.Spacing}"
         VerticalOptions="Fill">
-        <StackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+        <StackLayout x:Name="CalculatorLayout"
+            Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <VerticalStackLayout x:Name="CalculatorForm" Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <VerticalStackLayout x:Name="CalculatorForm"
+                Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
@@ -76,7 +78,7 @@
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center"
-                            Text="{Binding MaxWeight, Mode=TwoWay}" />
+                            Text="{Binding MaxWeightText, Mode=TwoWay}" />
                     </Frame>
                     <Label
                         x:Name="MaxWeightUnit"
@@ -137,7 +139,7 @@
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
                             x:Name="StartingWeight"
-                            Text="{Binding StartingWeight, Mode=TwoWay}"
+                            Text="{Binding StartingWeightText, Mode=TwoWay}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
                             HorizontalTextAlignment="End"
@@ -174,17 +176,61 @@
                 </Grid>
 
                 <!--  Calculate button  -->
-                <Button Clicked="OnCalculateButtonClicked" Text="Calculate" />
+                <Button Command="{Binding CalculateCommand}" Text="Calculate" />
 
                 <!--  Error message  -->
-                <Label
-                    x:Name="ErrorMessage"
-                    IsVisible="False"
-                    Style="{StaticResource ErrorMessageStyle}" />
+                <Label Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
 
             </VerticalStackLayout>
 
-            <VerticalStackLayout x:Name="CalculatorResults" Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" />
+            <!-- <VerticalStackLayout x:Name="CalculatorResults" -->
+            <!--     Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" /> -->
+
+            <CollectionView ItemsSource="{Binding PlatesResults}" ItemsLayout="VerticalList"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="4*,3*,3*" ColumnSpacing="10"
+                            RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                BackgroundColor="Grey" WidthRequest="250" HeightRequest="1" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Percent}"
+                                Style="{StaticResource ResultsTablePercent}" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal}"
+                                Style="{StaticResource ResultsTableIdeal}" />
+                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding ClosestTotal}"
+                                Style="{StaticResource ResultsTableClosest}" />
+                            <Label Grid.Row="3" Grid.Column="0" Text="{Binding PlatesEachSideText}"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding IdealPlates}"
+                                Style="{StaticResource ResultsTableIdeal}" />
+                            <Label Grid.Row="3" Grid.Column="2" Text="{Binding ClosestPlates}"
+                                Style="{StaticResource ResultsTableClosest}" />
+                            <CollectionView x:Name="PlatesGraphics"
+                                Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                                ItemsSource="{Binding PlateDrawables}" ItemsLayout="VerticalList">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <GraphicsView Drawable="{Binding .}" />
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
         </StackLayout>
     </ScrollView>

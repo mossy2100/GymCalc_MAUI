@@ -52,19 +52,7 @@ internal class BarRepository : GymObjectRepository
     /// </summary>
     internal override async Task Initialize()
     {
-        var db = Database.GetConnection();
-
-        // Create the table if it doesn't already exist.
-        await db.CreateTableAsync<Bar>();
-
-        // Count how many rows there are.
-        var n = await db.Table<Bar>().CountAsync();
-
-        // If there aren't any rows, initialize with the defaults.
-        if (n == 0)
-        {
-            await InsertDefaults();
-        }
+        await base.Initialize<Bar>();
     }
 
     internal override async Task InsertDefaults()
@@ -87,10 +75,9 @@ internal class BarRepository : GymObjectRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false,
-        bool ascending = true)
+    public async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false)
     {
-        return await base.GetAll<Bar>(units, onlyEnabled, ascending);
+        return await base.GetAll<Bar>(units, onlyEnabled);
     }
 
     /// <summary>
