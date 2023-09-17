@@ -186,51 +186,66 @@
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
-
             </VerticalStackLayout>
 
-            <!-- <VerticalStackLayout x:Name="CalculatorResults" -->
-            <!--     Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" /> -->
+            <VerticalStackLayout x:Name="CalculatorResults"
+                Spacing="{x:Static graphics:PageLayout.Spacing}" Padding="0,10,0,0">
 
-            <CollectionView ItemsSource="{Binding PlatesResults}" ItemsLayout="VerticalList"
-                SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="4*,3*,3*" ColumnSpacing="10"
-                            RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
-                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                                BackgroundColor="Grey" WidthRequest="250" HeightRequest="1" />
-                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Percent}"
-                                Style="{StaticResource ResultsTablePercent}" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal}"
-                                Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="2" Grid.Column="2" Text="{Binding ClosestTotal}"
-                                Style="{StaticResource ResultsTableClosest}" />
-                            <Label Grid.Row="3" Grid.Column="0" Text="{Binding PlatesEachSideText}"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding IdealPlates}"
-                                Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="3" Grid.Column="2" Text="{Binding ClosestPlates}"
-                                Style="{StaticResource ResultsTableClosest}" />
-                            <CollectionView x:Name="PlatesGraphics"
-                                Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
-                                ItemsSource="{Binding PlateDrawables}" ItemsLayout="VerticalList">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <GraphicsView Drawable="{Binding .}" />
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <FlexLayout JustifyContent="SpaceBetween">
+                    <Button x:Name="PercentButton50" Text="50%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                    <Button x:Name="PercentButton60" Text="60%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                    <Button x:Name="PercentButton70" Text="70%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                    <Button x:Name="PercentButton80" Text="80%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                    <Button x:Name="PercentButton90" Text="90%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                    <Button x:Name="PercentButton100" Text="100%"
+                        Style="{StaticResource PercentButtonStyle}" />
+                </FlexLayout>
+
+                <!-- <VerticalStackLayout x:Name="CalculatorResults" -->
+                <!--     Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" /> -->
+
+                <Grid ColumnDefinitions="4*,3*,3*" ColumnSpacing="10"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding CurrentPlatesResult.Percent}"
+                        Style="{StaticResource ResultsTablePercent}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                        Style="{StaticResource ResultsTableHeader}" />
+                    <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                        Style="{StaticResource ResultsTableHeader}" />
+                    <Label Grid.Row="2" Grid.Column="0" Text="Total"
+                        Style="{StaticResource ResultsTableHeader}" />
+                    <Label Grid.Row="2" Grid.Column="1"
+                        Text="{Binding CurrentPlatesResult.IdealTotal}"
+                        Style="{StaticResource ResultsTableIdeal}" />
+                    <Label Grid.Row="2" Grid.Column="2"
+                        Text="{Binding CurrentPlatesResult.ClosestTotal}"
+                        Style="{StaticResource ResultsTableClosest}" />
+                    <Label Grid.Row="3" Grid.Column="0"
+                        Text="{Binding CurrentPlatesResult.PlatesEachSideText}"
+                        Style="{StaticResource ResultsTableHeader}" />
+                    <Label Grid.Row="3" Grid.Column="1"
+                        Text="{Binding CurrentPlatesResult.IdealPlates}"
+                        Style="{StaticResource ResultsTableIdeal}" />
+                    <Label Grid.Row="3" Grid.Column="2"
+                        Text="{Binding CurrentPlatesResult.ClosestPlates}"
+                        Style="{StaticResource ResultsTableClosest}" />
+                    <CollectionView x:Name="PlatesGraphics"
+                        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                        ItemsSource="{Binding CurrentPlatesResult.PlateDrawables}"
+                        ItemsLayout="VerticalList">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <GraphicsView Drawable="{Binding .}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </VerticalStackLayout>
 
         </StackLayout>
     </ScrollView>

@@ -13,10 +13,10 @@ internal static class PlateSolver
 
     private static double _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(double maxWeight,
+    internal static Dictionary<int, PlatesResult> CalculateResults(double maxWeight,
         double startingWeight, bool oneSideOnly, List<Plate> availPlates, string platesEachSideText)
     {
-        var results = new List<PlatesResult>();
+        var results = new Dictionary<int, PlatesResult>();
 
         // Sort the plates by decreasing weight.
         _availPlates = availPlates.OrderByDescending(p => p.Weight).ToList();

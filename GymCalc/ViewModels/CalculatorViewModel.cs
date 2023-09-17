@@ -145,7 +145,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Results.
-    public List<PlatesResult> PlatesResults { get; private set; }
+    public Dictionary<int, PlatesResult> PlatesResults { get; private set; }
 
     // internal List<PlatesResult> BarbellResults { get; private set; }
     //
@@ -154,6 +154,64 @@ public class CalculatorViewModel : INotifyPropertyChanged
     // internal List<PlatesResult> MachineResults { get; private set; }
     //
     // internal List<PlatesResult> KettlebellResults { get; private set; }
+
+    private PlatesResult _platesResult;
+
+    public PlatesResult CurrentPlatesResult
+    {
+        get => _platesResult;
+
+        set
+        {
+            if (_platesResult != value)
+            {
+                _platesResult = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private bool _showPlatesResults;
+
+    public bool ShowPlatesResults
+    {
+        get => _showPlatesResults;
+
+        set
+        {
+            if (_showPlatesResults != value)
+            {
+                _showPlatesResults = value;
+                OnPropertyChanged();
+
+                if (value)
+                {
+                    ShowSingleWeightResults = false;
+                }
+            }
+        }
+    }
+
+    private bool _showSingleWeightResults;
+
+    public bool ShowSingleWeightResults
+    {
+        get => _showSingleWeightResults;
+
+        set
+        {
+            if (_showSingleWeightResults != value)
+            {
+                _showSingleWeightResults = value;
+                OnPropertyChanged();
+
+                if (value)
+                {
+                    ShowPlatesResults = false;
+                }
+            }
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Error message.
@@ -262,7 +320,11 @@ public class CalculatorViewModel : INotifyPropertyChanged
         var availPlates = Plates.Values.ToList();
 
         // Calculate and display the results.
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates, "Plates each end");
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates,
+            "Plates each end");
+        CurrentPlatesResult = PlatesResults[100];
+        // VisualStateManager.GoToState(PercentButton100, "Selected");
+        ShowPlatesResults = true;
         // await DisplayBarbellResults();
     }
 
@@ -295,8 +357,9 @@ public class CalculatorViewModel : INotifyPropertyChanged
         // var availPlateWeights = Plates.Keys.ToList();
 
         // Calculate and display the results.
-        // MachineResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
+        // PlateResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
         //     OneSideOnly, availPlateWeights);
+        // ShowPlateResults = true;
         // await DisplayMachineResults();
     }
 
