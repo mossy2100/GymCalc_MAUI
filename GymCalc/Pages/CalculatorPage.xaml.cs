@@ -2,9 +2,6 @@ using System.Globalization;
 using GymCalc.Data;
 using GymCalc.Data.Repositories;
 using GymCalc.Constants;
-// using GymCalc.Data.Models;
-// using GymCalc.Graphics;
-// using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 using GymCalc.ViewModels;
 
@@ -21,8 +18,6 @@ public partial class CalculatorPage : ContentPage
     private bool _resultsDisplayed;
 
     private const int _MaxKeyboardHeight = 240;
-
-    private Dictionary<int, Button> _percentButtons;
 
     /// <summary>
     /// Constructor.
@@ -42,17 +37,6 @@ public partial class CalculatorPage : ContentPage
         MaxWeight.Unfocused += Entry_Unfocused;
         StartingWeight.Focused += Entry_Focused;
         StartingWeight.Unfocused += Entry_Unfocused;
-
-        // Set up the percent buttons lookup array.
-        _percentButtons = new Dictionary<int, Button>
-        {
-            [50] = PercentButton50,
-            [60] = PercentButton60,
-            [70] = PercentButton70,
-            [80] = PercentButton80,
-            [90] = PercentButton90,
-            [100] = PercentButton100
-        };
     }
 
     #region Event handlers
@@ -665,7 +649,7 @@ public partial class CalculatorPage : ContentPage
     {
         if (!_resultsDisplayed)
         {
-            CalculatorForm.Padding = new Thickness(0, 0, 0, _MaxKeyboardHeight);
+            // CalculatorForm.Padding = new Thickness(0, 0, 0, _MaxKeyboardHeight);
         }
     }
 
@@ -679,18 +663,6 @@ public partial class CalculatorPage : ContentPage
         if (CalculatorForm.Padding.Bottom > 0)
         {
             CalculatorForm.Padding = new Thickness(0, 0, 0, 0);
-        }
-    }
-
-    private void OnPercentButtonClick(object sender, EventArgs e)
-    {
-        var button = sender as Button;
-        var percent = int.Parse(button!.Text[..^1]);
-        _model.SelectedPercent = percent;
-        for (var p = 50; p <= 100; p += 10)
-        {
-            VisualStateManager.GoToState(_percentButtons[percent],
-                p == percent ? "Selected" : "Normal");
         }
     }
 }

@@ -39,17 +39,16 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
         set
         {
-            if (_selectedPercent != value)
-            {
-                _selectedPercent = value;
-                OnPropertyChanged();
+            // Note I'm not testing if _selectedPercent != value here, because otherwise it will
+            // show an old result from before the latest calculation was done.
 
-                // Update the plates result.
-                if (_showPlatesResults &&
-                    PlatesResults.TryGetValue(_selectedPercent, out var result))
-                {
-                    CurrentPlatesResult = result;
-                }
+            _selectedPercent = value;
+            OnPropertyChanged();
+
+            // Update the plates result.
+            if (PlatesResults.TryGetValue(_selectedPercent, out var result))
+            {
+                CurrentPlatesResult = result;
             }
         }
     }
@@ -61,6 +60,8 @@ public class CalculatorViewModel : INotifyPropertyChanged
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Commands.
     public ICommand CalculateCommand { get; private set; }
+
+    public ICommand SelectPercentCommand { get; private set; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Lookup table for available bars.
@@ -260,6 +261,13 @@ public class CalculatorViewModel : INotifyPropertyChanged
     public CalculatorViewModel()
     {
         CalculateCommand = new AsyncCommand(async () => await Calculate());
+        SelectPercentCommand = new Command<string>(strPercent =>
+        {
+            if (int.TryParse(strPercent, out var percent))
+            {
+                SelectedPercent = percent;
+            }
+        });
     }
 
     #region Validation methods
@@ -311,7 +319,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                await DoBarbellCalculations();
+                DoBarbellCalculations();
                 break;
 
             case ExerciseType.Dumbbell:
@@ -332,8 +340,11 @@ public class CalculatorViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task DoBarbellCalculations()
+    private void DoBarbellCalculations()
     {
+        ShowPlatesResults = false;
+        CurrentPlatesResult = null;
+
         if (!ValidateMaxWeight())
         {
             return;
@@ -345,9 +356,11 @@ public class CalculatorViewModel : INotifyPropertyChanged
         // Calculate and display the results.
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates,
             "Plates each end");
-        SelectedPercent = 100;
-        // VisualStateManager.GoToState(PercentButton100, "Selected");
         ShowPlatesResults = true;
+
+        // Show the 100% result by default.
+        SelectedPercent = 100;
+
         // await DisplayBarbellResults();
     }
 

@@ -6,8 +6,15 @@
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    xmlns:controls="clr-namespace:GymCalc.Controls"
+    xmlns:converters="clr-namespace:GymCalc.Converters"
     x:DataType="viewModels:CalculatorViewModel"
     Title="Calculator">
+
+    <ContentPage.Resources>
+        <converters:PercentVisualStateConverter x:Key="DefaultPercentVisualStateConverter" />
+        <converters:WeightTextConverter x:Key="DefaultWeightTextConverter" />
+    </ContentPage.Resources>
 
     <ScrollView
         x:Name="CalculatorScrollView"
@@ -188,60 +195,87 @@
                 </Label>
             </VerticalStackLayout>
 
-            <VerticalStackLayout x:Name="CalculatorResults"
-                Spacing="{x:Static graphics:PageLayout.Spacing}" Padding="0,10,0,0">
+            <VerticalStackLayout x:Name="CalculatorResults" IsVisible="{Binding ShowPlatesResults}"
+                Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
                 <FlexLayout JustifyContent="SpaceBetween">
-                    <Button x:Name="PercentButton50" Text="50%"
+                    <controls:VisualStateButton Text="50%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
-                    <Button x:Name="PercentButton60" Text="60%"
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=50}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="50" />
+                    <controls:VisualStateButton Text="60%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
-                    <Button x:Name="PercentButton70" Text="70%"
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=60}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="60" />
+                    <controls:VisualStateButton Text="70%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
-                    <Button x:Name="PercentButton80" Text="80%"
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=70}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="70" />
+                    <controls:VisualStateButton Text="80%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
-                    <Button x:Name="PercentButton90" Text="90%"
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=80}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="80" />
+                    <controls:VisualStateButton Text="90%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
-                    <Button x:Name="PercentButton100" Text="100%"
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=90}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="90" />
+                    <controls:VisualStateButton Text="100%"
                         Style="{StaticResource PercentButtonStyle}"
-                        Clicked="OnPercentButtonClick" />
+                        VisualState="{Binding SelectedPercent,
+                            Converter={StaticResource DefaultPercentVisualStateConverter},
+                            ConverterParameter=100}"
+                        Command="{Binding SelectPercentCommand}"
+                        CommandParameter="100" />
                 </FlexLayout>
 
                 <!-- <VerticalStackLayout x:Name="CalculatorResults" -->
                 <!--     Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" /> -->
 
                 <Grid ColumnDefinitions="4*,3*,3*" ColumnSpacing="10"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
-                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding CurrentPlatesResult.Percent}"
-                        Style="{StaticResource ResultsTablePercent}" />
-                    <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                    RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10"
+                    IsVisible="{Binding ShowPlatesResults}">
+                    <Label Grid.Row="0" Grid.Column="1" Text="Ideal"
+                                               Style="{StaticResource ResultsTableHeader}" />
+                    <Label Grid.Row="0" Grid.Column="2" Text="Closest"
                         Style="{StaticResource ResultsTableHeader}" />
-                    <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                    <Label Grid.Row="1" Grid.Column="0" Text="Total"
                         Style="{StaticResource ResultsTableHeader}" />
-                    <Label Grid.Row="2" Grid.Column="0" Text="Total"
-                        Style="{StaticResource ResultsTableHeader}" />
-                    <Label Grid.Row="2" Grid.Column="1"
-                        Text="{Binding CurrentPlatesResult.IdealTotal}"
+                    <Label Grid.Row="1" Grid.Column="1"
+                        Text="{Binding CurrentPlatesResult.IdealTotal,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableIdeal}" />
-                    <Label Grid.Row="2" Grid.Column="2"
-                        Text="{Binding CurrentPlatesResult.ClosestTotal}"
+                    <Label Grid.Row="1" Grid.Column="2"
+                        Text="{Binding CurrentPlatesResult.ClosestTotal,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableClosest}" />
-                    <Label Grid.Row="3" Grid.Column="0"
+                    <Label Grid.Row="2" Grid.Column="0"
                         Text="{Binding CurrentPlatesResult.PlatesEachSideText}"
                         Style="{StaticResource ResultsTableHeader}" />
-                    <Label Grid.Row="3" Grid.Column="1"
-                        Text="{Binding CurrentPlatesResult.IdealPlates}"
+                    <Label Grid.Row="2" Grid.Column="1"
+                        Text="{Binding CurrentPlatesResult.IdealPlates,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableIdeal}" />
-                    <Label Grid.Row="3" Grid.Column="2"
-                        Text="{Binding CurrentPlatesResult.ClosestPlates}"
+                    <Label Grid.Row="2" Grid.Column="2"
+                        Text="{Binding CurrentPlatesResult.ClosestPlates,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableClosest}" />
                     <CollectionView x:Name="PlatesGraphics"
-                        Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                        Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
                         ItemsSource="{Binding CurrentPlatesResult.PlateDrawables}"
                         ItemsLayout="VerticalList">
                         <CollectionView.ItemTemplate>

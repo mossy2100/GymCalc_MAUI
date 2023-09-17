@@ -127,23 +127,22 @@
 
     <Style x:Key="PercentButtonStyle" TargetType="Button">
         <Setter Property="TextColor" Value="Black" />
-        <Setter Property="BackgroundColor" Value="Gray" />
-        <Setter Property="WidthRequest" Value="50" />
-        <Setter Property="HeightRequest" Value="20" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray50},
+            Dark={StaticResource Gray900}}" />
+        <Setter Property="WidthRequest" Value="55" />
+        <Setter Property="HeightRequest" Value="30" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="Padding" Value="5,5" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}" />
-                        </VisualState.Setters>
-                    </VisualState>
+                    <VisualState x:Name="Normal" />
                     <VisualState x:Name="Selected">
                         <VisualState.Setters>
-                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+                            <Setter Property="Background" Value="{AppThemeBinding
+                                Light={StaticResource Secondary},
+                                Dark={StaticResource Tertiary}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
