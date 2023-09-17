@@ -193,17 +193,23 @@
 
                 <FlexLayout JustifyContent="SpaceBetween">
                     <Button x:Name="PercentButton50" Text="50%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                     <Button x:Name="PercentButton60" Text="60%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                     <Button x:Name="PercentButton70" Text="70%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                     <Button x:Name="PercentButton80" Text="80%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                     <Button x:Name="PercentButton90" Text="90%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                     <Button x:Name="PercentButton100" Text="100%"
-                        Style="{StaticResource PercentButtonStyle}" />
+                        Style="{StaticResource PercentButtonStyle}"
+                        Clicked="OnPercentButtonClick" />
                 </FlexLayout>
 
                 <!-- <VerticalStackLayout x:Name="CalculatorResults" -->

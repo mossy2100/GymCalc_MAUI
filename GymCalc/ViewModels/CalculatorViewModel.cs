@@ -31,6 +31,29 @@ public class CalculatorViewModel : INotifyPropertyChanged
     public double? StartingWeight =>
         double.TryParse(StartingWeightText, out var startingWeight) ? startingWeight : null;
 
+    private int _selectedPercent;
+
+    public int SelectedPercent
+    {
+        get => _selectedPercent;
+
+        set
+        {
+            if (_selectedPercent != value)
+            {
+                _selectedPercent = value;
+                OnPropertyChanged();
+
+                // Update the plates result.
+                if (_showPlatesResults &&
+                    PlatesResults.TryGetValue(_selectedPercent, out var result))
+                {
+                    CurrentPlatesResult = result;
+                }
+            }
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
     internal static string Units => GymCalc.Constants.Units.GetPreferred();
@@ -322,7 +345,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
         // Calculate and display the results.
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates,
             "Plates each end");
-        CurrentPlatesResult = PlatesResults[100];
+        SelectedPercent = 100;
         // VisualStateManager.GoToState(PercentButton100, "Selected");
         ShowPlatesResults = true;
         // await DisplayBarbellResults();

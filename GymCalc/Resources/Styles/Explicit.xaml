@@ -139,13 +139,11 @@
                     <VisualState x:Name="Normal">
                         <VisualState.Setters>
                             <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}" />
-                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Selected">
                         <VisualState.Setters>
                             <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
-                            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -239,8 +237,6 @@
 
     <Style x:Key="ErrorMessageStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource ErrorMessageText}" />
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource ErrorMessageBackgroundLight}, Dark={StaticResource ErrorMessageBackgroundDark}}" />
-        <Setter Property="Padding" Value="{x:Static graphics:PageLayout.Spacing}" />
         <Setter Property="FontSize" Value="12" />
     </Style>
 
