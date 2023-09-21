@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using GymCalc.Calculations;
@@ -9,7 +7,7 @@ using GymCalc.Data.Repositories;
 
 namespace GymCalc.ViewModels;
 
-public class CalculatorViewModel : INotifyPropertyChanged
+public class CalculatorViewModel : BaseViewModel
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Bound properties.
@@ -28,8 +26,20 @@ public class CalculatorViewModel : INotifyPropertyChanged
     public double? MaxWeight =>
         double.TryParse(MaxWeightText, out var maxWeight) ? maxWeight : null;
 
-    public double? StartingWeight =>
-        double.TryParse(StartingWeightText, out var startingWeight) ? startingWeight : null;
+    public double? StartingWeight
+    {
+        get
+        {
+            // Treat blank as equal to 0.
+            if (string.IsNullOrEmpty(StartingWeightText))
+            {
+                return 0;
+            }
+            return double.TryParse(StartingWeightText, out var startingWeight)
+                ? startingWeight
+                : null;
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
@@ -67,9 +77,9 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Lookup table for available plates.
-    private Dictionary<double, Plate> _plates;
+    private List<Plate> _plates;
 
-    internal Dictionary<double, Plate> Plates
+    internal List<Plate> Plates
     {
         get
         {
@@ -79,8 +89,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
                 task.Wait(1000);
                 if (task.Status == TaskStatus.RanToCompletion)
                 {
-                    var plates = task.Result;
-                    _plates = plates.ToDictionary(p => p.Weight, p => p);
+                    _plates = task.Result;
                 }
                 else
                 {
@@ -152,14 +161,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
     {
         get => _platesResult;
 
-        set
-        {
-            if (_platesResult != value)
-            {
-                _platesResult = value;
-                OnPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _platesResult, value);
     }
 
     private bool _platesResultsVisible;
@@ -168,14 +170,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
     {
         get => _platesResultsVisible;
 
-        set
-        {
-            if (_platesResultsVisible != value)
-            {
-                _platesResultsVisible = value;
-                OnPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _platesResultsVisible, value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,14 +181,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
     {
         get => _errorMessage;
 
-        set
-        {
-            if (_errorMessage != value)
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _errorMessage, value);
     }
 
     /// <summary>
@@ -208,16 +196,10 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     private bool ValidateMaxWeight()
     {
-        // Accept blank as equal to 0.
-        if (MaxWeightText == "")
-        {
-            MaxWeightText = "0";
-        }
-
         // Check for number greater than 0.
         if (MaxWeight is null or <= 0)
         {
-            ErrorMessage = "Please enter maximum weight as a number greater than 0.";
+            ErrorMessage = "Please enter a maximum weight greater than 0.";
             return false;
         }
 
@@ -227,16 +209,10 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     private bool ValidateStartingWeight()
     {
-        // Accept blank as equal to 0.
-        if (StartingWeightText == "")
-        {
-            StartingWeightText = "0";
-        }
-
         // Check for number greater than or equal to 0.
         if (StartingWeight is null or < 0)
         {
-            ErrorMessage = "Please enter starting weight as a number greater than or equal to 0.";
+            ErrorMessage = "Please enter a starting weight greater than or equal to 0.";
             return false;
         }
 
@@ -256,12 +232,12 @@ public class CalculatorViewModel : INotifyPropertyChanged
                 DoBarbellCalculations();
                 break;
 
-            case ExerciseType.Dumbbell:
-                await DoDumbbellCalculations();
+            case ExerciseType.Machine:
+                DoMachineCalculations();
                 break;
 
-            case ExerciseType.Machine:
-                await DoMachineCalculations();
+            case ExerciseType.Dumbbell:
+                await DoDumbbellCalculations();
                 break;
 
             case ExerciseType.Kettlebell:
@@ -283,15 +259,23 @@ public class CalculatorViewModel : INotifyPropertyChanged
             return;
         }
 
-        // Get the available plate weights ordered from lightest to heaviest.
-        var availPlates = Plates.Values.ToList();
-
         // Calculate and display the results.
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates,
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, Plates,
             "Plates each end");
         PlatesResultsVisible = true;
+    }
 
-        // await DisplayBarbellResults();
+    private void DoMachineCalculations()
+    {
+        if (!ValidateMaxWeight() || !ValidateStartingWeight())
+        {
+            return;
+        }
+
+        // Calculate and display the results.
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
+            OneSideOnly, Plates, "Plates each side");
+        PlatesResultsVisible = true;
     }
 
     private async Task DoDumbbellCalculations()
@@ -307,26 +291,6 @@ public class CalculatorViewModel : INotifyPropertyChanged
         // Calculate and display the results.
         // DumbbellResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, availDumbbells);
         // await DisplayDumbbellResults();
-    }
-
-    private async Task DoMachineCalculations()
-    {
-        if (!ValidateMaxWeight() || !ValidateStartingWeight())
-        {
-            return;
-        }
-
-        // Check if they want one side only.
-        // bool oneSideOnly = OneSideOnly.IsChecked;
-
-        // Get the available plate weights ordered from lightest to heaviest.
-        // var availPlateWeights = Plates.Keys.ToList();
-
-        // Calculate and display the results.
-        // PlateResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
-        //     OneSideOnly, availPlateWeights);
-        // ShowPlateResults = true;
-        // await DisplayMachineResults();
     }
 
     private async Task DoKettlebellCalculations()
@@ -345,15 +309,4 @@ public class CalculatorViewModel : INotifyPropertyChanged
     }
 
     #endregion Calculations
-
-    #region INotifyPropertyChanged
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    #endregion INotifyPropertyChanged
 }
