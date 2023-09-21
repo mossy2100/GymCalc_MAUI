@@ -48,19 +48,14 @@ internal static class PlateSolver
 
     private static List<PlateDrawable> GetDrawables(List<Plate> plates, double maxPlateWeight)
     {
-        var drawables = new List<PlateDrawable>();
-        foreach (var plate in plates)
-        {
-            var drawable = new PlateDrawable
+        return plates.Select(plate => new PlateDrawable
             {
                 Height = 30,
-                MinWidth = 50, // device-independent pixels
+                MinWidth = 50,
                 MaxWeight = maxPlateWeight,
                 GymObject = plate
-            };
-            drawables.Add(drawable);
-        }
-        return drawables;
+            })
+            .ToList();
     }
 
     /// <summary>

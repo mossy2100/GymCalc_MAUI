@@ -9,8 +9,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Themes/OrangeTheme.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Implicit.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Explicit.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Overrides.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="Resources/Styles/InputKit.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-<!--        <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>-->
-        <TargetFramework>net7.0-android</TargetFramework>
+        <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
+<!--        <TargetFramework>net7.0-android</TargetFramework>-->
         <!--        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
@@ -220,15 +220,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Galaxon.Core">
-          <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net7.0\Galaxon.Core.dll</HintPath>
-        </Reference>
-        <Reference Include="Microsoft.iOS">
-          <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\packs\Microsoft.iOS.Ref\16.4.7089\ref\net7.0\Microsoft.iOS.dll</HintPath>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
       <None Include="Platforms\Android\AndroidManifest.xml" />
       <None Include="Platforms\iOS\Info.plist" />
     </ItemGroup>
@@ -294,6 +285,10 @@
       <MauiCss Remove="old\**" />
     </ItemGroup>
 
-
+    <ItemGroup>
+      <Reference Include="Galaxon.Core">
+        <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Release\net7.0\Galaxon.Core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 
 </Project>

@@ -2,12 +2,9 @@
 <ContentPage
     x:Class="GymCalc.Pages.InstructionsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Instructions">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
-        <VerticalStackLayout x:Name="InstructionsLayout" Spacing="{x:Static graphics:PageLayout.Spacing}" />
-    </ScrollView>
+    <WebView Source="Instructions.html" />
 
 </ContentPage>
