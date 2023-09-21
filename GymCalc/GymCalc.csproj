@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
+<!--        <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>-->
+        <TargetFramework>net7.0-android</TargetFramework>
         <!--        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
@@ -47,7 +48,7 @@
         <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
-        
+
         <!-- Flyout icons -->
 
         <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_black_300.png">
@@ -94,7 +95,7 @@
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_black_300.png">
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -121,7 +122,7 @@
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="White" BaseSize="128,128" />
 
@@ -167,53 +168,55 @@
         <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
-        <None Remove="old\**" />
 
         <!-- Button icons -->
-        
+
         <None Remove="Resources\Images\button_icons\edit_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <None Remove="Resources\Images\button_icons\plus_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <None Remove="Resources\Images\button_icons\cancel_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <None Remove="Resources\Images\button_icons\delete_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <None Remove="Resources\Images\button_icons\reset_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+
         <None Remove="Resources\Images\button_icons\check_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        
+        <None Remove="old\**" />
+
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.6" />
-        <PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
-        <PackageReference Include="CommunityToolkit.Maui.Core" Version="5.2.0" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="5.3.0" />
+        <PackageReference Include="CommunityToolkit.Maui.Core" Version="5.3.0" />
         <PackageReference Include="CommunityToolkit.Maui.Markup" Version="3.2.0" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.51" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.53" />
         <PackageReference Include="InputKit.Maui" Version="4.3.5" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.5" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.6" />
+        <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+        <PackageReference Update="Xamarin.Android.Glide" Version="4.15.1.2" />
+        <PackageReference Update="Xamarin.AndroidX.Browser" Version="1.6.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -228,14 +231,6 @@
     <ItemGroup>
       <None Include="Platforms\Android\AndroidManifest.xml" />
       <None Include="Platforms\iOS\Info.plist" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="old\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <MauiCss Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -254,13 +249,13 @@
       <MauiXaml Update="old\PlatesPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Remove="old\**" />
       <MauiXaml Update="Themes\OrangeTheme.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Update="Themes\PinkTheme.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -284,11 +279,19 @@
         <DependentUpon>PlatesPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Remove="old\**" />
       <Compile Update="Themes\OrangeTheme.xaml.cs">
         <DependentUpon>OrangeTheme.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiCss Remove="old\**" />
     </ItemGroup>
 
 

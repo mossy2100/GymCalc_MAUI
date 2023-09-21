@@ -31,28 +31,6 @@ public class CalculatorViewModel : INotifyPropertyChanged
     public double? StartingWeight =>
         double.TryParse(StartingWeightText, out var startingWeight) ? startingWeight : null;
 
-    private int _selectedPercent;
-
-    public int SelectedPercent
-    {
-        get => _selectedPercent;
-
-        set
-        {
-            // Note I'm not testing if _selectedPercent != value here, because otherwise it will
-            // show an old result from before the latest calculation was done.
-
-            _selectedPercent = value;
-            OnPropertyChanged();
-
-            // Update the plates result.
-            if (PlatesResults.TryGetValue(_selectedPercent, out var result))
-            {
-                CurrentPlatesResult = result;
-            }
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
     internal static string Units => GymCalc.Constants.Units.GetPreferred();
@@ -60,8 +38,6 @@ public class CalculatorViewModel : INotifyPropertyChanged
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Commands.
     public ICommand CalculateCommand { get; private set; }
-
-    public ICommand SelectPercentCommand { get; private set; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Lookup table for available bars.
@@ -169,19 +145,10 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Results.
-    public Dictionary<int, PlatesResult> PlatesResults { get; private set; }
 
-    // internal List<PlatesResult> BarbellResults { get; private set; }
-    //
-    // internal List<PlatesResult> DumbbellResults { get; private set; }
-    //
-    // internal List<PlatesResult> MachineResults { get; private set; }
-    //
-    // internal List<PlatesResult> KettlebellResults { get; private set; }
+    private List<PlatesResult> _platesResult;
 
-    private PlatesResult _platesResult;
-
-    public PlatesResult CurrentPlatesResult
+    public List<PlatesResult> PlatesResults
     {
         get => _platesResult;
 
@@ -195,44 +162,18 @@ public class CalculatorViewModel : INotifyPropertyChanged
         }
     }
 
-    private bool _showPlatesResults;
+    private bool _platesResultsVisible;
 
-    public bool ShowPlatesResults
+    public bool PlatesResultsVisible
     {
-        get => _showPlatesResults;
+        get => _platesResultsVisible;
 
         set
         {
-            if (_showPlatesResults != value)
+            if (_platesResultsVisible != value)
             {
-                _showPlatesResults = value;
+                _platesResultsVisible = value;
                 OnPropertyChanged();
-
-                if (value)
-                {
-                    ShowSingleWeightResults = false;
-                }
-            }
-        }
-    }
-
-    private bool _showSingleWeightResults;
-
-    public bool ShowSingleWeightResults
-    {
-        get => _showSingleWeightResults;
-
-        set
-        {
-            if (_showSingleWeightResults != value)
-            {
-                _showSingleWeightResults = value;
-                OnPropertyChanged();
-
-                if (value)
-                {
-                    ShowPlatesResults = false;
-                }
             }
         }
     }
@@ -261,13 +202,6 @@ public class CalculatorViewModel : INotifyPropertyChanged
     public CalculatorViewModel()
     {
         CalculateCommand = new AsyncCommand(async () => await Calculate());
-        SelectPercentCommand = new Command<string>(strPercent =>
-        {
-            if (int.TryParse(strPercent, out var percent))
-            {
-                SelectedPercent = percent;
-            }
-        });
     }
 
     #region Validation methods
@@ -342,8 +276,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
 
     private void DoBarbellCalculations()
     {
-        ShowPlatesResults = false;
-        CurrentPlatesResult = null;
+        PlatesResultsVisible = false;
 
         if (!ValidateMaxWeight())
         {
@@ -356,10 +289,7 @@ public class CalculatorViewModel : INotifyPropertyChanged
         // Calculate and display the results.
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, availPlates,
             "Plates each end");
-        ShowPlatesResults = true;
-
-        // Show the 100% result by default.
-        SelectedPercent = 100;
+        PlatesResultsVisible = true;
 
         // await DisplayBarbellResults();
     }
