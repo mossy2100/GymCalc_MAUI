@@ -31,11 +31,11 @@ public class BarDrawable : GymObjectDrawable
             VerticalAlignment.Center);
     }
 
-    /// <inheritdoc />
-    internal override GraphicsView CreateGraphicsView()
-    {
-        // Calculate the bar width.
-        Width = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
-        return base.CreateGraphicsView();
-    }
+    // /// <inheritdoc />
+    // internal override GraphicsView CreateGraphicsView()
+    // {
+    //     // Calculate the bar width.
+    //     Width = MinWidth + GymObject.Weight / MaxWeightKg * (MaxWidth - MinWidth);
+    //     return base.CreateGraphicsView();
+    // }
 }

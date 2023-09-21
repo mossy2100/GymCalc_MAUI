@@ -184,41 +184,42 @@
                     <DataTemplate x:DataType="models:PlatesResult">
                         <Grid
                             Padding="0,10,0,10"
-                            RowDefinitions="Auto,Auto,Auto,Auto"
+                            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                             RowSpacing="{x:Static graphics:PageLayout.Spacing}"
                             ColumnDefinitions="4*,3*,3*"
                             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
-                            <Label Grid.Row="0" Grid.Column="0"
+                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                HeightRequest="1" BackgroundColor="Gray" />
+                            <Label Grid.Row="1" Grid.Column="0"
                                 Text="{Binding Percent, StringFormat='{0}%'}"
                                 Style="{StaticResource ResultsTablePercent}" />
-                            <Label Grid.Row="0" Grid.Column="1" Text="Ideal"
+                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
                                 VerticalTextAlignment="End"
                                 Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="0" Grid.Column="2" Text="Closest"
+                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
                                 VerticalTextAlignment="End"
                                 Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="1" Grid.Column="0" Text="Total"
+                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
                                 Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding IdealTotal,
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal,
                                 Converter={StaticResource DefaultWeightTextConverter}}"
                                 Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="1" Grid.Column="2"
+                            <Label Grid.Row="2" Grid.Column="2"
                                 Text="{Binding ClosestTotal,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
                                 Style="{StaticResource ResultsTableClosest}" />
-                            <Label Grid.Row="2" Grid.Column="0"
+                            <Label Grid.Row="3" Grid.Column="0"
                                 Text="{Binding PlatesEachSideText}"
                                 Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="1"
+                            <Label Grid.Row="3" Grid.Column="1"
                                 Text="{Binding IdealPlates,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
                                 Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="2" Grid.Column="2"
+                            <Label Grid.Row="3" Grid.Column="2"
                                 Text="{Binding ClosestPlates,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
                                 Style="{StaticResource ResultsTableClosest}" />
-                            <CollectionView
-                                Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                            <CollectionView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
                                 ItemsSource="{Binding PlateDrawables}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="drawables:PlateDrawable">

@@ -9,29 +9,25 @@ public class PlateDrawable : GymObjectDrawable
 {
     internal const int CornerRadius = 4;
 
-    public PlateDrawable()
-    {
-        Height = 30;
-        MinWidth = 50;
-    }
-
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var plate = (Plate)GymObject;
-        var width = dirtyRect.Width;
+        var maxWidth = dirtyRect.Width;
+        var plateWidth = (float)(MinWidth + (plate.Weight / MaxWeight) * (maxWidth - MinWidth));
 
         // Get the color.
         var bgColor = CustomColors.Get(plate.Color);
 
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
-        var plateBackground = new RectF(0, 0, width, (float)Height);
+        var plateX = (maxWidth - plateWidth) / 2f;
+        var plateBackground = new RectF(plateX, 0, plateWidth, (float)Height);
         canvas.FillRoundedRectangle(plateBackground, CornerRadius);
 
         // Plate edge.
         canvas.FillColor = bgColor;
         var innerHeight = (float)Height - 2 * CornerRadius;
-        var plateEdge = new RectF(0, CornerRadius, width, innerHeight);
+        var plateEdge = new RectF(plateX, CornerRadius, plateWidth, innerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -40,17 +36,15 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, 0, CornerRadius + offset, width, innerHeight,
+        canvas.DrawString(weightString, 0, CornerRadius + offset, maxWidth, innerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
-    /// <inheritdoc />
-    internal override GraphicsView CreateGraphicsView()
-    {
-        // Calculate the plate width.
-        MaxWidth = 250;
-        MaxWeight = 25;
-        Width = MinWidth + GymObject.Weight / MaxWeight * (MaxWidth - MinWidth);
-        return base.CreateGraphicsView();
-    }
+    // /// <inheritdoc />
+    // internal override GraphicsView CreateGraphicsView()
+    // {
+    //     // Calculate the plate width.
+    //     Width = MinWidth + (GymObject.WeightKg / MaxWeight) * (MaxWidth - MinWidth);
+    //     return base.CreateGraphicsView();
+    // }
 }

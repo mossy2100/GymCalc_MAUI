@@ -1,11 +1,14 @@
 using Galaxon.Core.Numbers;
 using GymCalc.Data.Models;
+using GymCalc.Graphics.Drawables;
 
 namespace GymCalc.Calculations;
 
 internal static class PlateSolver
 {
     private static List<Plate> _availPlates;
+
+    private static double _maxPlateWeight;
 
     private static List<Plate> _bestSolution;
 
@@ -20,6 +23,7 @@ internal static class PlateSolver
 
         // Sort the plates by decreasing weight.
         _availPlates = availPlates.OrderByDescending(p => p.Weight).ToList();
+        _maxPlateWeight = _availPlates[0].Weight;
 
         // Get the best solution for each percentage fraction of the maxWeight we're interested in.
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
@@ -30,12 +34,33 @@ internal static class PlateSolver
 
             // Get the set of plates that is closest to the ideal weight.
             var bestPlates = FindBestPlates(idealPlates);
-            var result = new PlatesResult(percent, maxWeight, startingWeight, bestPlates,
-                platesEachSideText);
+
+            // Generate the drawables.
+            var drawables = GetDrawables(bestPlates, _maxPlateWeight);
+
+            var result = new PlatesResult(percent, maxWeight, startingWeight, platesEachSideText,
+                bestPlates, drawables);
             results.Add(result);
         }
 
         return results;
+    }
+
+    private static List<PlateDrawable> GetDrawables(List<Plate> plates, double maxPlateWeight)
+    {
+        var drawables = new List<PlateDrawable>();
+        foreach (var plate in plates)
+        {
+            var drawable = new PlateDrawable
+            {
+                Height = 30,
+                MinWidth = 50, // device-independent pixels
+                MaxWeight = maxPlateWeight,
+                GymObject = plate
+            };
+            drawables.Add(drawable);
+        }
+        return drawables;
     }
 
     /// <summary>
@@ -50,7 +75,10 @@ internal static class PlateSolver
         _bestSolution = new List<Plate>();
 
         // Search the solutions space.
-        SearchSolutions(_availPlates[0].Weight, _bestSolution);
+        SearchSolutions(_bestSolution, _maxPlateWeight);
+
+        // Sort by ascending plate weight.
+        _bestSolution = _bestSolution.OrderBy(p => p.Weight).ToList();
 
         // Return the best solution found during the search.
         return _bestSolution;
@@ -59,9 +87,9 @@ internal static class PlateSolver
     /// <summary>
     /// Recursive function to generate and test new solutions.
     /// </summary>
-    /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
     /// <param name="currentStack">The stack of plates so far.</param>
-    private static void SearchSolutions(double maxPlateWeight, List<Plate> currentStack)
+    /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
+    private static void SearchSolutions(List<Plate> currentStack, double maxPlateWeight)
     {
         foreach (var plate in _availPlates)
         {
@@ -101,7 +129,7 @@ internal static class PlateSolver
             // solution.
             if (sum < _idealWeight)
             {
-                SearchSolutions(plate.Weight, newStack);
+                SearchSolutions(newStack, plate.Weight);
             }
 
             // If the remaining difference is greater than the weight we just added, don't test

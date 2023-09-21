@@ -12,5 +12,8 @@ public class GymObject
 
     public string Units { get; set; }
 
+    public double WeightKg =>
+        Units == Constants.Units.Kilograms ? Weight : Weight * Constants.Units.KilogramsPerPound;
+
     public bool Enabled { get; set; }
 }

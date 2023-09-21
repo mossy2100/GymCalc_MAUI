@@ -1,4 +1,3 @@
-using System.Text;
 using GymCalc.Graphics.Drawables;
 
 namespace GymCalc.Data.Models;
@@ -25,23 +24,18 @@ public class PlatesResult
 
     public List<PlateDrawable> PlateDrawables { get; set; }
 
-    public PlatesResult(double percent, double maxWeight, double barWeight, List<Plate> plates,
-        string platesEachSideText)
+    public PlatesResult(double percent, double maxWeight, double barWeight, string eachSideText,
+        List<Plate> plates, List<PlateDrawable> drawables)
     {
         Percent = percent;
         MaxWeight = maxWeight;
         BarWeight = barWeight;
         Plates = plates;
-        PlatesEachSideText = platesEachSideText;
+        PlatesEachSideText = eachSideText;
         IdealTotal = percent / 100.0 * maxWeight;
         IdealPlates = (IdealTotal - barWeight) / 2.0;
         ClosestPlates = plates.Sum(p => p.Weight);
         ClosestTotal = barWeight + 2.0 * ClosestPlates;
-        PlateDrawables = new List<PlateDrawable>();
-        foreach (var plate in plates)
-        {
-            var drawable = new PlateDrawable { GymObject = plate };
-            PlateDrawables.Add(drawable);
-        }
+        PlateDrawables = drawables;
     }
 }
