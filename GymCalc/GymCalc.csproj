@@ -247,6 +247,9 @@
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Remove="old\**" />
+      <MauiXaml Update="Pages\HtmlPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -275,6 +278,10 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Remove="old\**" />
+      <Compile Update="Pages\HtmlPage.xaml.cs">
+        <DependentUpon>HtmlPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

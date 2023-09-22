@@ -30,41 +30,52 @@
     </FlyoutItem>
 
     <MenuItem
-        Clicked="Bars_OnClick"
+        Text="Bars"
         IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
                                           Dark='bar_icon_white_300.png'}"
-        Text="Bars" />
+        Command="{Binding GoToListCommand}"
+        CommandParameter="Bar" />
 
     <MenuItem
-        Clicked="Plates_OnClick"
+        Text="Plates"
         IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
                                           Dark='plate_icon_white_300.png'}"
-        Text="Plates" />
+        Command="{Binding GoToListCommand}"
+        CommandParameter="Plate" />
 
     <MenuItem
-        Clicked="Dumbbells_OnClick"
+        Text="Dumbbells"
         IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
                                           Dark='dumbbell_icon_white_300.png'}"
-        Text="Dumbbells" />
+        Command="{Binding GoToListCommand}"
+        CommandParameter="Dumbbell" />
 
     <MenuItem
-        Clicked="Kettlebells_OnClick"
+        Text="Kettlebells"
         IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
                                           Dark='kettlebell_icon_white_300.png'}"
-        Text="Kettlebells" />
+        Command="{Binding GoToListCommand}"
+        CommandParameter="Kettlebell" />
 
     <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Instructions" Style="{StaticResource InstructionsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:InstructionsPage}" />
-    </FlyoutItem>
+    <MenuItem
+        Text="Instructions"
+        IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
+                                          Dark='help_icon_white_300.png'}"
+        Command="{Binding GoToHtmlCommand}"
+        CommandParameter="Instructions|Instructions.html" />
 
-    <FlyoutItem Title="About GymCalc" Style="{StaticResource AboutFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:AboutPage}" />
-    </FlyoutItem>
+    <MenuItem
+        Text="About GymCalc"
+        IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
+                                          Dark='about_icon_white_300.png'}"
+        Command="{Binding GoToHtmlCommand}"
+        CommandParameter="About GymCalc|About.html" />
 
     <ShellContent ContentTemplate="{DataTemplate pages:ListPage}" Route="list" />
+    <ShellContent ContentTemplate="{DataTemplate pages:HtmlPage}" Route="html" />
 
 </Shell>

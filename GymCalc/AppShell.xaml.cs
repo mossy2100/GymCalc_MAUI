@@ -1,3 +1,5 @@
+using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using GymCalc.Pages;
 
 namespace GymCalc;
@@ -7,8 +9,22 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
+        RegisterRoutes();
+        BindingContext = this;
+    }
 
-        // Register routes for navigation pages.
+    public ICommand GoToListCommand =>
+        new AsyncCommand<string>(
+            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
+
+    public ICommand GoToHtmlCommand =>
+        new AsyncCommand<string>(async parameters => await GoToHtml(parameters));
+
+    /// <summary>
+    /// Register routes for navigation pages.
+    /// </summary>
+    private static void RegisterRoutes()
+    {
         Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("delete", typeof(DeletePage));
         Routing.RegisterRoute("reset", typeof(ResetPage));
@@ -16,34 +32,27 @@ public partial class AppShell : Shell
 
     internal static async Task GoToList(string gymObjectTypeName, bool editMode)
     {
-        await Current.GoToAsync($"//list", new Dictionary<string, object>
+        Current.FlyoutIsPresented = false;
+        await Current.GoToAsync("//list", new Dictionary<string, object>
         {
             { "type", gymObjectTypeName },
-            { "editMode", editMode },
+            { "editMode", editMode }
         });
     }
 
-    private async void Bars_OnClick(object sender, EventArgs e)
+    internal static async Task GoToHtml(string commandParameters)
     {
-        FlyoutIsPresented = false;
-        await GoToList("Bar", false);
-    }
+        string[] parameters = commandParameters.Split('|');
+        if (parameters.Length != 2)
+        {
+            throw new ArgumentException("Invalid number of command parameters. There should be 2: the title and the filename, separated by a vertical bar character (|).");
+        }
 
-    private async void Plates_OnClick(object sender, EventArgs e)
-    {
-        FlyoutIsPresented = false;
-        await GoToList("Plate", false);
-    }
-
-    private async void Dumbbells_OnClick(object sender, EventArgs e)
-    {
-        FlyoutIsPresented = false;
-        await GoToList("Dumbbell", false);
-    }
-
-    private async void Kettlebells_OnClick(object sender, EventArgs e)
-    {
-        FlyoutIsPresented = false;
-        await GoToList("Kettlebell", false);
+        Current.FlyoutIsPresented = false;
+        await Current.GoToAsync("//html", new Dictionary<string, object>
+        {
+            { "title", parameters[0] },
+            { "fileName", parameters[1] },
+        });
     }
 }
