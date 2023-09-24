@@ -1,3 +1,4 @@
+using Galaxon.Core.Enums;
 using GymCalc.Constants;
 using GymCalc.Utilities;
 using GymCalc.ViewModels;
@@ -48,7 +49,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Set the user's preferred units, which may have changed on the settings page.
-        var units = Units.GetPreferred();
+        var units = UnitsUtility.GetDefault().GetDescription();
         MaxWeightUnit.Text = units;
         BarWeightUnit.Text = units;
         StartingWeightUnit.Text = units;

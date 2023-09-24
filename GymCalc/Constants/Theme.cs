@@ -1,8 +1,8 @@
 namespace GymCalc.Constants;
 
-internal static class Theme
+internal enum Theme
 {
-    internal const string Orange = "orange";
+    Orange,
 
-    internal const string Pink = "pink";
+    Pink,
 }

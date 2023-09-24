@@ -1,3 +1,4 @@
+using Galaxon.Core.Enums;
 using GymCalc.Models;
 using GymCalc.Constants;
 using GymCalc.Graphics;
@@ -23,17 +24,17 @@ public class KettlebellRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var addedSoFar = new List<(double, string)>();
+        var addedSoFar = new List<(double, Units)>();
         // Kilograms.
-        addedSoFar = await AddKettlebellSet(4, 32, 4, Units.KILOGRAMS, true, addedSoFar);
-        addedSoFar = await AddKettlebellSet(6, 50, 2, Units.KILOGRAMS, false, addedSoFar);
+        addedSoFar = await AddKettlebellSet(4, 32, 4, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddKettlebellSet(6, 50, 2, Units.Kilograms, false, addedSoFar);
         // Pounds.
-        addedSoFar = await AddKettlebellSet(5, 60, 5, Units.POUNDS, true, addedSoFar);
-        addedSoFar = await AddKettlebellSet(65, 120, 5, Units.POUNDS, false, addedSoFar);
+        addedSoFar = await AddKettlebellSet(5, 60, 5, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddKettlebellSet(65, 120, 5, Units.Pounds, false, addedSoFar);
     }
 
-    private async Task<List<(double, string)>> AddKettlebellSet(double min, double max,
-        double step, string units, bool enabled, List<(double, string)> addedSoFar)
+    private async Task<List<(double, Units)>> AddKettlebellSet(double min, double max,
+        double step, Units units, bool enabled, List<(double, Units)> addedSoFar)
     {
         var conn = Database.Connection;
 
@@ -53,7 +54,7 @@ public class KettlebellRepository : GymObjectRepository
             var kettlebell = new Kettlebell
             {
                 Weight = weight,
-                Units = units,
+                Units = units.GetDescription(),
                 Enabled = enabled,
                 BallColor = ballColor,
                 HasBands = hasBands,
@@ -72,7 +73,7 @@ public class KettlebellRepository : GymObjectRepository
     /// Get the kettlebells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Kettlebell>> GetAll(string units = Units.DEFAULT,
+    internal async Task<List<Kettlebell>> GetAll(Units units = Units.Default,
         bool? enabled = null, bool? ascending = null)
     {
         return await base.GetAll<Kettlebell>(units, enabled, ascending);

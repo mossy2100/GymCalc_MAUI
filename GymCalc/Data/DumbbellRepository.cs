@@ -1,3 +1,4 @@
+using Galaxon.Core.Enums;
 using GymCalc.Models;
 using GymCalc.Constants;
 
@@ -22,19 +23,19 @@ public class DumbbellRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var addedSoFar = new List<(double, string)>();
+        var addedSoFar = new List<(double, Units)>();
 
         // Kilograms.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.KILOGRAMS, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.KILOGRAMS, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
 
         // Pounds.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.POUNDS, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.POUNDS, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
     }
 
-    private async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
-        double step, string units, bool enabled, List<(double, string)> addedSoFar)
+    private async Task<List<(double, Units)>> AddDumbbellSet(double min, double max,
+        double step, Units units, bool enabled, List<(double, Units)> addedSoFar)
     {
         var conn = Database.Connection;
 
@@ -50,7 +51,7 @@ public class DumbbellRepository : GymObjectRepository
             var dumbbell = new Dumbbell
             {
                 Weight = weight,
-                Units = units,
+                Units = units.GetDescription(),
                 Enabled = enabled,
                 Color = "OffBlack",
             };
@@ -67,7 +68,7 @@ public class DumbbellRepository : GymObjectRepository
     /// Get the dumbbells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Dumbbell>> GetAll(string units = Units.DEFAULT, bool? enabled = null,
+    internal async Task<List<Dumbbell>> GetAll(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
         return await base.GetAll<Dumbbell>(units, enabled, ascending);

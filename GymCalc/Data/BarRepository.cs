@@ -1,3 +1,4 @@
+using Galaxon.Core.Enums;
 using GymCalc.Models;
 using GymCalc.Constants;
 
@@ -16,19 +17,19 @@ public class BarRepository : GymObjectRepository
     /// <summary>
     /// Default bars weights to set up on app initialize.
     /// </summary>
-    private static readonly (int, string, bool)[] _DefaultBars =
+    private static readonly (int, Units, bool)[] _DefaultBars =
     {
         // Metric.
-        (10, Units.KILOGRAMS, true),
-        (15, Units.KILOGRAMS, true),
-        (20, Units.KILOGRAMS, true),
-        (25, Units.KILOGRAMS, true),
+        (10, Units.Kilograms, true),
+        (15, Units.Kilograms, true),
+        (20, Units.Kilograms, true),
+        (25, Units.Kilograms, true),
         // US units.
-        (15, Units.POUNDS, true),
-        (25, Units.POUNDS, true),
-        (35, Units.POUNDS, true),
-        (45, Units.POUNDS, true),
-        (55, Units.POUNDS, true),
+        (15, Units.Pounds, true),
+        (25, Units.Pounds, true),
+        (35, Units.Pounds, true),
+        (45, Units.Pounds, true),
+        (55, Units.Pounds, true),
     };
 
     public BarRepository(Database database) : base(database)
@@ -50,7 +51,7 @@ public class BarRepository : GymObjectRepository
             var bar = new Bar
             {
                 Weight = weight,
-                Units = units,
+                Units = units.GetDescription(),
                 Enabled = enable,
             };
             await Database.Connection.InsertAsync(bar);
@@ -61,7 +62,7 @@ public class BarRepository : GymObjectRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Bar>> GetAll(string units = Units.DEFAULT, bool? enabled = null,
+    internal async Task<List<Bar>> GetAll(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
         return await base.GetAll<Bar>(units, enabled, ascending);

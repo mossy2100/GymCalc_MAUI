@@ -1,3 +1,4 @@
+using Galaxon.Core.Enums;
 using GymCalc.Models;
 using GymCalc.Constants;
 
@@ -13,38 +14,38 @@ public class PlateRepository : GymObjectRepository
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
-    private static readonly (double, string, bool, string)[] _DefaultPlates =
+    private static readonly (double, Units, bool, string)[] _DefaultPlates =
     {
         // Metric.
-        (0.25, Units.KILOGRAMS, false, "Red"),
-        (0.5, Units.KILOGRAMS, false, "OffWhite"),
-        (0.75, Units.KILOGRAMS, false, "Pink"),
-        (1, Units.KILOGRAMS, false, "Green"),
-        (1.25, Units.KILOGRAMS, true, "Orange"),
-        (1.5, Units.KILOGRAMS, false, "Yellow"),
-        (2, Units.KILOGRAMS, false, "Indigo"),
-        (2.5, Units.KILOGRAMS, true, "Red"),
-        (5, Units.KILOGRAMS, true, "OffWhite"),
-        (7.5, Units.KILOGRAMS, false, "Pink"),
-        (10, Units.KILOGRAMS, true, "Green"),
-        (12.5, Units.KILOGRAMS, false, "Orange"),
-        (15, Units.KILOGRAMS, true, "Yellow"),
-        (20, Units.KILOGRAMS, true, "Indigo"),
-        (25, Units.KILOGRAMS, true, "Red"),
+        (0.25, Units.Kilograms, false, "Red"),
+        (0.5, Units.Kilograms, false, "OffWhite"),
+        (0.75, Units.Kilograms, false, "Pink"),
+        (1, Units.Kilograms, false, "Green"),
+        (1.25, Units.Kilograms, true, "Orange"),
+        (1.5, Units.Kilograms, false, "Yellow"),
+        (2, Units.Kilograms, false, "Indigo"),
+        (2.5, Units.Kilograms, true, "Red"),
+        (5, Units.Kilograms, true, "OffWhite"),
+        (7.5, Units.Kilograms, false, "Pink"),
+        (10, Units.Kilograms, true, "Green"),
+        (12.5, Units.Kilograms, false, "Orange"),
+        (15, Units.Kilograms, true, "Yellow"),
+        (20, Units.Kilograms, true, "Indigo"),
+        (25, Units.Kilograms, true, "Red"),
         // Pounds.
-        (0.25, Units.POUNDS, false, "Green"),
-        (0.5, Units.POUNDS, false, "Cyan"),
-        (0.75, Units.POUNDS, false, "Pink"),
-        (1, Units.POUNDS, false, "OffWhite"),
-        (1.25, Units.POUNDS, true, "Orange"),
-        (2.5, Units.POUNDS, true, "Green"),
-        (5, Units.POUNDS, true, "Cyan"),
-        (10, Units.POUNDS, true, "OffWhite"),
-        (15, Units.POUNDS, true, "Purple"),
-        (25, Units.POUNDS, true, "Green"),
-        (35, Units.POUNDS, true, "Yellow"),
-        (45, Units.POUNDS, true, "Indigo"),
-        (55, Units.POUNDS, true, "Red"),
+        (0.25, Units.Pounds, false, "Green"),
+        (0.5, Units.Pounds, false, "Cyan"),
+        (0.75, Units.Pounds, false, "Pink"),
+        (1, Units.Pounds, false, "OffWhite"),
+        (1.25, Units.Pounds, true, "Orange"),
+        (2.5, Units.Pounds, true, "Green"),
+        (5, Units.Pounds, true, "Cyan"),
+        (10, Units.Pounds, true, "OffWhite"),
+        (15, Units.Pounds, true, "Purple"),
+        (25, Units.Pounds, true, "Green"),
+        (35, Units.Pounds, true, "Yellow"),
+        (45, Units.Pounds, true, "Indigo"),
+        (55, Units.Pounds, true, "Red"),
     };
 
     public PlateRepository(Database database) : base(database)
@@ -68,7 +69,7 @@ public class PlateRepository : GymObjectRepository
             var plate = new Plate
             {
                 Weight = weight,
-                Units = units,
+                Units = units.GetDescription(),
                 Enabled = enabled,
                 Color = color,
             };
@@ -80,7 +81,7 @@ public class PlateRepository : GymObjectRepository
     /// Get the plates.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Plate>> GetAll(string units = Units.DEFAULT, bool? enabled = null,
+    internal async Task<List<Plate>> GetAll(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
         return await base.GetAll<Plate>(units, enabled, ascending);

@@ -102,10 +102,6 @@ public class CalculatorViewModel : BaseViewModel
                 : null);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Values extracted from user preferences.
-    // internal static string Units => GymCalc.Constants.Units.GetPreferred();
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     // Commands.
     public ICommand CalculateCommand { get; private set; }
 

@@ -40,14 +40,15 @@ internal static class CustomColors
     /// Best image I've found showing a competition kettlebell with black bands:
     /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1" />
     /// </summary>
-    /// <param name="weight">The weight of the kettlebell in kilograms.</param>
+    /// <param name="weight">The weight of the kettlebell.</param>
+    /// <param name="units">The units.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (string, bool, string) DefaultKettlebellColor(double weight, string units)
+    internal static (string, bool, string) DefaultKettlebellColor(double weight, Units units)
     {
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;
         var n = weight;
-        if (units == Units.KILOGRAMS)
+        if (units == Units.Kilograms)
         {
             hasBands = (weight % 4).FuzzyEquals(2);
             if (hasBands)

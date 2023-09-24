@@ -1,5 +1,6 @@
 using System.Globalization;
-using GymCalc.Constants;
+using Galaxon.Core.Enums;
+using GymCalc.Utilities;
 
 namespace GymCalc.Converters;
 
@@ -9,7 +10,7 @@ public class WeightTextConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var weight = (double)value;
-        var units = Units.GetPreferred();
+        var units = UnitsUtility.GetDefault().GetDescription();
         return $"{weight:F2} {units}";
     }
 

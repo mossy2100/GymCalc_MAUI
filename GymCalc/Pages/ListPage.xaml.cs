@@ -7,6 +7,7 @@ using GymCalc.Graphics.Drawables;
 using GymCalc.Utilities;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
 using CommunityToolkit.Maui.Markup;
+using Galaxon.Core.Enums;
 
 namespace GymCalc.Pages;
 
@@ -103,7 +104,7 @@ public partial class ListPage : ContentPage
         // Update the instructions label.
         InstructionsLabel.Text = editMode
             ? $"Use the edit and delete icon buttons to make changes. Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset button to reset to the defaults."
-            : $"Select which {GymObjectTypeName.ToLower()} weights ({Units.GetPreferred()}) are available:";
+            : $"Select which {GymObjectTypeName.ToLower()} weights ({UnitsUtility.GetDefault().GetDescription()}) are available:";
         InstructionsLabel.FontSize = editMode ? 14 : 16;
 
         // Hide or show the Add and Reset buttons.

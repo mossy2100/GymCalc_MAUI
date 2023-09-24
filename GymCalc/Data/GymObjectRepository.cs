@@ -1,5 +1,7 @@
+using Galaxon.Core.Enums;
 using GymCalc.Constants;
 using GymCalc.Models;
+using GymCalc.Utilities;
 
 namespace GymCalc.Data;
 
@@ -57,20 +59,20 @@ public abstract class GymObjectRepository
     /// <param name="ascending">If the results should be ordered by ascending weight (true), descending weight (false), or don't care (null).</param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    internal async Task<List<T>> GetAll<T>(string units = Units.DEFAULT, bool? enabled = null,
+    internal async Task<List<T>> GetAll<T>(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
         where T : GymObject, new()
     {
         // Guard. Check we have a valid option for units.
-        if (!Units.IsValid(units))
+        if (!Enum.IsDefined(typeof(Units), units))
         {
             throw new ArgumentOutOfRangeException(nameof(units), "Invalid option for units.");
         }
 
         // Get default units if necessary.
-        if (units == Units.DEFAULT)
+        if (units == Units.Default)
         {
-            units = Units.GetPreferred();
+            units = UnitsUtility.GetDefault();
         }
 
         // Create a query to get all the gym objects of the specified type.
@@ -78,9 +80,9 @@ public abstract class GymObjectRepository
         var query = conn.Table<T>();
 
         // Add where clause for units if needed.
-        if (units != Units.ALL)
+        if (units != Units.All)
         {
-            query = query.Where(ht => ht.Units == units);
+            query = query.Where(ht => ht.Units == units.GetDescription());
         }
 
         // Add where clause for enabled/disabled weights if needed.

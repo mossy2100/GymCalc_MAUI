@@ -1,4 +1,5 @@
-using GymCalc.Constants;
+using Galaxon.Core.Enums;
+using GymCalc.Utilities;
 using InputKit.Shared.Controls;
 
 namespace GymCalc.Pages;
@@ -9,7 +10,7 @@ public partial class SettingsPage : ContentPage
     {
         InitializeComponent();
 
-        UnitsRadio.SelectedItem = Units.GetPreferred();
+        UnitsRadio.SelectedItem = UnitsUtility.GetDefault().GetDescription();
         // ColorSchemeRadio.SelectedItem = Preferences.Default.Get("ColorScheme", Theme.Orange);
     }
 

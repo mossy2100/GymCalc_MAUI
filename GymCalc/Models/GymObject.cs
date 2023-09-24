@@ -1,3 +1,5 @@
+using Galaxon.Core.Enums;
+using GymCalc.Utilities;
 using SQLite;
 
 namespace GymCalc.Models;
@@ -13,7 +15,9 @@ public class GymObject
     public string Units { get; set; }
 
     public double WeightKg =>
-        Units == Constants.Units.KILOGRAMS ? Weight : Weight * Constants.Units.KG_PER_LB;
+        Units == Constants.Units.Kilograms.GetDescription()
+            ? Weight
+            : Weight * UnitsUtility.KG_PER_LB;
 
     public bool Enabled { get; set; }
 }

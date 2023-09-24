@@ -1,8 +1,10 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using Galaxon.Core.Enums;
 using GymCalc.Data;
 using GymCalc.Models;
 using GymCalc.Constants;
+using GymCalc.Utilities;
 using SQLite;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
 
@@ -96,7 +98,7 @@ public partial class EditPage : ContentPage
     private void ClearForm()
     {
         WeightEntry.Text = "";
-        UnitsRadio.SelectedItem = Units.GetPreferred();
+        UnitsRadio.SelectedItem = UnitsUtility.GetDefault().GetDescription();
         EnabledCheckBox.IsChecked = true;
         MainColor.Selected = "OffBlack";
         HasBandsCheckBox.IsChecked = false;
