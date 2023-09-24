@@ -47,7 +47,7 @@ internal static class CustomColors
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;
         var n = weight;
-        if (units == Units.Kilograms)
+        if (units == Units.KILOGRAMS)
         {
             hasBands = (weight % 4).FuzzyEquals(2);
             if (hasBands)

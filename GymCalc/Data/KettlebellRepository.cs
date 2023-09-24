@@ -25,11 +25,11 @@ public class KettlebellRepository : GymObjectRepository
     {
         var addedSoFar = new List<(double, string)>();
         // Kilograms.
-        addedSoFar = await AddKettlebellSet(4, 32, 4, Units.Kilograms, true, addedSoFar);
-        addedSoFar = await AddKettlebellSet(6, 50, 2, Units.Kilograms, false, addedSoFar);
+        addedSoFar = await AddKettlebellSet(4, 32, 4, Units.KILOGRAMS, true, addedSoFar);
+        addedSoFar = await AddKettlebellSet(6, 50, 2, Units.KILOGRAMS, false, addedSoFar);
         // Pounds.
-        addedSoFar = await AddKettlebellSet(5, 60, 5, Units.Pounds, true, addedSoFar);
-        addedSoFar = await AddKettlebellSet(65, 120, 5, Units.Pounds, false, addedSoFar);
+        addedSoFar = await AddKettlebellSet(5, 60, 5, Units.POUNDS, true, addedSoFar);
+        addedSoFar = await AddKettlebellSet(65, 120, 5, Units.POUNDS, false, addedSoFar);
     }
 
     private async Task<List<(double, string)>> AddKettlebellSet(double min, double max,
@@ -72,10 +72,10 @@ public class KettlebellRepository : GymObjectRepository
     /// Get the kettlebells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Kettlebell>> GetAll(string units, bool onlyEnabled = false,
-        bool ascending = true)
+    internal async Task<List<Kettlebell>> GetAll(string units = Units.DEFAULT,
+        bool? enabled = null, bool? ascending = null)
     {
-        return await base.GetAll<Kettlebell>(units, onlyEnabled, ascending);
+        return await base.GetAll<Kettlebell>(units, enabled, ascending);
     }
 
     /// <summary>

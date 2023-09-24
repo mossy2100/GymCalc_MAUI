@@ -106,6 +106,7 @@
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
                             x:Name="BarWeight"
+                            ItemsSource="{Binding BarWeights}"
                             SelectedItem="{Binding BarWeight, Mode=TwoWay}"
                             HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
                     </Frame>

@@ -1,3 +1,4 @@
+using GymCalc.Constants;
 using GymCalc.Models;
 
 namespace GymCalc.Data;
@@ -47,27 +48,54 @@ public abstract class GymObjectRepository
 
     /// <summary>
     /// Get all the gym objects of a given type.
+    /// If units are not
     /// </summary>
+    /// <param name="units">Only get weights in the specified units. If not specified, the user's
+    /// preferred units will be used.</param>
+    /// <param name="enabled">If the method should only return the enabled weights (true), disabled
+    /// weights (false), or both (null).</param>
+    /// <param name="ascending">If the results should be ordered by ascending weight (true), descending weight (false), or don't care (null).</param>
+    /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    internal async Task<List<T>> GetAll<T>(string units, bool onlyEnabled = false,
-        bool ascending = true)
+    internal async Task<List<T>> GetAll<T>(string units = Units.DEFAULT, bool? enabled = null,
+        bool? ascending = null)
         where T : GymObject, new()
     {
-        var conn = Database.Connection;
-
-        // Get all the gym objects in the preferred units.
-        var query = conn.Table<T>().Where(ht => ht.Units == units);
-
-        // Add where clause if needed.
-        if (onlyEnabled)
+        // Guard. Check we have a valid option for units.
+        if (!Units.IsValid(units))
         {
-            query = query.Where(ht => ht.Enabled);
+            throw new ArgumentOutOfRangeException(nameof(units), "Invalid option for units.");
         }
 
-        // Add order by clause.
-        query = ascending
-            ? query.OrderBy(ht => ht.Weight)
-            : query.OrderByDescending(ht => ht.Weight);
+        // Get default units if necessary.
+        if (units == Units.DEFAULT)
+        {
+            units = Units.GetPreferred();
+        }
+
+        // Create a query to get all the gym objects of the specified type.
+        var conn = Database.Connection;
+        var query = conn.Table<T>();
+
+        // Add where clause for units if needed.
+        if (units != Units.ALL)
+        {
+            query = query.Where(ht => ht.Units == units);
+        }
+
+        // Add where clause for enabled/disabled weights if needed.
+        if (enabled.HasValue)
+        {
+            query = query.Where(ht => ht.Enabled == enabled.Value);
+        }
+
+        // Add order by clause if needed.
+        if (ascending.HasValue)
+        {
+            query = ascending.Value
+                ? query.OrderBy(ht => ht.Weight)
+                : query.OrderByDescending(ht => ht.Weight);
+        }
 
         return await query.ToListAsync();
     }

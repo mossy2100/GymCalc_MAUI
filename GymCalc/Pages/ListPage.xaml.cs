@@ -124,27 +124,26 @@ public partial class ListPage : ContentPage
     private async Task DisplayList()
     {
         Title = $"{GymObjectTypeName}s";
-        var units = Units.GetPreferred();
 
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                var bars = await _barRepo.GetAll(units);
+                var bars = await _barRepo.GetAll(ascending: true);
                 DisplayList<Bar, BarDrawable>(bars);
                 break;
 
             case GymObjectType.Plate:
-                var plates = await _plateRepo.GetAll(units);
+                var plates = await _plateRepo.GetAll(ascending: true);
                 DisplayList<Plate, PlateDrawable>(plates);
                 break;
 
             case GymObjectType.Dumbbell:
-                var dumbbells = await _dbRepo.GetAll(units);
+                var dumbbells = await _dbRepo.GetAll(ascending: true);
                 DisplayList<Dumbbell, DumbbellDrawable>(dumbbells);
                 break;
 
             case GymObjectType.Kettlebell:
-                var kettlebells = await _kbRepo.GetAll(units);
+                var kettlebells = await _kbRepo.GetAll(ascending: true);
                 DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
                 break;
         }

@@ -19,16 +19,16 @@ public class BarRepository : GymObjectRepository
     private static readonly (int, string, bool)[] _DefaultBars =
     {
         // Metric.
-        (10, Units.Kilograms, true),
-        (15, Units.Kilograms, true),
-        (20, Units.Kilograms, true),
-        (25, Units.Kilograms, true),
+        (10, Units.KILOGRAMS, true),
+        (15, Units.KILOGRAMS, true),
+        (20, Units.KILOGRAMS, true),
+        (25, Units.KILOGRAMS, true),
         // US units.
-        (15, Units.Pounds, true),
-        (25, Units.Pounds, true),
-        (35, Units.Pounds, true),
-        (45, Units.Pounds, true),
-        (55, Units.Pounds, true),
+        (15, Units.POUNDS, true),
+        (25, Units.POUNDS, true),
+        (35, Units.POUNDS, true),
+        (45, Units.POUNDS, true),
+        (55, Units.POUNDS, true),
     };
 
     public BarRepository(Database database) : base(database)
@@ -61,9 +61,10 @@ public class BarRepository : GymObjectRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false)
+    internal async Task<List<Bar>> GetAll(string units = Units.DEFAULT, bool? enabled = null,
+        bool? ascending = null)
     {
-        return await base.GetAll<Bar>(units, onlyEnabled);
+        return await base.GetAll<Bar>(units, enabled, ascending);
     }
 
     /// <summary>

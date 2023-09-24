@@ -7,23 +7,6 @@ namespace GymCalc.Data;
 /// </summary>
 public class Database
 {
-    private BarRepository _barRepo;
-
-    private PlateRepository _plateRepo;
-
-    private DumbbellRepository _dbRepo;
-
-    private KettlebellRepository _kbRepo;
-
-    public Database(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
-    {
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
-    }
-
     /// <summary>
     /// Filename of the database file.
     /// </summary>
@@ -56,16 +39,4 @@ public class Database
     /// </summary>
     internal SQLiteAsyncConnection Connection =>
         _connection ??= new SQLiteAsyncConnection(_DbPath, _FLAGS);
-
-    /// <summary>
-    /// Initialize the database.
-    /// </summary>
-    internal async Task Initialize()
-    {
-        var barTask = _barRepo.Initialize();
-        var plateTask = _plateRepo.Initialize();
-        var dumbbellTask = _dbRepo.Initialize();
-        var kettlebellTask = _kbRepo.Initialize();
-        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
-    }
 }

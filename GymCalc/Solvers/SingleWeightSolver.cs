@@ -25,20 +25,22 @@ internal static class SingleWeightSolver
             var closest = FindClosest(idealWeight);
 
             // Get the drawable.
-            var drawableTypeName = closest.GetType().Name + "Drawable";
+            var drawableTypeName =
+                "GymCalc.Graphics.Drawables." + closest.GetType().Name + "Drawable";
             var drawable = (GymObjectDrawable)Activator.CreateInstance(null, drawableTypeName)!
                 .Unwrap();
             if (drawable == null)
             {
                 throw new Exception("Could not create drawable.");
             }
-                // closest is Dumbbell
-                // ? new DumbbellDrawable()
-                // : new KettlebellDrawable();
+            // closest is Dumbbell
+            // ? new DumbbellDrawable()
+            // : new KettlebellDrawable();
             drawable.GymObject = closest;
 
             // Add the result to the result set.
-            results[percent] = new SingleWeightResult(percent, maxWeight, closest, drawable);
+            var result = new SingleWeightResult(percent, maxWeight, closest, drawable);
+            results.Add(result);
         }
 
         return results;

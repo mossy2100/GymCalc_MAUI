@@ -1,5 +1,3 @@
-using System.Globalization;
-using GymCalc.Data;
 using GymCalc.Constants;
 using GymCalc.Utilities;
 using GymCalc.ViewModels;
@@ -14,17 +12,14 @@ public partial class CalculatorPage : ContentPage
 
     private bool _layoutInitialized;
 
-    private readonly Database _database;
-
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CalculatorPage(CalculatorViewModel model, Database database)
+    public CalculatorPage(CalculatorViewModel model)
     {
         InitializeComponent();
         BindingContext = model;
         _model = model;
-        _database = database;
 
         // Events.
         SizeChanged += OnSizeChanged;
@@ -48,21 +43,22 @@ public partial class CalculatorPage : ContentPage
         // Initialize database on first page load.
         if (!_databaseInitialized)
         {
-            await _database.Initialize();
+            await _model.InitializeDatabase();
             _databaseInitialized = true;
         }
 
         // Set the user's preferred units, which may have changed on the settings page.
-        MaxWeightUnit.Text = CalculatorViewModel.Units;
-        BarWeightUnit.Text = CalculatorViewModel.Units;
-        StartingWeightUnit.Text = CalculatorViewModel.Units;
+        var units = Units.GetPreferred();
+        MaxWeightUnit.Text = units;
+        BarWeightUnit.Text = units;
+        StartingWeightUnit.Text = units;
 
         // Initialise the exercise type buttons.
         SetExerciseType(ExerciseType.Barbell);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        await ResetBarWeightPicker();
+        await _model.ResetBarWeightPicker();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -88,64 +84,6 @@ public partial class CalculatorPage : ContentPage
     #endregion Event handlers
 
     #region UI
-
-    /// <summary>
-    /// Reset the bar weight picker items.
-    /// </summary>
-    private async Task ResetBarWeightPicker()
-    {
-        // Get the current selected value.
-        var initialSelectedIndex = BarWeight.SelectedIndex;
-        var initialSelectedValue = initialSelectedIndex != -1
-            ? BarWeight.Items[initialSelectedIndex]
-            : null;
-
-        // Reset the picker items.
-        BarWeight.Items.Clear();
-        BarWeight.SelectedIndex = -1;
-
-        // Initialise the items in the bar weight picker.
-        var i = 0;
-        var valueSelected = false;
-        var bars = await _model.GetBars();
-        foreach (var bar in bars)
-        {
-            // Add the picker item.
-            var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
-            BarWeight.Items.Add(weightString);
-
-            // Try to select the same weight that was selected before.
-            if (!valueSelected && weightString == initialSelectedValue)
-            {
-                BarWeight.SelectedIndex = i;
-                valueSelected = true;
-            }
-
-            i++;
-        }
-
-        // If the original selected bar weight is no longer present, try to select the default.
-        if (!valueSelected)
-        {
-            var weightString = BarRepository.DefaultWeight.ToString(CultureInfo.InvariantCulture);
-            for (i = 0; i < BarWeight.Items.Count; i++)
-            {
-                // Default selection.
-                if (BarWeight.Items[i] == weightString)
-                {
-                    BarWeight.SelectedIndex = i;
-                    valueSelected = true;
-                    break;
-                }
-            }
-        }
-
-        // If no bar weight has been selected yet, select the first one.
-        if (!valueSelected)
-        {
-            BarWeight.SelectedIndex = 0;
-        }
-    }
 
     private void UpdateLayoutOrientation()
     {

@@ -27,13 +27,51 @@ public class CalculatorViewModel : BaseViewModel
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Bound properties.
-    public string MaxWeightText { get; set; }
 
-    public double BarWeight { get; set; }
+    private string _maxWeightText;
 
-    public string StartingWeightText { get; set; }
+    public string MaxWeightText
+    {
+        get => _maxWeightText;
 
-    public bool OneSideOnly { get; set; }
+        set => SetProperty(ref _maxWeightText, value);
+    }
+
+    private double _barWeight;
+
+    public double BarWeight
+    {
+        get => _barWeight;
+
+        set => SetProperty(ref _barWeight, value);
+    }
+
+    private List<double> _barWeights;
+
+    public List<double> BarWeights
+    {
+        get => _barWeights;
+
+        set => SetProperty(ref _barWeights, value);
+    }
+
+    private string _startingWeightText;
+
+    public string StartingWeightText
+    {
+        get => _startingWeightText;
+
+        set => SetProperty(ref _startingWeightText, value);
+    }
+
+    private bool _oneSideOnly;
+
+    public bool OneSideOnly
+    {
+        get => _oneSideOnly;
+
+        set => SetProperty(ref _oneSideOnly, value);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Derived properties.
@@ -45,7 +83,7 @@ public class CalculatorViewModel : BaseViewModel
     /// Any other non-numeric value will return null.
     /// </summary>
     private double? MaxWeight =>
-        string.IsNullOrEmpty(StartingWeightText)
+        string.IsNullOrEmpty(MaxWeightText)
             ? 0
             : (double.TryParse(MaxWeightText, out var maxWeight)
                 ? maxWeight
@@ -65,7 +103,7 @@ public class CalculatorViewModel : BaseViewModel
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
-    internal static string Units => GymCalc.Constants.Units.GetPreferred();
+    // internal static string Units => GymCalc.Constants.Units.GetPreferred();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Commands.
@@ -123,11 +161,12 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Results
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
+    #region Constructor
+
     /// <summary>
     /// Constructor.
     /// </summary>
-    internal CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
+    public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
         DumbbellRepository dbRepo, KettlebellRepository kbRepo)
     {
         // Keep references to the repositories.
@@ -136,13 +175,11 @@ public class CalculatorViewModel : BaseViewModel
         _dbRepo = dbRepo;
         _kbRepo = kbRepo;
 
+        // Create commands.
         CalculateCommand = new AsyncCommand(async () => await Calculate());
     }
 
-    internal async Task<List<Bar>> GetBars()
-    {
-        return await _barRepo.GetAll(Units, true);
-    }
+    #endregion Constructor
 
     #region Validation methods
 
@@ -182,6 +219,7 @@ public class CalculatorViewModel : BaseViewModel
         PlatesResultsVisible = false;
         SingleWeightResultsVisible = false;
 
+        // Do the calculations based on the selected exercise type.
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
@@ -214,7 +252,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var plates = await _plateRepo.GetAll(Units, true);
+        var plates = await _plateRepo.GetAll(enabled: true, ascending: true);
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, plates,
             "Plates each end");
         PlatesResultsVisible = true;
@@ -228,7 +266,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var plates = await _plateRepo.GetAll(Units, true);
+        var plates = await _plateRepo.GetAll(enabled: true, ascending: true);
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
             OneSideOnly, plates, "Plates each side");
         PlatesResultsVisible = true;
@@ -242,7 +280,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var dumbbells = await _dbRepo.GetAll(Units, true);
+        var dumbbells = await _dbRepo.GetAll(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
         SingleWeightResultsVisible = true;
     }
@@ -255,10 +293,86 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var kettlebells = await _kbRepo.GetAll(Units, true);
+        var kettlebells = await _kbRepo.GetAll(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
         SingleWeightResultsVisible = true;
     }
 
     #endregion Calculations
+
+    #region Database stuff
+
+    internal async Task InitializeDatabase()
+    {
+        var barTask = _barRepo.Initialize();
+        var plateTask = _plateRepo.Initialize();
+        var dumbbellTask = _dbRepo.Initialize();
+        var kettlebellTask = _kbRepo.Initialize();
+        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
+    }
+
+    internal async Task<List<Bar>> GetBars()
+    {
+        return await _barRepo.GetAll(enabled: true, ascending: true);
+    }
+
+    /// <summary>
+    /// Reset the bar weight picker items.
+    /// </summary>
+    internal async Task ResetBarWeightPicker()
+    {
+        // Get the current selected value.
+        // var initialSelectedIndex = BarWeight.SelectedIndex;
+        // var initialSelectedValue = BarWeight;
+
+        // Reset the picker items.
+        var bars = await GetBars();
+        BarWeights = bars.Select(b => b.Weight).ToList();
+
+        // BarWeight.Items.Clear();
+        // BarWeight.SelectedIndex = -1;
+
+        // // Initialise the items in the bar weight picker.
+        // var i = 0;
+        // var valueSelected = false;
+        // foreach (var bar in bars)
+        // {
+        //     // Add the picker item.
+        //     var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
+        //     BarWeight.Items.Add(weightString);
+        //
+        //     // Try to select the same weight that was selected before.
+        //     if (!valueSelected && weightString == initialSelectedValue)
+        //     {
+        //         BarWeight.SelectedIndex = i;
+        //         valueSelected = true;
+        //     }
+        //
+        //     i++;
+        // }
+
+        // If the original selected bar weight is no longer present, try to select the default.
+        // if (!valueSelected)
+        // {
+        //     var weightString = BarRepository.DefaultWeight.ToString(CultureInfo.InvariantCulture);
+        //     for (i = 0; i < BarWeight.Items.Count; i++)
+        //     {
+        //         // Default selection.
+        //         if (BarWeight.Items[i] == weightString)
+        //         {
+        //             BarWeight.SelectedIndex = i;
+        //             valueSelected = true;
+        //             break;
+        //         }
+        //     }
+        // }
+        //
+        // // If no bar weight has been selected yet, select the first one.
+        // if (!valueSelected)
+        // {
+        //     BarWeight.SelectedIndex = 0;
+        // }
+    }
+
+    #endregion Database stuff
 }

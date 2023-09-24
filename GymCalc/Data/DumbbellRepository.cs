@@ -25,12 +25,12 @@ public class DumbbellRepository : GymObjectRepository
         var addedSoFar = new List<(double, string)>();
 
         // Kilograms.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.KILOGRAMS, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.KILOGRAMS, true, addedSoFar);
 
         // Pounds.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.POUNDS, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.POUNDS, true, addedSoFar);
     }
 
     private async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
@@ -67,10 +67,10 @@ public class DumbbellRepository : GymObjectRepository
     /// Get the dumbbells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
-        bool ascending = true)
+    internal async Task<List<Dumbbell>> GetAll(string units = Units.DEFAULT, bool? enabled = null,
+        bool? ascending = null)
     {
-        return await base.GetAll<Dumbbell>(units, onlyEnabled, ascending);
+        return await base.GetAll<Dumbbell>(units, enabled, ascending);
     }
 
     /// <summary>
