@@ -48,12 +48,6 @@ public partial class CalculatorPage : ContentPage
             _databaseInitialized = true;
         }
 
-        // Set the user's preferred units, which may have changed on the settings page.
-        var units = UnitsUtility.GetDefault().GetDescription();
-        MaxWeightUnit.Text = units;
-        BarWeightUnit.Text = units;
-        StartingWeightUnit.Text = units;
-
         // Initialise the exercise type buttons.
         SetExerciseType(ExerciseType.Barbell);
 

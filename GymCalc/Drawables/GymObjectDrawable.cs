@@ -1,6 +1,6 @@
 using GymCalc.Models;
 
-namespace GymCalc.Graphics.Drawables;
+namespace GymCalc.Drawables;
 
 public abstract class GymObjectDrawable : IDrawable
 {

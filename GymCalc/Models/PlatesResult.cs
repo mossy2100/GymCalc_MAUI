@@ -1,4 +1,4 @@
-using GymCalc.Graphics.Drawables;
+using GymCalc.Drawables;
 
 namespace GymCalc.Models;
 

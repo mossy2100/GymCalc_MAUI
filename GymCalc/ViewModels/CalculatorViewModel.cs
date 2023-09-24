@@ -1,9 +1,11 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using Galaxon.Core.Enums;
 using GymCalc.Solvers;
 using GymCalc.Constants;
 using GymCalc.Models;
 using GymCalc.Data;
+using GymCalc.Utilities;
 
 namespace GymCalc.ViewModels;
 
@@ -23,10 +25,7 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Fields
 
-    #region Properties
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Bound properties.
+    #region Bindable properties
 
     private string _maxWeightText;
 
@@ -73,51 +72,32 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _oneSideOnly, value);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Derived properties.
-    public ExerciseType SelectedExerciseType { get; set; }
+    private string _maxWeightUnits;
 
-    /// <summary>
-    /// Determine the maximum weight from the entry control.
-    /// Treat blank as equal to 0.
-    /// Any other non-numeric value will return null.
-    /// </summary>
-    private double? MaxWeight =>
-        string.IsNullOrEmpty(MaxWeightText)
-            ? 0
-            : (double.TryParse(MaxWeightText, out var maxWeight)
-                ? maxWeight
-                : null);
-
-    /// <summary>
-    /// Determine the starting weight from the entry control.
-    /// Treat blank as equal to 0.
-    /// Any other non-numeric value will return null.
-    /// </summary>
-    private double? StartingWeight =>
-        string.IsNullOrEmpty(StartingWeightText)
-            ? 0
-            : (double.TryParse(StartingWeightText, out var startingWeight)
-                ? startingWeight
-                : null);
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Commands.
-    public ICommand CalculateCommand { get; private set; }
-
-    /// <summary>
-    /// Error message, bindable.
-    /// </summary>
-    public string ErrorMessage
+    public string MaxWeightUnits
     {
-        get => _errorMessage;
+        get => _maxWeightUnits;
 
-        set => SetProperty(ref _errorMessage, value);
+        set => SetProperty(ref _maxWeightUnits, value);
     }
 
-    #endregion Properties
+    private string _barWeightUnits;
 
-    #region Results
+    public string BarWeightUnits
+    {
+        get => _barWeightUnits;
+
+        set => SetProperty(ref _barWeightUnits, value);
+    }
+
+    private string _startingWeightUnits;
+
+    public string StartingWeightUnits
+    {
+        get => _startingWeightUnits;
+
+        set => SetProperty(ref _startingWeightUnits, value);
+    }
 
     private List<PlatesResult> _platesResults;
 
@@ -155,7 +135,49 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResultsVisible, value);
     }
 
-    #endregion Results
+    #endregion Bindable properties
+
+    #region Other properties
+
+    public ExerciseType SelectedExerciseType { get; set; }
+
+    /// <summary>
+    /// Determine the maximum weight from the entry control.
+    /// Treat blank as equal to 0.
+    /// Any other non-numeric value will return null.
+    /// </summary>
+    private double? MaxWeight =>
+        string.IsNullOrEmpty(MaxWeightText)
+            ? 0
+            : (double.TryParse(MaxWeightText, out var maxWeight)
+                ? maxWeight
+                : null);
+
+    /// <summary>
+    /// Determine the starting weight from the entry control.
+    /// Treat blank as equal to 0.
+    /// Any other non-numeric value will return null.
+    /// </summary>
+    private double? StartingWeight =>
+        string.IsNullOrEmpty(StartingWeightText)
+            ? 0
+            : (double.TryParse(StartingWeightText, out var startingWeight)
+                ? startingWeight
+                : null);
+
+    public ICommand CalculateCommand { get; private set; }
+
+    /// <summary>
+    /// Error message, bindable.
+    /// </summary>
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+
+        set => SetProperty(ref _errorMessage, value);
+    }
+
+    #endregion Other properties
 
     #region Constructor
 
@@ -173,6 +195,12 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(async () => await Calculate());
+
+        // Set the user's preferred units, which may have changed on the settings page.
+        var units = UnitsUtility.GetDefault().GetDescription();
+        MaxWeightUnits = units;
+        BarWeightUnits = units;
+        StartingWeightUnits = units;
     }
 
     #endregion Constructor
@@ -307,10 +335,10 @@ public class CalculatorViewModel : BaseViewModel
         await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
     }
 
-    internal async Task<List<Bar>> GetBars()
-    {
-        return await _barRepo.GetAll(enabled: true, ascending: true);
-    }
+    // private async Task<List<Bar>> GetBars()
+    // {
+    //     return await _barRepo.GetAll(enabled: true, ascending: true);
+    // }
 
     /// <summary>
     /// Reset the bar weight picker items.
@@ -322,7 +350,7 @@ public class CalculatorViewModel : BaseViewModel
         // var initialSelectedValue = BarWeight;
 
         // Reset the picker items.
-        var bars = await GetBars();
+        var bars = await _barRepo.GetAll(enabled: true, ascending: true);
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // BarWeight.Items.Clear();

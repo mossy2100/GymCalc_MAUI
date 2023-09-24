@@ -1,5 +1,5 @@
 using Galaxon.Core.Numbers;
-using GymCalc.Graphics.Drawables;
+using GymCalc.Drawables;
 using GymCalc.Models;
 
 namespace GymCalc.Solvers;
@@ -26,20 +26,17 @@ internal static class SingleWeightSolver
 
             // Get the drawable.
             var drawableTypeName =
-                "GymCalc.Graphics.Drawables." + closest.GetType().Name + "Drawable";
+                "GymCalc.Drawables." + closest.GetType().Name + "Drawable";
             var drawable = (GymObjectDrawable)Activator.CreateInstance(null, drawableTypeName)!
                 .Unwrap();
             if (drawable == null)
             {
                 throw new Exception("Could not create drawable.");
             }
-            // closest is Dumbbell
-            // ? new DumbbellDrawable()
-            // : new KettlebellDrawable();
             drawable.GymObject = closest;
 
             // Add the result to the result set.
-            var result = new SingleWeightResult(percent, maxWeight, closest, drawable);
+            var result = new SingleWeightResult(percent, idealWeight, closest, drawable);
             results.Add(result);
         }
 

@@ -1,6 +1,6 @@
 using Galaxon.Core.Numbers;
 using GymCalc.Models;
-using GymCalc.Graphics.Drawables;
+using GymCalc.Drawables;
 
 namespace GymCalc.Solvers;
 

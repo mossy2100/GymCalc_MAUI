@@ -1,8 +1,9 @@
 using System.Globalization;
+using GymCalc.Graphics;
 using GymCalc.Models;
 using Font = Microsoft.Maui.Graphics.Font;
 
-namespace GymCalc.Graphics.Drawables;
+namespace GymCalc.Drawables;
 
 public class BarDrawable : GymObjectDrawable
 {

@@ -8,7 +8,7 @@
     xmlns:models="clr-namespace:GymCalc.Models"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:drawables="clr-namespace:GymCalc.Graphics.Drawables"
+    xmlns:drawables="clr-namespace:GymCalc.Drawables"
     x:DataType="viewModels:CalculatorViewModel"
     Title="Calculator">
 
@@ -23,8 +23,7 @@
         <StackLayout x:Name="CalculatorLayout"
             Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-            <VerticalStackLayout x:Name="CalculatorForm"
-                Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
@@ -75,17 +74,15 @@
                         Grid.Row="0" Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
-                            x:Name="MaxWeight"
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center"
                             Text="{Binding MaxWeightText, Mode=TwoWay}" />
                     </Frame>
                     <Label
-                        x:Name="MaxWeightUnit"
                         Grid.Row="0" Grid.Column="2"
                         HorizontalTextAlignment="Start"
-                        Text="kg"
+                        Text="{Binding MaxWeightUnits}"
                         VerticalTextAlignment="Center" />
                 </Grid>
 
@@ -99,22 +96,20 @@
                         Grid.Row="0" Grid.Column="0"
                         FontSize="16"
                         HorizontalTextAlignment="Start"
-                        Text="Bar weight (kg)"
+                        Text="Bar weight"
                         VerticalTextAlignment="Center" />
                     <Frame
                         Grid.Row="0" Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
-                            x:Name="BarWeight"
                             ItemsSource="{Binding BarWeights}"
                             SelectedItem="{Binding BarWeight, Mode=TwoWay}"
                             HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
                     </Frame>
                     <Label
-                        x:Name="BarWeightUnit"
                         Grid.Row="0" Grid.Column="2"
                         HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
-                        Text="kg" />
+                        Text="{Binding BarWeightUnits}" />
                 </Grid>
 
                 <!--  Machine starting weight  -->
@@ -126,13 +121,12 @@
                     <Label
                         Grid.Row="0" Grid.Column="0"
                         HorizontalTextAlignment="Start"
-                        Text="Starting weight (kg)"
+                        Text="Starting weight"
                         VerticalTextAlignment="Center" />
                     <Frame
                         Grid.Row="0" Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
-                            x:Name="StartingWeight"
                             Text="{Binding StartingWeightText, Mode=TwoWay}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
                                                               Dark={StaticResource Tertiary}}"
@@ -141,10 +135,9 @@
                             VerticalTextAlignment="Center" />
                     </Frame>
                     <Label
-                        x:Name="StartingWeightUnit"
                         Grid.Row="0" Grid.Column="2"
                         HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
-                        Text="kg" />
+                        Text="{Binding StartingWeightUnits}" />
                 </Grid>
 
                 <!--  Plates one side only  -->
@@ -242,7 +235,7 @@
                     <DataTemplate x:DataType="models:SingleWeightResult">
                         <Grid
                             Padding="0,10,0,10"
-                            RowDefinitions="Auto,Auto,Auto,Auto"
+                            RowDefinitions="Auto,Auto,Auto"
                             RowSpacing="{x:Static graphics:PageLayout.Spacing}"
                             ColumnDefinitions="4*,3*,3*"
                             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
@@ -262,11 +255,11 @@
                             <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ideal,
                                 Converter={StaticResource DefaultWeightTextConverter}}"
                                 Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="2" Grid.Column="2"
-                                Text="{Binding Closest,
-                                    Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableClosest}" />
-                            <GraphicsView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                            <!-- <Label Grid.Row="2" Grid.Column="2" -->
+                            <!--     Text="{Binding Closest, -->
+                            <!--         Converter={StaticResource DefaultWeightTextConverter}}" -->
+                            <!--     Style="{StaticResource ResultsTableClosest}" /> -->
+                            <GraphicsView Grid.Row="2" Grid.Column="2"
                                 Drawable="{Binding Drawable}" WidthRequest="250"
                                 HeightRequest="30" />
                         </Grid>

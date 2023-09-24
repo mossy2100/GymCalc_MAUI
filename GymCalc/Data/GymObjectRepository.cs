@@ -82,7 +82,8 @@ public abstract class GymObjectRepository
         // Add where clause for units if needed.
         if (units != Units.All)
         {
-            query = query.Where(ht => ht.Units == units.GetDescription());
+            var sUnits = units.GetDescription();
+            query = query.Where(ht => ht.Units == sUnits);
         }
 
         // Add where clause for enabled/disabled weights if needed.

@@ -3,7 +3,7 @@ using GymCalc.Data;
 using GymCalc.Models;
 using GymCalc.Constants;
 using GymCalc.Graphics;
-using GymCalc.Graphics.Drawables;
+using GymCalc.Drawables;
 using GymCalc.Utilities;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
 using CommunityToolkit.Maui.Markup;
