@@ -1,8 +1,8 @@
 using Galaxon.Core.Numbers;
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Graphics.Drawables;
 
-namespace GymCalc.Calculations;
+namespace GymCalc.Solvers;
 
 internal static class PlateSolver
 {
@@ -16,8 +16,8 @@ internal static class PlateSolver
 
     private static double _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(double maxWeight,
-        double startingWeight, bool oneSideOnly, List<Plate> availPlates, string platesEachSideText)
+    internal static List<PlatesResult> CalculateResults(double maxWeight, double startingWeight,
+        bool oneSideOnly, IEnumerable<Plate> availPlates, string platesEachSideText)
     {
         var results = new List<PlatesResult>();
 
@@ -46,7 +46,8 @@ internal static class PlateSolver
         return results;
     }
 
-    private static List<PlateDrawable> GetDrawables(List<Plate> plates, double maxPlateWeight)
+    private static List<PlateDrawable> GetDrawables(IEnumerable<Plate> plates,
+        double maxPlateWeight)
     {
         return plates.Select(plate => new PlateDrawable
             {
@@ -84,7 +85,8 @@ internal static class PlateSolver
     /// </summary>
     /// <param name="currentStack">The stack of plates so far.</param>
     /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
-    private static void SearchSolutions(List<Plate> currentStack, double maxPlateWeight)
+    private static void SearchSolutions(IReadOnlyCollection<Plate> currentStack,
+        double maxPlateWeight)
     {
         foreach (var plate in _availPlates)
         {

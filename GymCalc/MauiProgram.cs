@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using GymCalc.Data;
 using GymCalc.Pages;
 using GymCalc.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -34,6 +35,12 @@ public static class MauiProgram
             .AddTransient<EditPage>()
             .AddTransient<DeletePage>()
             .AddTransient<ResetPage>()
+            // Database and repositories
+            .AddSingleton<Database>()
+            .AddSingleton<BarRepository>()
+            .AddSingleton<PlateRepository>()
+            .AddSingleton<DumbbellRepository>()
+            .AddSingleton<KettlebellRepository>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
             ;

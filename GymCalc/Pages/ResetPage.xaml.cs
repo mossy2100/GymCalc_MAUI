@@ -1,13 +1,21 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GymCalc.Constants;
-using GymCalc.Data.Repositories;
+using GymCalc.Data;
 
 namespace GymCalc.Pages;
 
 [QueryProperty(nameof(GymObjectTypeName), "type")]
 public partial class ResetPage : ContentPage
 {
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly DumbbellRepository _dbRepo;
+
+    private readonly KettlebellRepository _kbRepo;
+
     private string _gymObjectTypeName;
 
     public string GymObjectTypeName
@@ -21,14 +29,20 @@ public partial class ResetPage : ContentPage
         }
     }
 
-    public ResetPage()
+    public ResetPage(BarRepository barRepo, PlateRepository plateRepo, DumbbellRepository dbRepo,
+        KettlebellRepository kbRepo)
     {
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+
         InitializeComponent();
         BindingContext = this;
 
         // Workaround for issue with Back button label.
         // <see href="https://github.com/dotnet/maui/issues/8335" />
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior() { IsVisible = false });
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
     /// <inheritdoc />
@@ -60,10 +74,10 @@ public partial class ResetPage : ContentPage
     {
         GymObjectRepository repo = GymObjectTypeName switch
         {
-            GymObjectType.Bar => BarRepository.GetInstance(),
-            GymObjectType.Plate => PlateRepository.GetInstance(),
-            GymObjectType.Dumbbell => DumbbellRepository.GetInstance(),
-            GymObjectType.Kettlebell => KettlebellRepository.GetInstance(),
+            GymObjectType.Bar => _barRepo,
+            GymObjectType.Plate => _plateRepo,
+            GymObjectType.Dumbbell => _dbRepo,
+            GymObjectType.Kettlebell => _kbRepo,
             _ => throw new InvalidEnumArgumentException("Invalid object type."),
         };
 

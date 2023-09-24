@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using GymCalc.Data;
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
+using GymCalc.Models;
 using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Graphics.Drawables;
@@ -15,6 +14,16 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(EditMode), "editMode")]
 public partial class ListPage : ContentPage
 {
+    private readonly Database _database;
+
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly DumbbellRepository _dbRepo;
+
+    private readonly KettlebellRepository _kbRepo;
+
     private string _gymObjectTypeName;
 
     private bool _isGymObjectTypeNameSet;
@@ -65,8 +74,15 @@ public partial class ListPage : ContentPage
     /// </summary>
     private readonly Dictionary<HorizontalStackLayout, GymObject> _stackObjectMap = new ();
 
-    public ListPage()
+    public ListPage(Database database, BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
     {
+        _database = database;
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+
         InitializeComponent();
         BindingContext = this;
 
@@ -113,22 +129,22 @@ public partial class ListPage : ContentPage
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                var bars = await BarRepository.GetInstance().GetAll(units);
+                var bars = await _barRepo.GetAll(units);
                 DisplayList<Bar, BarDrawable>(bars);
                 break;
 
             case GymObjectType.Plate:
-                var plates = await PlateRepository.GetInstance().GetAll(units);
+                var plates = await _plateRepo.GetAll(units);
                 DisplayList<Plate, PlateDrawable>(plates);
                 break;
 
             case GymObjectType.Dumbbell:
-                var dumbbells = await DumbbellRepository.GetInstance().GetAll(units);
+                var dumbbells = await _dbRepo.GetAll(units);
                 DisplayList<Dumbbell, DumbbellDrawable>(dumbbells);
                 break;
 
             case GymObjectType.Kettlebell:
-                var kettlebells = await KettlebellRepository.GetInstance().GetAll(units);
+                var kettlebells = await _kbRepo.GetAll(units);
                 DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
                 break;
         }
@@ -287,8 +303,7 @@ public partial class ListPage : ContentPage
         var cb = (CheckBox)sender;
         var gymObject = _cbObjectMap[cb];
         gymObject.Enabled = cb.IsChecked;
-        var db = Database.GetConnection();
-        await db.UpdateAsync(gymObject);
+        await _database.Connection.UpdateAsync(gymObject);
     }
 
     private async void EditIcon_OnClicked(object sender, EventArgs e)

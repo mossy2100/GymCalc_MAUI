@@ -1,4 +1,4 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 
 namespace GymCalc.Graphics.Drawables;
 
@@ -23,7 +23,7 @@ public abstract class GymObjectDrawable : IDrawable
     /// Create a GraphicsView that references the Drawable.
     /// The new GraphicsView can then be added to a Layout.
     /// </summary>
-    internal virtual GraphicsView CreateGraphicsView()
+    internal GraphicsView CreateGraphicsView()
     {
         return new GraphicsView
         {

@@ -1,8 +1,7 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using GymCalc.Data;
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
+using GymCalc.Models;
 using GymCalc.Constants;
 using SQLite;
 using CheckBox = InputKit.Shared.Controls.CheckBox;
@@ -13,6 +12,16 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class EditPage : ContentPage
 {
+    private readonly Database _database;
+
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly DumbbellRepository _dbRepo;
+
+    private readonly KettlebellRepository _kbRepo;
+
     private string _gymObjectTypeName;
 
     public string GymObjectTypeName
@@ -39,14 +48,21 @@ public partial class EditPage : ContentPage
         }
     }
 
-    public EditPage()
+    public EditPage(Database database, BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
     {
+        _database = database;
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+
         InitializeComponent();
         BindingContext = this;
 
         // Workaround for issue with Back button label.
         // <see href="https://github.com/dotnet/maui/issues/8335" />
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior() { IsVisible = false });
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
     /// <inheritdoc />
@@ -145,7 +161,7 @@ public partial class EditPage : ContentPage
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                var bar = await BarRepository.GetInstance().Get(GymObjectId);
+                var bar = await _barRepo.Get(GymObjectId);
                 if (bar != null)
                 {
                     SetCommonFields(bar);
@@ -153,7 +169,7 @@ public partial class EditPage : ContentPage
                 break;
 
             case GymObjectType.Plate:
-                var plate = await PlateRepository.GetInstance().Get(GymObjectId);
+                var plate = await _plateRepo.Get(GymObjectId);
                 if (plate != null)
                 {
                     SetCommonFields(plate);
@@ -162,7 +178,7 @@ public partial class EditPage : ContentPage
                 break;
 
             case "Dumbbell":
-                var dumbbell = await DumbbellRepository.GetInstance().Get(GymObjectId);
+                var dumbbell = await _dbRepo.Get(GymObjectId);
                 if (dumbbell != null)
                 {
                     SetCommonFields(dumbbell);
@@ -171,7 +187,7 @@ public partial class EditPage : ContentPage
                 break;
 
             case GymObjectType.Kettlebell:
-                var kettlebell = await KettlebellRepository.GetInstance().Get(GymObjectId);
+                var kettlebell = await _kbRepo.Get(GymObjectId);
                 if (kettlebell != null)
                 {
                     SetCommonFields(kettlebell);
@@ -215,24 +231,24 @@ public partial class EditPage : ContentPage
         }
         ClearErrorMessage();
 
-        var db = Database.GetConnection();
+        var conn = _database.Connection;
 
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                await SaveBar(weight, db);
+                await SaveBar(weight, conn);
                 break;
 
             case GymObjectType.Plate:
-                await SavePlate(weight, db);
+                await SavePlate(weight, conn);
                 break;
 
             case GymObjectType.Dumbbell:
-                await SaveDumbbell(weight, db);
+                await SaveDumbbell(weight, conn);
                 break;
 
             case GymObjectType.Kettlebell:
-                await SaveKettlebell(weight, db);
+                await SaveKettlebell(weight, conn);
                 break;
         }
 

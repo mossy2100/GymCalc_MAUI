@@ -1,14 +1,30 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using GymCalc.Calculations;
+using GymCalc.Solvers;
 using GymCalc.Constants;
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
+using GymCalc.Models;
+using GymCalc.Data;
 
 namespace GymCalc.ViewModels;
 
 public class CalculatorViewModel : BaseViewModel
 {
+    #region Fields
+
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly DumbbellRepository _dbRepo;
+
+    private readonly KettlebellRepository _kbRepo;
+
+    private string _errorMessage;
+
+    #endregion Fields
+
+    #region Properties
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Bound properties.
     public string MaxWeightText { get; set; }
@@ -23,23 +39,29 @@ public class CalculatorViewModel : BaseViewModel
     // Derived properties.
     public ExerciseType SelectedExerciseType { get; set; }
 
-    public double? MaxWeight =>
-        double.TryParse(MaxWeightText, out var maxWeight) ? maxWeight : null;
+    /// <summary>
+    /// Determine the maximum weight from the entry control.
+    /// Treat blank as equal to 0.
+    /// Any other non-numeric value will return null.
+    /// </summary>
+    private double? MaxWeight =>
+        string.IsNullOrEmpty(StartingWeightText)
+            ? 0
+            : (double.TryParse(MaxWeightText, out var maxWeight)
+                ? maxWeight
+                : null);
 
-    public double? StartingWeight
-    {
-        get
-        {
-            // Treat blank as equal to 0.
-            if (string.IsNullOrEmpty(StartingWeightText))
-            {
-                return 0;
-            }
-            return double.TryParse(StartingWeightText, out var startingWeight)
+    /// <summary>
+    /// Determine the starting weight from the entry control.
+    /// Treat blank as equal to 0.
+    /// Any other non-numeric value will return null.
+    /// </summary>
+    private double? StartingWeight =>
+        string.IsNullOrEmpty(StartingWeightText)
+            ? 0
+            : (double.TryParse(StartingWeightText, out var startingWeight)
                 ? startingWeight
-                : null;
-        }
-    }
+                : null);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // Values extracted from user preferences.
@@ -49,119 +71,27 @@ public class CalculatorViewModel : BaseViewModel
     // Commands.
     public ICommand CalculateCommand { get; private set; }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Lookup table for available bars.
-    private Dictionary<double, Bar> _bars;
-
-    internal Dictionary<double, Bar> Bars
+    /// <summary>
+    /// Error message, bindable.
+    /// </summary>
+    public string ErrorMessage
     {
-        get
-        {
-            if (_bars == null)
-            {
-                var task = Task.Run(() => BarRepository.GetInstance().GetAll(Units, true));
-                task.Wait(1000);
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    var bars = task.Result;
-                    _bars = bars.ToDictionary(p => p.Weight, p => p);
-                }
-                else
-                {
-                    ErrorMessage = "Could not load bars.";
-                }
-            }
-            return _bars;
-        }
+        get => _errorMessage;
+
+        set => SetProperty(ref _errorMessage, value);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Lookup table for available plates.
-    private List<Plate> _plates;
+    #endregion Properties
 
-    internal List<Plate> Plates
-    {
-        get
-        {
-            if (_plates == null)
-            {
-                var task = Task.Run(() => PlateRepository.GetInstance().GetAll(Units, true));
-                task.Wait(1000);
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    _plates = task.Result;
-                }
-                else
-                {
-                    ErrorMessage = "Could not load plates.";
-                }
-            }
-            return _plates;
-        }
-    }
+    #region Results
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Lookup table for available dumbbells.
-    private Dictionary<double, Dumbbell> _dumbbells;
-
-    internal Dictionary<double, Dumbbell> Dumbbells
-    {
-        get
-        {
-            if (_dumbbells == null)
-            {
-                var task = Task.Run(() => DumbbellRepository.GetInstance().GetAll(Units, true));
-                task.Wait(1000);
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    var dumbbells = task.Result;
-                    _dumbbells = dumbbells.ToDictionary(p => p.Weight, p => p);
-                }
-                else
-                {
-                    ErrorMessage = "Could not load dumbbells.";
-                }
-            }
-            return _dumbbells;
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Lookup table for available kettlebells.
-    private Dictionary<double, Kettlebell> _kettlebells;
-
-    internal Dictionary<double, Kettlebell> Kettlebells
-    {
-        get
-        {
-            if (_kettlebells == null)
-            {
-                var task = Task.Run(() => KettlebellRepository.GetInstance().GetAll(Units, true));
-                task.Wait(1000);
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    var kettlebells = task.Result;
-                    _kettlebells = kettlebells.ToDictionary(p => p.Weight, p => p);
-                }
-                else
-                {
-                    ErrorMessage = "Could not load kettlebells.";
-                }
-            }
-            return _kettlebells;
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Results.
-
-    private List<PlatesResult> _platesResult;
+    private List<PlatesResult> _platesResults;
 
     public List<PlatesResult> PlatesResults
     {
-        get => _platesResult;
+        get => _platesResults;
 
-        set => SetProperty(ref _platesResult, value);
+        set => SetProperty(ref _platesResults, value);
     }
 
     private bool _platesResultsVisible;
@@ -173,23 +103,45 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _platesResultsVisible, value);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Error message.
-    private string _errorMessage;
+    private List<SingleWeightResult> _singleWeightResults;
 
-    public string ErrorMessage
+    public List<SingleWeightResult> SingleWeightResults
     {
-        get => _errorMessage;
+        get => _singleWeightResults;
 
-        set => SetProperty(ref _errorMessage, value);
+        set => SetProperty(ref _singleWeightResults, value);
     }
 
+    private bool _singleWeightResultsVisible;
+
+    public bool SingleWeightResultsVisible
+    {
+        get => _singleWeightResultsVisible;
+
+        set => SetProperty(ref _singleWeightResultsVisible, value);
+    }
+
+    #endregion Results
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CalculatorViewModel()
+    internal CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
     {
+        // Keep references to the repositories.
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+
         CalculateCommand = new AsyncCommand(async () => await Calculate());
+    }
+
+    internal async Task<List<Bar>> GetBars()
+    {
+        return await _barRepo.GetAll(Units, true);
     }
 
     #region Validation methods
@@ -226,14 +178,18 @@ public class CalculatorViewModel : BaseViewModel
 
     private async Task Calculate()
     {
+        // Hide current results.
+        PlatesResultsVisible = false;
+        SingleWeightResultsVisible = false;
+
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                DoBarbellCalculations();
+                await DoBarbellCalculations();
                 break;
 
             case ExerciseType.Machine:
-                DoMachineCalculations();
+                await DoMachineCalculations();
                 break;
 
             case ExerciseType.Dumbbell:
@@ -250,22 +206,21 @@ public class CalculatorViewModel : BaseViewModel
         }
     }
 
-    private void DoBarbellCalculations()
+    private async Task DoBarbellCalculations()
     {
-        PlatesResultsVisible = false;
-
         if (!ValidateMaxWeight())
         {
             return;
         }
 
         // Calculate and display the results.
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, Plates,
+        var plates = await _plateRepo.GetAll(Units, true);
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, plates,
             "Plates each end");
         PlatesResultsVisible = true;
     }
 
-    private void DoMachineCalculations()
+    private async Task DoMachineCalculations()
     {
         if (!ValidateMaxWeight() || !ValidateStartingWeight())
         {
@@ -273,8 +228,9 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
+        var plates = await _plateRepo.GetAll(Units, true);
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
-            OneSideOnly, Plates, "Plates each side");
+            OneSideOnly, plates, "Plates each side");
         PlatesResultsVisible = true;
     }
 
@@ -285,12 +241,10 @@ public class CalculatorViewModel : BaseViewModel
             return;
         }
 
-        // Get the available dumbbell weights ordered from lightest to heaviest.
-        // var availDumbbells = Dumbbells.Keys.ToList();
-
         // Calculate and display the results.
-        // DumbbellResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, availDumbbells);
-        // await DisplayDumbbellResults();
+        var dumbbells = await _dbRepo.GetAll(Units, true);
+        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
+        SingleWeightResultsVisible = true;
     }
 
     private async Task DoKettlebellCalculations()
@@ -300,12 +254,10 @@ public class CalculatorViewModel : BaseViewModel
             return;
         }
 
-        // Get the available kettlebell weights ordered from lightest to heaviest.
-        // var availKettlebells = Kettlebells.Keys.ToList();
-
         // Calculate and display the results.
-        // KettlebellResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, availKettlebells);
-        // await DisplayKettlebellResults();
+        var kettlebells = await _kbRepo.GetAll(Units, true);
+        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
+        SingleWeightResultsVisible = true;
     }
 
     #endregion Calculations

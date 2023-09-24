@@ -1,12 +1,12 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Constants;
 
-namespace GymCalc.Data.Repositories;
+namespace GymCalc.Data;
 
 /// <summary>
 /// Methods for CRUD operations on plates.
 /// </summary>
-internal class PlateRepository : GymObjectRepository
+public class PlateRepository : GymObjectRepository
 {
     /// <summary>
     /// Default plates.
@@ -47,20 +47,8 @@ internal class PlateRepository : GymObjectRepository
         (55, Units.Pounds, true, "Red"),
     };
 
-    private static PlateRepository _instance;
-
-    // Prevent instantiation from outside the class.
-    private PlateRepository()
+    public PlateRepository(Database database) : base(database)
     {
-    }
-
-    public static PlateRepository GetInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new PlateRepository();
-        }
-        return _instance;
     }
 
     /// <summary>
@@ -73,7 +61,7 @@ internal class PlateRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var db = Database.GetConnection();
+        var conn = Database.Connection;
 
         foreach (var (weight, units, enabled, color) in _DefaultPlates)
         {
@@ -84,7 +72,7 @@ internal class PlateRepository : GymObjectRepository
                 Enabled = enabled,
                 Color = color,
             };
-            await db.InsertAsync(plate);
+            await conn.InsertAsync(plate);
         }
     }
 

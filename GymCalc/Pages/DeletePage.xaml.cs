@@ -1,8 +1,7 @@
 using System.Runtime.CompilerServices;
 using GymCalc.Constants;
 using GymCalc.Data;
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
+using GymCalc.Models;
 
 namespace GymCalc.Pages;
 
@@ -10,6 +9,16 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class DeletePage : ContentPage
 {
+    private readonly Database _database;
+
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly DumbbellRepository _dbRepo;
+
+    private readonly KettlebellRepository _kbRepo;
+
     private string _gymObjectTypeName;
 
     public string GymObjectTypeName
@@ -36,14 +45,21 @@ public partial class DeletePage : ContentPage
         }
     }
 
-    public DeletePage()
+    public DeletePage(Database database, BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
     {
+        _database = database;
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+
         InitializeComponent();
         BindingContext = this;
 
         // Workaround for issue with Back button label.
         // <see href="https://github.com/dotnet/maui/issues/8335" />
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior() { IsVisible = false });
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
     /// <inheritdoc />
@@ -76,19 +92,19 @@ public partial class DeletePage : ContentPage
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                gymObject = await BarRepository.GetInstance().Get(GymObjectId);
+                gymObject = await _barRepo.Get(GymObjectId);
                 break;
 
             case GymObjectType.Plate:
-                gymObject = await PlateRepository.GetInstance().Get(GymObjectId);
+                gymObject = await _plateRepo.Get(GymObjectId);
                 break;
 
             case GymObjectType.Dumbbell:
-                gymObject = await DumbbellRepository.GetInstance().Get(GymObjectId);
+                gymObject = await _dbRepo.Get(GymObjectId);
                 break;
 
             case GymObjectType.Kettlebell:
-                gymObject = await KettlebellRepository.GetInstance().Get(GymObjectId);
+                gymObject = await _kbRepo.Get(GymObjectId);
                 break;
 
             default:
@@ -112,24 +128,24 @@ public partial class DeletePage : ContentPage
 
     private async void DeleteButton_OnClicked(object sender, EventArgs e)
     {
-        var db = Database.GetConnection();
+        var conn = _database.Connection;
 
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                await db.DeleteAsync<Bar>(GymObjectId);
+                await conn.DeleteAsync<Bar>(GymObjectId);
                 break;
 
             case GymObjectType.Plate:
-                await db.DeleteAsync<Plate>(GymObjectId);
+                await conn.DeleteAsync<Plate>(GymObjectId);
                 break;
 
             case GymObjectType.Dumbbell:
-                await db.DeleteAsync<Dumbbell>(GymObjectId);
+                await conn.DeleteAsync<Dumbbell>(GymObjectId);
                 break;
 
             case GymObjectType.Kettlebell:
-                await db.DeleteAsync<Kettlebell>(GymObjectId);
+                await conn.DeleteAsync<Kettlebell>(GymObjectId);
                 break;
         }
 

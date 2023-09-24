@@ -1,8 +1,8 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 
-namespace GymCalc.Data.Repositories;
+namespace GymCalc.Data;
 
-internal abstract class GymObjectRepository
+public abstract class GymObjectRepository
 {
     /// <summary>
     /// To be implemented by concrete classes.
@@ -10,17 +10,27 @@ internal abstract class GymObjectRepository
     internal abstract Task InsertDefaults();
 
     /// <summary>
+    /// Reference to the database (DI).
+    /// </summary>
+    protected Database Database { get; set; }
+
+    protected GymObjectRepository(Database database)
+    {
+        Database = database;
+    }
+
+    /// <summary>
     /// Ensure the database table exist and contains some objects.
     /// </summary>
     internal async Task Initialize<T>() where T : new()
     {
-        var db = Database.GetConnection();
+        var conn = Database.Connection;
 
         // Create the table if it doesn't already exist.
-        await db.CreateTableAsync<T>();
+        await conn.CreateTableAsync<T>();
 
         // Count how many rows there are.
-        var n = await db.Table<T>().CountAsync();
+        var n = await conn.Table<T>().CountAsync();
 
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
@@ -43,10 +53,10 @@ internal abstract class GymObjectRepository
         bool ascending = true)
         where T : GymObject, new()
     {
-        var db = Database.GetConnection();
+        var conn = Database.Connection;
 
         // Get all the gym objects in the preferred units.
-        var query = db.Table<T>().Where(ht => ht.Units == units);
+        var query = conn.Table<T>().Where(ht => ht.Units == units);
 
         // Add where clause if needed.
         if (onlyEnabled)
@@ -64,32 +74,34 @@ internal abstract class GymObjectRepository
 
     /// <summary>
     /// Get a gym object of a given type and id.
-    /// It's convenient to accept a 0 parameter for this.
+    /// It's convenient to allow a 0 parameter for this.
     /// </summary>
     /// <returns></returns>
     internal async Task<T> Get<T>(int id) where T : GymObject, new()
     {
-        if (id < 0)
+        switch (id)
         {
-            throw new ArgumentOutOfRangeException(nameof(id), "Cannot be less than 0.");
+            case < 0:
+                throw new ArgumentOutOfRangeException(nameof(id), "Cannot be less than 0.");
+
+            case 0:
+                return null;
+
+            default:
+            {
+                var conn = Database.Connection;
+
+                return await conn.Table<T>()
+                    .Where(ht => ht.Id == id)
+                    .FirstOrDefaultAsync();
+            }
         }
-
-        if (id == 0)
-        {
-            return null;
-        }
-
-        var db = Database.GetConnection();
-
-        return await db.Table<T>()
-            .Where(ht => ht.Id == id)
-            .FirstOrDefaultAsync();
     }
 
     internal async Task DeleteAll<T>()
     {
-        var db = Database.GetConnection();
-        await db.DeleteAllAsync<T>();
+        var conn = Database.Connection;
+        await conn.DeleteAllAsync<T>();
     }
 
     internal abstract Task DeleteAll();

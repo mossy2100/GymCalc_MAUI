@@ -13,11 +13,11 @@ public partial class AppShell : Shell
         BindingContext = this;
     }
 
-    public ICommand GoToListCommand =>
+    public static ICommand GoToListCommand =>
         new AsyncCommand<string>(
             async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
 
-    public ICommand GoToHtmlCommand =>
+    public static ICommand GoToHtmlCommand =>
         new AsyncCommand<string>(async parameters => await GoToHtml(parameters));
 
     /// <summary>
@@ -36,16 +36,16 @@ public partial class AppShell : Shell
         await Current.GoToAsync("//list", new Dictionary<string, object>
         {
             { "type", gymObjectTypeName },
-            { "editMode", editMode }
+            { "editMode", editMode },
         });
     }
 
-    internal static async Task GoToHtml(string commandParameters)
+    private static async Task GoToHtml(string commandParameters)
     {
-        string[] parameters = commandParameters.Split('|');
+        var parameters = commandParameters.Split('|');
         if (parameters.Length != 2)
         {
-            throw new ArgumentException("Invalid number of command parameters. There should be 2: the title and the filename, separated by a vertical bar character (|).");
+            throw new ArgumentException("Invalid number of command parameters. There should be 2: the page title and the filename, separated by a vertical bar character (|).");
         }
 
         Current.FlyoutIsPresented = false;

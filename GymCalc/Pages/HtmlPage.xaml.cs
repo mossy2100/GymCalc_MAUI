@@ -4,21 +4,21 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(FileName), "fileName")]
 public partial class HtmlPage : ContentPage
 {
-    private string _title;
-
-    public string Title
-    {
-        get => _title;
-
-        set
-        {
-            if (_title != value)
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    // private string _title;
+    //
+    // public string Title
+    // {
+    //     get => _title;
+    //
+    //     set
+    //     {
+    //         if (_title != value)
+    //         {
+    //             _title = value;
+    //             OnPropertyChanged();
+    //         }
+    //     }
+    // }
 
     private string _fileName;
 

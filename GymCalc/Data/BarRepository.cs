@@ -1,12 +1,12 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Constants;
 
-namespace GymCalc.Data.Repositories;
+namespace GymCalc.Data;
 
 /// <summary>
 /// Methods for CRUD operations on bars.
 /// </summary>
-internal class BarRepository : GymObjectRepository
+public class BarRepository : GymObjectRepository
 {
     /// <summary>
     /// Default selected bar weight.
@@ -31,20 +31,8 @@ internal class BarRepository : GymObjectRepository
         (55, Units.Pounds, true),
     };
 
-    private static BarRepository _instance;
-
-    // Prevent instantiation from outside the class.
-    private BarRepository()
+    public BarRepository(Database database) : base(database)
     {
-    }
-
-    public static BarRepository GetInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new BarRepository();
-        }
-        return _instance;
     }
 
     /// <summary>
@@ -57,8 +45,6 @@ internal class BarRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var db = Database.GetConnection();
-
         foreach (var (weight, units, enable) in _DefaultBars)
         {
             var bar = new Bar
@@ -67,7 +53,7 @@ internal class BarRepository : GymObjectRepository
                 Units = units,
                 Enabled = enable,
             };
-            await db.InsertAsync(bar);
+            await Database.Connection.InsertAsync(bar);
         }
     }
 
@@ -75,7 +61,7 @@ internal class BarRepository : GymObjectRepository
     /// Get the bars.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false)
+    internal async Task<List<Bar>> GetAll(string units, bool onlyEnabled = false)
     {
         return await base.GetAll<Bar>(units, onlyEnabled);
     }

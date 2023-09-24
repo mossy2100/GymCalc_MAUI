@@ -1,5 +1,3 @@
-using GymCalc.Data.Models;
-using GymCalc.Data.Repositories;
 using SQLite;
 
 namespace GymCalc.Data;
@@ -7,8 +5,25 @@ namespace GymCalc.Data;
 /// <summary>
 /// Container for database stuff.
 /// </summary>
-internal static class Database
+public class Database
 {
+    private BarRepository _barRepo;
+
+    private PlateRepository _plateRepo;
+
+    private DumbbellRepository _dbRepo;
+
+    private KettlebellRepository _kbRepo;
+
+    public Database(BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
+    {
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dbRepo = dbRepo;
+        _kbRepo = kbRepo;
+    }
+
     /// <summary>
     /// Filename of the database file.
     /// </summary>
@@ -28,37 +43,29 @@ internal static class Database
     /// <summary>
     /// Full path to the database file.
     /// </summary>
-    private static readonly string _DB_PATH =
+    private static readonly string _DbPath =
         Path.Combine(FileSystem.AppDataDirectory, _DB_FILENAME);
 
     /// <summary>
-    /// Single instance of the database (singleton pattern).
+    /// The database connection.
     /// </summary>
-    private static SQLiteAsyncConnection _database;
+    private SQLiteAsyncConnection _connection;
 
     /// <summary>
-    /// Get the database connection. Create and initialize it if needed.
+    /// The database connection. Create and initialize it if needed.
     /// </summary>
-    internal static SQLiteAsyncConnection GetConnection()
-    {
-        if (_database == null)
-        {
-            _database = new SQLiteAsyncConnection(_DB_PATH, _FLAGS);
-        }
-
-        return _database;
-    }
+    internal SQLiteAsyncConnection Connection =>
+        _connection ??= new SQLiteAsyncConnection(_DbPath, _FLAGS);
 
     /// <summary>
     /// Initialize the database.
     /// </summary>
-    internal static async Task Initialize()
+    internal async Task Initialize()
     {
-        // Not sure if the database will let me initialize tables in parallel, but we can try.
-        var barTask = BarRepository.GetInstance().Initialize();
-        var plateTask = PlateRepository.GetInstance().Initialize();
-        var dumbbellTask = DumbbellRepository.GetInstance().Initialize();
-        var kettlebellTask = KettlebellRepository.GetInstance().Initialize();
+        var barTask = _barRepo.Initialize();
+        var plateTask = _plateRepo.Initialize();
+        var dumbbellTask = _dbRepo.Initialize();
+        var kettlebellTask = _kbRepo.Initialize();
         await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
     }
 }

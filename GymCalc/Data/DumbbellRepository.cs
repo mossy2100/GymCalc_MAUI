@@ -1,28 +1,15 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Constants;
-using GymCalc.Graphics;
 
-namespace GymCalc.Data.Repositories;
+namespace GymCalc.Data;
 
 /// <summary>
 /// Methods for CRUD operations on dumbbells.
 /// </summary>
-internal class DumbbellRepository : GymObjectRepository
+public class DumbbellRepository : GymObjectRepository
 {
-    private static DumbbellRepository _instance;
-
-    // Prevent instantiation from outside the class.
-    private DumbbellRepository()
+    public DumbbellRepository(Database database) : base(database)
     {
-    }
-
-    public static DumbbellRepository GetInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new DumbbellRepository();
-        }
-        return _instance;
     }
 
     /// <summary>
@@ -49,7 +36,7 @@ internal class DumbbellRepository : GymObjectRepository
     private async Task<List<(double, string)>> AddDumbbellSet(double min, double max,
         double step, string units, bool enabled, List<(double, string)> addedSoFar)
     {
-        var db = Database.GetConnection();
+        var conn = Database.Connection;
 
         for (var weight = min; weight <= max; weight += step)
         {
@@ -67,7 +54,7 @@ internal class DumbbellRepository : GymObjectRepository
                 Enabled = enabled,
                 Color = "OffBlack",
             };
-            await db.InsertAsync(dumbbell);
+            await conn.InsertAsync(dumbbell);
 
             // Remember it.
             addedSoFar.Add((weight, units));
@@ -80,7 +67,7 @@ internal class DumbbellRepository : GymObjectRepository
     /// Get the dumbbells.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
+    internal async Task<List<Dumbbell>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
         return await base.GetAll<Dumbbell>(units, onlyEnabled, ascending);

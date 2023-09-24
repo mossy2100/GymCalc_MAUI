@@ -5,7 +5,7 @@
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:GymCalc.Data.Models"
+    xmlns:models="clr-namespace:GymCalc.Models"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     xmlns:converters="clr-namespace:GymCalc.Converters"
     xmlns:drawables="clr-namespace:GymCalc.Graphics.Drawables"
@@ -176,7 +176,7 @@
                 </Label>
             </VerticalStackLayout>
 
-            <!-- Results -->
+            <!-- Plates Results -->
             <CollectionView
                 ItemsSource="{Binding PlatesResults}"
                 IsVisible="{Binding PlatesResultsVisible}">
@@ -228,6 +228,46 @@
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Single Weight Results -->
+            <CollectionView
+                ItemsSource="{Binding SingleWeightResults}"
+                IsVisible="{Binding SingleWeightResultsVisible}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:SingleWeightResult">
+                        <Grid
+                            Padding="0,10,0,10"
+                            RowDefinitions="Auto,Auto,Auto,Auto"
+                            RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                            ColumnDefinitions="4*,3*,3*"
+                            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
+                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                HeightRequest="1" BackgroundColor="Gray" />
+                            <Label Grid.Row="1" Grid.Column="0"
+                                Text="{Binding Percent, StringFormat='{0}%'}"
+                                Style="{StaticResource ResultsTablePercent}" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                                VerticalTextAlignment="End"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                                VerticalTextAlignment="End"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
+                                Style="{StaticResource ResultsTableHeader}" />
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ideal,
+                                Converter={StaticResource DefaultWeightTextConverter}}"
+                                Style="{StaticResource ResultsTableIdeal}" />
+                            <Label Grid.Row="2" Grid.Column="2"
+                                Text="{Binding Closest,
+                                    Converter={StaticResource DefaultWeightTextConverter}}"
+                                Style="{StaticResource ResultsTableClosest}" />
+                            <GraphicsView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                                Drawable="{Binding Drawable}" WidthRequest="250"
+                                HeightRequest="30" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

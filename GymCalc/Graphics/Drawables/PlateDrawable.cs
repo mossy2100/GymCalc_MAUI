@@ -1,5 +1,5 @@
 using System.Globalization;
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Utilities;
 using Font = Microsoft.Maui.Graphics.Font;
 
@@ -7,7 +7,7 @@ namespace GymCalc.Graphics.Drawables;
 
 public class PlateDrawable : GymObjectDrawable
 {
-    internal const int CornerRadius = 4;
+    private const int _CORNER_RADIUS = 4;
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
@@ -22,12 +22,12 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
         var plateX = (maxWidth - plateWidth) / 2f;
         var plateBackground = new RectF(plateX, 0, plateWidth, (float)Height);
-        canvas.FillRoundedRectangle(plateBackground, CornerRadius);
+        canvas.FillRoundedRectangle(plateBackground, _CORNER_RADIUS);
 
         // Plate edge.
         canvas.FillColor = bgColor;
-        var innerHeight = (float)Height - 2 * CornerRadius;
-        var plateEdge = new RectF(plateX, CornerRadius, plateWidth, innerHeight);
+        var innerHeight = (float)Height - 2 * _CORNER_RADIUS;
+        var plateEdge = new RectF(plateX, _CORNER_RADIUS, plateWidth, innerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -36,7 +36,7 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, 0, CornerRadius + offset, maxWidth, innerHeight,
+        canvas.DrawString(weightString, 0, _CORNER_RADIUS + offset, maxWidth, innerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 

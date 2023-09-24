@@ -1,6 +1,6 @@
 using GymCalc.Graphics.Drawables;
 
-namespace GymCalc.Data.Models;
+namespace GymCalc.Models;
 
 public class PlatesResult
 {
@@ -24,7 +24,7 @@ public class PlatesResult
 
     public List<PlateDrawable> PlateDrawables { get; set; }
 
-    public PlatesResult(double percent, double maxWeight, double barWeight, string eachSideText,
+    internal PlatesResult(double percent, double maxWeight, double barWeight, string eachSideText,
         List<Plate> plates, List<PlateDrawable> drawables)
     {
         Percent = percent;

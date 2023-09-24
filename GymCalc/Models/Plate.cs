@@ -1,4 +1,4 @@
-namespace GymCalc.Data.Models;
+namespace GymCalc.Models;
 
 public class Plate : GymObject
 {

@@ -1,6 +1,5 @@
 using System.Globalization;
 using GymCalc.Data;
-using GymCalc.Data.Repositories;
 using GymCalc.Constants;
 using GymCalc.Utilities;
 using GymCalc.ViewModels;
@@ -15,28 +14,20 @@ public partial class CalculatorPage : ContentPage
 
     private bool _layoutInitialized;
 
-    private bool _resultsDisplayed;
-
-    private const int _MaxKeyboardHeight = 240;
+    private readonly Database _database;
 
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CalculatorPage(CalculatorViewModel model)
+    public CalculatorPage(CalculatorViewModel model, Database database)
     {
         InitializeComponent();
         BindingContext = model;
         _model = model;
+        _database = database;
 
         // Events.
         SizeChanged += OnSizeChanged;
-
-        // Workaround for issue with keyboard overlapping bottom of form when there are no results.
-        // May be removable in .NET 8, will test in November 2023.
-        MaxWeight.Focused += Entry_Focused;
-        MaxWeight.Unfocused += Entry_Unfocused;
-        StartingWeight.Focused += Entry_Focused;
-        StartingWeight.Unfocused += Entry_Unfocused;
     }
 
     #region Event handlers
@@ -46,9 +37,9 @@ public partial class CalculatorPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private async void OnSizeChanged(object sender, EventArgs e)
+    private void OnSizeChanged(object sender, EventArgs e)
     {
-        await UpdateLayoutOrientation();
+        UpdateLayoutOrientation();
     }
 
     /// <inheritdoc />
@@ -57,7 +48,7 @@ public partial class CalculatorPage : ContentPage
         // Initialize database on first page load.
         if (!_databaseInitialized)
         {
-            await Database.Initialize();
+            await _database.Initialize();
             _databaseInitialized = true;
         }
 
@@ -66,18 +57,12 @@ public partial class CalculatorPage : ContentPage
         BarWeightUnit.Text = CalculatorViewModel.Units;
         StartingWeightUnit.Text = CalculatorViewModel.Units;
 
-        // Invalidate collections because they may have changed on one of the other pages.
-        // _barLookup = null;
-        // _plateLookup = null;
-        // _dumbbellLookup = null;
-        // _kettlebellLookup = null;
-
         // Initialise the exercise type buttons.
         SetExerciseType(ExerciseType.Barbell);
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        ResetBarWeightPicker();
+        await ResetBarWeightPicker();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -107,7 +92,7 @@ public partial class CalculatorPage : ContentPage
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    private void ResetBarWeightPicker()
+    private async Task ResetBarWeightPicker()
     {
         // Get the current selected value.
         var initialSelectedIndex = BarWeight.SelectedIndex;
@@ -122,10 +107,11 @@ public partial class CalculatorPage : ContentPage
         // Initialise the items in the bar weight picker.
         var i = 0;
         var valueSelected = false;
-        foreach (var (weight, bar) in _model.Bars)
+        var bars = await _model.GetBars();
+        foreach (var bar in bars)
         {
             // Add the picker item.
-            var weightString = weight.ToString(CultureInfo.InvariantCulture);
+            var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
             BarWeight.Items.Add(weightString);
 
             // Try to select the same weight that was selected before.
@@ -161,7 +147,7 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    private async Task UpdateLayoutOrientation()
+    private void UpdateLayoutOrientation()
     {
         // Get the device orientation.
         var newOrientation = MauiUtilities.GetOrientation() == DisplayOrientation.Landscape
@@ -181,7 +167,7 @@ public partial class CalculatorPage : ContentPage
         ResetExerciseTypeButtonWidths();
 
         // If there are any results, re-render them for the altered width.
-        if (_resultsDisplayed)
+        if (_model.PlatesResultsVisible || _model.SingleWeightResultsVisible)
         {
             switch (_model.SelectedExerciseType)
             {
@@ -230,7 +216,8 @@ public partial class CalculatorPage : ContentPage
 
     private void SetExerciseType(ExerciseType exerciseType)
     {
-        ClearErrorMessage();
+        // Clear the error message.
+        _model.ErrorMessage = "";
 
         // Update the field.
         _model.SelectedExerciseType = exerciseType;
@@ -323,11 +310,6 @@ public partial class CalculatorPage : ContentPage
     //     CalculatorResults.HeightRequest = -1;
     //     _resultsDisplayed = false;
     // }
-
-    private void ClearErrorMessage()
-    {
-        _model.ErrorMessage = "";
-    }
 
     // private void SetErrorMessage(string errorMessage)
     // {
@@ -644,25 +626,4 @@ public partial class CalculatorPage : ContentPage
     */
 
     #endregion Display results
-
-    private void Entry_Focused(object sender, FocusEventArgs e)
-    {
-        if (!_resultsDisplayed)
-        {
-            // CalculatorForm.Padding = new Thickness(0, 0, 0, _MaxKeyboardHeight);
-        }
-    }
-
-    private void Entry_Unfocused(object sender, FocusEventArgs e)
-    {
-        ResetFormPadding();
-    }
-
-    private void ResetFormPadding()
-    {
-        if (CalculatorForm.Padding.Bottom > 0)
-        {
-            CalculatorForm.Padding = new Thickness(0, 0, 0, 0);
-        }
-    }
 }

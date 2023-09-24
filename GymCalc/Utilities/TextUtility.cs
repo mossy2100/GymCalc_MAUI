@@ -118,10 +118,7 @@ internal static class TextUtility
         }
 
         // Create the FormattedString if necessary.
-        if (lastLabel.FormattedText == null)
-        {
-            lastLabel.FormattedText = new FormattedString();
-        }
+        lastLabel.FormattedText ??= new FormattedString();
 
         // Add the span to the label.
         lastLabel.FormattedText.Spans.Add(newSpan);
@@ -130,7 +127,6 @@ internal static class TextUtility
     public static void ProcessHtmlDocument(HtmlNode node, int parentFontSize,
         FontAttributes parentFontAttributes, Layout layout)
     {
-        // var node = doc.DocumentNode;
         switch (node.NodeType)
         {
             case HtmlNodeType.Text:
@@ -216,9 +212,12 @@ internal static class TextUtility
                 }
                 break;
 
-            default:
-                // Do nothing.
+            case HtmlNodeType.Comment:
+                // Ignore.
                 break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(node.NodeType));
         }
     }
 

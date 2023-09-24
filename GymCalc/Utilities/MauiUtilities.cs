@@ -1,15 +1,11 @@
-using ILayout = Microsoft.Maui.Controls.ILayout;
-
 namespace GymCalc.Utilities;
 
 public static class MauiUtilities
 {
     public static T LookupResource<T>(string resourceName, ContentPage page = null)
     {
-        object resource;
-
         // 1. Look in the page.
-        if (page != null && page.Resources.TryGetValue(resourceName, out resource))
+        if (page != null && page.Resources.TryGetValue(resourceName, out var resource))
         {
             return (T)resource;
         }

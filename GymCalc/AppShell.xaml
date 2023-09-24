@@ -4,6 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:gymCalc="clr-namespace:GymCalc"
+    x:DataType="gymCalc:AppShell"
     NavBarHasShadow="true">
 
     <Shell.FlyoutHeader>

@@ -1,28 +1,16 @@
-using GymCalc.Data.Models;
+using GymCalc.Models;
 using GymCalc.Constants;
 using GymCalc.Graphics;
 
-namespace GymCalc.Data.Repositories;
+namespace GymCalc.Data;
 
 /// <summary>
 /// Methods for CRUD operations on kettlebells.
 /// </summary>
-internal class KettlebellRepository : GymObjectRepository
+public class KettlebellRepository : GymObjectRepository
 {
-    private static KettlebellRepository _instance;
-
-    // Prevent instantiation from outside the class.
-    private KettlebellRepository()
+    public KettlebellRepository(Database database) : base(database)
     {
-    }
-
-    public static KettlebellRepository GetInstance()
-    {
-        if (_instance == null)
-        {
-            _instance = new KettlebellRepository();
-        }
-        return _instance;
     }
 
     /// <summary>
@@ -47,7 +35,7 @@ internal class KettlebellRepository : GymObjectRepository
     private async Task<List<(double, string)>> AddKettlebellSet(double min, double max,
         double step, string units, bool enabled, List<(double, string)> addedSoFar)
     {
-        var db = Database.GetConnection();
+        var conn = Database.Connection;
 
         for (var weight = min; weight <= max; weight += step)
         {
@@ -71,7 +59,7 @@ internal class KettlebellRepository : GymObjectRepository
                 HasBands = hasBands,
                 BandColor = bandColor,
             };
-            await db.InsertAsync(kettlebell);
+            await conn.InsertAsync(kettlebell);
 
             // Remember it.
             addedSoFar.Add((weight, units));
@@ -84,7 +72,7 @@ internal class KettlebellRepository : GymObjectRepository
     /// Get the kettlebells.
     /// </summary>
     /// <returns></returns>
-    public async Task<List<Kettlebell>> GetAll(string units, bool onlyEnabled = false,
+    internal async Task<List<Kettlebell>> GetAll(string units, bool onlyEnabled = false,
         bool ascending = true)
     {
         return await base.GetAll<Kettlebell>(units, onlyEnabled, ascending);

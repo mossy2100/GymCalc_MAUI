@@ -1,5 +1,4 @@
 using GymCalc.Constants;
-using GymCalc.Themes;
 using InputKit.Shared.Controls;
 
 namespace GymCalc.Pages;

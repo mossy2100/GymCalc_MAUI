@@ -21,7 +21,7 @@ public partial class ColorPicker : ContentView
     /// </summary>
     private readonly Dictionary<Button, string> _buttonToColor = new ();
 
-    public ColorPicker()
+    internal ColorPicker()
     {
         InitializeComponent();
         ConstructGrid();
@@ -34,20 +34,20 @@ public partial class ColorPicker : ContentView
         var buttonStyle = MauiUtilities.LookupStyle("ColorPickerButtonStyle");
 
         // Display the color buttons in the grid.
-        var nRows = 4;
-        var nCols = 4;
+        const int N_ROWS = 4;
+        const int N_COLS = 4;
         var r = 0;
         var c = 0;
         foreach (var (colorName, colorHex) in CustomColors.Palette)
         {
             // Create a frame.
-            var frame = new Frame()
+            var frame = new Frame
             {
                 Style = frameStyle,
             };
 
             // Create a button.
-            var button = new Button()
+            var button = new Button
             {
                 Style = buttonStyle,
                 BackgroundColor = CustomColors.Get(colorName),
@@ -67,13 +67,13 @@ public partial class ColorPicker : ContentView
 
             // Go to next position.
             c++;
-            if (c == nCols)
+            if (c == N_COLS)
             {
                 c = 0;
                 r++;
 
                 // Check if done.
-                if (r == nRows)
+                if (r == N_ROWS)
                 {
                     break;
                 }
