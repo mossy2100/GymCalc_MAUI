@@ -13,13 +13,6 @@ public partial class AppShell : Shell
         BindingContext = this;
     }
 
-    public static ICommand GoToListCommand =>
-        new AsyncCommand<string>(
-            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
-
-    public static ICommand GoToHtmlCommand =>
-        new AsyncCommand<string>(async parameters => await GoToHtml(parameters));
-
     /// <summary>
     /// Register routes for navigation pages.
     /// </summary>
@@ -30,6 +23,12 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("reset", typeof(ResetPage));
     }
 
+    #region Commands
+
+    public ICommand GoToListCommand =>
+        new AsyncCommand<string>(
+            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
+
     internal static async Task GoToList(string gymObjectTypeName, bool editMode)
     {
         Current.FlyoutIsPresented = false;
@@ -39,6 +38,9 @@ public partial class AppShell : Shell
             { "editMode", editMode },
         });
     }
+
+    public ICommand GoToHtmlCommand =>
+        new AsyncCommand<string>(async parameters => await GoToHtml(parameters));
 
     private static async Task GoToHtml(string commandParameters)
     {
@@ -55,4 +57,5 @@ public partial class AppShell : Shell
             { "fileName", parameters[1] },
         });
     }
+    #endregion Commands
 }

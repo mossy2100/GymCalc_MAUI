@@ -246,10 +246,16 @@
       <MauiXaml Update="Themes\PinkTheme.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Remove="old\**" />
       <MauiXaml Update="Pages\HtmlPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Include="old\AboutPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Update="old\InstructionsPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+      <MauiXaml Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -277,19 +283,15 @@
         <DependentUpon>OrangeTheme.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Remove="old\**" />
       <Compile Update="Pages\HtmlPage.xaml.cs">
         <DependentUpon>HtmlPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="old\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <MauiCss Remove="old\**" />
+      <Compile Update="old\InstructionsPage.xaml.cs">
+        <DependentUpon>InstructionsPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -297,6 +299,17 @@
         <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Release\net7.0\Galaxon.Core.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+
+    <ItemGroup>
+      <EmbeddedResource Remove="old\**" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <MauiCss Remove="old\**" />
+    </ItemGroup>
+
 
 
 </Project>

@@ -27,14 +27,13 @@ public static class MauiProgram
             .Services
             // Singleton pages
             .AddSingleton<CalculatorPage>()
-            .AddSingleton<AboutPage>()
-            .AddSingleton<InstructionsPage>()
             .AddSingleton<SettingsPage>()
             // Transient pages
             .AddTransient<ListPage>()
             .AddTransient<EditPage>()
             .AddTransient<DeletePage>()
             .AddTransient<ResetPage>()
+            .AddTransient<HtmlPage>()
             // Database and repositories
             .AddSingleton<Database>()
             .AddSingleton<BarRepository>()
