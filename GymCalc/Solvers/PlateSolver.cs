@@ -54,7 +54,7 @@ internal static class PlateSolver
                 Height = 30,
                 MinWidth = 50,
                 MaxWeight = maxPlateWeight,
-                GymObject = plate
+                GymObject = plate,
             })
             .ToList();
     }

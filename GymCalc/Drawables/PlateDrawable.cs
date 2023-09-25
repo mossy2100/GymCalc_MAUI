@@ -13,15 +13,15 @@ public class PlateDrawable : GymObjectDrawable
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var plate = (Plate)GymObject;
-        var maxWidth = dirtyRect.Width;
-        var plateWidth = (float)(MinWidth + (plate.Weight / MaxWeight) * (maxWidth - MinWidth));
+        var rectWidth = dirtyRect.Width;
+        var plateWidth = (float)(MinWidth + (plate.Weight / MaxWeight) * (rectWidth - MinWidth));
 
         // Get the color.
         var bgColor = CustomColors.Get(plate.Color);
 
         // Plate background.
         canvas.FillColor = bgColor.AddLuminosity(-0.1f);
-        var plateX = (maxWidth - plateWidth) / 2f;
+        var plateX = (rectWidth - plateWidth) / 2f;
         var plateBackground = new RectF(plateX, 0, plateWidth, (float)Height);
         canvas.FillRoundedRectangle(plateBackground, _CORNER_RADIUS);
 
@@ -37,7 +37,7 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, 0, _CORNER_RADIUS + offset, maxWidth, innerHeight,
+        canvas.DrawString(weightString, 0, _CORNER_RADIUS + offset, rectWidth, innerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 

@@ -317,6 +317,8 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
+        // TODO Should this result be cached? We probably shouldn't look it up every time, although
+        // the phone database is pretty fast.
         var kettlebells = await _kbRepo.GetAll(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
         SingleWeightResultsVisible = true;

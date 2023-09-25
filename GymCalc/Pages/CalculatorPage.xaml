@@ -23,8 +23,11 @@
         <StackLayout x:Name="CalculatorLayout"
             Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
+            <!--
+            Calculator form.
+            Appears on top or left-hand side of page, depending on orientation.
+            -->
             <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
-
                 <!--  Exercise type  -->
                 <Label Text="Select exercise type:" />
                 <Grid
@@ -170,102 +173,117 @@
                 </Label>
             </VerticalStackLayout>
 
-            <!-- Plates Results -->
-            <CollectionView
-                ItemsSource="{Binding PlatesResults}"
-                IsVisible="{Binding PlatesResultsVisible}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:PlatesResult">
-                        <Grid
-                            Padding="0,10,0,10"
-                            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-                            RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                            ColumnDefinitions="4*,3*,3*"
-                            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
-                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                                HeightRequest="1" BackgroundColor="Gray" />
-                            <Label Grid.Row="1" Grid.Column="0"
-                                Text="{Binding Percent, StringFormat='{0}%'}"
-                                Style="{StaticResource ResultsTablePercent}" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
-                                VerticalTextAlignment="End"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
-                                VerticalTextAlignment="End"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal,
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="2" Grid.Column="2"
-                                Text="{Binding ClosestTotal,
+            <!--
+            Calculator results.
+            Appears on bottom or right-hand side of page, depending on orientation.
+            -->
+            <VerticalStackLayout>
+                <!-- Plates Results -->
+                <CollectionView
+                    ItemsSource="{Binding PlatesResults}"
+                    IsVisible="{Binding PlatesResultsVisible}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:PlatesResult">
+                            <Grid
+                                Padding="0,10,0,10"
+                                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                                ColumnDefinitions="4*,3*,3*"
+                                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
+                                <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                    HeightRequest="1" BackgroundColor="Gray" />
+                                <Label Grid.Row="1" Grid.Column="0"
+                                    Text="{Binding Percent, StringFormat='{0}%'}"
+                                    Style="{StaticResource ResultsTablePercent}" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                                    VerticalTextAlignment="End"
+                                    Style="{StaticResource ResultsTableHeader}" />
+                                <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                                    VerticalTextAlignment="End"
+                                    Style="{StaticResource ResultsTableHeader}" />
+                                <Label Grid.Row="2" Grid.Column="0" Text="Total"
+                                    Style="{StaticResource ResultsTableHeader}" />
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableClosest}" />
-                            <Label Grid.Row="3" Grid.Column="0"
-                                Text="{Binding PlatesEachSideText}"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="3" Grid.Column="1"
-                                Text="{Binding IdealPlates,
-                                    Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableIdeal}" />
-                            <Label Grid.Row="3" Grid.Column="2"
-                                Text="{Binding ClosestPlates,
-                                    Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableClosest}" />
-                            <CollectionView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
-                                ItemsSource="{Binding PlateDrawables}">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate x:DataType="drawables:PlateDrawable">
-                                        <GraphicsView Drawable="{Binding .}" WidthRequest="250"
-                                            HeightRequest="30" />
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                    Style="{StaticResource ResultsTableIdeal}" />
+                                <Label Grid.Row="2" Grid.Column="2"
+                                    Text="{Binding ClosestTotal,
+                                        Converter={StaticResource DefaultWeightTextConverter}}"
+                                    Style="{StaticResource ResultsTableClosest}" />
+                                <Label Grid.Row="3" Grid.Column="0"
+                                    Text="{Binding EachSideText}"
+                                    Style="{StaticResource ResultsTableHeader}" />
+                                <Label Grid.Row="3" Grid.Column="1"
+                                    Text="{Binding IdealPlates,
+                                        Converter={StaticResource DefaultWeightTextConverter}}"
+                                    Style="{StaticResource ResultsTableIdeal}" />
+                                <Label Grid.Row="3" Grid.Column="2"
+                                    Text="{Binding ClosestPlates,
+                                        Converter={StaticResource DefaultWeightTextConverter}}"
+                                    Style="{StaticResource ResultsTableClosest}" />
+                                <CollectionView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                                    ItemsSource="{Binding PlateDrawables}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="drawables:PlateDrawable">
+                                            <GraphicsView Drawable="{Binding .}" WidthRequest="250"
+                                                HeightRequest="30" />
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
-            <!-- Single Weight Results -->
-            <CollectionView
-                ItemsSource="{Binding SingleWeightResults}"
-                IsVisible="{Binding SingleWeightResultsVisible}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:SingleWeightResult">
-                        <Grid
-                            Padding="0,10,0,10"
-                            RowDefinitions="Auto,Auto,Auto"
-                            RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                            ColumnDefinitions="4*,3*,3*"
-                            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
-                            <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                                HeightRequest="1" BackgroundColor="Gray" />
-                            <Label Grid.Row="1" Grid.Column="0"
-                                Text="{Binding Percent, StringFormat='{0}%'}"
-                                Style="{StaticResource ResultsTablePercent}" />
-                            <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
-                                VerticalTextAlignment="End"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="1" Grid.Column="2" Text="Closest"
-                                VerticalTextAlignment="End"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="0" Text="Total"
-                                Style="{StaticResource ResultsTableHeader}" />
-                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding Ideal,
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                                Style="{StaticResource ResultsTableIdeal}" />
-                            <!-- <Label Grid.Row="2" Grid.Column="2" -->
-                            <!--     Text="{Binding Closest, -->
-                            <!--         Converter={StaticResource DefaultWeightTextConverter}}" -->
-                            <!--     Style="{StaticResource ResultsTableClosest}" /> -->
-                            <GraphicsView Grid.Row="2" Grid.Column="2"
-                                Drawable="{Binding Drawable}" WidthRequest="250"
-                                HeightRequest="30" />
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                <!-- Single Weight Results -->
+                <CollectionView
+                    ItemsSource="{Binding SingleWeightResults}"
+                    IsVisible="{Binding SingleWeightResultsVisible}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:SingleWeightResult">
+                            <Frame
+                                CornerRadius="8"
+                                Padding="10"
+                                Background="{AppThemeBinding Light={StaticResource Gray50},
+                                Dark={StaticResource Gray900}}"
+                                BorderColor="{AppThemeBinding Light={StaticResource Gray300},
+                                Dark={StaticResource Gray600}}">
+                                <Grid
+                                    Padding="0,10,0,10"
+                                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                                    ColumnDefinitions="*,*,*"
+                                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                                    >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="{Binding Drawable.Height}" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0"
+                                        Text="{Binding Percent, StringFormat='{0}%'}"
+                                        Style="{StaticResource ResultsTablePercent}" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="Ideal"
+                                        VerticalTextAlignment="End"
+                                        Style="{StaticResource ResultsTableHeader}" />
+                                    <Label Grid.Row="0" Grid.Column="2" Text="Closest"
+                                        VerticalTextAlignment="End"
+                                        Style="{StaticResource ResultsTableHeader}" />
+                                    <Label Grid.Row="1" Grid.Column="0" Text="Total"
+                                        Style="{StaticResource ResultsTableHeader}" />
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Ideal,
+                                        Converter={StaticResource DefaultWeightTextConverter}}"
+                                        Style="{StaticResource ResultsTableIdeal}" />
+                                    <GraphicsView Grid.Row="1" Grid.Column="2"
+                                        Drawable="{Binding Drawable}"
+                                        HeightRequest="{Binding Drawable.Height}" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
 
         </StackLayout>
     </ScrollView>

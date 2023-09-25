@@ -6,13 +6,7 @@ public class PlatesResult
 {
     public double Percent { get; set; }
 
-    // public double MaxWeight { get; set; }
-
-    // public double StartingWeight { get; set; }
-
-    // public List<Plate> Plates { get; set; }
-
-    public string PlatesEachSideText { get; set; }
+    public string EachSideText { get; set; }
 
     public double IdealTotal { get; set; }
 
@@ -28,10 +22,7 @@ public class PlatesResult
         string eachSideText, IEnumerable<Plate> plates, List<PlateDrawable> drawables)
     {
         Percent = percent;
-        // MaxWeight = maxWeight;
-        // StartingWeight = startingWeight;
-        // Plates = plates;
-        PlatesEachSideText = eachSideText;
+        EachSideText = eachSideText;
         IdealTotal = percent / 100.0 * maxWeight;
         IdealPlates = (IdealTotal - startingWeight) / 2.0;
         ClosestPlates = plates.Sum(p => p.Weight);

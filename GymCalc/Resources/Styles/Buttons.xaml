@@ -121,7 +121,6 @@
     </Style>
 
     <!--  Exercise type buttons  -->
-
     <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />

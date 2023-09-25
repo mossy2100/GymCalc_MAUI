@@ -6,7 +6,7 @@ public abstract class GymObjectDrawable : IDrawable
 {
     internal GymObject GymObject { get; set; }
 
-    internal double Height { get; set; }
+    public double Height { get; set; }
 
     internal double Width { get; set; }
 
