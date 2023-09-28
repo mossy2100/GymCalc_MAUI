@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFrameworks>net7.0-android;net7.0-ios</TargetFrameworks>
@@ -24,7 +24,7 @@
         <ApplicationVersion>1</ApplicationVersion>
 
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
         <!--        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>-->
         <!--        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>-->
         <!--        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>-->
@@ -136,72 +136,50 @@
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 
         <!-- Exercise type images -->
-        <None Remove="Resources\Images\exercise_types\deadlift_black_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\deadlift_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\deadlift_white_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\deadlift_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_press_black_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\dumbbell_press_white_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\leg_press_black_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\leg_press_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\leg_press_white_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\leg_press_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\kettlebell_swing_black_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="Resources\Images\exercise_types\kettlebell_swing_white_100.png" />
         <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
         <!-- Button icons -->
-
-        <None Remove="Resources\Images\button_icons\edit_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-
-        <None Remove="Resources\Images\button_icons\plus_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-
-        <None Remove="Resources\Images\button_icons\cancel_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-
-        <None Remove="Resources\Images\button_icons\delete_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-
-        <None Remove="Resources\Images\button_icons\reset_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-
-        <None Remove="Resources\Images\button_icons\check_icon_white_16.png" />
         <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <None Remove="old\**" />
-
     </ItemGroup>
 
     <ItemGroup>
@@ -220,24 +198,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="Platforms\Android\AndroidManifest.xml" />
-      <None Include="Platforms\iOS\Info.plist" />
-    </ItemGroup>
-
-    <ItemGroup>
       <MauiXaml Update="Pages\ListPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="old\BarsPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="old\DumbbellsPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="old\KettlebellsPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="old\PlatesPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Update="Themes\OrangeTheme.xaml">
@@ -249,34 +210,11 @@
       <MauiXaml Update="Pages\HtmlPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
-      <MauiXaml Include="old\AboutPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="old\InstructionsPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Update="Pages\ListPage.xaml.cs">
         <DependentUpon>ListPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="old\BarsPage.xaml.cs">
-        <DependentUpon>BarsPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="old\DumbbellsPage.xaml.cs">
-        <DependentUpon>DumbbellsPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="old\KettlebellsPage.xaml.cs">
-        <DependentUpon>KettlebellsPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="old\PlatesPage.xaml.cs">
-        <DependentUpon>PlatesPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Themes\OrangeTheme.xaml.cs">
@@ -287,11 +225,6 @@
         <DependentUpon>HtmlPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="old\InstructionsPage.xaml.cs">
-        <DependentUpon>InstructionsPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -299,17 +232,5 @@
         <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Release\net7.0\Galaxon.Core.dll</HintPath>
       </Reference>
     </ItemGroup>
-
-
-    <ItemGroup>
-      <EmbeddedResource Remove="old\**" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <MauiCss Remove="old\**" />
-    </ItemGroup>
-
-
 
 </Project>

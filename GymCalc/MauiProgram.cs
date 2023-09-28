@@ -20,11 +20,25 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-            .ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddInputKitHandlers();
-            })
-            .Services
+            .ConfigureMauiHandlers(handlers => { handlers.AddInputKitHandlers(); });
+
+        // BlazorWebView support.
+        builder.Services.AddMauiBlazorWebView();
+
+#if DEBUG
+        builder.Logging.AddDebug();
+        builder.Services.AddBlazorWebViewDeveloperTools();
+#endif
+
+        RegisterDependencyInjection(builder);
+        RegisterRoutes();
+
+        return builder.Build();
+    }
+
+    private static void RegisterDependencyInjection(MauiAppBuilder builder)
+    {
+        builder.Services
             // Singleton pages
             .AddSingleton<CalculatorPage>()
             .AddSingleton<SettingsPage>()
@@ -43,11 +57,10 @@ public static class MauiProgram
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
             ;
+    }
 
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
-
-        return builder.Build();
+    private static void RegisterRoutes()
+    {
+        // Routing.RegisterRoute("login", typeof(LoginPage));
     }
 }

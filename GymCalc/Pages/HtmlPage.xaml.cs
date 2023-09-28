@@ -41,20 +41,20 @@ public partial class HtmlPage : ContentPage
     private void InjectCss(string elementId, string cssPath)
     {
         // Inject the theme-dependent CSS.
-        WebView.Navigated += (sender, e) =>
-        {
-            if (e.Result == WebNavigationResult.Success)
-            {
-                var js = @$"
-                    var link = document.createElement('link');
-                    link.id = '{elementId}';
-                    link.rel = 'stylesheet';
-                    link.href = '{cssPath}';
-                    document.head.appendChild(link);
-                ";
-                WebView.Eval(js);
-            }
-        };
+        // HtmlWebView.Navigated += (sender, e) =>
+        // {
+        //     if (e.Result == WebNavigationResult.Success)
+        //     {
+        //         var js = @$"
+        //             var link = document.createElement('link');
+        //             link.id = '{elementId}';
+        //             link.rel = 'stylesheet';
+        //             link.href = '{cssPath}';
+        //             document.head.appendChild(link);
+        //         ";
+        //         WebView.Eval(js);
+        //     }
+        // };
     }
 
     private string GetThemeCssPath()
@@ -70,6 +70,6 @@ public partial class HtmlPage : ContentPage
             var link = document.getElementById('{_THEME_CSS_LINK_ID}');
             link.href = '{GetThemeCssPath()}';
         ";
-        WebView.Eval(js);
+        // WebView.Eval(js);
     }
 }
