@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui;
 using GymCalc.Data;
 using GymCalc.Pages;
+using GymCalc.Services;
 using GymCalc.ViewModels;
 using Microsoft.Extensions.Logging;
 using InputKit.Handlers;
@@ -22,16 +23,14 @@ public static class MauiProgram
             })
             .ConfigureMauiHandlers(handlers => { handlers.AddInputKitHandlers(); });
 
-        // BlazorWebView support.
         builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-        builder.Logging.AddDebug();
         builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
 #endif
 
         RegisterDependencyInjection(builder);
-        RegisterRoutes();
 
         return builder.Build();
     }
@@ -42,12 +41,12 @@ public static class MauiProgram
             // Singleton pages
             .AddSingleton<CalculatorPage>()
             .AddSingleton<SettingsPage>()
+            .AddSingleton<HtmlPage>()
             // Transient pages
             .AddTransient<ListPage>()
             .AddTransient<EditPage>()
             .AddTransient<DeletePage>()
             .AddTransient<ResetPage>()
-            .AddTransient<HtmlPage>()
             // Database and repositories
             .AddSingleton<Database>()
             .AddSingleton<BarRepository>()
@@ -56,11 +55,8 @@ public static class MauiProgram
             .AddSingleton<KettlebellRepository>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
+            // Services
+            .AddSingleton<HtmlUpdaterService>()
             ;
-    }
-
-    private static void RegisterRoutes()
-    {
-        // Routing.RegisterRoute("login", typeof(LoginPage));
     }
 }

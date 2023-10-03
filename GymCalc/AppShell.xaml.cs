@@ -39,23 +39,24 @@ public partial class AppShell : Shell
         });
     }
 
-    public ICommand GoToHtmlCommand =>
-        new AsyncCommand<string>(async parameters => await GoToHtml(parameters));
-
-    private static async Task GoToHtml(string commandParameters)
+    public ICommand GoToHtmlCommand(string title, string route)
     {
-        var parameters = commandParameters.Split('|');
-        if (parameters.Length != 2)
+        return new AsyncCommand(async () =>
         {
-            throw new ArgumentException("Invalid number of command parameters. There should be 2: the page title and the filename, separated by a vertical bar character (|).");
-        }
+            Current.FlyoutIsPresented = false;
 
-        Current.FlyoutIsPresented = false;
-        await Current.GoToAsync("//html", new Dictionary<string, object>
-        {
-            { "title", parameters[0] },
-            { "fileName", parameters[1] },
+            // Load the HtmlPage.
+            await Current.GoToAsync("//html", new Dictionary<string, object>
+            {
+                { "title", title },
+                { "route", route },
+            });
         });
     }
+
+    public ICommand GoToInstructionsPageCommand => GoToHtmlCommand("Instructions", "/Instructions");
+
+    public ICommand GoToAboutPageCommand => GoToHtmlCommand("About GymCalc", "/About");
+
     #endregion Commands
 }

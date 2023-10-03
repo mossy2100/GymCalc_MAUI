@@ -94,20 +94,22 @@ public partial class ColorPicker : ContentView
         var colorPicker = (ColorPicker)bindable;
 
         // Deselect the old selected button, if there is one.
-        var oldButton = colorPicker._buttonToColor
-            .FirstOrDefault(pair => pair.Value == sOldValue)
+        var oldButton = colorPicker._buttonToColor.FirstOrDefault(pair => pair.Value == sOldValue)
             .Key;
         if (oldButton != null)
         {
+            // I should probably set a visual state here, rather than directly modifying the style
+            // attributes.
             ((Frame)oldButton.Parent).BackgroundColor = Colors.Transparent;
         }
 
         // Select the button that was clicked.
-        var newButton = colorPicker._buttonToColor
-            .FirstOrDefault(pair => pair.Value == sNewValue)
+        var newButton = colorPicker._buttonToColor.FirstOrDefault(pair => pair.Value == sNewValue)
             .Key;
         if (newButton != null)
         {
+            // I should probably set a visual state here, rather than directly modifying the style
+            // attributes.
             ((Frame)newButton.Parent).BackgroundColor = MauiUtilities.LookupColor("Primary");
         }
     }

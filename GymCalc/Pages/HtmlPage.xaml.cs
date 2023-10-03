@@ -1,45 +1,49 @@
+using System.Runtime.CompilerServices;
+using GymCalc.Services;
+
 namespace GymCalc.Pages;
 
 [QueryProperty(nameof(Title), "title")]
-[QueryProperty(nameof(FileName), "fileName")]
+[QueryProperty(nameof(Route), "route")]
 public partial class HtmlPage : ContentPage
 {
-    private const string _STYLES_CSS_LINK_ID = "styles-css";
+    private readonly HtmlUpdaterService _htmlUpdaterService;
+    // private const string _STYLES_CSS_LINK_ID = "styles-css";
+    //
+    // private const string _THEME_CSS_LINK_ID = "theme-css";
 
-    private const string _THEME_CSS_LINK_ID = "theme-css";
+    private string _route;
 
-    private string _fileName;
-
-    public string FileName
+    public string Route
     {
-        get => _fileName;
+        get => _route;
 
         set
         {
-            value = $"html/{value}";
-            if (_fileName != value)
+            if (_route != value)
             {
-                _fileName = value;
+                _route = value;
                 OnPropertyChanged();
             }
         }
     }
 
-    public HtmlPage()
+    public HtmlPage(HtmlUpdaterService htmlUpdaterService)
     {
+        _htmlUpdaterService = htmlUpdaterService;
         InitializeComponent();
         BindingContext = this;
 
-        // Inject CSS files.
-        InjectCss(_STYLES_CSS_LINK_ID, "css/styles.css");
-        InjectCss(_THEME_CSS_LINK_ID, GetThemeCssPath());
-
-        // React to theme change.
-        Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
+        // // Inject CSS files.
+        // InjectCss(_STYLES_CSS_LINK_ID, "css/styles.css");
+        // InjectCss(_THEME_CSS_LINK_ID, GetThemeCssPath());
+        //
+        // // React to theme change.
+        // Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
     }
 
-    private void InjectCss(string elementId, string cssPath)
-    {
+    // private void InjectCss(string elementId, string cssPath)
+    // {
         // Inject the theme-dependent CSS.
         // HtmlWebView.Navigated += (sender, e) =>
         // {
@@ -55,21 +59,37 @@ public partial class HtmlPage : ContentPage
         //         WebView.Eval(js);
         //     }
         // };
-    }
+    // }
 
-    private string GetThemeCssPath()
-    {
-        return "css/" + (Application.Current!.RequestedTheme == AppTheme.Dark
-            ? "dark.css"
-            : "light.css");
-    }
+    // private string GetThemeCssPath()
+    // {
+    //     return "css/" + (Application.Current!.RequestedTheme == AppTheme.Dark
+    //         ? "dark.css"
+    //         : "light.css");
+    // }
 
-    private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+    // private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+    // {
+    //     var js = @$"
+    //         var link = document.getElementById('{_THEME_CSS_LINK_ID}');
+    //         link.href = '{GetThemeCssPath()}';
+    //     ";
+    //     // WebView.Eval(js);
+    // }
+
+    // public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <inheritdoc />
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        var js = @$"
-            var link = document.getElementById('{_THEME_CSS_LINK_ID}');
-            link.href = '{GetThemeCssPath()}';
-        ";
-        // WebView.Eval(js);
+        base.OnPropertyChanged(propertyName);
+
+        // Navigate to the specified route if necessary.
+        // We can't directly access methods on the component, so use the service to transfer the
+        // route parameter.
+        if (propertyName == nameof(Route) && !string.IsNullOrEmpty(Route))
+        {
+            _htmlUpdaterService.Update(Route);
+        }
     }
 }

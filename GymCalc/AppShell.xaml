@@ -8,6 +8,10 @@
     x:DataType="gymCalc:AppShell"
     NavBarHasShadow="true">
 
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior TextOverride=""></BackButtonBehavior>
+    </Shell.BackButtonBehavior>
+
     <Shell.FlyoutHeader>
         <VerticalStackLayout
             Padding="20"
@@ -67,16 +71,16 @@
         Text="Instructions"
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
                                           Dark='help_icon_white_300.png'}"
-        Command="{Binding GoToHtmlCommand}"
-        CommandParameter="Instructions|Instructions.html" />
+        Command="{Binding GoToInstructionsPageCommand}" />
 
     <MenuItem
         Text="About GymCalc"
         IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
                                           Dark='about_icon_white_300.png'}"
-        Command="{Binding GoToHtmlCommand}"
-        CommandParameter="About GymCalc|About.html" />
+        Command="{Binding GoToAboutPageCommand}" />
 
+    <!-- Global pages have to be declared as ShellContent and they're always singletons regardless
+    of what you specify in DI. -->
     <ShellContent ContentTemplate="{DataTemplate pages:ListPage}" Route="list" />
     <ShellContent ContentTemplate="{DataTemplate pages:HtmlPage}" Route="html" />
 

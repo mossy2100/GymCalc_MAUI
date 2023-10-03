@@ -80,9 +80,9 @@
     <!--         Light='help_icon_black_300.png', Dark='help_icon_white_300.png'}" /> -->
     <!-- </Style> -->
 
-    <!-- <Style x:Key="AboutFlyoutItem" TargetType="FlyoutItem"> -->
-    <!--     <Setter Property="FlyoutIcon" Value="{AppThemeBinding -->
-    <!--         Light='about_icon_black_300.png', Dark='about_icon_white_300.png'}" /> -->
-    <!-- </Style> -->
+    <Style x:Key="AboutFlyoutItem" TargetType="FlyoutItem">
+        <Setter Property="FlyoutIcon" Value="{AppThemeBinding
+            Light='about_icon_black_300.png', Dark='about_icon_white_300.png'}" />
+    </Style>
 
 </ResourceDictionary>
