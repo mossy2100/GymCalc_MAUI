@@ -8,9 +8,6 @@ namespace GymCalc.Pages;
 public partial class HtmlPage : ContentPage
 {
     private readonly HtmlUpdaterService _htmlUpdaterService;
-    // private const string _STYLES_CSS_LINK_ID = "styles-css";
-    //
-    // private const string _THEME_CSS_LINK_ID = "theme-css";
 
     private string _route;
 
@@ -28,56 +25,35 @@ public partial class HtmlPage : ContentPage
         }
     }
 
+    private AppTheme _theme;
+
     public HtmlPage(HtmlUpdaterService htmlUpdaterService)
     {
         _htmlUpdaterService = htmlUpdaterService;
+
         InitializeComponent();
         BindingContext = this;
 
-        // // Inject CSS files.
-        // InjectCss(_STYLES_CSS_LINK_ID, "css/styles.css");
-        // InjectCss(_THEME_CSS_LINK_ID, GetThemeCssPath());
-        //
-        // // React to theme change.
-        // Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
+        // Events.
+        Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
+
+        // Set the root component parameters. This can only be done once (init only).
+        // Because RequestedTheme is not set at the start, I'm using a hack to detect the theme
+        // using AppThemeBinding and the BackgroundColor property.
+        _theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
+            ? AppTheme.Light
+            : AppTheme.Dark;
+        RootComponent.Parameters = new Dictionary<string, object>
+        {
+            { "Theme", _theme },
+        };
     }
 
-    // private void InjectCss(string elementId, string cssPath)
-    // {
-        // Inject the theme-dependent CSS.
-        // HtmlWebView.Navigated += (sender, e) =>
-        // {
-        //     if (e.Result == WebNavigationResult.Success)
-        //     {
-        //         var js = @$"
-        //             var link = document.createElement('link');
-        //             link.id = '{elementId}';
-        //             link.rel = 'stylesheet';
-        //             link.href = '{cssPath}';
-        //             document.head.appendChild(link);
-        //         ";
-        //         WebView.Eval(js);
-        //     }
-        // };
-    // }
-
-    // private string GetThemeCssPath()
-    // {
-    //     return "css/" + (Application.Current!.RequestedTheme == AppTheme.Dark
-    //         ? "dark.css"
-    //         : "light.css");
-    // }
-
-    // private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
-    // {
-    //     var js = @$"
-    //         var link = document.getElementById('{_THEME_CSS_LINK_ID}');
-    //         link.href = '{GetThemeCssPath()}';
-    //     ";
-    //     // WebView.Eval(js);
-    // }
-
-    // public event PropertyChangedEventHandler PropertyChanged;
+    private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+    {
+        _theme = Application.Current!.RequestedTheme;
+        _htmlUpdaterService.UpdateTheme(_theme);
+    }
 
     /// <inheritdoc />
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -86,10 +62,10 @@ public partial class HtmlPage : ContentPage
 
         // Navigate to the specified route if necessary.
         // We can't directly access methods on the component, so use the service to transfer the
-        // route parameter.
+        // route parameter into the component.
         if (propertyName == nameof(Route) && !string.IsNullOrEmpty(Route))
         {
-            _htmlUpdaterService.Update(Route);
+            _htmlUpdaterService.UpdateRoute(Route);
         }
     }
 }

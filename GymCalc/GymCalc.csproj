@@ -41,6 +41,12 @@
     </PropertyGroup>
     <ItemGroup>
         <!-- App Icon -->
+        <MauiAsset Include="wwwroot\css\dark.css">
+          <LogicalName>css/dark.css</LogicalName>
+        </MauiAsset>
+        <MauiAsset Include="wwwroot\css\light.css">
+          <LogicalName>css/light.css</LogicalName>
+        </MauiAsset>
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>

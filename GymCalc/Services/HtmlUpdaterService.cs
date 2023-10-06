@@ -2,13 +2,23 @@ namespace GymCalc.Services;
 
 public class HtmlUpdaterService
 {
-    public event Action OnUpdate;
-
     public string Route { get; set; }
 
-    public void Update(string route)
+    public AppTheme Theme { get; set; }
+
+    public event Action OnUpdateRoute;
+
+    public event Action OnUpdateTheme;
+
+    public void UpdateRoute(string route)
     {
         Route = route;
-        OnUpdate?.Invoke();
+        OnUpdateRoute?.Invoke();
+    }
+
+    public void UpdateTheme(AppTheme theme)
+    {
+        Theme = theme;
+        OnUpdateTheme?.Invoke();
     }
 }
