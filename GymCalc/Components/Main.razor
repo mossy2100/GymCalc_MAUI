@@ -51,8 +51,22 @@ updateStylesheet(initialTheme);
         HtmlUpdaterService.OnUpdateRoute += UpdateRoute;
         HtmlUpdaterService.OnUpdateTheme += UpdateTheme;
 
+    }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
         // Go to the initial route.
         UpdateRoute();
+    }
+
+    private void SetTheme()
+    {
+        string theme = Theme == AppTheme.Dark ? "dark" : "light";
+        Task t = Task.Run(() => JsRuntime.InvokeVoidAsync("updateStylesheet", theme));
+        t.Wait();
     }
 
     /// Update the route.
@@ -72,9 +86,7 @@ updateStylesheet(initialTheme);
         if (HtmlUpdaterService.Theme != AppTheme.Unspecified && HtmlUpdaterService.Theme != Theme)
         {
             Theme = HtmlUpdaterService.Theme;
-            string theme = Theme == AppTheme.Dark ? "dark" : "light";
-            Task t = Task.Run(() => JsRuntime.InvokeVoidAsync("updateStylesheet", theme));
-            t.Wait();
+            SetTheme();
         }
     }
 }

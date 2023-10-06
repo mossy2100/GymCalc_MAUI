@@ -38,8 +38,9 @@ public partial class HtmlPage : ContentPage
         Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
 
         // Set the root component parameters. This can only be done once (init only).
-        // Because RequestedTheme is not set at the start, I'm using a hack to detect the theme
-        // using AppThemeBinding and the BackgroundColor property.
+        // Because RequestedTheme is not set at the start (it's Unspecified), I'm using a hack to
+        // detect the current theme using AppThemeBinding and the BackgroundColor property of the
+        // BlazorWebView element in the XAML.
         _theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
             ? AppTheme.Light
             : AppTheme.Dark;
