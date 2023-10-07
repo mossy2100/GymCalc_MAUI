@@ -21,7 +21,7 @@ public partial class ColorPicker : ContentView
     /// </summary>
     private readonly Dictionary<Button, string> _buttonToColor = new ();
 
-    internal ColorPicker()
+    public ColorPicker()
     {
         InitializeComponent();
         ConstructGrid();

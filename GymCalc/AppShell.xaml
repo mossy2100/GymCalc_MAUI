@@ -39,29 +39,25 @@
         Text="Bars"
         IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
                                           Dark='bar_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Bar" />
+        Command="{Binding ListCommand}" CommandParameter="Bar" />
 
     <MenuItem
         Text="Plates"
         IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
                                           Dark='plate_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Plate" />
+        Command="{Binding ListCommand}" CommandParameter="Plate" />
 
     <MenuItem
         Text="Dumbbells"
         IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
                                           Dark='dumbbell_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Dumbbell" />
+        Command="{Binding ListCommand}" CommandParameter="Dumbbell" />
 
     <MenuItem
         Text="Kettlebells"
         IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
                                           Dark='kettlebell_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Kettlebell" />
+        Command="{Binding ListCommand}" CommandParameter="Kettlebell" />
 
     <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
         <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
@@ -71,13 +67,13 @@
         Text="Instructions"
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
                                           Dark='help_icon_white_300.png'}"
-        Command="{Binding GoToInstructionsPageCommand}" />
+        Command="{Binding InstructionsCommand}" />
 
     <MenuItem
         Text="About GymCalc"
         IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
                                           Dark='about_icon_white_300.png'}"
-        Command="{Binding GoToAboutPageCommand}" />
+        Command="{Binding AboutCommand}" />
 
     <!-- Global pages have to be declared as ShellContent and they're always singletons regardless
     of what you specify in DI. -->

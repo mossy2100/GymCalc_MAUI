@@ -4,7 +4,7 @@ namespace GymCalc.Drawables;
 
 public abstract class GymObjectDrawable : IDrawable
 {
-    internal GymObject GymObject { get; set; }
+    public GymObject GymObject { get; set; }
 
     public double Height { get; set; }
 
@@ -12,7 +12,7 @@ public abstract class GymObjectDrawable : IDrawable
 
     internal double MinWidth { get; set; }
 
-    internal double MaxWidth { get; set; }
+    // internal double MaxWidth { get; set; }
 
     internal double MaxWeight { get; set; }
 

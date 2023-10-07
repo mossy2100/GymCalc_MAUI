@@ -55,6 +55,7 @@ public static class MauiProgram
             .AddSingleton<KettlebellRepository>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
+            .AddSingleton<ListViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
             ;

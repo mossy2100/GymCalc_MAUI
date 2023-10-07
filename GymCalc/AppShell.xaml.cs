@@ -6,11 +6,22 @@ namespace GymCalc;
 
 public partial class AppShell : Shell
 {
+    public ICommand ListCommand =>
+        new AsyncCommand<string>(
+            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
+
+    public ICommand InstructionsCommand =>
+        new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
+
+    public ICommand AboutCommand =>
+        new AsyncCommand(async () => await GoToHtml("About GymCalc", "/About"));
+
     public AppShell()
     {
         InitializeComponent();
-        RegisterRoutes();
         BindingContext = this;
+
+        RegisterRoutes();
     }
 
     /// <summary>
@@ -23,11 +34,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("reset", typeof(ResetPage));
     }
 
-    #region Commands
-
-    public ICommand GoToListCommand =>
-        new AsyncCommand<string>(
-            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
+    #region Command methods
 
     internal static async Task GoToList(string gymObjectTypeName, bool editMode)
     {
@@ -39,24 +46,15 @@ public partial class AppShell : Shell
         });
     }
 
-    public ICommand GoToHtmlCommand(string title, string route)
+    internal static async Task GoToHtml(string title, string route)
     {
-        return new AsyncCommand(async () =>
+        Current.FlyoutIsPresented = false;
+        await Current.GoToAsync("//html", new Dictionary<string, object>
         {
-            Current.FlyoutIsPresented = false;
-
-            // Load the HtmlPage.
-            await Current.GoToAsync("//html", new Dictionary<string, object>
-            {
-                { "title", title },
-                { "route", route },
-            });
+            { "title", title },
+            { "route", route },
         });
     }
 
-    public ICommand GoToInstructionsPageCommand => GoToHtmlCommand("Instructions", "/Instructions");
-
-    public ICommand GoToAboutPageCommand => GoToHtmlCommand("About GymCalc", "/About");
-
-    #endregion Commands
+    #endregion Command methods
 }
