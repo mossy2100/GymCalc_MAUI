@@ -207,7 +207,7 @@ public partial class EditPage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await AppShell.GoToList(GymObjectTypeName, true);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 
     private void ClearErrorMessage()
@@ -254,7 +254,7 @@ public partial class EditPage : ContentPage
                 break;
         }
 
-        await AppShell.GoToList(GymObjectTypeName, true);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 
     private async Task SaveBar(double weight, SQLiteAsyncConnection db)

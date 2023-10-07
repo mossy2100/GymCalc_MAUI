@@ -67,7 +67,7 @@ public partial class ResetPage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await AppShell.GoToList(GymObjectTypeName, true);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
@@ -84,6 +84,6 @@ public partial class ResetPage : ContentPage
         await repo.DeleteAll();
         await repo.InsertDefaults();
 
-        await AppShell.GoToList(GymObjectTypeName, false);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 }

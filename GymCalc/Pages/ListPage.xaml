@@ -58,26 +58,14 @@
             Grid.Row="2"
             ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
-            <!-- <input:CheckBox -->
-            <!--     x:Name="EditModeCheckBox" -->
-            <!--     Grid.Column="0" -->
-            <!--     IsChecked="{Binding EditMode}" -->
-            <!--     CheckChanged="EditModeCheckBox_OnCheckChanged" -->
-            <!--     HeightRequest="36" -->
-            <!--     HorizontalOptions="Center" VerticalOptions="Center" -->
-            <!--     Text="Edit mode" /> -->
             <Button
-                x:Name="AddButton"
                 Grid.Column="0"
                 Command="{Binding AddItemCommand}"
-                Style="{StaticResource AddButtonStyle}"
-                HorizontalOptions="Fill" VerticalOptions="Center" />
+                Style="{StaticResource AddButtonStyle}" />
             <Button
-                x:Name="ResetButton"
                 Grid.Column="1"
                 Command="{Binding ResetItemsCommand}"
-                Style="{StaticResource ResetButtonStyle}"
-                HorizontalOptions="Fill" VerticalOptions="Center" />
+                Style="{StaticResource ResetButtonStyle}" />
         </Grid>
     </Grid>
 

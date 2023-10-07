@@ -123,7 +123,7 @@ public partial class DeletePage : ContentPage
 
     private async void CancelButton_OnClicked(object sender, EventArgs e)
     {
-        await AppShell.GoToList(GymObjectTypeName, true);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 
     private async void DeleteButton_OnClicked(object sender, EventArgs e)
@@ -149,6 +149,6 @@ public partial class DeletePage : ContentPage
                 break;
         }
 
-        await AppShell.GoToList(GymObjectTypeName, true);
+        await AppShell.GoToList(GymObjectTypeName);
     }
 }

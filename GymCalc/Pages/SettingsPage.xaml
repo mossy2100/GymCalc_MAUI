@@ -47,20 +47,6 @@
             <!--     </Picker.ItemsSource> -->
             <!-- </Picker> -->
 
-            <!--  <Label  -->
-            <!--  Grid.Row="1"  -->
-            <!--  Grid.Column="0"  -->
-            <!--  Text="Colour scheme" />  -->
-            <!--    -->
-            <!--  <input:RadioButtonGroupView  -->
-            <!--  x:Name="ColorSchemeRadio"  -->
-            <!--  Grid.Row="1"  -->
-            <!--  Grid.Column="1"  -->
-            <!--  SelectedItemChanged="OnColorSchemeSelectedItemChanged">  -->
-            <!--     <input:RadioButton Text="orange" Value="orange" /> -->
-            <!--     <input:RadioButton Text="pink" Value="pink" /> -->
-            <!-- </input:RadioButtonGroupView> -->
-
         </Grid>
     </ScrollView>
 

@@ -39,19 +39,6 @@ public class ListViewModel : BaseViewModel
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
-    /// If we are in edit mode or not.
-    /// </summary>
-    private bool _editMode;
-
-    public bool EditMode
-    {
-        get => _editMode;
-
-        set => SetProperty(ref _editMode, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
     /// Results for the CollectionView.
     /// </summary>
     private List<GymObjectDrawable> _drawables;
@@ -171,8 +158,6 @@ public class ListViewModel : BaseViewModel
                 DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
                 break;
         }
-
-        // EditModeChanged();
     }
 
     /// <summary>

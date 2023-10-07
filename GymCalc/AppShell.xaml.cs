@@ -6,9 +6,7 @@ namespace GymCalc;
 
 public partial class AppShell : Shell
 {
-    public ICommand ListCommand =>
-        new AsyncCommand<string>(
-            async gymObjectTypeName => await GoToList(gymObjectTypeName, false));
+    public ICommand ListCommand => new AsyncCommand<string>(GoToList);
 
     public ICommand InstructionsCommand =>
         new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
@@ -36,13 +34,12 @@ public partial class AppShell : Shell
 
     #region Command methods
 
-    internal static async Task GoToList(string gymObjectTypeName, bool editMode)
+    internal static async Task GoToList(string gymObjectTypeName)
     {
         Current.FlyoutIsPresented = false;
         await Current.GoToAsync("//list", new Dictionary<string, object>
         {
             { "type", gymObjectTypeName },
-            { "editMode", editMode },
         });
     }
 

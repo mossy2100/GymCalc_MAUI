@@ -48,9 +48,10 @@
 
     <Style x:Key="AdminButtonStyle" TargetType="Button">
         <Setter Property="MinimumHeightRequest" Value="-1" />
-        <!-- <Setter Property="WidthRequest" Value="108" /> -->
         <Setter Property="HeightRequest" Value="36" />
         <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
     <Style
@@ -83,9 +84,9 @@
         x:Key="SaveButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
         <Setter Property="ImageSource" Value="check_icon_white_16.png" />
         <Setter Property="Text" Value="Save" />
-        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
     </Style>
 
     <Style
