@@ -1,9 +1,11 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using Galaxon.Core.Enums;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Drawables;
 using GymCalc.Models;
+using GymCalc.Utilities;
 
 namespace GymCalc.ViewModels;
 
@@ -75,27 +77,40 @@ public class ListViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Instructions text.
+    /// </summary>
+    private string _instructionsText;
+
+    public string InstructionsText
+    {
+        get => _instructionsText;
+
+        set => SetProperty(ref _instructionsText, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
     // Commands.
 
     /// <summary>
     /// Command to add a new item.
     /// </summary>
-    public ICommand AddCommand { get; set; }
+    public ICommand AddItemCommand { get; set; }
 
     /// <summary>
     /// Reset items command.
     /// </summary>
-    public ICommand ResetCommand { get; set; }
+    public ICommand ResetItemsCommand { get; set; }
 
     /// <summary>
     /// Command to edit an item.
     /// </summary>
-    public ICommand EditCommand { get; set; }
+    public ICommand EditItemCommand { get; set; }
 
     /// <summary>
     /// Command to delete an item.
     /// </summary>
-    public ICommand DeleteCommand { get; set; }
+    public ICommand DeleteItemCommand { get; set; }
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -117,16 +132,22 @@ public class ListViewModel : BaseViewModel
         _kbRepo = kbRepo;
 
         // Commands.
-        AddCommand = new AsyncCommand(async () => await AddItem());
-        ResetCommand = new AsyncCommand(async () => await ResetItems());
-        EditCommand = new AsyncCommand<GymObject>(async gymObject => await EditItem(gymObject));
-        DeleteCommand = new AsyncCommand<GymObject>(async gymObject => await DeleteItem(gymObject));
+        AddItemCommand = new AsyncCommand(AddItem);
+        ResetItemsCommand = new AsyncCommand(ResetItems);
+        EditItemCommand = new AsyncCommand<GymObject>(EditItem);
+        DeleteItemCommand = new AsyncCommand<GymObject>(DeleteItem);
     }
 
     // ---------------------------------------------------------------------------------------------
     internal async Task DisplayList()
     {
         Title = $"{GymObjectTypeName}s";
+
+        InstructionsText = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()} "
+            + $"weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
+            + $" Use the edit and delete icon buttons to make changes."
+            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset "
+            + $"button to reset to the defaults.";
 
         switch (GymObjectTypeName)
         {
@@ -161,21 +182,25 @@ public class ListViewModel : BaseViewModel
         where T : GymObject
         where TDrawable : GymObjectDrawable, new()
     {
+        // Initialize the empty list.
+        Drawables = new List<GymObjectDrawable>();
+
+        // Get the maximum weight, which is used to determine the width of bars and plates.
         var maxWeight = gymObjects.Last().Weight;
 
-        Drawables = new List<GymObjectDrawable>();
+        // Construct the drawables and add them to the list.
         foreach (var gymObject in gymObjects)
         {
-            // Construct the drawable.
             var drawable = new TDrawable
             {
                 GymObject = gymObject,
-                Width = 200,
-                MinWidth = 50,
                 MaxWeight = maxWeight,
             };
             Drawables.Add(drawable);
         }
+
+        // Update the view.
+        // OnPropertyChanged(nameof(Drawables));
     }
 
     /// <inheritdoc />
@@ -188,12 +213,6 @@ public class ListViewModel : BaseViewModel
             case nameof(GymObjectTypeName):
                 Task.Run(DisplayList).Wait();
                 // _isGymObjectTypeNameSet = true;
-                break;
-
-            case nameof(EditMode):
-                // EditModeCheckBox.IsChecked = EditMode;
-                // EditModeChanged();
-                // _isEditModeSet = true;
                 break;
         }
     }

@@ -225,8 +225,10 @@
                                     ItemsSource="{Binding PlateDrawables}">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="drawables:PlateDrawable">
-                                            <GraphicsView Drawable="{Binding .}" WidthRequest="250"
-                                                HeightRequest="30" />
+                                            <GraphicsView Drawable="{Binding .}"
+                                                WidthRequest="{Binding Width}"
+                                                HeightRequest="{Binding Height}"
+                                                HorizontalOptions="Center" />
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
@@ -277,7 +279,9 @@
                                         Style="{StaticResource ResultsTableIdeal}" />
                                     <GraphicsView Grid.Row="1" Grid.Column="2"
                                         Drawable="{Binding Drawable}"
-                                        HeightRequest="{Binding Drawable.Height}" />
+                                        WidthRequest="{Binding Drawable.Width}"
+                                        HeightRequest="{Binding Drawable.Height}"
+                                        HorizontalOptions="Center" />
                                 </Grid>
                             </Frame>
                         </DataTemplate>

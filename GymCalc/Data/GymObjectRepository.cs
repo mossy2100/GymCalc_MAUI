@@ -131,8 +131,7 @@ public abstract class GymObjectRepository
 
     internal async Task DeleteAll<T>()
     {
-        var conn = Database.Connection;
-        await conn.DeleteAllAsync<T>();
+        await Database.Connection.DeleteAllAsync<T>();
     }
 
     internal abstract Task DeleteAll();

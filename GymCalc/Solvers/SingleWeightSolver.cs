@@ -24,7 +24,7 @@ internal static class SingleWeightSolver
             // Get the weight that is closest to the ideal weight.
             var closest = FindClosest(idealWeight);
 
-            // Get the drawable.
+            // Construct the drawable.
             var drawableTypeName =
                 "GymCalc.Drawables." + closest.GetType().Name + "Drawable";
             var drawable = (GymObjectDrawable)Activator.CreateInstance(null, drawableTypeName)!

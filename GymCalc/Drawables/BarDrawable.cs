@@ -7,20 +7,32 @@ namespace GymCalc.Drawables;
 
 public class BarDrawable : GymObjectDrawable
 {
-    public BarDrawable()
+    public const double HEIGHT = 20;
+
+    /// <inheritdoc />
+    public override double GetWidth()
     {
-        Height = 20;
+        return CalculateWidth();
+    }
+
+    /// <inheritdoc />
+    public override double GetHeight()
+    {
+        return HEIGHT;
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var bar = (Bar)GymObject;
-        var rectWidth = dirtyRect.Width;
-        var barWidth = (float)(MinWidth + (bar.Weight / MaxWeight) * (rectWidth - MinWidth));
+        // var rectWidth = dirtyRect.Width;
+        // var barWidth = (float)(MIN_WIDTH + (bar.Weight / MaxWeight) * (rectWidth - MIN_WIDTH));
+
+        var height = (float)Height;
+        var width = (float)Width;
 
         // Bar background.
         canvas.FillColor = CustomColors.Get("PaleGray");
-        var barBackground = new RectF((rectWidth - barWidth) / 2.0f, 0, barWidth, (float)Height);
+        var barBackground = new RectF(0, 0, width, height);
         canvas.FillRectangle(barBackground);
 
         // Weight label.
@@ -29,8 +41,8 @@ public class BarDrawable : GymObjectDrawable
         canvas.FontColor = Colors.Black;
         var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, 0, offset, rectWidth, (float)Height,
-            HorizontalAlignment.Center, VerticalAlignment.Center);
+        canvas.DrawString(weightString, 0, offset, width, height, HorizontalAlignment.Center,
+            VerticalAlignment.Center);
     }
 
     // /// <inheritdoc />

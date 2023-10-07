@@ -8,15 +8,27 @@ namespace GymCalc.Drawables;
 
 public class KettlebellDrawable : GymObjectDrawable
 {
-    public KettlebellDrawable()
+    public const double HEIGHT = 76;
+
+    public const double WIDTH = 60;
+
+    /// <inheritdoc />
+    public override double GetWidth()
     {
-        Height = 76;
-        Width = 60;
+        return WIDTH;
+    }
+
+    /// <inheritdoc />
+    public override double GetHeight()
+    {
+        return HEIGHT;
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var kettlebell = (Kettlebell)GymObject;
+        // var height = (float)Height;
+        var width = (float)Width;
 
         // Colors.
         var ballColor = CustomColors.Get(kettlebell.BallColor);
@@ -51,7 +63,7 @@ public class KettlebellDrawable : GymObjectDrawable
 
         // Ball.
         canvas.FillColor = ballColor;
-        canvas.FillArc(0, 20, (float)Width, (float)Width, 240, 300, true);
+        canvas.FillArc(0, 20, width, width, 240, 300, true);
 
         // Weight label.
         canvas.Font = Font.DefaultBold;

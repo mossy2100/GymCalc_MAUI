@@ -34,6 +34,7 @@
         x:Key="EditIconButtonStyle"
         BasedOn="{StaticResource IconButtonStyle}"
         TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
         <Setter Property="ImageSource" Value="edit_icon_white_16.png" />
     </Style>
 
@@ -47,7 +48,7 @@
 
     <Style x:Key="AdminButtonStyle" TargetType="Button">
         <Setter Property="MinimumHeightRequest" Value="-1" />
-        <Setter Property="WidthRequest" Value="108" />
+        <!-- <Setter Property="WidthRequest" Value="108" /> -->
         <Setter Property="HeightRequest" Value="36" />
         <Setter Property="Padding" Value="0" />
     </Style>
@@ -56,8 +57,9 @@
         x:Key="AddButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter Property="ImageSource" Value="plus_icon_white_16.png" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}" />
         <Setter Property="Text" Value="Add" />
+        <Setter Property="ImageSource" Value="plus_icon_white_16.png" />
     </Style>
 
     <Style
@@ -65,8 +67,8 @@
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
-        <Setter Property="ImageSource" Value="reset_icon_white_16.png" />
         <Setter Property="Text" Value="Reset" />
+        <Setter Property="ImageSource" Value="reset_icon_white_16.png" />
     </Style>
 
     <Style

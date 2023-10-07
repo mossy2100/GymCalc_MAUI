@@ -11,66 +11,73 @@
     x:DataType="viewModels:ListViewModel"
     Title="{Binding Title}">
 
-    <Grid RowDefinitions="Auto,*,Auto">
-        <Label x:Name="InstructionsLabel" Grid.Row="0" FontSize="14" />
+    <Grid Padding="{x:Static graphics:PageLayout.Spacing}"
+        RowDefinitions="Auto,*,Auto" RowSpacing="{x:Static graphics:PageLayout.Spacing}">
 
-        <ScrollView Grid.Row="1" Padding="{x:Static graphics:PageLayout.Spacing}">
+        <Label x:Name="InstructionsLabel" Grid.Row="0" FontSize="14" Text="{Binding InstructionsText}" />
+
+        <!-- <VerticalStackLayout > -->
             <!-- <Grid -->
             <!--     x:Name="ListGrid" -->
             <!--     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}" -->
             <!--     RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}" /> -->
 
-            <CollectionView ItemsSource="{Binding Drawables}">
+            <CollectionView Grid.Row="1" ItemsSource="{Binding Drawables}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="drawables:GymObjectDrawable">
-                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" RowSpacing="10">
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5" Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{Binding Height}" />
+                            </Grid.RowDefinitions>
                             <GraphicsView Grid.Column="0" Drawable="{Binding .}"
-                                HeightRequest="{Binding Height}" WidthRequest="200"
+                                HeightRequest="{Binding Height}" WidthRequest="{Binding Width}"
                                 HorizontalOptions="Center" VerticalOptions="Center" />
-                            <CheckBox Grid.Column="1"
-                                HeightRequest="32" WidthRequest="40"
+                            <input:CheckBox Grid.Column="1" Type="Material"
+                                HeightRequest="32" WidthRequest="32"
                                 HorizontalOptions="Start" VerticalOptions="Center"
-                                IsChecked="{Binding GymObject.Enabled}" />
+                                IsChecked="{Binding GymObject.Enabled, Mode=TwoWay}" />
                             <Button Grid.Column="2" Style="{StaticResource EditIconButtonStyle}"
                                 HeightRequest="32" WidthRequest="32"
                                 HorizontalOptions="Center" VerticalOptions="Center"
-                                Command="{Binding BindingContext.EditCommand,
+                                Command="{Binding BindingContext.EditItemCommand,
                                     Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                                CommandParameter="{Binding .}" />
+                                CommandParameter="{Binding GymObject}" />
                             <Button Grid.Column="3" Style="{StaticResource DeleteIconButtonStyle}"
                                 HeightRequest="32" WidthRequest="32"
                                 HorizontalOptions="Center" VerticalOptions="Center"
-                                Command="{Binding BindingContext.DeleteCommand,
+                                Command="{Binding BindingContext.DeleteItemCommand,
                                     Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                                CommandParameter="{Binding .}" />
+                                CommandParameter="{Binding GymObject}" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </ScrollView>
+        <!-- </VerticalStackLayout> -->
 
         <Grid
             Grid.Row="2"
-            ColumnDefinitions="*,*,*"
+            ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
-            <input:CheckBox
-                x:Name="EditModeCheckBox"
-                Grid.Column="0"
-                IsChecked="{Binding EditMode}"
-                CheckChanged="EditModeCheckBox_OnCheckChanged"
-                HeightRequest="36"
-                HorizontalOptions="Start"
-                Text="Edit mode" />
+            <!-- <input:CheckBox -->
+            <!--     x:Name="EditModeCheckBox" -->
+            <!--     Grid.Column="0" -->
+            <!--     IsChecked="{Binding EditMode}" -->
+            <!--     CheckChanged="EditModeCheckBox_OnCheckChanged" -->
+            <!--     HeightRequest="36" -->
+            <!--     HorizontalOptions="Center" VerticalOptions="Center" -->
+            <!--     Text="Edit mode" /> -->
             <Button
                 x:Name="AddButton"
-                Grid.Column="1"
-                Command="{Binding AddCommand}"
-                Style="{StaticResource AddButtonStyle}" />
+                Grid.Column="0"
+                Command="{Binding AddItemCommand}"
+                Style="{StaticResource AddButtonStyle}"
+                HorizontalOptions="Fill" VerticalOptions="Center" />
             <Button
                 x:Name="ResetButton"
-                Grid.Column="2"
-                Command="{Binding ResetCommand}"
-                Style="{StaticResource ResetButtonStyle}" />
+                Grid.Column="1"
+                Command="{Binding ResetItemsCommand}"
+                Style="{StaticResource ResetButtonStyle}"
+                HorizontalOptions="Fill" VerticalOptions="Center" />
         </Grid>
     </Grid>
 
