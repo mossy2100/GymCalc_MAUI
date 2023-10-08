@@ -46,6 +46,13 @@ public partial class ListPage : ContentPage
         SizeChanged += OnSizeChanged;
     }
 
+    /// <inheritdoc />
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        Task.Run(async () => await _model.DisplayList()).Wait();
+    }
+
     /// <summary>
     /// Re-render the list if the page orientation changes.
     /// </summary>

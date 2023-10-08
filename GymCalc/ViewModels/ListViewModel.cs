@@ -134,14 +134,21 @@ public class ListViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     internal async Task DisplayList()
     {
+        // Make sure GymObjectTypeName is set.
+        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
+        {
+            return;
+        }
+
         Title = $"{GymObjectTypeName}s";
 
-        InstructionsText = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()} "
-            + $"weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
+        InstructionsText = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
+            + $" weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
             + $" Use the edit and delete icon buttons to make changes."
-            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset "
-            + $"button to reset to the defaults.";
+            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
+            + $" button to reset to the defaults.";
 
+        // Display all gym objects of the specified type.
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
@@ -179,7 +186,7 @@ public class ListViewModel : BaseViewModel
         // Get the maximum weight, which is used to determine the width of bars and plates.
         var maxWeight = gymObjects.Last().Weight;
 
-        // Construct the drawables and add them to the list.
+        // Construct drawables and add to list.
         foreach (var gymObject in gymObjects)
         {
             var drawable = new TDrawable

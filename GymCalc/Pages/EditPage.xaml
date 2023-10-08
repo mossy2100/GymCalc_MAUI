@@ -116,7 +116,7 @@
         <!--  Buttons  -->
         <Grid
             Grid.Row="1"
-            ColumnDefinitions="Auto,Auto"
+            ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
             <Button
                 x:Name="CancelButton"
