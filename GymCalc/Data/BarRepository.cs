@@ -12,7 +12,7 @@ public class BarRepository : GymObjectRepository
     /// <summary>
     /// Default selected bar weight.
     /// </summary>
-    internal const double DefaultWeight = 20;
+    internal const double DEFAULT_WEIGHT = 20;
 
     /// <summary>
     /// Default bars weights to set up on app initialize.

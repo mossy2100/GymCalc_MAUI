@@ -10,7 +10,8 @@
         <Label
             x:Name="DeleteMessage"
             Grid.Row="0"
-            Padding="{x:Static graphics:PageLayout.Spacing}" />
+            Padding="{x:Static graphics:PageLayout.Spacing}"
+            Text="{Binding ConfirmDeletionMessage}" />
 
         <!--  Buttons  -->
         <Grid
@@ -21,13 +22,14 @@
                 x:Name="CancelButton"
                 Grid.Row="0"
                 Grid.Column="0"
-                Clicked="CancelButton_OnClicked"
+                Command="{Binding CancelCommand}"
                 Style="{StaticResource CancelButtonStyle}" />
             <Button
                 x:Name="DeleteButton"
                 Grid.Row="0"
                 Grid.Column="1"
-                Clicked="DeleteButton_OnClicked"
+                Command="{Binding DeleteItemCommand}"
+                CommandParameter="{Binding GymObject}"
                 Style="{StaticResource DeleteButtonStyle}" />
         </Grid>
     </Grid>

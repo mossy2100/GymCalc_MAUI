@@ -56,6 +56,7 @@ public static class MauiProgram
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
             .AddSingleton<ListViewModel>()
+            .AddSingleton<DeleteViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
             ;

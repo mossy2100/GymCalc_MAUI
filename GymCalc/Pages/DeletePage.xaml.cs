@@ -1,7 +1,5 @@
 using System.Runtime.CompilerServices;
-using GymCalc.Constants;
-using GymCalc.Data;
-using GymCalc.Models;
+using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
 
@@ -9,16 +7,18 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class DeletePage : ContentPage
 {
-    private readonly Database _database;
+    // ---------------------------------------------------------------------------------------------
 
-    private readonly BarRepository _barRepo;
+    /// <summary>
+    /// Reference to the view model.
+    /// </summary>
+    private DeleteViewModel _model;
 
-    private readonly PlateRepository _plateRepo;
+    // ---------------------------------------------------------------------------------------------
 
-    private readonly DumbbellRepository _dbRepo;
-
-    private readonly KettlebellRepository _kbRepo;
-
+    /// <summary>
+    /// The name of the GymObject type (e.g. "Bar").
+    /// </summary>
     private string _gymObjectTypeName;
 
     public string GymObjectTypeName
@@ -32,6 +32,11 @@ public partial class DeletePage : ContentPage
         }
     }
 
+    // ---------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// The id of the GymObject we want to delete.
+    /// </summary>
     private int _gymObjectId;
 
     public int GymObjectId
@@ -45,22 +50,25 @@ public partial class DeletePage : ContentPage
         }
     }
 
-    public DeletePage(Database database, BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
-    {
-        _database = database;
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
+    // ---------------------------------------------------------------------------------------------
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="model"></param>
+    public DeletePage(DeleteViewModel model)
+    {
         InitializeComponent();
-        BindingContext = this;
+
+        _model = model;
+        BindingContext = model;
 
         // Workaround for issue with Back button label.
         // <see href="https://github.com/dotnet/maui/issues/8335" />
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
+
+    // ---------------------------------------------------------------------------------------------
 
     /// <inheritdoc />
     protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -71,84 +79,12 @@ public partial class DeletePage : ContentPage
         {
             case nameof(GymObjectTypeName):
                 Title = $"Delete {GymObjectTypeName}";
-                await InitializeForm();
+                await _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
 
             case nameof(GymObjectId):
-                await InitializeForm();
+                await _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
         }
-    }
-
-    private async Task InitializeForm()
-    {
-        if (string.IsNullOrEmpty(GymObjectTypeName) || GymObjectId == 0)
-        {
-            return;
-        }
-
-        GymObject gymObject;
-
-        switch (GymObjectTypeName)
-        {
-            case GymObjectType.Bar:
-                gymObject = await _barRepo.Get(GymObjectId);
-                break;
-
-            case GymObjectType.Plate:
-                gymObject = await _plateRepo.Get(GymObjectId);
-                break;
-
-            case GymObjectType.Dumbbell:
-                gymObject = await _dbRepo.Get(GymObjectId);
-                break;
-
-            case GymObjectType.Kettlebell:
-                gymObject = await _kbRepo.Get(GymObjectId);
-                break;
-
-            default:
-                return;
-        }
-
-        if (gymObject == null)
-        {
-            await Shell.Current.GoToAsync("..");
-            return;
-        }
-
-        DeleteMessage.Text =
-            $"Are you sure you want to delete the {gymObject.Weight} {gymObject.Units} {GymObjectTypeName.ToLower()}?";
-    }
-
-    private async void CancelButton_OnClicked(object sender, EventArgs e)
-    {
-        await AppShell.GoToList(GymObjectTypeName);
-    }
-
-    private async void DeleteButton_OnClicked(object sender, EventArgs e)
-    {
-        var conn = _database.Connection;
-
-        switch (GymObjectTypeName)
-        {
-            case GymObjectType.Bar:
-                await conn.DeleteAsync<Bar>(GymObjectId);
-                break;
-
-            case GymObjectType.Plate:
-                await conn.DeleteAsync<Plate>(GymObjectId);
-                break;
-
-            case GymObjectType.Dumbbell:
-                await conn.DeleteAsync<Dumbbell>(GymObjectId);
-                break;
-
-            case GymObjectType.Kettlebell:
-                await conn.DeleteAsync<Kettlebell>(GymObjectId);
-                break;
-        }
-
-        await AppShell.GoToList(GymObjectTypeName);
     }
 }
