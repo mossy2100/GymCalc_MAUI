@@ -29,22 +29,41 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="{Binding Height}" />
                             </Grid.RowDefinitions>
-                            <GraphicsView Grid.Column="0" Drawable="{Binding .}"
-                                HeightRequest="{Binding Height}" WidthRequest="{Binding Width}"
-                                HorizontalOptions="Center" VerticalOptions="Center" />
-                            <input:CheckBox Grid.Column="1" Type="Material"
-                                HeightRequest="32" WidthRequest="32"
-                                HorizontalOptions="Start" VerticalOptions="Center"
-                                IsChecked="{Binding GymObject.Enabled, Mode=TwoWay}" />
-                            <Button Grid.Column="2" Style="{StaticResource EditIconButtonStyle}"
-                                HeightRequest="32" WidthRequest="32"
-                                HorizontalOptions="Center" VerticalOptions="Center"
+                            <GraphicsView
+                                Grid.Column="0"
+                                Drawable="{Binding .}"
+                                HeightRequest="{Binding Height}"
+                                WidthRequest="{Binding Width}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+                            <input:CheckBox
+                                Grid.Column="1"
+                                Type="Material"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                IsChecked="{Binding GymObject.Enabled, Mode=TwoWay}"
+                                CheckChangedCommand="{Binding BindingContext.EnableItemCommand,
+                                    Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
+                                CommandParameter="{Binding GymObject}" />
+                            <Button
+                                Grid.Column="2"
+                                Style="{StaticResource EditIconButtonStyle}"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
                                 Command="{Binding BindingContext.EditItemCommand,
                                     Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                                 CommandParameter="{Binding GymObject}" />
-                            <Button Grid.Column="3" Style="{StaticResource DeleteIconButtonStyle}"
-                                HeightRequest="32" WidthRequest="32"
-                                HorizontalOptions="Center" VerticalOptions="Center"
+                            <Button
+                                Grid.Column="3"
+                                Style="{StaticResource DeleteIconButtonStyle}"
+                                HeightRequest="32"
+                                WidthRequest="32"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
                                 Command="{Binding BindingContext.DeleteItemCommand,
                                     Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                                 CommandParameter="{Binding GymObject}" />

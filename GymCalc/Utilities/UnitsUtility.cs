@@ -18,7 +18,7 @@ public static class UnitsUtility
 
     internal static Units GetDefault()
     {
-        var sUnits = Preferences.Default.Get("Units", Units.Kilograms.GetDescription());
+        var sUnits = Preferences.Default.Get("Units", "");
         return sUnits == Units.Pounds.GetDescription() ? Units.Pounds : Units.Kilograms;
     }
 }

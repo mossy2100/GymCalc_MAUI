@@ -80,14 +80,9 @@ public class ListViewModel : BaseViewModel
     // Commands.
 
     /// <summary>
-    /// Command to add a new item.
+    /// Command to enable/disable an item.
     /// </summary>
-    public ICommand AddItemCommand { get; set; }
-
-    /// <summary>
-    /// Reset items command.
-    /// </summary>
-    public ICommand ResetItemsCommand { get; set; }
+    public ICommand EnableItemCommand { get; set; }
 
     /// <summary>
     /// Command to edit an item.
@@ -98,6 +93,16 @@ public class ListViewModel : BaseViewModel
     /// Command to delete an item.
     /// </summary>
     public ICommand DeleteItemCommand { get; set; }
+
+    /// <summary>
+    /// Command to add a new item.
+    /// </summary>
+    public ICommand AddItemCommand { get; set; }
+
+    /// <summary>
+    /// Reset items command.
+    /// </summary>
+    public ICommand ResetItemsCommand { get; set; }
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -119,10 +124,11 @@ public class ListViewModel : BaseViewModel
         _kbRepo = kbRepo;
 
         // Commands.
-        AddItemCommand = new AsyncCommand(AddItem);
-        ResetItemsCommand = new AsyncCommand(ResetItems);
+        EnableItemCommand = new AsyncCommand<GymObject>(EnableItem);
         EditItemCommand = new AsyncCommand<GymObject>(EditItem);
         DeleteItemCommand = new AsyncCommand<GymObject>(DeleteItem);
+        AddItemCommand = new AsyncCommand(AddItem);
+        ResetItemsCommand = new AsyncCommand(ResetItems);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -183,9 +189,6 @@ public class ListViewModel : BaseViewModel
             };
             Drawables.Add(drawable);
         }
-
-        // Update the view.
-        // OnPropertyChanged(nameof(Drawables));
     }
 
     /// <inheritdoc />
@@ -197,7 +200,6 @@ public class ListViewModel : BaseViewModel
         {
             case nameof(GymObjectTypeName):
                 Task.Run(DisplayList).Wait();
-                // _isGymObjectTypeNameSet = true;
                 break;
         }
     }
@@ -205,14 +207,9 @@ public class ListViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Command methods.
 
-    private async Task AddItem()
+    private async Task EnableItem(GymObject gymObject)
     {
-        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}");
-    }
-
-    private async Task ResetItems()
-    {
-        await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
+        await _database.Connection.UpdateAsync(gymObject);
     }
 
     private async Task EditItem(GymObject gymObject)
@@ -225,121 +222,13 @@ public class ListViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Old code.
-
-    /*
-    /// <summary>
-    /// Initialize the list of gym objects.
-    /// </summary>
-    private void DisplayList<T, TDrawable>(List<T> gymObjects)
-        where T : GymObject
-        where TDrawable : GymObjectDrawable, new()
+    private async Task AddItem()
     {
-        // Clear the grid.
-        MauiUtilities.ClearGrid(ListGrid, true, true);
-
-        // Set up the column definitions, which will vary with device orientation.
-        ListGrid.ColumnDefinitions = new ColumnDefinitionCollection();
-        var nItemCols = PageLayout.GetNumColumns();
-        var nGridCols = nItemCols * 2;
-        for (var c = 0; c < nItemCols; c++)
-        {
-            // Add column for the graphic.
-            ListGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-            // Add column for the checkbox and icon buttons.
-            ListGrid.ColumnDefinitions.Add(
-                new ColumnDefinition(new GridLength(_IconButtonsLayoutWidth)));
-        }
-
-        // Add the instructions label at the top. The text and font size will be set later.
-        ListGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-        InstructionsLabel = new Label().ColumnSpan(nGridCols);
-        ListGrid.Add(InstructionsLabel, 0, 0);
-
-        // Get the maximum bar weight.
-        var maxWeight = gymObjects.Last().Weight;
-
-        // Calculate the maximum graphic width.
-        var maxWidth = (int)(ListGrid.Width - ListGrid.Padding.Left - ListGrid.Padding.Right);
-        if (nItemCols == 2)
-        {
-            maxWidth = (maxWidth - (int)ListGrid.ColumnSpacing) / 2;
-        }
-        maxWidth = maxWidth - (int)ListGrid.ColumnSpacing - _IconButtonsLayoutWidth - 30;
-
-        // Get the icon styles.
-        var editIconButtonStyle = MauiUtilities.LookupStyle("EditIconButtonStyle");
-        var deleteIconButtonStyle = MauiUtilities.LookupStyle("DeleteIconButtonStyle");
-
-        var rowNum = 1;
-        var colNum = 0;
-        foreach (var gymObject in gymObjects)
-        {
-            // Construct the drawable.
-            var drawable = new TDrawable
-            {
-                GymObject = gymObject,
-                MaxWidth = maxWidth,
-                MaxWeight = maxWeight,
-            };
-
-            // If we're at the start of a new row, create one and add it to the grid.
-            if (colNum == 0)
-            {
-                var rowHeight = Math.Max(drawable.Height, _IconButtonHeight);
-                ListGrid.RowDefinitions.Add(new RowDefinition(new GridLength(rowHeight)));
-            }
-
-            // Add the graphic.
-            var gymObjectGraphic = drawable.CreateGraphicsView();
-            ListGrid.Add(gymObjectGraphic, colNum, rowNum);
-
-            // Add the checkbox to the grid.
-            var cb = new CheckBox
-            {
-                IsChecked = gymObject.Enabled,
-                HorizontalOptions = LayoutOptions.Center,
-            };
-            cb.CheckChanged += EnabledCheckBox_OnCheckChanged;
-            ListGrid.Add(cb, colNum + 1, rowNum);
-
-            // Link the checkbox to the bar.
-            _cbObjectMap[cb] = gymObject;
-
-            // Create a horizontal stack for the edit and delete icon buttons.
-            var stack = new HorizontalStackLayout { Spacing = 5 };
-
-            // Add the edit button to the stack.
-            var editBtn = new Button
-            {
-                Style = editIconButtonStyle,
-            };
-            editBtn.Clicked += EditIcon_OnClicked;
-            stack.Add(editBtn);
-
-            // Add the delete button to the stack.
-            var deleteBtn = new Button
-            {
-                Style = deleteIconButtonStyle,
-            };
-            deleteBtn.Clicked += DeleteIcon_OnClicked;
-            stack.Add(deleteBtn);
-
-            // Link the icon button group to the bar.
-            _stackObjectMap[stack] = gymObject;
-
-            // Add the stack to the grid.
-            ListGrid.Add(stack, colNum + 1, rowNum);
-
-            // Next position.
-            colNum += 2;
-            if (colNum == nGridCols)
-            {
-                rowNum++;
-                colNum = 0;
-            }
-        }
+        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}");
     }
-    */
+
+    private async Task ResetItems()
+    {
+        await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
+    }
 }
