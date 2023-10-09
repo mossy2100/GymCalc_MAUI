@@ -91,7 +91,7 @@ public class BarRepository : GymObjectRepository
     /// Get a bar by id.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Bar> Get(int id)
+    internal override async Task<Bar> Get(int id)
     {
         await InitCache();
         return _cache[id];

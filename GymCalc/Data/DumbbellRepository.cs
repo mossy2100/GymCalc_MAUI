@@ -98,7 +98,7 @@ public class DumbbellRepository : GymObjectRepository
     /// Get a dumbbell by id.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Dumbbell> Get(int id)
+    internal override async Task<Dumbbell> Get(int id)
     {
         await InitCache();
         return _cache[id];

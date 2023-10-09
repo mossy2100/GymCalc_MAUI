@@ -103,7 +103,7 @@ public class KettlebellRepository : GymObjectRepository
     /// Get a kettlebell by id.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Kettlebell> Get(int id)
+    internal override async Task<Kettlebell> Get(int id)
     {
         await InitCache();
         return _cache[id];

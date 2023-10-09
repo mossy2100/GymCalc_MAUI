@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using Galaxon.Core.Exceptions;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
@@ -10,8 +12,6 @@ public class DeleteViewModel : BaseViewModel
 {
     // ---------------------------------------------------------------------------------------------
     // Dependencies.
-
-    private readonly Database _database;
 
     private readonly BarRepository _barRepo;
 
@@ -54,16 +54,14 @@ public class DeleteViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
-    public DeleteViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
+    public DeleteViewModel(BarRepository barRepo, PlateRepository plateRepo,
         DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
-        _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _dumbbellRepo = dumbbellRepo;
@@ -91,8 +89,6 @@ public class DeleteViewModel : BaseViewModel
     /// </summary>
     private async Task DeleteItem()
     {
-        var conn = _database.Connection;
-
         switch (_gymObject)
         {
             case Bar:
@@ -126,12 +122,22 @@ public class DeleteViewModel : BaseViewModel
     /// <returns>If the initialization completed ok.</returns>
     internal async Task<bool> Initialize(string gymObjectTypeName, int gymObjectId)
     {
-        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == 0)
+        if (string.IsNullOrEmpty(gymObjectTypeName))
         {
-            return false;
+            throw new ArgumentInvalidException("Gym object type not provided.");
         }
 
-        switch (gymObjectTypeName)
+        if (gymObjectId == 0)
+        {
+            throw new ArgumentInvalidException("Gym object id not provided.");
+        }
+
+        if (!Enum.TryParse<GymObjectType>(gymObjectTypeName, out var gymObjectType))
+        {
+            throw new ArgumentInvalidException($"Invalid gym object type name ({gymObjectTypeName}).");
+        }
+
+        switch (gymObjectType)
         {
             case GymObjectType.Bar:
                 _gymObject = await _barRepo.Get(gymObjectId);
@@ -155,7 +161,7 @@ public class DeleteViewModel : BaseViewModel
 
         if (_gymObject == null)
         {
-            return false;
+            throw new ArgumentInvalidException($"Invalid gym object id ({gymObjectId}).");
         }
 
         ConfirmDeletionMessage =

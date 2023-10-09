@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GymCalc.Constants;
 using GymCalc.Data;
+using GymCalc.Services;
 
 namespace GymCalc.Pages;
 
@@ -15,6 +16,8 @@ public partial class ResetPage : ContentPage
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
+
+    private readonly DatabaseHelperService _databaseHelperService;
 
     private string _gymObjectTypeName;
 
@@ -30,12 +33,13 @@ public partial class ResetPage : ContentPage
     }
 
     public ResetPage(BarRepository barRepo, PlateRepository plateRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo)
+        KettlebellRepository kettlebellRepo, DatabaseHelperService databaseHelperService)
     {
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
+        _databaseHelperService = databaseHelperService;
 
         InitializeComponent();
         BindingContext = this;
@@ -72,14 +76,7 @@ public partial class ResetPage : ContentPage
 
     private async void ResetButton_OnClicked(object sender, EventArgs e)
     {
-        GymObjectRepository repo = GymObjectTypeName switch
-        {
-            GymObjectType.Bar => _barRepo,
-            GymObjectType.Plate => _plateRepo,
-            GymObjectType.Dumbbell => _dumbbellRepo,
-            GymObjectType.Kettlebell => _kettlebellRepo,
-            _ => throw new InvalidEnumArgumentException("Invalid object type."),
-        };
+        var repo = _databaseHelperService.GetRepo(GymObjectTypeName);
 
         await repo.DeleteAll();
         await repo.InsertDefaults();

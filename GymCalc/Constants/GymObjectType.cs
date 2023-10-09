@@ -1,12 +1,12 @@
 namespace GymCalc.Constants;
 
-internal static class GymObjectType
+internal enum GymObjectType
 {
-    internal const string Bar = "Bar";
+    Bar,
 
-    internal const string Plate = "Plate";
+    Plate,
 
-    internal const string Dumbbell = "Dumbbell";
+    Dumbbell,
 
-    internal const string Kettlebell = "Kettlebell";
+    Kettlebell,
 }

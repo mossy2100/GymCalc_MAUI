@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
-using GymCalc.Components;
+using Galaxon.Core.Exceptions;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
@@ -14,8 +14,6 @@ public class EditViewModel : BaseViewModel
 {
     // ---------------------------------------------------------------------------------------------
     // Dependencies.
-
-    private readonly Database _database;
 
     private readonly BarRepository _barRepo;
 
@@ -47,6 +45,11 @@ public class EditViewModel : BaseViewModel
     /// The gym object.
     /// </summary>
     private GymObject _gymObject;
+
+    /// <summary>
+    /// The gym object type.
+    /// </summary>
+    private GymObjectType _gymObjectType;
 
     /// <summary>
     /// The weight (parsed from the WeightText entry field).
@@ -142,16 +145,14 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
-    public EditViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
+    public EditViewModel(BarRepository barRepo, PlateRepository plateRepo,
         DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
-        _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _dumbbellRepo = dumbbellRepo;
@@ -170,7 +171,6 @@ public class EditViewModel : BaseViewModel
     /// </summary>
     private async Task Cancel()
     {
-        // await AppShell.GoToList(_gymObjectTypeName);
         await Shell.Current.GoToAsync("..");
     }
 
@@ -190,7 +190,7 @@ public class EditViewModel : BaseViewModel
         ErrorMessage = "";
 
         // Update the object. The exact process will vary by type.
-        _gymObject = _gymObjectTypeName switch
+        _gymObject = _gymObjectType switch
         {
             GymObjectType.Bar => await SaveBar(),
             GymObjectType.Plate => await SavePlate(),
@@ -224,6 +224,12 @@ public class EditViewModel : BaseViewModel
         _gymObjectTypeName = gymObjectTypeName;
         _gymObjectId = gymObjectId;
 
+        // Get the gym object type.
+        if (!Enum.TryParse(_gymObjectTypeName, out _gymObjectType))
+        {
+            throw new ArgumentInvalidException($"Invalid gym object type name ({_gymObjectTypeName}).");
+        }
+
         // Reset the form.
         ResetForm();
 
@@ -255,7 +261,7 @@ public class EditViewModel : BaseViewModel
         BandColor = "OffBlack";
 
         // Hide/show certain fields according to the object type.
-        switch (_gymObjectTypeName)
+        switch (_gymObjectType)
         {
             case GymObjectType.Bar:
                 MainColorIsVisible = false;
@@ -284,7 +290,7 @@ public class EditViewModel : BaseViewModel
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     private async Task Load()
     {
-        switch (_gymObjectTypeName)
+        switch (_gymObjectType)
         {
             case GymObjectType.Bar:
                 Bar bar = await _barRepo.Get(_gymObjectId);

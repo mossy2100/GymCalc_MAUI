@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
+using Galaxon.Core.Exceptions;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Drawables;
@@ -26,18 +27,13 @@ public class ListViewModel : BaseViewModel
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
-    /// The type of gym objects listed. This is set from the page, which receives it as a parameter.
+    /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
     /// </summary>
-    private string _gymObjectTypeName;
-
-    public string GymObjectTypeName
-    {
-        get => _gymObjectTypeName;
-
-        set => SetProperty(ref _gymObjectTypeName, value);
-    }
+    public string GymObjectTypeName { get; set; }
 
     // ---------------------------------------------------------------------------------------------
+    // Bindable properties.
+
     /// <summary>
     /// Results for the CollectionView.
     /// </summary>
@@ -50,7 +46,6 @@ public class ListViewModel : BaseViewModel
         set => SetProperty(ref _drawables, value);
     }
 
-    // ---------------------------------------------------------------------------------------------
     /// <summary>
     /// Page title.
     /// </summary>
@@ -63,17 +58,16 @@ public class ListViewModel : BaseViewModel
         set => SetProperty(ref _title, value);
     }
 
-    // ---------------------------------------------------------------------------------------------
     /// <summary>
     /// Instructions text.
     /// </summary>
-    private string _instructionsText;
+    private string _instructions;
 
-    public string InstructionsText
+    public string Instructions
     {
-        get => _instructionsText;
+        get => _instructions;
 
-        set => SetProperty(ref _instructionsText, value);
+        set => SetProperty(ref _instructions, value);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -82,27 +76,27 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Command to enable/disable an item.
     /// </summary>
-    public ICommand EnableItemCommand { get; init; }
+    public ICommand EnableCommand { get; init; }
 
     /// <summary>
     /// Command to edit an item.
     /// </summary>
-    public ICommand EditItemCommand { get; init; }
+    public ICommand EditCommand { get; init; }
 
     /// <summary>
     /// Command to delete an item.
     /// </summary>
-    public ICommand DeleteItemCommand { get; init; }
+    public ICommand DeleteCommand { get; init; }
 
     /// <summary>
     /// Command to add a new item.
     /// </summary>
-    public ICommand AddItemCommand { get; init; }
+    public ICommand AddCommand { get; init; }
 
     /// <summary>
     /// Reset items command.
     /// </summary>
-    public ICommand ResetItemsCommand { get; init; }
+    public ICommand ResetCommand { get; init; }
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -124,11 +118,11 @@ public class ListViewModel : BaseViewModel
         _kettlebellRepo = kettlebellRepo;
 
         // Commands.
-        EnableItemCommand = new AsyncCommand<GymObject>(EnableItem);
-        EditItemCommand = new AsyncCommand<GymObject>(EditItem);
-        DeleteItemCommand = new AsyncCommand<GymObject>(DeleteItem);
-        AddItemCommand = new AsyncCommand(AddItem);
-        ResetItemsCommand = new AsyncCommand(ResetItems);
+        EnableCommand = new AsyncCommand<GymObject>(EnableItem);
+        EditCommand = new AsyncCommand<GymObject>(EditItem);
+        DeleteCommand = new AsyncCommand<GymObject>(DeleteItem);
+        AddCommand = new AsyncCommand(AddItem);
+        ResetCommand = new AsyncCommand(ResetItems);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -142,14 +136,20 @@ public class ListViewModel : BaseViewModel
 
         Title = $"{GymObjectTypeName}s";
 
-        InstructionsText = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
+        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
             + $" weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
             + $" Use the edit and delete icon buttons to make changes."
             + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";
 
+        // Get the gym object type.
+        if (!Enum.TryParse<GymObjectType>(GymObjectTypeName, out var gymObjectType))
+        {
+            throw new ArgumentInvalidException($"Invalid gym object type name ({GymObjectTypeName}).");
+        }
+
         // Display all gym objects of the specified type.
-        switch (GymObjectTypeName)
+        switch (gymObjectType)
         {
             case GymObjectType.Bar:
                 var bars = await _barRepo.GetSome(ascending: true);

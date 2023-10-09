@@ -62,6 +62,7 @@ public static class MauiProgram
             .AddSingleton<SettingsViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
+            .AddSingleton<DatabaseHelperService>()
             ;
     }
 }

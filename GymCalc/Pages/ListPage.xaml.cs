@@ -24,7 +24,9 @@ public partial class ListPage : ContentPage
 
         set
         {
-            // Set the value on the model.
+            _gymObjectTypeName = value;
+
+            // Copy the value to the model.
             _model.GymObjectTypeName = value;
         }
     }

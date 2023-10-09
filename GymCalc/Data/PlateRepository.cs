@@ -110,7 +110,7 @@ public class PlateRepository : GymObjectRepository
     /// Get a plate by id.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Plate> Get(int id)
+    internal override async Task<Plate> Get(int id)
     {
         await InitCache();
         return _cache[id];

@@ -160,6 +160,8 @@ public abstract class GymObjectRepository
         await Database.Connection.DeleteAllAsync<T>();
     }
 
+    internal abstract Task Get(int id);
+
     internal abstract Task Delete(int id);
 
     internal abstract Task DeleteAll();
