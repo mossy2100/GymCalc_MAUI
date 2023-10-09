@@ -10,12 +10,17 @@ namespace GymCalc.Data;
 /// </summary>
 public class KettlebellRepository : GymObjectRepository
 {
+    /// <summary>
+    /// Object cache.
+    /// </summary>
+    private Dictionary<int, Kettlebell> _cache;
+
     public KettlebellRepository(Database database) : base(database)
     {
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some bars.
+    /// Ensure the database table exist and contains some kettlebells.
     /// </summary>
     internal override async Task Initialize()
     {
@@ -70,27 +75,85 @@ public class KettlebellRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Get the kettlebells.
+    /// Initialize the object cache.
+    /// </summary>
+    internal override async Task InitCache()
+    {
+        if (_cache == null)
+        {
+            var kettlebells = await Database.Connection.Table<Kettlebell>().ToListAsync();
+            var pairs = kettlebells.Select(kettlebell =>
+                new KeyValuePair<int, Kettlebell>(kettlebell.Id, kettlebell));
+            _cache = new Dictionary<int, Kettlebell>(pairs);
+        }
+    }
+
+    /// <summary>
+    /// Get some kettlebells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Kettlebell>> GetAll(Units units = Units.Default,
-        bool? enabled = null, bool? ascending = null)
+    internal async Task<List<Kettlebell>> GetSome(Units units = Units.Default, bool? enabled = null,
+        bool? ascending = null)
     {
-        return await base.GetAll<Kettlebell>(units, enabled, ascending);
+        await InitCache();
+        return GetSome(_cache, units, enabled, ascending);
     }
 
     /// <summary>
     /// Get a kettlebell by id.
     /// </summary>
     /// <returns></returns>
-    public async Task<Kettlebell> Get(int id)
+    internal async Task<Kettlebell> Get(int id)
     {
-        return await base.Get<Kettlebell>(id);
+        await InitCache();
+        return _cache[id];
+    }
+
+    /// <summary>
+    /// Update a kettlebell.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Kettlebell> Update(Kettlebell kettlebell)
+    {
+        await InitCache();
+        return await Update(_cache, kettlebell);
+    }
+
+    /// <summary>
+    /// Insert a new kettlebell.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Kettlebell> Insert(Kettlebell kettlebell)
+    {
+        await InitCache();
+        return await Insert(_cache, kettlebell);
+    }
+
+    /// <summary>
+    /// Update or insert as required.
+    /// </summary>
+    /// <param name="kettlebell"></param>
+    /// <returns></returns>
+    internal async Task<Kettlebell> Upsert(Kettlebell kettlebell)
+    {
+        await InitCache();
+        return await Upsert(_cache, kettlebell);
+    }
+
+    /// <summary>
+    /// Delete a kettlebell.
+    /// </summary>
+    /// <returns></returns>
+    internal override async Task Delete(int id)
+    {
+        await InitCache();
+        await Delete(_cache, id);
     }
 
     /// <inheritdoc />
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Kettlebell>();
+        _cache.Clear();
     }
 }

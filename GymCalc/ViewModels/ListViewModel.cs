@@ -20,9 +20,9 @@ public class ListViewModel : BaseViewModel
 
     private readonly PlateRepository _plateRepo;
 
-    private readonly DumbbellRepository _dbRepo;
+    private readonly DumbbellRepository _dumbbellRepo;
 
-    private readonly KettlebellRepository _kbRepo;
+    private readonly KettlebellRepository _kettlebellRepo;
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -111,17 +111,17 @@ public class ListViewModel : BaseViewModel
     /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
-    /// <param name="dbRepo"></param>
-    /// <param name="kbRepo"></param>
+    /// <param name="dumbbellRepo"></param>
+    /// <param name="kettlebellRepo"></param>
     public ListViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
+        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Keep references to the dependencies.
         _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
 
         // Commands.
         EnableItemCommand = new AsyncCommand<GymObject>(EnableItem);
@@ -152,22 +152,22 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case GymObjectType.Bar:
-                var bars = await _barRepo.GetAll(ascending: true);
+                var bars = await _barRepo.GetSome(ascending: true);
                 DisplayList<Bar, BarDrawable>(bars);
                 break;
 
             case GymObjectType.Plate:
-                var plates = await _plateRepo.GetAll(ascending: true);
+                var plates = await _plateRepo.GetSome(ascending: true);
                 DisplayList<Plate, PlateDrawable>(plates);
                 break;
 
             case GymObjectType.Dumbbell:
-                var dumbbells = await _dbRepo.GetAll(ascending: true);
+                var dumbbells = await _dumbbellRepo.GetSome(ascending: true);
                 DisplayList<Dumbbell, DumbbellDrawable>(dumbbells);
                 break;
 
             case GymObjectType.Kettlebell:
-                var kettlebells = await _kbRepo.GetAll(ascending: true);
+                var kettlebells = await _kettlebellRepo.GetSome(ascending: true);
                 DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
                 break;
         }
@@ -182,6 +182,12 @@ public class ListViewModel : BaseViewModel
     {
         // Initialize the empty list.
         Drawables = new List<GymObjectDrawable>();
+
+        // Check if there's anything to draw.
+        if (gymObjects.Count == 0)
+        {
+            return;
+        }
 
         // Get the maximum weight, which is used to determine the width of bars and plates.
         var maxWeight = gymObjects.Last().Weight;

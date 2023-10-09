@@ -1,9 +1,12 @@
 using System.Globalization;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
+using Galaxon.Core.Enums;
+using GymCalc.Components;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
+using GymCalc.Utilities;
 
 namespace GymCalc.ViewModels;
 
@@ -18,16 +21,16 @@ public class EditViewModel : BaseViewModel
 
     private readonly PlateRepository _plateRepo;
 
-    private readonly DumbbellRepository _dbRepo;
+    private readonly DumbbellRepository _dumbbellRepo;
 
-    private readonly KettlebellRepository _kbRepo;
+    private readonly KettlebellRepository _kettlebellRepo;
 
     // ---------------------------------------------------------------------------------------------
     // Commands.
 
     public ICommand CancelCommand { get; init; }
 
-    public ICommand SaveItemCommand { get; init; }
+    public ICommand SaveCommand { get; init; }
 
     // ---------------------------------------------------------------------------------------------
     // Page parameters.
@@ -46,7 +49,7 @@ public class EditViewModel : BaseViewModel
     private GymObject _gymObject;
 
     /// <summary>
-    /// The weight (obtained from the entry).
+    /// The weight (parsed from the WeightText entry field).
     /// </summary>
     private double _weight;
 
@@ -134,15 +137,6 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _hasBandsIsVisible, value);
     }
 
-    // private bool _bandColorGridIsVisible;
-    //
-    // public bool BandColorGridIsVisible
-    // {
-    //     get => _bandColorGridIsVisible;
-    //
-    //     set => SetProperty(ref _bandColorGridIsVisible, value);
-    // }
-
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -151,21 +145,21 @@ public class EditViewModel : BaseViewModel
     /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
-    /// <param name="dbRepo"></param>
-    /// <param name="kbRepo"></param>
+    /// <param name="dumbbellRepo"></param>
+    /// <param name="kettlebellRepo"></param>
     public EditViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
+        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
         _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
 
         // Commands.
         CancelCommand = new AsyncCommand(Cancel);
-        SaveItemCommand = new AsyncCommand(SaveItem);
+        SaveCommand = new AsyncCommand(Save);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -183,7 +177,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Save the item to the database, then go back to the list page.
     /// </summary>
-    private async Task SaveItem()
+    private async Task Save()
     {
         // Validate the form.
         var weightOk = double.TryParse(WeightText, out var weight) && weight > 0;
@@ -195,35 +189,21 @@ public class EditViewModel : BaseViewModel
         _weight = weight;
         ErrorMessage = "";
 
-        // Update the object. This will vary by type.
+        // Update the object. The exact process will vary by type.
         _gymObject = _gymObjectTypeName switch
         {
-            GymObjectType.Bar => UpdateBar(),
-            GymObjectType.Plate => UpdatePlate(),
-            GymObjectType.Dumbbell => UpdateDumbbell(),
-            GymObjectType.Kettlebell => UpdateKettlebell(),
+            GymObjectType.Bar => await SaveBar(),
+            GymObjectType.Plate => await SavePlate(),
+            GymObjectType.Dumbbell => await SaveDumbbell(),
+            GymObjectType.Kettlebell => await SaveKettlebell(),
             _ => throw new Exception("Invalid gym object type.")
         };
-
-        // Copy common values from the view model to the model.
-        _gymObject.Weight = _weight;
-        _gymObject.Units = Units;
-        _gymObject.Enabled = Enabled;
-
-        // Save the object to the database.
-        var conn = _database.Connection;
-        if (_operation == "add")
-        {
-            await conn.InsertAsync(_gymObject);
-        }
-        else
-        {
-            await conn.UpdateAsync(_gymObject);
-        }
 
         // Go back to the list of this object type.
         await AppShell.GoToList(_gymObjectTypeName);
     }
+
+    // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
@@ -232,8 +212,8 @@ public class EditViewModel : BaseViewModel
         int gymObjectId)
     {
         // Check if all the necessary parameters have been set.
-        bool ready = string.IsNullOrEmpty(gymObjectTypeName)
-            && ((operation == "edit" && gymObjectId > 0) || operation == "add");
+        bool ready = !string.IsNullOrEmpty(gymObjectTypeName)
+            && (operation == "add" || (operation == "edit" && gymObjectId > 0));
         if (!ready)
         {
             return false;
@@ -244,8 +224,38 @@ public class EditViewModel : BaseViewModel
         _gymObjectTypeName = gymObjectTypeName;
         _gymObjectId = gymObjectId;
 
-        // Hide certain fields according to the object type, as if creating a new object.
-        switch (gymObjectTypeName)
+        // Reset the form.
+        ResetForm();
+
+        // If editing an existing gym object, load it from the database and populate the form.
+        if (operation == "edit")
+        {
+            await Load();
+        }
+        else
+        {
+            _gymObject = null;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Reset the form in preparation for a new item.
+    /// The object type affects what fields are displayed.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    private void ResetForm()
+    {
+        WeightText = "";
+        Units = UnitsUtility.GetDefault().GetDescription();
+        Enabled = true;
+        MainColor = "OffBlack";
+        HasBands = false;
+        BandColor = "OffBlack";
+
+        // Hide/show certain fields according to the object type.
+        switch (_gymObjectTypeName)
         {
             case GymObjectType.Bar:
                 MainColorIsVisible = false;
@@ -264,19 +274,15 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName), "Invalid object type.");
+                throw new ArgumentOutOfRangeException(nameof(_gymObjectTypeName), $"Invalid object type: {_gymObjectTypeName}");
         }
-
-        // If editing an existing object, load it from the database and populate the form.
-        if (operation == "edit")
-        {
-            await LoadItem();
-        }
-
-        return true;
     }
 
-    private async Task LoadItem()
+    /// <summary>
+    /// Load an existing gym object from the database.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    private async Task Load()
     {
         switch (_gymObjectTypeName)
         {
@@ -292,13 +298,13 @@ public class EditViewModel : BaseViewModel
                 break;
 
             case GymObjectType.Dumbbell:
-                Dumbbell dumbbell = await _dbRepo.Get(_gymObjectId);
+                Dumbbell dumbbell = await _dumbbellRepo.Get(_gymObjectId);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case GymObjectType.Kettlebell:
-                Kettlebell kettlebell = await _kbRepo.Get(_gymObjectId);
+                Kettlebell kettlebell = await _kettlebellRepo.Get(_gymObjectId);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;
@@ -316,47 +322,75 @@ public class EditViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    // Update methods for each type.
+    // Save-related methods.
 
-    private GymObject UpdateBar()
+    /// <summary>
+    /// Copy common values from the view model to the model.
+    /// </summary>
+    private void CopyCommonValues(GymObject gymObject)
+    {
+        gymObject.Weight = _weight;
+        gymObject.Units = Units;
+        gymObject.Enabled = Enabled;
+    }
+
+    private async Task<GymObject> SaveBar()
     {
         // If this is an add operation, create new Bar.
         Bar bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
 
+        // Copy values from the view model to the model.
+        CopyCommonValues(bar);
+
+        // Update the database.
+        await _barRepo.Upsert(bar);
+
         return bar;
     }
 
-    private GymObject UpdatePlate()
+    private async Task<GymObject> SavePlate()
     {
         // If this is an add operation, create new Bar.
         Plate plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
 
         // Copy values from the view model to the model.
+        CopyCommonValues(plate);
         plate.Color = MainColor;
+
+        // Update the database.
+        await _plateRepo.Upsert(plate);
 
         return plate;
     }
 
-    private GymObject UpdateDumbbell()
+    private async Task<GymObject> SaveDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
         Dumbbell dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
 
         // Copy values from the view model to the model.
+        CopyCommonValues(dumbbell);
         dumbbell.Color = MainColor;
+
+        // Update the database.
+        await _dumbbellRepo.Upsert(dumbbell);
 
         return dumbbell;
     }
 
-    private GymObject UpdateKettlebell()
+    private async Task<GymObject> SaveKettlebell()
     {
         // If this is an add operation, create new Kettlebell.
         Kettlebell kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
 
         // Copy values from the view model to the model.
+        CopyCommonValues(kettlebell);
         kettlebell.BallColor = MainColor;
         kettlebell.HasBands = HasBands;
         kettlebell.BandColor = BandColor;
+
+        // Update the database.
+        await _kettlebellRepo.Upsert(kettlebell);
 
         return kettlebell;
     }

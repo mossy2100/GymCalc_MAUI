@@ -10,6 +10,11 @@ namespace GymCalc.Data;
 public class BarRepository : GymObjectRepository
 {
     /// <summary>
+    /// Object cache.
+    /// </summary>
+    private Dictionary<int, Bar> _cache;
+
+    /// <summary>
     /// Default selected bar weight.
     /// </summary>
     internal const double DEFAULT_WEIGHT = 20;
@@ -59,27 +64,84 @@ public class BarRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Get the bars.
+    /// Initialize the object cache.
+    /// </summary>
+    internal override async Task InitCache()
+    {
+        if (_cache == null)
+        {
+            var bars = await Database.Connection.Table<Bar>().ToListAsync();
+            var pairs = bars.Select(bar => new KeyValuePair<int, Bar>(bar.Id, bar));
+            _cache = new Dictionary<int, Bar>(pairs);
+        }
+    }
+
+    /// <summary>
+    /// Get some bars.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Bar>> GetAll(Units units = Units.Default, bool? enabled = null,
+    internal async Task<List<Bar>> GetSome(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
-        return await base.GetAll<Bar>(units, enabled, ascending);
+        await InitCache();
+        return GetSome(_cache, units, enabled, ascending);
     }
 
     /// <summary>
     /// Get a bar by id.
     /// </summary>
     /// <returns></returns>
-    public async Task<Bar> Get(int id)
+    internal async Task<Bar> Get(int id)
     {
-        return await base.Get<Bar>(id);
+        await InitCache();
+        return _cache[id];
+    }
+
+    /// <summary>
+    /// Update a bar.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Bar> Update(Bar bar)
+    {
+        await InitCache();
+        return await Update(_cache, bar);
+    }
+
+    /// <summary>
+    /// Insert a new bar.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Bar> Insert(Bar bar)
+    {
+        await InitCache();
+        return await Insert(_cache, bar);
+    }
+
+    /// <summary>
+    /// Update or insert as required.
+    /// </summary>
+    /// <param name="bar"></param>
+    /// <returns></returns>
+    internal async Task<Bar> Upsert(Bar bar)
+    {
+        await InitCache();
+        return await Upsert(_cache, bar);
+    }
+
+    /// <summary>
+    /// Delete a bar.
+    /// </summary>
+    /// <returns></returns>
+    internal override async Task Delete(int id)
+    {
+        await InitCache();
+        await Delete(_cache, id);
     }
 
     /// <inheritdoc />
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Bar>();
+        _cache.Clear();
     }
 }

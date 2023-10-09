@@ -12,9 +12,9 @@ public partial class ResetPage : ContentPage
 
     private readonly PlateRepository _plateRepo;
 
-    private readonly DumbbellRepository _dbRepo;
+    private readonly DumbbellRepository _dumbbellRepo;
 
-    private readonly KettlebellRepository _kbRepo;
+    private readonly KettlebellRepository _kettlebellRepo;
 
     private string _gymObjectTypeName;
 
@@ -29,13 +29,13 @@ public partial class ResetPage : ContentPage
         }
     }
 
-    public ResetPage(BarRepository barRepo, PlateRepository plateRepo, DumbbellRepository dbRepo,
-        KettlebellRepository kbRepo)
+    public ResetPage(BarRepository barRepo, PlateRepository plateRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
     {
         _barRepo = barRepo;
         _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
 
         InitializeComponent();
         BindingContext = this;
@@ -76,8 +76,8 @@ public partial class ResetPage : ContentPage
         {
             GymObjectType.Bar => _barRepo,
             GymObjectType.Plate => _plateRepo,
-            GymObjectType.Dumbbell => _dbRepo,
-            GymObjectType.Kettlebell => _kbRepo,
+            GymObjectType.Dumbbell => _dumbbellRepo,
+            GymObjectType.Kettlebell => _kettlebellRepo,
             _ => throw new InvalidEnumArgumentException("Invalid object type."),
         };
 

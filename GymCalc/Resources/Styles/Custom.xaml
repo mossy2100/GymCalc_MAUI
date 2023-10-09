@@ -60,7 +60,7 @@
 
     <Style x:Key="ErrorMessageStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource ErrorMessageText}" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
 
     <!--  FlyoutItems  -->

@@ -38,25 +38,28 @@ public static class MauiProgram
     private static void RegisterDependencyInjection(MauiAppBuilder builder)
     {
         builder.Services
-            // Singleton pages
-            .AddSingleton<CalculatorPage>()
-            .AddSingleton<SettingsPage>()
-            .AddSingleton<HtmlPage>()
-            // Transient pages
-            .AddTransient<ListPage>()
-            .AddTransient<EditPage>()
-            .AddTransient<DeletePage>()
-            .AddTransient<ResetPage>()
             // Database and repositories
             .AddSingleton<Database>()
             .AddSingleton<BarRepository>()
             .AddSingleton<PlateRepository>()
             .AddSingleton<DumbbellRepository>()
             .AddSingleton<KettlebellRepository>()
+            // Pages (views)
+            .AddSingleton<CalculatorPage>()
+            .AddTransient<DeletePage>()
+            .AddTransient<EditPage>()
+            .AddSingleton<HtmlPage>()
+            .AddSingleton<ListPage>()
+            .AddSingleton<ResetPage>()
+            .AddSingleton<SettingsPage>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
+            .AddTransient<DeleteViewModel>()
+            .AddTransient<EditViewModel>()
+            .AddSingleton<HtmlViewModel>()
             .AddSingleton<ListViewModel>()
-            .AddSingleton<DeleteViewModel>()
+            .AddSingleton<ResetViewModel>()
+            .AddSingleton<SettingsViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
             ;

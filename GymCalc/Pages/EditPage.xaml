@@ -47,7 +47,7 @@
                     <input:RadioButtonGroupView
                         Grid.Row="0"
                         Grid.Column="1"
-                        SelectedItem="{Binding Units}">
+                        SelectedItem="{Binding Units, Mode=TwoWay}">
                         <input:RadioButton Text="kilograms (kg)" Value="kg" />
                         <input:RadioButton Text="pounds (lb)" Value="lb" />
                     </input:RadioButtonGroupView>
@@ -132,7 +132,7 @@
                 x:Name="SaveButton"
                 Grid.Row="0"
                 Grid.Column="1"
-                Command="{Binding SaveItemCommand}"
+                Command="{Binding SaveCommand}"
                 Style="{StaticResource SaveButtonStyle}" />
         </Grid>
     </Grid>

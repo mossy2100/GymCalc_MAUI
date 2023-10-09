@@ -10,6 +10,11 @@ namespace GymCalc.Data;
 public class PlateRepository : GymObjectRepository
 {
     /// <summary>
+    /// Object cache.
+    /// </summary>
+    private Dictionary<int, Plate> _cache;
+
+    /// <summary>
     /// Default plates.
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
@@ -53,7 +58,7 @@ public class PlateRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some bars.
+    /// Ensure the database table exist and contains some plates.
     /// </summary>
     internal override async Task Initialize()
     {
@@ -78,27 +83,84 @@ public class PlateRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Get the plates.
+    /// Initialize the object cache.
+    /// </summary>
+    internal override async Task InitCache()
+    {
+        if (_cache == null)
+        {
+            var plates = await Database.Connection.Table<Plate>().ToListAsync();
+            var pairs = plates.Select(plate => new KeyValuePair<int, Plate>(plate.Id, plate));
+            _cache = new Dictionary<int, Plate>(pairs);
+        }
+    }
+
+    /// <summary>
+    /// Get some plates.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Plate>> GetAll(Units units = Units.Default, bool? enabled = null,
+    internal async Task<List<Plate>> GetSome(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
-        return await base.GetAll<Plate>(units, enabled, ascending);
+        await InitCache();
+        return GetSome(_cache, units, enabled, ascending);
     }
 
     /// <summary>
     /// Get a plate by id.
     /// </summary>
     /// <returns></returns>
-    public async Task<Plate> Get(int id)
+    internal async Task<Plate> Get(int id)
     {
-        return await base.Get<Plate>(id);
+        await InitCache();
+        return _cache[id];
+    }
+
+    /// <summary>
+    /// Update a plate.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Plate> Update(Plate plate)
+    {
+        await InitCache();
+        return await Update(_cache, plate);
+    }
+
+    /// <summary>
+    /// Insert a new plate.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Plate> Insert(Plate plate)
+    {
+        await InitCache();
+        return await Insert(_cache, plate);
+    }
+
+    /// <summary>
+    /// Update or insert as required.
+    /// </summary>
+    /// <param name="plate"></param>
+    /// <returns></returns>
+    internal async Task<Plate> Upsert(Plate plate)
+    {
+        await InitCache();
+        return await Upsert(_cache, plate);
+    }
+
+    /// <summary>
+    /// Delete a plate.
+    /// </summary>
+    /// <returns></returns>
+    internal override async Task Delete(int id)
+    {
+        await InitCache();
+        await Delete(_cache, id);
     }
 
     /// <inheritdoc />
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Plate>();
+        _cache.Clear();
     }
 }

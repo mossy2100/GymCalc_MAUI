@@ -8,11 +8,6 @@ namespace GymCalc.Data;
 public class Database
 {
     /// <summary>
-    /// Filename of the database file.
-    /// </summary>
-    private const string _DB_FILENAME = "GymCalc.db3";
-
-    /// <summary>
     /// Flags used to define the features of database connection.
     /// </summary>
     private const SQLiteOpenFlags _FLAGS =
@@ -24,19 +19,26 @@ public class Database
         SQLiteOpenFlags.SharedCache;
 
     /// <summary>
-    /// Full path to the database file.
+    /// Filename of the database file.
     /// </summary>
-    private static readonly string _DbPath =
-        Path.Combine(FileSystem.AppDataDirectory, _DB_FILENAME);
+    private const string _DB_FILENAME = "GymCalc.db3";
 
     /// <summary>
-    /// The database connection.
+    /// Full path to the database file.
+    /// </summary>
+    private static readonly string _Path =
+        Path.Combine(FileSystem.AppDataDirectory, _DB_FILENAME);
+
+    // ---------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// The database connection field.
     /// </summary>
     private SQLiteAsyncConnection _connection;
 
     /// <summary>
-    /// The database connection. Create and initialize it if needed.
+    /// The database connection property. Create and initialize when needed.
     /// </summary>
     internal SQLiteAsyncConnection Connection =>
-        _connection ??= new SQLiteAsyncConnection(_DbPath, _FLAGS);
+        _connection ??= new SQLiteAsyncConnection(_Path, _FLAGS);
 }

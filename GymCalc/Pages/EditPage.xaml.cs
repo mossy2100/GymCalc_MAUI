@@ -168,7 +168,7 @@ public partial class EditPage : ContentPage
     //             break;
     //
     //         case "Dumbbell":
-    //             var dumbbell = await _dbRepo.Get(GymObjectId);
+    //             var dumbbell = await _dumbbellRepo.Get(GymObjectId);
     //             if (dumbbell != null)
     //             {
     //                 SetCommonFields(dumbbell);
@@ -177,7 +177,7 @@ public partial class EditPage : ContentPage
     //             break;
     //
     //         case GymObjectType.Kettlebell:
-    //             var kettlebell = await _kbRepo.Get(GymObjectId);
+    //             var kettlebell = await _kettlebellRepo.Get(GymObjectId);
     //             if (kettlebell != null)
     //             {
     //                 SetCommonFields(kettlebell);

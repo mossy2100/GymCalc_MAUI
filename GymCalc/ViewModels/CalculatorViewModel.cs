@@ -17,9 +17,9 @@ public class CalculatorViewModel : BaseViewModel
 
     private readonly PlateRepository _plateRepo;
 
-    private readonly DumbbellRepository _dbRepo;
+    private readonly DumbbellRepository _dumbbellRepo;
 
-    private readonly KettlebellRepository _kbRepo;
+    private readonly KettlebellRepository _kettlebellRepo;
 
     private string _errorMessage;
 
@@ -185,13 +185,13 @@ public class CalculatorViewModel : BaseViewModel
     /// Constructor.
     /// </summary>
     public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dbRepo, KettlebellRepository kbRepo)
+        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Keep references to the repositories.
         _barRepo = barRepo;
         _plateRepo = plateRepo;
-        _dbRepo = dbRepo;
-        _kbRepo = kbRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
@@ -276,7 +276,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var plates = await _plateRepo.GetAll(enabled: true, ascending: true);
+        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, plates,
             "Plates each end");
         PlatesResultsVisible = true;
@@ -290,7 +290,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var plates = await _plateRepo.GetAll(enabled: true, ascending: true);
+        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
             OneSideOnly, plates, "Plates each side");
         PlatesResultsVisible = true;
@@ -304,7 +304,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        var dumbbells = await _dbRepo.GetAll(enabled: true, ascending: true);
+        var dumbbells = await _dumbbellRepo.GetSome(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
         SingleWeightResultsVisible = true;
     }
@@ -319,7 +319,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate and display the results.
         // TODO Should this result be cached? We probably shouldn't look it up every time, although
         // the phone database is pretty fast.
-        var kettlebells = await _kbRepo.GetAll(enabled: true, ascending: true);
+        var kettlebells = await _kettlebellRepo.GetSome(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
         SingleWeightResultsVisible = true;
     }
@@ -332,72 +332,18 @@ public class CalculatorViewModel : BaseViewModel
     {
         var barTask = _barRepo.Initialize();
         var plateTask = _plateRepo.Initialize();
-        var dumbbellTask = _dbRepo.Initialize();
-        var kettlebellTask = _kbRepo.Initialize();
+        var dumbbellTask = _dumbbellRepo.Initialize();
+        var kettlebellTask = _kettlebellRepo.Initialize();
         await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
     }
-
-    // private async Task<List<Bar>> GetBars()
-    // {
-    //     return await _barRepo.GetAll(enabled: true, ascending: true);
-    // }
 
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
     internal async Task ResetBarWeightPicker()
     {
-        // Get the current selected value.
-        // var initialSelectedIndex = BarWeight.SelectedIndex;
-        // var initialSelectedValue = BarWeight;
-
-        // Reset the picker items.
-        var bars = await _barRepo.GetAll(enabled: true, ascending: true);
+        var bars = await _barRepo.GetSome(enabled: true, ascending: true);
         BarWeights = bars.Select(b => b.Weight).ToList();
-
-        // BarWeight.Items.Clear();
-        // BarWeight.SelectedIndex = -1;
-
-        // // Initialise the items in the bar weight picker.
-        // var i = 0;
-        // var valueSelected = false;
-        // foreach (var bar in bars)
-        // {
-        //     // Add the picker item.
-        //     var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
-        //     BarWeight.Items.Add(weightString);
-        //
-        //     // Try to select the same weight that was selected before.
-        //     if (!valueSelected && weightString == initialSelectedValue)
-        //     {
-        //         BarWeight.SelectedIndex = i;
-        //         valueSelected = true;
-        //     }
-        //
-        //     i++;
-        // }
-
-        // If the original selected bar weight is no longer present, try to select the default.
-        // if (!valueSelected)
-        // {
-        //     var weightString = BarRepository.DefaultWeight.ToString(CultureInfo.InvariantCulture);
-        //     for (i = 0; i < BarWeight.Items.Count; i++)
-        //     {
-        //         // Default selection.
-        //         if (BarWeight.Items[i] == weightString)
-        //         {
-        //             BarWeight.SelectedIndex = i;
-        //             valueSelected = true;
-        //             break;
-        //         }
-        //     }
-        // }
-        //
-        // // If no bar weight has been selected yet, select the first one.
-        // if (!valueSelected)
-        // {
-        //     BarWeight.SelectedIndex = 0;
-        // }
     }
 
     #endregion Database stuff

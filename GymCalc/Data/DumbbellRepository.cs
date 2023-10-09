@@ -9,12 +9,17 @@ namespace GymCalc.Data;
 /// </summary>
 public class DumbbellRepository : GymObjectRepository
 {
+    /// <summary>
+    /// Object cache.
+    /// </summary>
+    private Dictionary<int, Dumbbell> _cache;
+
     public DumbbellRepository(Database database) : base(database)
     {
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some bars.
+    /// Ensure the database table exist and contains some dumbbells.
     /// </summary>
     internal override async Task Initialize()
     {
@@ -65,27 +70,85 @@ public class DumbbellRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Get the dumbbells.
+    /// Initialize the object cache.
+    /// </summary>
+    internal override async Task InitCache()
+    {
+        if (_cache == null)
+        {
+            var dumbbells = await Database.Connection.Table<Dumbbell>().ToListAsync();
+            var pairs = dumbbells.Select(dumbbell =>
+                new KeyValuePair<int, Dumbbell>(dumbbell.Id, dumbbell));
+            _cache = new Dictionary<int, Dumbbell>(pairs);
+        }
+    }
+
+    /// <summary>
+    /// Get some dumbbells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Dumbbell>> GetAll(Units units = Units.Default, bool? enabled = null,
+    internal async Task<List<Dumbbell>> GetSome(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
-        return await base.GetAll<Dumbbell>(units, enabled, ascending);
+        await InitCache();
+        return GetSome(_cache, units, enabled, ascending);
     }
 
     /// <summary>
     /// Get a dumbbell by id.
     /// </summary>
     /// <returns></returns>
-    public async Task<Dumbbell> Get(int id)
+    internal async Task<Dumbbell> Get(int id)
     {
-        return await base.Get<Dumbbell>(id);
+        await InitCache();
+        return _cache[id];
+    }
+
+    /// <summary>
+    /// Update a dumbbell.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Dumbbell> Update(Dumbbell dumbbell)
+    {
+        await InitCache();
+        return await Update(_cache, dumbbell);
+    }
+
+    /// <summary>
+    /// Insert a new dumbbell.
+    /// </summary>
+    /// <returns></returns>
+    internal async Task<Dumbbell> Insert(Dumbbell dumbbell)
+    {
+        await InitCache();
+        return await Insert(_cache, dumbbell);
+    }
+
+    /// <summary>
+    /// Update or insert as required.
+    /// </summary>
+    /// <param name="dumbbell"></param>
+    /// <returns></returns>
+    internal async Task<Dumbbell> Upsert(Dumbbell dumbbell)
+    {
+        await InitCache();
+        return await Upsert(_cache, dumbbell);
+    }
+
+    /// <summary>
+    /// Delete a dumbbell.
+    /// </summary>
+    /// <returns></returns>
+    internal override async Task Delete(int id)
+    {
+        await InitCache();
+        await Delete(_cache, id);
     }
 
     /// <inheritdoc />
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Dumbbell>();
+        _cache.Clear();
     }
 }
