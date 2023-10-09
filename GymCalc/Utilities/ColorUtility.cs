@@ -1,7 +1,7 @@
 namespace GymCalc.Utilities;
 
 /// <summary>
-/// TODO This is mostly reusable, I need to move it to Galaxon Core.
+/// TODO This is mostly reusable. I need to move it to Galaxon.Core.
 /// </summary>
 internal static class ColorUtility
 {

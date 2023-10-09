@@ -1,8 +1,6 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
-using Galaxon.Core.Exceptions;
-using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Drawables;
 using GymCalc.Models;
@@ -14,8 +12,6 @@ public class ListViewModel : BaseViewModel
 {
     // ---------------------------------------------------------------------------------------------
     // Dependencies.
-
-    private readonly Database _database;
 
     private readonly BarRepository _barRepo;
 
@@ -102,27 +98,25 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
-    public ListViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
+    public ListViewModel(BarRepository barRepo, PlateRepository plateRepo,
         DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
     {
         // Keep references to the dependencies.
-        _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
 
         // Commands.
-        EnableCommand = new AsyncCommand<GymObject>(EnableItem);
-        EditCommand = new AsyncCommand<GymObject>(EditItem);
-        DeleteCommand = new AsyncCommand<GymObject>(DeleteItem);
-        AddCommand = new AsyncCommand(AddItem);
-        ResetCommand = new AsyncCommand(ResetItems);
+        EnableCommand = new AsyncCommand<GymObject>(EnableGymObject);
+        EditCommand = new AsyncCommand<GymObject>(EditGymObject);
+        DeleteCommand = new AsyncCommand<GymObject>(DeleteGymObject);
+        AddCommand = new AsyncCommand(AddGymObject);
+        ResetCommand = new AsyncCommand(ResetGymObjects);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -142,33 +136,27 @@ public class ListViewModel : BaseViewModel
             + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";
 
-        // Get the gym object type.
-        if (!Enum.TryParse<GymObjectType>(GymObjectTypeName, out var gymObjectType))
-        {
-            throw new ArgumentInvalidException($"Invalid gym object type name ({GymObjectTypeName}).");
-        }
-
         // Display all gym objects of the specified type.
-        switch (gymObjectType)
+        switch (GymObjectTypeName)
         {
-            case GymObjectType.Bar:
+            case nameof(Bar):
                 var bars = await _barRepo.GetSome(ascending: true);
-                DisplayList<Bar, BarDrawable>(bars);
+                DisplayList(bars);
                 break;
 
-            case GymObjectType.Plate:
+            case nameof(Plate):
                 var plates = await _plateRepo.GetSome(ascending: true);
-                DisplayList<Plate, PlateDrawable>(plates);
+                DisplayList(plates);
                 break;
 
-            case GymObjectType.Dumbbell:
+            case nameof(Dumbbell):
                 var dumbbells = await _dumbbellRepo.GetSome(ascending: true);
-                DisplayList<Dumbbell, DumbbellDrawable>(dumbbells);
+                DisplayList(dumbbells);
                 break;
 
-            case GymObjectType.Kettlebell:
+            case nameof(Kettlebell):
                 var kettlebells = await _kettlebellRepo.GetSome(ascending: true);
-                DisplayList<Kettlebell, KettlebellDrawable>(kettlebells);
+                DisplayList(kettlebells);
                 break;
         }
     }
@@ -176,9 +164,7 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Initialize the list of gym objects.
     /// </summary>
-    private void DisplayList<T, TDrawable>(List<T> gymObjects)
-        where T : GymObject
-        where TDrawable : GymObjectDrawable, new()
+    private void DisplayList<T>(List<T> gymObjects) where T : GymObject
     {
         // Initialize the empty list.
         Drawables = new List<GymObjectDrawable>();
@@ -192,14 +178,11 @@ public class ListViewModel : BaseViewModel
         // Get the maximum weight, which is used to determine the width of bars and plates.
         var maxWeight = gymObjects.Last().Weight;
 
-        // Construct drawables and add to list.
+        // Create drawables and add to list.
         foreach (var gymObject in gymObjects)
         {
-            var drawable = new TDrawable
-            {
-                GymObject = gymObject,
-                MaxWeight = maxWeight,
-            };
+            var drawable = GymObjectDrawable.Create(gymObject);
+            drawable.MaxWeight = maxWeight;
             Drawables.Add(drawable);
         }
     }
@@ -220,27 +203,44 @@ public class ListViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Command methods.
 
-    private async Task EnableItem(GymObject gymObject)
+    private async Task EnableGymObject(GymObject gymObject)
     {
-        await _database.Connection.UpdateAsync(gymObject);
+        switch (GymObjectTypeName)
+        {
+            case nameof(Bar):
+                await _barRepo.Upsert((Bar)gymObject);
+                break;
+
+            case nameof(Plate):
+                await _plateRepo.Upsert((Plate)gymObject);
+                break;
+
+            case nameof(Dumbbell):
+                await _dumbbellRepo.Upsert((Dumbbell)gymObject);
+                break;
+
+            case nameof(Kettlebell):
+                await _kettlebellRepo.Upsert((Kettlebell)gymObject);
+                break;
+        }
     }
 
-    private async Task EditItem(GymObject gymObject)
+    private async Task EditGymObject(GymObject gymObject)
     {
         await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
-    private async Task DeleteItem(GymObject gymObject)
+    private async Task DeleteGymObject(GymObject gymObject)
     {
         await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
-    private async Task AddItem()
+    private async Task AddGymObject()
     {
         await Shell.Current.GoToAsync($"edit?op=add&type={GymObjectTypeName}");
     }
 
-    private async Task ResetItems()
+    private async Task ResetGymObjects()
     {
         await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
     }

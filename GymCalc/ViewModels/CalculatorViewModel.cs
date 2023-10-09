@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
+using Galaxon.Core.Exceptions;
 using GymCalc.Solvers;
 using GymCalc.Constants;
 using GymCalc.Models;
@@ -263,8 +264,7 @@ public class CalculatorViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(SelectedExerciseType),
-                    "Invalid exercise type.");
+                throw new ValueOutOfRangeException("Invalid exercise type.");
         }
     }
 

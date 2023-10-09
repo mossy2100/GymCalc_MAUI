@@ -47,4 +47,23 @@ public abstract class GymObjectDrawable : IDrawable
     //         WidthRequest = Width,
     //     };
     // }
+
+    /// <summary>
+    /// Construct a new drawable for a given GymObject.
+    /// </summary>
+    /// <param name="gymObject"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public static GymObjectDrawable Create(GymObject gymObject)
+    {
+        var drawableTypeName = "GymCalc.Drawables." + gymObject.GetType().Name + "Drawable";
+        var drawable = (GymObjectDrawable)Activator.CreateInstance(null, drawableTypeName)!
+            .Unwrap();
+        if (drawable == null)
+        {
+            throw new Exception("Could not create drawable.");
+        }
+        drawable.GymObject = gymObject;
+        return drawable;
+    }
 }

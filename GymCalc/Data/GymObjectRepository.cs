@@ -1,3 +1,4 @@
+using System.Data;
 using Galaxon.Core.Enums;
 using GymCalc.Constants;
 using GymCalc.Models;
@@ -102,7 +103,7 @@ public abstract class GymObjectRepository
         int nRowsUpdated = await Database.Connection.UpdateAsync(gymObject);
         if (nRowsUpdated != 1)
         {
-            throw new Exception("Error updating record.");
+            throw new DataException("Error updating record.");
         }
         cache[gymObject.Id] = gymObject;
         return gymObject;
@@ -117,7 +118,7 @@ public abstract class GymObjectRepository
         int nRowsInserted = await Database.Connection.InsertAsync(gymObject);
         if (nRowsInserted != 1)
         {
-            throw new Exception("Error inserting new record.");
+            throw new DataException("Error inserting new record.");
         }
         cache[gymObject.Id] = gymObject;
         return gymObject;
@@ -144,7 +145,7 @@ public abstract class GymObjectRepository
         int nRowsDeleted = await Database.Connection.DeleteAsync<T>(id);
         if (nRowsDeleted != 1)
         {
-            throw new Exception("Error deleting record.");
+            throw new DataException("Error deleting record.");
         }
         cache.Remove(id);
     }

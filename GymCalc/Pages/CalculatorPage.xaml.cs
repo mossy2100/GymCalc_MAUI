@@ -1,3 +1,4 @@
+using Galaxon.Core.Exceptions;
 using GymCalc.Constants;
 using GymCalc.Utilities;
 using GymCalc.ViewModels;
@@ -118,10 +119,6 @@ public partial class CalculatorPage : ContentPage
                 case ExerciseType.Kettlebell:
                     // await DisplayKettlebellResults();
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(_model.SelectedExerciseType),
-                        "Invalid exercise type.");
             }
         }
 
@@ -220,7 +217,7 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(exerciseType), exerciseType, null);
+                throw new ValueOutOfRangeException("Invalid exercise type.");
         }
     }
 

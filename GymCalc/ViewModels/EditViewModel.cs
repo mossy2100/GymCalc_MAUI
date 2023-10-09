@@ -3,7 +3,6 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
 using Galaxon.Core.Exceptions;
-using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
 using GymCalc.Utilities;
@@ -45,11 +44,6 @@ public class EditViewModel : BaseViewModel
     /// The gym object.
     /// </summary>
     private GymObject _gymObject;
-
-    /// <summary>
-    /// The gym object type.
-    /// </summary>
-    private GymObjectType _gymObjectType;
 
     /// <summary>
     /// The weight (parsed from the WeightText entry field).
@@ -160,7 +154,7 @@ public class EditViewModel : BaseViewModel
 
         // Commands.
         CancelCommand = new AsyncCommand(Cancel);
-        SaveCommand = new AsyncCommand(Save);
+        SaveCommand = new AsyncCommand(SaveGymObject);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -177,7 +171,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Save the item to the database, then go back to the list page.
     /// </summary>
-    private async Task Save()
+    private async Task SaveGymObject()
     {
         // Validate the form.
         var weightOk = double.TryParse(WeightText, out var weight) && weight > 0;
@@ -190,12 +184,12 @@ public class EditViewModel : BaseViewModel
         ErrorMessage = "";
 
         // Update the object. The exact process will vary by type.
-        _gymObject = _gymObjectType switch
+        _gymObject = _gymObjectTypeName switch
         {
-            GymObjectType.Bar => await SaveBar(),
-            GymObjectType.Plate => await SavePlate(),
-            GymObjectType.Dumbbell => await SaveDumbbell(),
-            GymObjectType.Kettlebell => await SaveKettlebell(),
+            nameof(Bar) => await SaveBar(),
+            nameof(Plate) => await SavePlate(),
+            nameof(Dumbbell) => await SaveDumbbell(),
+            nameof(Kettlebell) => await SaveKettlebell(),
             _ => throw new Exception("Invalid gym object type.")
         };
 
@@ -208,15 +202,25 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal async Task<bool> Initialize(string operation, string gymObjectTypeName,
+    internal async Task Initialize(string operation, string gymObjectTypeName,
         int gymObjectId)
     {
-        // Check if all the necessary parameters have been set.
-        bool ready = !string.IsNullOrEmpty(gymObjectTypeName)
-            && (operation == "add" || (operation == "edit" && gymObjectId > 0));
-        if (!ready)
+        if (operation != "add" && operation != "edit")
         {
-            return false;
+            throw new ArgumentOutOfRangeException(nameof(operation),
+                $"Invalid operation; must be 'add' or 'edit'.");
+        }
+
+        if (string.IsNullOrWhiteSpace(gymObjectTypeName))
+        {
+            throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
+                "Gym object type not provided.");
+        }
+
+        if (operation == "edit" && gymObjectId == 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(gymObjectId),
+                "For an edit operation, gym object id cannot be 0.");
         }
 
         // Remember the view parameters.
@@ -224,26 +228,19 @@ public class EditViewModel : BaseViewModel
         _gymObjectTypeName = gymObjectTypeName;
         _gymObjectId = gymObjectId;
 
-        // Get the gym object type.
-        if (!Enum.TryParse(_gymObjectTypeName, out _gymObjectType))
-        {
-            throw new ArgumentInvalidException($"Invalid gym object type name ({_gymObjectTypeName}).");
-        }
-
         // Reset the form.
         ResetForm();
 
         // If editing an existing gym object, load it from the database and populate the form.
         if (operation == "edit")
         {
-            await Load();
+            // This can throw a KeyNotFoundException if the gym object id is invalid.
+            await LoadGymObject();
         }
         else
         {
             _gymObject = null;
         }
-
-        return true;
     }
 
     /// <summary>
@@ -261,55 +258,56 @@ public class EditViewModel : BaseViewModel
         BandColor = "OffBlack";
 
         // Hide/show certain fields according to the object type.
-        switch (_gymObjectType)
+        switch (_gymObjectTypeName)
         {
-            case GymObjectType.Bar:
+            case nameof(Bar):
                 MainColorIsVisible = false;
                 HasBandsIsVisible = false;
                 break;
 
-            case GymObjectType.Plate:
-            case GymObjectType.Dumbbell:
+            case nameof(Plate):
+            case nameof(Dumbbell):
                 MainColorIsVisible = true;
                 HasBandsIsVisible = false;
                 break;
 
-            case GymObjectType.Kettlebell:
+            case nameof(Kettlebell):
                 MainColorIsVisible = true;
                 HasBandsIsVisible = true;
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(_gymObjectTypeName), $"Invalid object type: {_gymObjectTypeName}");
+                throw new ValueOutOfRangeException(
+                    $"Invalid gym object type '{_gymObjectTypeName}'");
         }
     }
 
     /// <summary>
     /// Load an existing gym object from the database.
     /// </summary>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    private async Task Load()
+    /// <exception cref="ValueOutOfRangeException"></exception>
+    private async Task LoadGymObject()
     {
-        switch (_gymObjectType)
+        switch (_gymObjectTypeName)
         {
-            case GymObjectType.Bar:
+            case nameof(Bar):
                 Bar bar = await _barRepo.Get(_gymObjectId);
                 _gymObject = bar;
                 break;
 
-            case GymObjectType.Plate:
+            case nameof(Plate):
                 Plate plate = await _plateRepo.Get(_gymObjectId);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
-            case GymObjectType.Dumbbell:
+            case nameof(Dumbbell):
                 Dumbbell dumbbell = await _dumbbellRepo.Get(_gymObjectId);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
-            case GymObjectType.Kettlebell:
+            case nameof(Kettlebell):
                 Kettlebell kettlebell = await _kettlebellRepo.Get(_gymObjectId);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
@@ -318,7 +316,8 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(_gymObjectId), "Invalid object id.");
+                throw new ValueOutOfRangeException(
+                    $"Invalid gym object type '{_gymObjectTypeName}'.");
         }
 
         // Set the common form values.

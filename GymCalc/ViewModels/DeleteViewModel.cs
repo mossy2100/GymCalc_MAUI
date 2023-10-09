@@ -1,8 +1,5 @@
-using System.ComponentModel;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Exceptions;
-using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
 
@@ -80,7 +77,6 @@ public class DeleteViewModel : BaseViewModel
     /// </summary>
     private async Task Cancel()
     {
-        // await AppShell.GoToList(_gymObjectTypeName);
         await Shell.Current.GoToAsync("..");
     }
 
@@ -108,7 +104,6 @@ public class DeleteViewModel : BaseViewModel
                 break;
         }
 
-        // await AppShell.GoToList(_gymObjectTypeName);
         await Shell.Current.GoToAsync("..");
     }
 
@@ -120,52 +115,50 @@ public class DeleteViewModel : BaseViewModel
     /// <param name="gymObjectTypeName"></param>
     /// <param name="gymObjectId"></param>
     /// <returns>If the initialization completed ok.</returns>
-    internal async Task<bool> Initialize(string gymObjectTypeName, int gymObjectId)
+    internal async Task Initialize(string gymObjectTypeName, int gymObjectId)
     {
         if (string.IsNullOrEmpty(gymObjectTypeName))
         {
-            throw new ArgumentInvalidException("Gym object type not provided.");
+            throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
+                "Gym object type not provided.");
         }
 
         if (gymObjectId == 0)
         {
-            throw new ArgumentInvalidException("Gym object id not provided.");
+            throw new ArgumentOutOfRangeException(nameof(gymObjectId),
+                "Gym object id cannot be 0.");
         }
 
-        if (!Enum.TryParse<GymObjectType>(gymObjectTypeName, out var gymObjectType))
+        switch (gymObjectTypeName)
         {
-            throw new ArgumentInvalidException($"Invalid gym object type name ({gymObjectTypeName}).");
-        }
-
-        switch (gymObjectType)
-        {
-            case GymObjectType.Bar:
+            case nameof(Bar):
                 _gymObject = await _barRepo.Get(gymObjectId);
                 break;
 
-            case GymObjectType.Plate:
+            case nameof(Plate):
                 _gymObject = await _plateRepo.Get(gymObjectId);
                 break;
 
-            case GymObjectType.Dumbbell:
+            case nameof(Dumbbell):
                 _gymObject = await _dumbbellRepo.Get(gymObjectId);
                 break;
 
-            case GymObjectType.Kettlebell:
+            case nameof(Kettlebell):
                 _gymObject = await _kettlebellRepo.Get(gymObjectId);
                 break;
 
             default:
-                return false;
+                throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
+                    $"Invalid gym object type '{gymObjectTypeName}'.");
         }
 
         if (_gymObject == null)
         {
-            throw new ArgumentInvalidException($"Invalid gym object id ({gymObjectId}).");
+            throw new ArgumentOutOfRangeException(nameof(gymObjectId),
+                $"Invalid gym object id ({gymObjectId}).");
         }
 
         ConfirmDeletionMessage =
             $"Are you sure you want to delete the {_gymObject.Weight} {_gymObject.Units} {gymObjectTypeName.ToLower()}?";
-        return true;
     }
 }

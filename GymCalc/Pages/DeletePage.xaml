@@ -12,6 +12,7 @@
         <Label
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
+            LineBreakMode="WordWrap"
             Text="{Binding ConfirmDeletionMessage}" />
 
         <!--  Buttons  -->

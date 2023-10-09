@@ -1,6 +1,5 @@
-using System.ComponentModel;
-using GymCalc.Constants;
 using GymCalc.Data;
+using GymCalc.Models;
 
 namespace GymCalc.Services;
 
@@ -37,44 +36,24 @@ public class DatabaseHelperService
 
     // ---------------------------------------------------------------------------------------------
 
-    internal GymObjectType GetGymObjectType(string gymObjectTypeName)
-    {
-        if (!Enum.TryParse<GymObjectType>(gymObjectTypeName, out var gymObjectType))
-        {
-            throw new InvalidEnumArgumentException("Invalid gym object type name.");
-        }
-        return gymObjectType;
-    }
-
     /// <summary>
     /// Get the correct repo from the gym object type enum.
     /// </summary>
-    /// <param name="gymObjectType"></param>
+    /// <param name="gymObjectTypeName"></param>
     /// <returns></returns>
-    /// <exception cref="InvalidEnumArgumentException"></exception>
-    internal GymObjectRepository GetRepo(GymObjectType gymObjectType)
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    internal GymObjectRepository GetRepo(string gymObjectTypeName)
     {
-        GymObjectRepository repo = gymObjectType switch
+        GymObjectRepository repo = gymObjectTypeName switch
         {
-            GymObjectType.Bar => _barRepo,
-            GymObjectType.Plate => _plateRepo,
-            GymObjectType.Dumbbell => _dumbbellRepo,
-            GymObjectType.Kettlebell => _kettlebellRepo,
-            _ => throw new InvalidEnumArgumentException("Invalid object type."),
+            nameof(Bar) => _barRepo,
+            nameof(Plate) => _plateRepo,
+            nameof(Dumbbell) => _dumbbellRepo,
+            nameof(Kettlebell) => _kettlebellRepo,
+            _ => throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
+                "Invalid object type."),
         };
 
         return repo;
-    }
-
-    /// <summary>
-    /// Get the correct repo from the gym object type name.
-    /// </summary>
-    /// <param name="gymObjectTypeName"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidEnumArgumentException"></exception>
-    public GymObjectRepository GetRepo(string gymObjectTypeName)
-    {
-        var gymObjectType = GetGymObjectType(gymObjectTypeName);
-        return GetRepo(gymObjectType);
     }
 }

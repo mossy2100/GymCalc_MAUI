@@ -11,7 +11,7 @@ public static class MauiUtilities
         }
 
         // 2. Look in the app resources. This is where I usually put custom styles.
-        var app = App.Current;
+        var app = Application.Current;
         if (app == null)
         {
             return default(T);

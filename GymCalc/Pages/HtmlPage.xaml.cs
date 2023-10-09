@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using GymCalc.Services;
+using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
 
@@ -7,6 +8,8 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(Route), "route")]
 public partial class HtmlPage : ContentPage
 {
+    private HtmlViewModel _model;
+
     private readonly HtmlUpdaterService _htmlUpdaterService;
 
     private string _route;
@@ -27,12 +30,13 @@ public partial class HtmlPage : ContentPage
 
     private AppTheme _theme;
 
-    public HtmlPage(HtmlUpdaterService htmlUpdaterService)
+    public HtmlPage(HtmlViewModel model, HtmlUpdaterService htmlUpdaterService)
     {
+        _model = model;
         _htmlUpdaterService = htmlUpdaterService;
 
         InitializeComponent();
-        BindingContext = this;
+        BindingContext = _model;
 
         // Events.
         Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
@@ -61,12 +65,22 @@ public partial class HtmlPage : ContentPage
     {
         base.OnPropertyChanged(propertyName);
 
-        // Navigate to the specified route if necessary.
-        // We can't directly access methods on the component, so use the service to transfer the
-        // route parameter into the component.
-        if (propertyName == nameof(Route) && !string.IsNullOrEmpty(Route))
+        switch (propertyName)
         {
-            _htmlUpdaterService.UpdateRoute(Route);
+            case nameof(Title):
+                // Copy the title to the model.
+                _model.Title = Title;
+                break;
+
+            case nameof(Route):
+                // Navigate to the specified route if necessary.
+                // We can't directly access methods on the component, so use the service to transfer
+                // the route parameter into the component.
+                if (!string.IsNullOrEmpty(Route))
+                {
+                    _htmlUpdaterService.UpdateRoute(Route);
+                }
+                break;
         }
     }
 }

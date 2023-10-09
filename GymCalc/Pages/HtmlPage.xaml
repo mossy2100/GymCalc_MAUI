@@ -3,12 +3,11 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:GymCalc.Components"
-    xmlns:pages="clr-namespace:GymCalc.Pages"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.HtmlPage"
-    x:DataType="pages:HtmlPage"
+    x:DataType="viewModels:HtmlViewModel"
     Title="{Binding Title}">
 
-    <!-- <WebView x:Name="WebView" Source="{Binding FileName}" /> -->
     <BlazorWebView x:Name="BlazorWebView" HostPage="wwwroot/index.html"
         BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
         <BlazorWebView.RootComponents>

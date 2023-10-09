@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Galaxon.Core.Exceptions;
 using Microsoft.Maui.Controls.Shapes;
 using HtmlAgilityPack;
 
@@ -217,7 +218,7 @@ internal static class TextUtility
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(node.NodeType));
+                throw new ValueOutOfRangeException("Invalid node type.");
         }
     }
 
