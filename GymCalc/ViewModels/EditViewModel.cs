@@ -196,24 +196,14 @@ public class EditViewModel : BaseViewModel
         ErrorMessage = "";
 
         // Update the object. This will vary by type.
-        switch (_gymObjectTypeName)
+        _gymObject = _gymObjectTypeName switch
         {
-            case GymObjectType.Bar:
-                UpdateBar();
-                break;
-
-            case GymObjectType.Plate:
-                UpdatePlate();
-                break;
-
-            case GymObjectType.Dumbbell:
-                UpdateDumbbell();
-                break;
-
-            case GymObjectType.Kettlebell:
-                UpdateKettlebell();
-                break;
-        }
+            GymObjectType.Bar => UpdateBar(),
+            GymObjectType.Plate => UpdatePlate(),
+            GymObjectType.Dumbbell => UpdateDumbbell(),
+            GymObjectType.Kettlebell => UpdateKettlebell(),
+            _ => throw new Exception("Invalid gym object type.")
+        };
 
         // Copy common values from the view model to the model.
         _gymObject.Weight = _weight;
@@ -280,13 +270,13 @@ public class EditViewModel : BaseViewModel
         // If editing an existing object, load it from the database and populate the form.
         if (operation == "edit")
         {
-            await LoadObject();
+            await LoadItem();
         }
 
         return true;
     }
 
-    private async Task LoadObject()
+    private async Task LoadItem()
     {
         switch (_gymObjectTypeName)
         {
@@ -328,16 +318,15 @@ public class EditViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Update methods for each type.
 
-    private void UpdateBar()
+    private GymObject UpdateBar()
     {
         // If this is an add operation, create new Bar.
         Bar bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
 
-        // Update the reference.
-        _gymObject = bar;
+        return bar;
     }
 
-    private void UpdatePlate()
+    private GymObject UpdatePlate()
     {
         // If this is an add operation, create new Bar.
         Plate plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
@@ -345,11 +334,10 @@ public class EditViewModel : BaseViewModel
         // Copy values from the view model to the model.
         plate.Color = MainColor;
 
-        // Update the reference.
-        _gymObject = plate;
+        return plate;
     }
 
-    private void UpdateDumbbell()
+    private GymObject UpdateDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
         Dumbbell dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
@@ -357,11 +345,10 @@ public class EditViewModel : BaseViewModel
         // Copy values from the view model to the model.
         dumbbell.Color = MainColor;
 
-        // Update the reference.
-        _gymObject = dumbbell;
+        return dumbbell;
     }
 
-    private void UpdateKettlebell()
+    private GymObject UpdateKettlebell()
     {
         // If this is an add operation, create new Kettlebell.
         Kettlebell kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
@@ -371,7 +358,6 @@ public class EditViewModel : BaseViewModel
         kettlebell.HasBands = HasBands;
         kettlebell.BandColor = BandColor;
 
-        // Update the reference.
-        _gymObject = kettlebell;
+        return kettlebell;
     }
 }
