@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    x:Class="GymCalc.Pages.SettingsPage"
     Title="Settings">
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">

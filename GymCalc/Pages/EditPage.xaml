@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.EditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:controls="clr-namespace:GymCalc.Controls"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:Class="GymCalc.Pages.EditPage"
+    x:DataType="viewModels:EditViewModel"
     Title="Edit">
 
     <Grid RowDefinitions="*,Auto">
@@ -13,13 +15,13 @@
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
             VerticalOptions="Fill">
+
             <VerticalStackLayout
-                x:Name="EditForm"
                 Spacing="{x:Static graphics:PageLayout.DoubleSpacing}"
                 VerticalOptions="Start">
 
                 <!--  Weight  -->
-                <Grid x:Name="WeightGrid" ColumnDefinitions="*,*,*">
+                <Grid ColumnDefinitions="*,*,*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -30,85 +32,87 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
-                            x:Name="WeightEntry"
                             Keyboard="Numeric"
+                            Text="{Binding WeightText}"
                             VerticalTextAlignment="Center" />
                     </Frame>
                 </Grid>
 
                 <!--  Units  -->
-                <Grid x:Name="UnitsGrid" ColumnDefinitions="*,2*">
+                <Grid ColumnDefinitions="*,2*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Units" />
                     <input:RadioButtonGroupView
-                        x:Name="UnitsRadio"
                         Grid.Row="0"
-                        Grid.Column="1">
+                        Grid.Column="1"
+                        SelectedItem="{Binding Units}">
                         <input:RadioButton Text="kilograms (kg)" Value="kg" />
                         <input:RadioButton Text="pounds (lb)" Value="lb" />
                     </input:RadioButtonGroupView>
                 </Grid>
 
                 <!--  Enabled  -->
-                <Grid x:Name="EnabledGrid" ColumnDefinitions="*,2*">
+                <Grid ColumnDefinitions="*,2*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Enabled"
                         VerticalTextAlignment="Center" />
                     <input:CheckBox
-                        x:Name="EnabledCheckBox"
                         Grid.Row="0"
                         Grid.Column="1"
+                        IsChecked="{Binding Enabled}"
                         VerticalOptions="Center" />
                 </Grid>
 
                 <!--  Plate color or ball color for kettlebells  -->
-                <Grid x:Name="MainColorGrid" ColumnDefinitions="*,2*">
+                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding MainColorIsVisible}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Color" />
                     <controls:ColorPicker
-                        x:Name="MainColor"
                         Grid.Row="0"
-                        Grid.Column="1" />
+                        Grid.Column="1"
+                        Selected="{Binding MainColor}" />
                 </Grid>
 
                 <!--  Has bands  -->
-                <Grid x:Name="HasBandsGrid" ColumnDefinitions="*,2*">
+                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding HasBandsIsVisible}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="HasBands"
                         VerticalTextAlignment="Center" />
                     <input:CheckBox
-                        x:Name="HasBandsCheckBox"
                         Grid.Row="0"
                         Grid.Column="1"
-                        CheckChanged="HasBandsCheckBox_OnCheckChanged"
+                        IsChecked="{Binding HasBands}"
                         VerticalOptions="Center" />
                 </Grid>
 
                 <!--  Band color  -->
-                <Grid x:Name="BandColorGrid" ColumnDefinitions="*,2*">
+                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding HasBands}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Band color" />
                     <controls:ColorPicker
-                        x:Name="BandColor"
                         Grid.Row="0"
-                        Grid.Column="1" />
+                        Grid.Column="1"
+                        Selected="{Binding BandColor}" />
                 </Grid>
 
                 <!--  Error message  -->
-                <Label
-                    x:Name="ErrorMessage"
-                    IsVisible="False"
-                    Style="{StaticResource ErrorMessageStyle}" />
+                <Label Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
 
             </VerticalStackLayout>
         </ScrollView>
@@ -122,13 +126,13 @@
                 x:Name="CancelButton"
                 Grid.Row="0"
                 Grid.Column="0"
-                Clicked="CancelButton_OnClicked"
+                Command="{Binding CancelCommand}"
                 Style="{StaticResource CancelButtonStyle}" />
             <Button
                 x:Name="SaveButton"
                 Grid.Row="0"
                 Grid.Column="1"
-                Clicked="SaveButton_OnClicked"
+                Command="{Binding SaveItemCommand}"
                 Style="{StaticResource SaveButtonStyle}" />
         </Grid>
     </Grid>

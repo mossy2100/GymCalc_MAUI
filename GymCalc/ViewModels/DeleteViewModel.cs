@@ -24,9 +24,9 @@ public class DeleteViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Commands.
 
-    public ICommand CancelCommand { get; set; }
+    public ICommand CancelCommand { get; init; }
 
-    public ICommand DeleteItemCommand { get; set; }
+    public ICommand DeleteItemCommand { get; init; }
 
     // ---------------------------------------------------------------------------------------------
 

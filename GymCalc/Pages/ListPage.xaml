@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="GymCalc.Pages.ListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:drawables="clr-namespace:GymCalc.Drawables"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:pages="clr-namespace:GymCalc.Pages"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:Class="GymCalc.Pages.ListPage"
     x:DataType="viewModels:ListViewModel"
     Title="{Binding Title}">
 

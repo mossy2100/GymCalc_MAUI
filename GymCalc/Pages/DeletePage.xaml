@@ -2,13 +2,14 @@
 <ContentPage
     x:Class="GymCalc.Pages.DeletePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:DataType="viewModels:DeleteViewModel"
     Title="Delete">
 
     <Grid RowDefinitions="*,Auto">
         <Label
-            x:Name="DeleteMessage"
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
             Text="{Binding ConfirmDeletionMessage}" />
@@ -19,17 +20,14 @@
             ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
             <Button
-                x:Name="CancelButton"
                 Grid.Row="0"
                 Grid.Column="0"
                 Command="{Binding CancelCommand}"
                 Style="{StaticResource CancelButtonStyle}" />
             <Button
-                x:Name="DeleteButton"
                 Grid.Row="0"
                 Grid.Column="1"
                 Command="{Binding DeleteItemCommand}"
-                CommandParameter="{Binding GymObject}"
                 Style="{StaticResource DeleteButtonStyle}" />
         </Grid>
     </Grid>

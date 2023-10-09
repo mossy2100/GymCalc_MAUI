@@ -82,27 +82,27 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Command to enable/disable an item.
     /// </summary>
-    public ICommand EnableItemCommand { get; set; }
+    public ICommand EnableItemCommand { get; init; }
 
     /// <summary>
     /// Command to edit an item.
     /// </summary>
-    public ICommand EditItemCommand { get; set; }
+    public ICommand EditItemCommand { get; init; }
 
     /// <summary>
     /// Command to delete an item.
     /// </summary>
-    public ICommand DeleteItemCommand { get; set; }
+    public ICommand DeleteItemCommand { get; init; }
 
     /// <summary>
     /// Command to add a new item.
     /// </summary>
-    public ICommand AddItemCommand { get; set; }
+    public ICommand AddItemCommand { get; init; }
 
     /// <summary>
     /// Reset items command.
     /// </summary>
-    public ICommand ResetItemsCommand { get; set; }
+    public ICommand ResetItemsCommand { get; init; }
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -221,7 +221,7 @@ public class ListViewModel : BaseViewModel
 
     private async Task EditItem(GymObject gymObject)
     {
-        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}&id={gymObject.Id}");
+        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
     private async Task DeleteItem(GymObject gymObject)
@@ -231,7 +231,7 @@ public class ListViewModel : BaseViewModel
 
     private async Task AddItem()
     {
-        await Shell.Current.GoToAsync($"edit?type={GymObjectTypeName}");
+        await Shell.Current.GoToAsync($"edit?op=add&type={GymObjectTypeName}");
     }
 
     private async Task ResetItems()

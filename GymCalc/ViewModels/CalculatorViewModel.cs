@@ -165,7 +165,7 @@ public class CalculatorViewModel : BaseViewModel
                 ? startingWeight
                 : null);
 
-    public ICommand CalculateCommand { get; private set; }
+    public ICommand CalculateCommand { get; init; }
 
     /// <summary>
     /// Error message, bindable.
@@ -194,7 +194,7 @@ public class CalculatorViewModel : BaseViewModel
         _kbRepo = kbRepo;
 
         // Create commands.
-        CalculateCommand = new AsyncCommand(async () => await Calculate());
+        CalculateCommand = new AsyncCommand(Calculate);
 
         // Set the user's preferred units, which may have changed on the settings page.
         var units = UnitsUtility.GetDefault().GetDescription();
