@@ -130,11 +130,7 @@ public abstract class GymObjectRepository
     /// <returns>The new or updated gym object.</returns>
     internal async Task<T> Upsert<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
     {
-        if (gymObject.Id == 0)
-        {
-            return await Insert(cache, gymObject);
-        }
-        return await Update(cache, gymObject);
+        return await (gymObject.Id == 0 ? Insert(cache, gymObject) : Update(cache, gymObject));
     }
 
     /// <summary>

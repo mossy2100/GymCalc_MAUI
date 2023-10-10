@@ -218,7 +218,7 @@ internal static class TextUtility
                 break;
 
             default:
-                throw new ValueOutOfRangeException("Invalid node type.");
+                throw new NoMatchingCaseException("Invalid node type.");
         }
     }
 

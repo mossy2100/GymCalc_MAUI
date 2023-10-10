@@ -54,6 +54,9 @@ public partial class CalculatorPage : ContentPage
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
         await _model.ResetBarWeightPicker();
+
+        // Set the units labels, which may have changed if the user went to the settings page.
+        _model.SetUnits();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -217,7 +220,7 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             default:
-                throw new ValueOutOfRangeException("Invalid exercise type.");
+                throw new NoMatchingCaseException("Invalid exercise type.");
         }
     }
 

@@ -41,8 +41,6 @@ public class KettlebellRepository : GymObjectRepository
     private async Task<List<(double, Units)>> AddKettlebellSet(double min, double max,
         double step, Units units, bool enabled, List<(double, Units)> addedSoFar)
     {
-        var conn = Database.Connection;
-
         for (var weight = min; weight <= max; weight += step)
         {
             // Check we didn't add this one already.
@@ -65,7 +63,7 @@ public class KettlebellRepository : GymObjectRepository
                 HasBands = hasBands,
                 BandColor = bandColor,
             };
-            await conn.InsertAsync(kettlebell);
+            await Insert(kettlebell);
 
             // Remember it.
             addedSoFar.Add((weight, units));

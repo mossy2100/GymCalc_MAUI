@@ -22,24 +22,30 @@ public class ListViewModel : BaseViewModel
     private readonly KettlebellRepository _kettlebellRepo;
 
     // ---------------------------------------------------------------------------------------------
+    // Bindable properties.
+
     /// <summary>
     /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
     /// </summary>
-    public string GymObjectTypeName { get; set; }
+    private string _gymObjectTypeName;
 
-    // ---------------------------------------------------------------------------------------------
-    // Bindable properties.
+    public string GymObjectTypeName
+    {
+        get => _gymObjectTypeName;
+
+        set => SetProperty(ref _gymObjectTypeName, value);
+    }
 
     /// <summary>
     /// Results for the CollectionView.
     /// </summary>
-    private List<GymObjectDrawable> _drawables;
+    private List<ListItem> _listItems;
 
-    public List<GymObjectDrawable> Drawables
+    public List<ListItem> ListItems
     {
-        get => _drawables;
+        get => _listItems;
 
-        set => SetProperty(ref _drawables, value);
+        set => SetProperty(ref _listItems, value);
     }
 
     /// <summary>
@@ -112,7 +118,7 @@ public class ListViewModel : BaseViewModel
         _kettlebellRepo = kettlebellRepo;
 
         // Commands.
-        EnableCommand = new AsyncCommand<GymObject>(EnableGymObject);
+        EnableCommand = new AsyncCommand<ListItem>(EnableGymObject);
         EditCommand = new AsyncCommand<GymObject>(EditGymObject);
         DeleteCommand = new AsyncCommand<GymObject>(DeleteGymObject);
         AddCommand = new AsyncCommand(AddGymObject);
@@ -167,7 +173,7 @@ public class ListViewModel : BaseViewModel
     private void DisplayList<T>(List<T> gymObjects) where T : GymObject
     {
         // Initialize the empty list.
-        Drawables = new List<GymObjectDrawable>();
+        ListItems = new List<ListItem>();
 
         // Check if there's anything to draw.
         if (gymObjects.Count == 0)
@@ -181,9 +187,18 @@ public class ListViewModel : BaseViewModel
         // Create drawables and add to list.
         foreach (var gymObject in gymObjects)
         {
+            // Create the drawable.
             var drawable = GymObjectDrawable.Create(gymObject);
             drawable.MaxWeight = maxWeight;
-            Drawables.Add(drawable);
+
+            // Create the list item and add it to the list.
+            var listItem = new ListItem
+            {
+                GymObject = gymObject,
+                Drawable = drawable,
+                Enabled = gymObject.Enabled
+            };
+            ListItems.Add(listItem);
         }
     }
 
@@ -195,7 +210,7 @@ public class ListViewModel : BaseViewModel
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                Task.Run(DisplayList).Wait();
+                Task.Run(async () => await DisplayList()).Wait();
                 break;
         }
     }
@@ -203,24 +218,33 @@ public class ListViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Command methods.
 
-    private async Task EnableGymObject(GymObject gymObject)
+    private async Task EnableGymObject(ListItem listItem)
     {
-        switch (GymObjectTypeName)
+        // Check if an update is actually needed. This method is called on initialization of the
+        // CollectionView, when no changes have occurred. Could be a bug in InputKit.
+        if (listItem.Enabled == listItem.GymObject.Enabled)
         {
-            case nameof(Bar):
-                await _barRepo.Upsert((Bar)gymObject);
+            return;
+        }
+
+        // Update the object in the database.
+        listItem.GymObject.Enabled = listItem.Enabled;
+        switch (listItem.GymObject)
+        {
+            case Bar bar:
+                await _barRepo.Upsert(bar);
                 break;
 
-            case nameof(Plate):
-                await _plateRepo.Upsert((Plate)gymObject);
+            case Plate plate:
+                await _plateRepo.Upsert(plate);
                 break;
 
-            case nameof(Dumbbell):
-                await _dumbbellRepo.Upsert((Dumbbell)gymObject);
+            case Dumbbell dumbbell:
+                await _dumbbellRepo.Upsert(dumbbell);
                 break;
 
-            case nameof(Kettlebell):
-                await _kettlebellRepo.Upsert((Kettlebell)gymObject);
+            case Kettlebell kettlebell:
+                await _kettlebellRepo.Upsert(kettlebell);
                 break;
         }
     }

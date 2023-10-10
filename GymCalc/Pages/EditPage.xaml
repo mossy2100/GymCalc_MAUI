@@ -8,7 +8,7 @@
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.EditPage"
     x:DataType="viewModels:EditViewModel"
-    Title="Edit">
+    Title="{Binding Title}">
 
     <Grid RowDefinitions="*,Auto">
         <ScrollView

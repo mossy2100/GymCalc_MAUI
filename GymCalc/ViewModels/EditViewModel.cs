@@ -53,6 +53,15 @@ public class EditViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
 
+    private string _title;
+
+    public string Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
     private string _weightText;
 
     public string WeightText
@@ -194,7 +203,7 @@ public class EditViewModel : BaseViewModel
         };
 
         // Go back to the list of this object type.
-        await AppShell.GoToList(_gymObjectTypeName);
+        await Shell.Current.GoToAsync("..");
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -205,28 +214,28 @@ public class EditViewModel : BaseViewModel
     internal async Task Initialize(string operation, string gymObjectTypeName,
         int gymObjectId)
     {
+        // Don't do anything unless all required parameters have been set.
+        if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
+            || (operation == "edit" && gymObjectId == 0))
+        {
+            return;
+        }
+
+        // Check for valid operation.
         if (operation != "add" && operation != "edit")
         {
             throw new ArgumentOutOfRangeException(nameof(operation),
-                $"Invalid operation; must be 'add' or 'edit'.");
-        }
-
-        if (string.IsNullOrWhiteSpace(gymObjectTypeName))
-        {
-            throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
-                "Gym object type not provided.");
-        }
-
-        if (operation == "edit" && gymObjectId == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(gymObjectId),
-                "For an edit operation, gym object id cannot be 0.");
+                $"Invalid operation '{operation}'. Must be 'add' or 'edit'.");
         }
 
         // Remember the view parameters.
         _operation = operation;
         _gymObjectTypeName = gymObjectTypeName;
         _gymObjectId = gymObjectId;
+
+        // Set the title.
+        var ti = new CultureInfo("en-US", false).TextInfo;
+        Title = $"{ti.ToTitleCase(operation)} {_gymObjectTypeName}";
 
         // Reset the form.
         ResetForm();
@@ -277,7 +286,7 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ValueOutOfRangeException(
+                throw new NoMatchingCaseException(
                     $"Invalid gym object type '{_gymObjectTypeName}'");
         }
     }
@@ -285,7 +294,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Load an existing gym object from the database.
     /// </summary>
-    /// <exception cref="ValueOutOfRangeException"></exception>
+    /// <exception cref="NoMatchingCaseException"></exception>
     private async Task LoadGymObject()
     {
         switch (_gymObjectTypeName)
@@ -316,7 +325,7 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ValueOutOfRangeException(
+                throw new NoMatchingCaseException(
                     $"Invalid gym object type '{_gymObjectTypeName}'.");
         }
 

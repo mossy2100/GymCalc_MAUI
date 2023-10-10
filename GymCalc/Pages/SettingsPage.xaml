@@ -4,7 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.SettingsPage"
+    x:DataType="viewModels:SettingsViewModel"
     Title="Settings">
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
@@ -20,32 +22,12 @@
                 Text="Units" />
 
             <input:RadioButtonGroupView
-                x:Name="UnitsRadio"
                 Grid.Row="0"
                 Grid.Column="1"
-                SelectedItemChanged="OnUnitsSelectedItemChanged">
+                SelectedItem="{Binding Units, Mode=TwoWay}">
                 <input:RadioButton Text="kilograms (kg)" Value="kg" />
                 <input:RadioButton Text="pounds (lb)" Value="lb" />
             </input:RadioButtonGroupView>
-
-            <!--  <Label  -->
-            <!--  Grid.Row="1"  -->
-            <!--  Grid.Column="0"  -->
-            <!--  Text="Theme" />  -->
-            <!--    -->
-            <!--  <Picker  -->
-            <!--  x:Name="ThemePicker"  -->
-            <!--  Grid.Row="1"  -->
-            <!--  Grid.Column="1"  -->
-            <!--  SelectedIndexChanged="ThemePicker_OnSelectedIndexChanged">  -->
-            <!--     <Picker.ItemsSource> -->
-            <!--         <x:Array Type="{x:Type x:String}"> -->
-            <!--             <x:String>System</x:String> -->
-            <!--             <x:String>Light</x:String> -->
-            <!--             <x:String>Dark</x:String> -->
-            <!--         </x:Array> -->
-            <!--     </Picker.ItemsSource> -->
-            <!-- </Picker> -->
 
         </Grid>
     </ScrollView>

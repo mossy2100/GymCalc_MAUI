@@ -67,8 +67,6 @@ public class PlateRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var conn = Database.Connection;
-
         foreach (var (weight, units, enabled, color) in _DefaultPlates)
         {
             var plate = new Plate
@@ -78,7 +76,7 @@ public class PlateRepository : GymObjectRepository
                 Enabled = enabled,
                 Color = color,
             };
-            await conn.InsertAsync(plate);
+            await Insert(plate);
         }
     }
 

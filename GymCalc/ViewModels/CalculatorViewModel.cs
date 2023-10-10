@@ -12,7 +12,8 @@ namespace GymCalc.ViewModels;
 
 public class CalculatorViewModel : BaseViewModel
 {
-    #region Fields
+    // ---------------------------------------------------------------------------------------------
+    #region Dependencies
 
     private readonly BarRepository _barRepo;
 
@@ -22,10 +23,9 @@ public class CalculatorViewModel : BaseViewModel
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    private string _errorMessage;
+    #endregion Dependencies
 
-    #endregion Fields
-
+    // ---------------------------------------------------------------------------------------------
     #region Bindable properties
 
     private string _maxWeightText;
@@ -136,11 +136,27 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResultsVisible, value);
     }
 
+    private string _errorMessage;
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+
+        set => SetProperty(ref _errorMessage, value);
+    }
+
     #endregion Bindable properties
 
-    #region Other properties
+    // ---------------------------------------------------------------------------------------------
 
+    /// <summary>
+    /// This is a non-bindable property set from the view.
+    /// Could be made bindable, but as yet there's no need for that.
+    /// </summary>
     public ExerciseType SelectedExerciseType { get; set; }
+
+    // ---------------------------------------------------------------------------------------------
+    #region Calculated properties
 
     /// <summary>
     /// Determine the maximum weight from the entry control.
@@ -166,21 +182,17 @@ public class CalculatorViewModel : BaseViewModel
                 ? startingWeight
                 : null);
 
+    #endregion
+
+    // ---------------------------------------------------------------------------------------------
+    #region Commands
+
     public ICommand CalculateCommand { get; init; }
 
-    /// <summary>
-    /// Error message, bindable.
-    /// </summary>
-    public string ErrorMessage
-    {
-        get => _errorMessage;
+    #endregion Commands
 
-        set => SetProperty(ref _errorMessage, value);
-    }
-
-    #endregion Other properties
-
-    #region Constructor
+    // ---------------------------------------------------------------------------------------------
+    #region Constructors
 
     /// <summary>
     /// Constructor.
@@ -196,16 +208,11 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
-
-        // Set the user's preferred units, which may have changed on the settings page.
-        var units = UnitsUtility.GetDefault().GetDescription();
-        MaxWeightUnits = units;
-        BarWeightUnits = units;
-        StartingWeightUnits = units;
     }
 
-    #endregion Constructor
+    #endregion Constructors
 
+    // ---------------------------------------------------------------------------------------------
     #region Validation methods
 
     private bool ValidateMaxWeight()
@@ -236,6 +243,7 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Validation methods
 
+    // ---------------------------------------------------------------------------------------------
     #region Calculations
 
     private async Task Calculate()
@@ -264,7 +272,7 @@ public class CalculatorViewModel : BaseViewModel
                 break;
 
             default:
-                throw new ValueOutOfRangeException("Invalid exercise type.");
+                throw new NoMatchingCaseException("Invalid exercise type.");
         }
     }
 
@@ -317,8 +325,6 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate and display the results.
-        // TODO Should this result be cached? We probably shouldn't look it up every time, although
-        // the phone database is pretty fast.
         var kettlebells = await _kettlebellRepo.GetSome(enabled: true, ascending: true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
         SingleWeightResultsVisible = true;
@@ -326,7 +332,8 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Calculations
 
-    #region Database stuff
+    // ---------------------------------------------------------------------------------------------
+    #region Initialization stuff
 
     internal async Task InitializeDatabase()
     {
@@ -342,9 +349,43 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     internal async Task ResetBarWeightPicker()
     {
+        // Remember the original selection.
+        var selectedBarWeight = BarWeight;
+
+        // Reset to force an update when the property is set again.
+        BarWeight = 0;
+
+        // Repopulate the picker options.
         var bars = await _barRepo.GetSome(enabled: true, ascending: true);
         BarWeights = bars.Select(b => b.Weight).ToList();
+
+        // Select the previously selected value, if available.
+        if (BarWeights.Contains(selectedBarWeight))
+        {
+            BarWeight = selectedBarWeight;
+        }
+        // Select the default value, if available.
+        else if (BarWeights.Contains(BarRepository.DEFAULT_WEIGHT))
+        {
+            BarWeight = BarRepository.DEFAULT_WEIGHT;
+        }
+        // Otherwise, select the first value.
+        else
+        {
+            BarWeight = BarWeights.FirstOrDefault();
+        }
     }
 
-    #endregion Database stuff
+    /// <summary>
+    /// Set the user's preferred units, which may have changed on the settings page.
+    /// </summary>
+    internal void SetUnits()
+    {
+        var units = UnitsUtility.GetDefault().GetDescription();
+        MaxWeightUnits = units;
+        BarWeightUnits = units;
+        StartingWeightUnits = units;
+    }
+
+    #endregion Initialization stuff
 }

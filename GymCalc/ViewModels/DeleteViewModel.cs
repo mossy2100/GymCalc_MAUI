@@ -28,6 +28,18 @@ public class DeleteViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
+    /// Page title.
+    /// </summary>
+    private string _title;
+
+    public string Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
+    /// <summary>
     /// Message to the user confirming the deletion.
     /// </summary>
     private string _confirmDeletionMessage;
@@ -117,17 +129,13 @@ public class DeleteViewModel : BaseViewModel
     /// <returns>If the initialization completed ok.</returns>
     internal async Task Initialize(string gymObjectTypeName, int gymObjectId)
     {
-        if (string.IsNullOrEmpty(gymObjectTypeName))
+        // Don't do anything unless both parameters have been set.
+        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
-                "Gym object type not provided.");
+            return;
         }
 
-        if (gymObjectId == 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(gymObjectId),
-                "Gym object id cannot be 0.");
-        }
+        Title = $"Delete {gymObjectTypeName}";
 
         switch (gymObjectTypeName)
         {

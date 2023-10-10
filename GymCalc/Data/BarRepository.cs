@@ -59,7 +59,7 @@ public class BarRepository : GymObjectRepository
                 Units = units.GetDescription(),
                 Enabled = enable,
             };
-            await Database.Connection.InsertAsync(bar);
+            await Insert(bar);
         }
     }
 

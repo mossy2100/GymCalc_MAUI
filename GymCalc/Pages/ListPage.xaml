@@ -3,10 +3,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:drawables="clr-namespace:GymCalc.Drawables"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    xmlns:models="clr-namespace:GymCalc.Models"
     x:Class="GymCalc.Pages.ListPage"
     x:DataType="viewModels:ListViewModel"
     Title="{Binding Title}">
@@ -20,18 +20,18 @@
             FontSize="14"
             Text="{Binding Instructions}" />
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Drawables}">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding ListItems}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="drawables:GymObjectDrawable">
+                <DataTemplate x:DataType="models:ListItem">
                     <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5" Padding="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="{Binding Height}" />
+                            <RowDefinition Height="{Binding Drawable.Height}" />
                         </Grid.RowDefinitions>
                         <GraphicsView
                             Grid.Column="0"
-                            Drawable="{Binding .}"
-                            HeightRequest="{Binding Height}"
-                            WidthRequest="{Binding Width}"
+                            Drawable="{Binding Drawable}"
+                            HeightRequest="{Binding Drawable.Height}"
+                            WidthRequest="{Binding Drawable.Width}"
                             HorizontalOptions="Center"
                             VerticalOptions="Center" />
                         <input:CheckBox
@@ -41,10 +41,10 @@
                             WidthRequest="32"
                             HorizontalOptions="Start"
                             VerticalOptions="Center"
-                            IsChecked="{Binding GymObject.Enabled, Mode=TwoWay}"
-                            CheckChangedCommand="{Binding BindingContext.EnableCommand,
+                            IsChecked="{Binding Enabled, Mode=TwoWay}"
+                            CheckChangedCommand="{Binding Model.EnableCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding GymObject}" />
+                            CommandParameter="{Binding .}" />
                         <Button
                             Grid.Column="2"
                             Style="{StaticResource EditIconButtonStyle}"
@@ -52,7 +52,7 @@
                             WidthRequest="32"
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
-                            Command="{Binding BindingContext.EditCommand,
+                            Command="{Binding Model.EditCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                             CommandParameter="{Binding GymObject}" />
                         <Button
@@ -62,7 +62,7 @@
                             WidthRequest="32"
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
-                            Command="{Binding BindingContext.DeleteCommand,
+                            Command="{Binding Model.DeleteCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                             CommandParameter="{Binding GymObject}" />
                     </Grid>

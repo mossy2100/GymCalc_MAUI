@@ -1,23 +1,12 @@
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using GymCalc.Constants;
-using GymCalc.Data;
-using GymCalc.Services;
+using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
 
 [QueryProperty(nameof(GymObjectTypeName), "type")]
 public partial class ResetPage : ContentPage
 {
-    private readonly BarRepository _barRepo;
-
-    private readonly PlateRepository _plateRepo;
-
-    private readonly DumbbellRepository _dumbbellRepo;
-
-    private readonly KettlebellRepository _kettlebellRepo;
-
-    private readonly DatabaseHelperService _databaseHelperService;
+    private ResetViewModel _model;
 
     private string _gymObjectTypeName;
 
@@ -27,22 +16,20 @@ public partial class ResetPage : ContentPage
 
         set
         {
-            _gymObjectTypeName = value;
-            OnPropertyChanged();
+            if (value != _gymObjectTypeName)
+            {
+                _gymObjectTypeName = value;
+                OnPropertyChanged();
+            }
         }
     }
 
-    public ResetPage(BarRepository barRepo, PlateRepository plateRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo, DatabaseHelperService databaseHelperService)
+    public ResetPage(ResetViewModel model)
     {
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
-        _databaseHelperService = databaseHelperService;
+        _model = model;
 
         InitializeComponent();
-        BindingContext = this;
+        BindingContext = _model;
 
         // Workaround for issue with Back button label.
         // <see href="https://github.com/dotnet/maui/issues/8335" />
@@ -57,30 +44,9 @@ public partial class ResetPage : ContentPage
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                Title = $"Reset {GymObjectTypeName}s";
-                InitializeForm();
+                // Copy value to the viewmodel.
+                _model.GymObjectTypeName = GymObjectTypeName;
                 break;
         }
-    }
-
-    private void InitializeForm()
-    {
-        ResetMessage.Text = $"WARNING: This will remove all {GymObjectTypeName.ToLower()}s from the"
-            + " database and restore the defaults. Are you sure you want to do this?";
-    }
-
-    private async void CancelButton_OnClicked(object sender, EventArgs e)
-    {
-        await AppShell.GoToList(GymObjectTypeName);
-    }
-
-    private async void ResetButton_OnClicked(object sender, EventArgs e)
-    {
-        var repo = _databaseHelperService.GetRepo(GymObjectTypeName);
-
-        await repo.DeleteAll();
-        await repo.InsertDefaults();
-
-        await AppShell.GoToList(GymObjectTypeName);
     }
 }

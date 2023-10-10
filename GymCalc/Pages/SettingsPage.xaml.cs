@@ -1,21 +1,16 @@
-using Galaxon.Core.Enums;
-using GymCalc.Utilities;
-using InputKit.Shared.Controls;
+using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
 
 public partial class SettingsPage : ContentPage
 {
-    public SettingsPage()
+    private SettingsViewModel _model;
+
+    public SettingsPage(SettingsViewModel model)
     {
+        _model = model;
+
         InitializeComponent();
-
-        UnitsRadio.SelectedItem = UnitsUtility.GetDefault().GetDescription();
-    }
-
-    private void OnUnitsSelectedItemChanged(object sender, EventArgs e)
-    {
-        var rbg = (RadioButtonGroupView)sender;
-        Preferences.Default.Set("Units", (string)rbg.SelectedItem);
+        BindingContext = _model;
     }
 }

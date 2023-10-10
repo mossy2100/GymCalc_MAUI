@@ -3,13 +3,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.ResetPage"
-    Title="Reset">
+    x:DataType="viewModels:ResetViewModel"
+    Title="{Binding Title}">
 
     <Grid RowDefinitions="*,Auto">
         <Label
-            x:Name="ResetMessage"
             Grid.Row="0"
+            Text="{Binding ResetMessage}"
             Padding="{x:Static graphics:PageLayout.Spacing}" />
 
         <!--  Buttons  -->
@@ -18,16 +20,14 @@
             ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
             <Button
-                x:Name="CancelButton"
                 Grid.Row="0"
                 Grid.Column="0"
-                Clicked="CancelButton_OnClicked"
+                Command="{Binding CancelCommand}"
                 Style="{StaticResource CancelButtonStyle}" />
             <Button
-                x:Name="ResetButton"
                 Grid.Row="0"
                 Grid.Column="1"
-                Clicked="ResetButton_OnClicked"
+                Command="{Binding ResetCommand}"
                 Style="{StaticResource ResetButtonStyle}" />
         </Grid>
     </Grid>

@@ -10,6 +10,8 @@ public partial class ListPage : ContentPage
     /// </summary>
     private readonly ListViewModel _model;
 
+    public ListViewModel Model => _model;
+
     /// <summary>
     /// The gym object type name. This is passed as a parameter to the page and determines what
     /// objects to display in the list.
@@ -49,10 +51,10 @@ public partial class ListPage : ContentPage
     }
 
     /// <inheritdoc />
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        Task.Run(async () => await _model.DisplayList()).Wait();
+        await _model.DisplayList();
     }
 
     /// <summary>
