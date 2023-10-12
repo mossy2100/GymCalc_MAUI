@@ -12,9 +12,6 @@ public abstract class GymObjectDrawable : IDrawable
 
     public const double MIN_WIDTH = 50;
 
-    /// <summary>
-    /// TODO - Update to use real available width.
-    /// </summary>
     public const double MAX_WIDTH = 200;
 
     internal double MaxWeight { get; set; }
@@ -29,24 +26,10 @@ public abstract class GymObjectDrawable : IDrawable
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
     /// </summary>
-    public double CalculateWidth()
+    public static double CalculateWidth(double weight, double maxWeight)
     {
-        return MIN_WIDTH + (GymObject.Weight / MaxWeight) * (MAX_WIDTH - MIN_WIDTH);
+        return MIN_WIDTH + (weight / maxWeight) * (MAX_WIDTH - MIN_WIDTH);
     }
-
-    // /// <summary>
-    // /// Create a GraphicsView that references the Drawable.
-    // /// The new GraphicsView can then be added to a Layout.
-    // /// </summary>
-    // internal GraphicsView CreateGraphicsView()
-    // {
-    //     return new GraphicsView
-    //     {
-    //         Drawable = this,
-    //         HeightRequest = Height,
-    //         WidthRequest = Width,
-    //     };
-    // }
 
     /// <summary>
     /// Construct a new drawable for a given GymObject.

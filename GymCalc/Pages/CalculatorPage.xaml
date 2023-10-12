@@ -14,6 +14,7 @@
 
     <ContentPage.Resources>
         <converters:WeightTextConverter x:Key="DefaultWeightTextConverter" />
+        <converters:MachineTypeConverter x:Key="DefaultMachineTypeConverter" />
     </ContentPage.Resources>
 
     <ScrollView
@@ -28,7 +29,7 @@
             Appears on top or left-hand side of page, depending on orientation.
             -->
             <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
-                <!--  Exercise type  -->
+                <!-- Exercise type -->
                 <Label Text="Select exercise type:" />
                 <Grid
                     x:Name="ExerciseTypeButtonGrid"
@@ -62,9 +63,9 @@
                         Text="Kettlebell" />
                 </Grid>
 
-                <!--  Max weight  -->
+                <!-- Max weight -->
                 <Grid
-                    ColumnDefinitions="7*,2*,*"
+                    ColumnDefinitions="8*,3*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -89,10 +90,10 @@
                         VerticalTextAlignment="Center" />
                 </Grid>
 
-                <!--  Bar weight  -->
+                <!-- Bar weight -->
                 <Grid
                     x:Name="BarWeightGrid"
-                    ColumnDefinitions="7*,2*,*"
+                    ColumnDefinitions="8*,3*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -115,16 +116,37 @@
                         Text="{Binding BarWeightUnits}" />
                 </Grid>
 
-                <!--  Machine starting weight  -->
+                <!-- Machine type -->
+                <Grid
+                    x:Name="MachineTypeGrid"
+                    ColumnDefinitions="8*,4*"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    RowDefinitions="Auto">
+                    <Label
+                        Grid.Row="0" Grid.Column="0"
+                        Text="Machine type"
+                        VerticalTextAlignment="Center" />
+                    <input:RadioButtonGroupView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        SelectedItem="{Binding MachineType, Mode=TwoWay,
+                            Converter={StaticResource DefaultMachineTypeConverter}}"
+                        SelectedItemChangedCommand="{Binding MachineTypeChangedCommand}">
+                        <input:RadioButton Text="Isolateral" Value="Isolateral" />
+                        <input:RadioButton Text="Bilateral" Value="Bilateral" />
+                    </input:RadioButtonGroupView>
+                </Grid>
+
+                <!-- Machine starting weight -->
                 <Grid
                     x:Name="StartingWeightGrid"
-                    ColumnDefinitions="7*,2*,*"
+                    ColumnDefinitions="8*,3*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
                         Grid.Row="0" Grid.Column="0"
                         HorizontalTextAlignment="Start"
-                        Text="Starting weight"
+                        Text="{Binding StartingWeightLabel}"
                         VerticalTextAlignment="Center" />
                     <Frame
                         Grid.Row="0" Grid.Column="1"
@@ -143,27 +165,10 @@
                         Text="{Binding StartingWeightUnits}" />
                 </Grid>
 
-                <!--  Plates one side only  -->
-                <Grid
-                    x:Name="OneSideOnlyGrid"
-                    ColumnDefinitions="7*,3*"
-                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    RowDefinitions="Auto">
-                    <Label
-                        Grid.Row="0" Grid.Column="0"
-                        Text="Get plates for one side only"
-                        VerticalTextAlignment="Center" />
-                    <input:CheckBox
-                        IsChecked="{Binding OneSideOnly, Mode=TwoWay}"
-                        Grid.Row="0" Grid.Column="1"
-                        HorizontalOptions="Start"
-                        Type="Material" />
-                </Grid>
-
-                <!--  Calculate button  -->
+                <!-- Calculate button -->
                 <Button Command="{Binding CalculateCommand}" Text="Calculate" />
 
-                <!--  Error message  -->
+                <!-- Error message -->
                 <Label Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="">
@@ -203,35 +208,32 @@
                                     Style="{StaticResource ResultsTableHeader}" />
                                 <Label Grid.Row="2" Grid.Column="0" Text="Total"
                                     Style="{StaticResource ResultsTableHeader}" />
-                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotal,
+                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotalWeight,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableIdeal}" />
                                 <Label Grid.Row="2" Grid.Column="2"
-                                    Text="{Binding ClosestTotal,
+                                    Text="{Binding ClosestTotalWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableClosest}" />
                                 <Label Grid.Row="3" Grid.Column="0"
                                     Text="{Binding EachSideText}"
                                     Style="{StaticResource ResultsTableHeader}" />
                                 <Label Grid.Row="3" Grid.Column="1"
-                                    Text="{Binding IdealPlates,
+                                    Text="{Binding IdealPlatesWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableIdeal}" />
                                 <Label Grid.Row="3" Grid.Column="2"
-                                    Text="{Binding ClosestPlates,
+                                    Text="{Binding ClosestPlatesWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableClosest}" />
-                                <CollectionView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
-                                    ItemsSource="{Binding PlateDrawables}">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="drawables:PlateDrawable">
-                                            <GraphicsView Drawable="{Binding .}"
-                                                WidthRequest="{Binding Width}"
-                                                HeightRequest="{Binding Height}"
-                                                HorizontalOptions="Center" />
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
+                                <GraphicsView
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    Drawable="{Binding Drawable}"
+                                    WidthRequest="{Binding Drawable.Width}"
+                                    HeightRequest="{Binding Drawable.Height}"
+                                    HorizontalOptions="Center" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

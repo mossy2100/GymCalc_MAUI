@@ -64,13 +64,22 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _startingWeightText, value);
     }
 
-    private bool _oneSideOnly;
+    private string _startingWeightLabel;
 
-    public bool OneSideOnly
+    public string StartingWeightLabel
     {
-        get => _oneSideOnly;
+        get => _startingWeightLabel;
 
-        set => SetProperty(ref _oneSideOnly, value);
+        set => SetProperty(ref _startingWeightLabel, value);
+    }
+
+    private MachineType _machineType = MachineType.Bilateral;
+
+    public MachineType MachineType
+    {
+        get => _machineType;
+
+        set => SetProperty(ref _machineType, value);
     }
 
     private string _maxWeightUnits;
@@ -189,6 +198,8 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand CalculateCommand { get; init; }
 
+    public ICommand MachineTypeChangedCommand { get; init; }
+
     #endregion Commands
 
     // ---------------------------------------------------------------------------------------------
@@ -208,6 +219,7 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
+        MachineTypeChangedCommand = new Command(MachineTypeChanged);
     }
 
     #endregion Constructors
@@ -285,8 +297,8 @@ public class CalculatorViewModel : BaseViewModel
 
         // Calculate and display the results.
         var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, true, plates,
-            "Plates each end");
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
+            "Plates each end", plates);
         PlatesResultsVisible = true;
     }
 
@@ -297,10 +309,16 @@ public class CalculatorViewModel : BaseViewModel
             return;
         }
 
-        // Calculate and display the results.
+        // Get the available plates.
         var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, StartingWeight!.Value,
-            OneSideOnly, plates, "Plates each side");
+
+        // Determine the number of plate stacks and total starting weight from the machine type.
+        var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
+        var totalStartingWeight = StartingWeight!.Value * nStacks;
+
+        // Calculate and display the results.
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
+            "Plates each side", plates);
         PlatesResultsVisible = true;
     }
 
@@ -387,5 +405,25 @@ public class CalculatorViewModel : BaseViewModel
         StartingWeightUnits = units;
     }
 
-    #endregion Initialization stuff
+    public void MachineTypeChanged()
+    {
+        StartingWeightLabel = MachineType == MachineType.Isolateral
+            ? "Starting weight per side"
+            : "Starting weight";
+    }
+
+    internal async Task Initialize()
+    {
+        // Set the units labels, which may have changed if the user went to the settings page.
+        SetUnits();
+
+        // Initialize the starting weight label.
+        MachineTypeChanged();
+
+        // Update the bar weight picker whenever this page appears, because the bar weights may have
+        // changed on the Bars page.
+        await ResetBarWeightPicker();
+    }
+
+    #endregion
 }

@@ -12,7 +12,7 @@ public class BarDrawable : GymObjectDrawable
     /// <inheritdoc />
     public override double GetWidth()
     {
-        return CalculateWidth();
+        return CalculateWidth(GymObject.Weight, MaxWeight);
     }
 
     /// <inheritdoc />
@@ -44,12 +44,4 @@ public class BarDrawable : GymObjectDrawable
         canvas.DrawString(weightString, 0, offset, width, height, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }
-
-    // /// <inheritdoc />
-    // internal override GraphicsView CreateGraphicsView()
-    // {
-    //     // Calculate the bar width.
-    //     Width = MinWidth + GymObject.Weight / MaxWeightKg * (MaxWidth - MinWidth);
-    //     return base.CreateGraphicsView();
-    // }
 }

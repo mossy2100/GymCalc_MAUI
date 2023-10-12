@@ -51,12 +51,8 @@ public partial class CalculatorPage : ContentPage
         // Initialise the exercise type buttons.
         SetExerciseType(ExerciseType.Barbell);
 
-        // Update the bar weight picker whenever this page appears, because the bar weights may have
-        // changed on the Bars page.
-        await _model.ResetBarWeightPicker();
-
-        // Set the units labels, which may have changed if the user went to the settings page.
-        _model.SetUnits();
+        // Initialize other form elements.
+        await _model.Initialize();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -151,7 +147,7 @@ public partial class CalculatorPage : ContentPage
         // Clear the error message.
         _model.ErrorMessage = "";
 
-        // Update the field.
+        // Update the view model.
         _model.SelectedExerciseType = exerciseType;
 
         // Deselect all exercise type buttons.
@@ -170,12 +166,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum total weight";
 
-                // Show relevant rows.
+                // Hide/show rows.
                 BarWeightGrid.IsVisible = true;
-
-                // Hide other rows.
+                MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
-                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             case ExerciseType.Dumbbell:
@@ -185,10 +179,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum weight per dumbbell";
 
-                // Hide other rows.
+                // Hide/show rows.
                 BarWeightGrid.IsVisible = false;
+                MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
-                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             case ExerciseType.Machine:
@@ -198,12 +192,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the label text.
                 MaxWeightLabel.Text = "Maximum total weight";
 
-                // Show relevant rows.
-                StartingWeightGrid.IsVisible = true;
-                OneSideOnlyGrid.IsVisible = true;
-
-                // Hide other rows.
+                // Hide/show rows.
                 BarWeightGrid.IsVisible = false;
+                MachineTypeGrid.IsVisible = true;
+                StartingWeightGrid.IsVisible = true;
                 break;
 
             case ExerciseType.Kettlebell:
@@ -213,10 +205,10 @@ public partial class CalculatorPage : ContentPage
                 // Update the max weight label text.
                 MaxWeightLabel.Text = "Maximum weight";
 
-                // Hide other rows.
+                // Hide/show rows.
                 BarWeightGrid.IsVisible = false;
+                MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
-                OneSideOnlyGrid.IsVisible = false;
                 break;
 
             default:

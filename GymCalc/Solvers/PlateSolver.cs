@@ -16,8 +16,9 @@ internal static class PlateSolver
 
     private static double _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(double maxWeight, double startingWeight,
-        bool oneSideOnly, IEnumerable<Plate> availPlates, string platesEachSideText)
+    internal static List<PlatesResult> CalculateResults(double maxTotalWeight,
+        double totalStartingWeight, int nStacks, string eachSideText,
+        IEnumerable<Plate> availPlates)
     {
         var results = new List<PlatesResult>();
 
@@ -29,32 +30,26 @@ internal static class PlateSolver
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var idealTotal = maxWeight * percent / 100.0;
-            var idealPlates = (idealTotal - startingWeight) / (oneSideOnly ? 2 : 1);
+            var idealTotal = maxTotalWeight * percent / 100.0;
+            var idealPlates = (idealTotal - totalStartingWeight) / nStacks;
 
             // Get the set of plates that is closest to the ideal weight.
-            var bestPlates = FindBestPlates(idealPlates);
+            var closestPlates = FindBestPlates(idealPlates);
 
-            // Generate the drawables.
-            var drawables = GetDrawables(bestPlates, _maxPlateWeight);
+            // Create the drawable.
+            var drawable = new PlatesDrawable
+            {
+                Plates = closestPlates,
+                MaxWeight = _maxPlateWeight,
+            };
 
-            var result = new PlatesResult(percent, maxWeight, startingWeight, platesEachSideText,
-                bestPlates, drawables);
+            // Create the result object.
+            var result = new PlatesResult(percent, maxTotalWeight, totalStartingWeight, nStacks,
+                eachSideText, closestPlates, drawable);
             results.Add(result);
         }
 
         return results;
-    }
-
-    private static List<PlateDrawable> GetDrawables(IEnumerable<Plate> plates, double maxWeight)
-    {
-        return plates.Select(plate =>
-                new PlateDrawable
-                {
-                    GymObject = plate,
-                    MaxWeight = maxWeight,
-                })
-            .ToList();
     }
 
     /// <summary>

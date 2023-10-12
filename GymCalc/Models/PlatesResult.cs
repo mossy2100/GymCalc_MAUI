@@ -1,3 +1,4 @@
+using GymCalc.Constants;
 using GymCalc.Drawables;
 
 namespace GymCalc.Models;
@@ -8,25 +9,28 @@ public class PlatesResult
 
     public string EachSideText { get; set; }
 
-    public double IdealTotal { get; set; }
+    public double IdealTotalWeight { get; set; }
 
-    public double IdealPlates { get; set; }
+    public double IdealPlatesWeight { get; set; }
 
-    public double ClosestTotal { get; set; }
+    public double ClosestTotalWeight { get; set; }
 
-    public double ClosestPlates { get; set; }
+    public double ClosestPlatesWeight { get; set; }
 
-    public List<PlateDrawable> PlateDrawables { get; set; }
+    // public List<PlateDrawable> PlateDrawables { get; set; }
 
-    internal PlatesResult(double percent, double maxWeight, double startingWeight,
-        string eachSideText, IEnumerable<Plate> plates, List<PlateDrawable> drawables)
+    public PlatesDrawable Drawable { get; set; }
+
+    internal PlatesResult(double percent, double maxTotalWeight, double totalStartingWeight,
+        int nStacks, string eachSideText, IEnumerable<Plate> closestPlates,
+        PlatesDrawable drawable)
     {
         Percent = percent;
         EachSideText = eachSideText;
-        IdealTotal = percent / 100.0 * maxWeight;
-        IdealPlates = (IdealTotal - startingWeight) / 2.0;
-        ClosestPlates = plates.Sum(p => p.Weight);
-        ClosestTotal = startingWeight + 2.0 * ClosestPlates;
-        PlateDrawables = drawables;
+        IdealTotalWeight = percent / 100.0 * maxTotalWeight;
+        IdealPlatesWeight = (IdealTotalWeight - totalStartingWeight) / nStacks;
+        ClosestPlatesWeight = closestPlates.Sum(p => p.Weight);
+        ClosestTotalWeight = ClosestPlatesWeight * nStacks + totalStartingWeight;
+        Drawable = drawable;
     }
 }
