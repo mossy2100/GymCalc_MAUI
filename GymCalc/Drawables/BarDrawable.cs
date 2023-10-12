@@ -12,7 +12,7 @@ public class BarDrawable : GymObjectDrawable
     /// <inheritdoc />
     public override double GetWidth()
     {
-        return CalculateWidth(GymObject.Weight, MaxWeight);
+        return CalculateWidth();
     }
 
     /// <inheritdoc />

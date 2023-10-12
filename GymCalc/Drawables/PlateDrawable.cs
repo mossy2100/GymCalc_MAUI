@@ -15,7 +15,7 @@ public class PlateDrawable : GymObjectDrawable
     /// <inheritdoc />
     public override double GetWidth()
     {
-        return CalculateWidth(GymObject.Weight, MaxWeight);
+        return CalculateWidth();
     }
 
     /// <inheritdoc />
@@ -24,6 +24,15 @@ public class PlateDrawable : GymObjectDrawable
         return HEIGHT;
     }
 
+    /// <summary>
+    /// Used by both this class and PlatesDrawable.
+    /// </summary>
+    /// <param name="canvas"></param>
+    /// <param name="plate"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="w"></param>
+    /// <param name="h"></param>
     public static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
@@ -37,8 +46,7 @@ public class PlateDrawable : GymObjectDrawable
         // Plate edge.
         canvas.FillColor = bgColor;
         var innerHeight = h - 2 * CORNER_RADIUS;
-        var plateEdge = new RectF(x, y + CORNER_RADIUS, w,
-            innerHeight);
+        var plateEdge = new RectF(x, y + CORNER_RADIUS, w, innerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -47,8 +55,8 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, x, y + CORNER_RADIUS + offset,
-            w, innerHeight, HorizontalAlignment.Center, VerticalAlignment.Center);
+        canvas.DrawString(weightString, x, y + CORNER_RADIUS + offset, w, innerHeight,
+            HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
@@ -58,29 +66,5 @@ public class PlateDrawable : GymObjectDrawable
         var h = (float)Height;
         var x = (dirtyRect.Width - w) / 2f;
         DrawPlate(canvas, plate, x, 0, w, h);
-
-        // // Get the color.
-        // var bgColor = CustomColors.Get(plate.Color);
-        //
-        // // Plate background.
-        // canvas.FillColor = bgColor.AddLuminosity(-0.1f);
-        // //
-        // var plateBackground = new RectF(0, 0, width, height);
-        // canvas.FillRoundedRectangle(plateBackground, CORNER_RADIUS);
-        //
-        // // Plate edge.
-        // canvas.FillColor = bgColor;
-        // var innerHeight = height - 2 * CORNER_RADIUS;
-        // var plateEdge = new RectF(0, CORNER_RADIUS, width, innerHeight);
-        // canvas.FillRectangle(plateEdge);
-        //
-        // // Weight label.
-        // canvas.Font = Font.DefaultBold;
-        // canvas.FontSize = 16;
-        // canvas.FontColor = bgColor.GetTextColor();
-        // var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
-        // var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        // canvas.DrawString(weightString, 0, CORNER_RADIUS + offset, width, innerHeight,
-        //     HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 }
