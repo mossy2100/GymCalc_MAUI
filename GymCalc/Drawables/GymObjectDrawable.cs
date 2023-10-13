@@ -32,6 +32,10 @@ public abstract class GymObjectDrawable : IDrawable
         return MIN_WIDTH + (weight / maxWeight) * (MAX_WIDTH - MIN_WIDTH);
     }
 
+    /// <summary>
+    /// Calculate variable (weight-dependent) width for bars and plates.
+    /// Instance version.
+    /// </summary>
     public double CalculateWidth()
     {
         return CalculateWidth(GymObject.Weight, MaxWeight);
