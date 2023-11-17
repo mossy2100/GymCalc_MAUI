@@ -1,4 +1,4 @@
-using Galaxon.Maui;
+using Galaxon.Maui.Utilities;
 
 namespace GymCalc.Graphics;
 

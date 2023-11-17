@@ -30,7 +30,7 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Weight"
-                        VerticalTextAlignment="Center" />
+                        VerticalTextAlignment="Center"/>
                     <Frame
                         Grid.Row="0"
                         Grid.Column="1"
@@ -38,7 +38,7 @@
                         <Entry
                             Keyboard="Numeric"
                             Text="{Binding WeightText}"
-                            VerticalTextAlignment="Center" />
+                            VerticalTextAlignment="Center"/>
                     </Frame>
                 </Grid>
 
@@ -48,17 +48,17 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="Units" />
+                        Text="Units"/>
                     <input:RadioButtonGroupView
                         Grid.Row="0"
                         Grid.Column="1"
                         SelectedItem="{Binding Units, Mode=TwoWay}">
                         <input:RadioButton
                             Text="kilograms (kg)"
-                            Value="kg" />
+                            Value="kg"/>
                         <input:RadioButton
                             Text="pounds (lb)"
-                            Value="lb" />
+                            Value="lb"/>
                     </input:RadioButtonGroupView>
                 </Grid>
 
@@ -69,12 +69,12 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="Enabled"
-                        VerticalTextAlignment="Center" />
+                        VerticalTextAlignment="Center"/>
                     <input:CheckBox
                         Grid.Row="0"
                         Grid.Column="1"
                         IsChecked="{Binding Enabled}"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center"/>
                 </Grid>
 
                 <!--  Plate color or ball color for kettlebells  -->
@@ -84,11 +84,11 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="Color" />
+                        Text="Color"/>
                     <controls:ColorPicker
                         Grid.Row="0"
                         Grid.Column="1"
-                        Selected="{Binding MainColor}" />
+                        Selected="{Binding MainColor}"/>
                 </Grid>
 
                 <!--  Has bands  -->
@@ -99,12 +99,12 @@
                         Grid.Row="0"
                         Grid.Column="0"
                         Text="HasBands"
-                        VerticalTextAlignment="Center" />
+                        VerticalTextAlignment="Center"/>
                     <input:CheckBox
                         Grid.Row="0"
                         Grid.Column="1"
                         IsChecked="{Binding HasBands}"
-                        VerticalOptions="Center" />
+                        VerticalOptions="Center"/>
                 </Grid>
 
                 <!--  Band color  -->
@@ -114,11 +114,11 @@
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="Band color" />
+                        Text="Band color"/>
                     <controls:ColorPicker
                         Grid.Row="0"
                         Grid.Column="1"
-                        Selected="{Binding BandColor}" />
+                        Selected="{Binding BandColor}"/>
                 </Grid>
 
                 <!--  Error message  -->
@@ -132,7 +132,7 @@
                             Value="">
                             <Setter
                                 Property="IsVisible"
-                                Value="False" />
+                                Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -150,13 +150,13 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Command="{Binding CancelCommand}"
-                Style="{StaticResource CancelButtonStyle}" />
+                Style="{StaticResource CancelButtonStyle}"/>
             <Button
                 x:Name="SaveButton"
                 Grid.Row="0"
                 Grid.Column="1"
                 Command="{Binding SaveCommand}"
-                Style="{StaticResource SaveButtonStyle}" />
+                Style="{StaticResource SaveButtonStyle}"/>
         </Grid>
     </Grid>
 

@@ -8,15 +8,16 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class EditPage : ContentPage
 {
-    private int _gymObjectId;
-
-    private string _gymObjectTypeName;
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Reference to the view model.
     /// </summary>
     private readonly EditViewModel _model;
+
+    private int _gymObjectId;
+
+    private string _gymObjectTypeName;
 
     // ---------------------------------------------------------------------------------------------
     // Page parameters.

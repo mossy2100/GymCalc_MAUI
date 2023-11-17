@@ -191,8 +191,6 @@
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="7.0.0" />
         <PackageReference Include="CommunityToolkit.Maui" Version="7.0.0" />
         <PackageReference Include="CommunityToolkit.Maui.Core" Version="7.0.0" />
-        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.0.0" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
         <PackageReference Include="InputKit.Maui" Version="4.3.5" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
@@ -215,6 +213,7 @@
       <MauiXaml Update="Pages\HtmlPage.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -230,6 +229,7 @@
         <DependentUpon>HtmlPage.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -243,8 +243,23 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiCss Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="old\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="old\**" />
     </ItemGroup>
 
 </Project>

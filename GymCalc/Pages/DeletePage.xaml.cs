@@ -10,6 +10,12 @@ public partial class DeletePage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
+    /// Reference to the view model.
+    /// </summary>
+    private readonly DeleteViewModel _model;
+    // ---------------------------------------------------------------------------------------------
+
+    /// <summary>
     /// The id of the GymObject we want to delete.
     /// </summary>
     private int _gymObjectId;
@@ -20,12 +26,6 @@ public partial class DeletePage : ContentPage
     /// The name of the GymObject type (e.g. "Bar").
     /// </summary>
     private string _gymObjectTypeName;
-    // ---------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// Reference to the view model.
-    /// </summary>
-    private readonly DeleteViewModel _model;
 
     // ---------------------------------------------------------------------------------------------
 

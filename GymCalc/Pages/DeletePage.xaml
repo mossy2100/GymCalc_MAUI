@@ -16,7 +16,7 @@
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
             LineBreakMode="WordWrap"
-            Text="{Binding ConfirmDeletionMessage}" />
+            Text="{Binding ConfirmDeletionMessage}"/>
 
         <!--  Buttons  -->
         <Grid
@@ -27,12 +27,12 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Command="{Binding CancelCommand}"
-                Style="{StaticResource CancelButtonStyle}" />
+                Style="{StaticResource CancelButtonStyle}"/>
             <Button
                 Grid.Row="0"
                 Grid.Column="1"
                 Command="{Binding DeleteItemCommand}"
-                Style="{StaticResource DeleteButtonStyle}" />
+                Style="{StaticResource DeleteButtonStyle}"/>
         </Grid>
     </Grid>
 

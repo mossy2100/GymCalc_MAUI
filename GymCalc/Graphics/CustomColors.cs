@@ -7,7 +7,7 @@ internal static class CustomColors
     /// <summary>
     /// Lookup table to map colors to names.
     /// </summary>
-    public static readonly Dictionary<string, string> Palette = new()
+    public static readonly Dictionary<string, string> Palette = new ()
     {
         { "Red", "#cc0022" },
         { "Orange", "#ff6c00" },

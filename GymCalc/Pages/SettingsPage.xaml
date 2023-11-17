@@ -23,7 +23,7 @@
             <Label
                 Grid.Row="0"
                 Grid.Column="0"
-                Text="Units" />
+                Text="Units"/>
 
             <input:RadioButtonGroupView
                 Grid.Row="0"
@@ -31,10 +31,10 @@
                 SelectedItem="{Binding Units, Mode=TwoWay}">
                 <input:RadioButton
                     Text="kilograms (kg)"
-                    Value="kg" />
+                    Value="kg"/>
                 <input:RadioButton
                     Text="pounds (lb)"
-                    Value="lb" />
+                    Value="lb"/>
             </input:RadioButtonGroupView>
 
         </Grid>

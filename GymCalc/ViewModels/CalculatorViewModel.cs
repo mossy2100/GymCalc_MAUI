@@ -30,17 +30,10 @@ public class CalculatorViewModel : BaseViewModel
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
+        PercentSelectedCommand = new Command<string>(PercentSelected);
     }
 
     #endregion Constructors
-
-    // ---------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// This is a non-bindable property set from the view.
-    /// Could be made bindable, but as yet there's no need for that.
-    /// </summary>
-    public ExerciseType SelectedExerciseType { get; set; }
 
     // ---------------------------------------------------------------------------------------------
     #region Dependencies
@@ -139,6 +132,87 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _startingWeightUnits, value);
     }
 
+    private ExerciseType _selectedExerciseType;
+
+    public ExerciseType SelectedExerciseType
+    {
+        get => _selectedExerciseType;
+
+        set => SetProperty(ref _selectedExerciseType, value);
+    }
+
+    private string _errorMessage;
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+
+        set => SetProperty(ref _errorMessage, value);
+    }
+
+    private int _selectedPercent;
+
+    public int SelectedPercent
+    {
+        get => _selectedPercent;
+
+        set => SetProperty(ref _selectedPercent, value);
+    }
+
+    private string _percentButtonVisualState50;
+
+    public string PercentButtonVisualState50
+    {
+        get => _percentButtonVisualState50;
+
+        set => SetProperty(ref _percentButtonVisualState50, value);
+    }
+
+    private string _percentButtonVisualState60;
+
+    public string PercentButtonVisualState60
+    {
+        get => _percentButtonVisualState60;
+
+        set => SetProperty(ref _percentButtonVisualState60, value);
+    }
+
+    private string _percentButtonVisualState70;
+
+    public string PercentButtonVisualState70
+    {
+        get => _percentButtonVisualState70;
+
+        set => SetProperty(ref _percentButtonVisualState70, value);
+    }
+
+    private string _percentButtonVisualState80;
+
+    public string PercentButtonVisualState80
+    {
+        get => _percentButtonVisualState80;
+
+        set => SetProperty(ref _percentButtonVisualState80, value);
+    }
+
+    private string _percentButtonVisualState90;
+
+    public string PercentButtonVisualState90
+    {
+        get => _percentButtonVisualState90;
+
+        set => SetProperty(ref _percentButtonVisualState90, value);
+    }
+
+    private string _percentButtonVisualState100;
+
+    public string PercentButtonVisualState100
+    {
+        get => _percentButtonVisualState100;
+
+        set => SetProperty(ref _percentButtonVisualState100, value);
+    }
+
     private List<PlatesResult> _platesResults;
 
     public List<PlatesResult> PlatesResults
@@ -148,13 +222,22 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _platesResults, value);
     }
 
-    private bool _platesResultsVisible;
+    private PlatesResult _selectedPlatesResult;
 
-    public bool PlatesResultsVisible
+    public PlatesResult SelectedPlatesResult
     {
-        get => _platesResultsVisible;
+        get => _selectedPlatesResult;
 
-        set => SetProperty(ref _platesResultsVisible, value);
+        set => SetProperty(ref _selectedPlatesResult, value);
+    }
+
+    private bool _platesResultVisible;
+
+    public bool PlatesResultVisible
+    {
+        get => _platesResultVisible;
+
+        set => SetProperty(ref _platesResultVisible, value);
     }
 
     private List<SingleWeightResult> _singleWeightResults;
@@ -166,22 +249,31 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResults, value);
     }
 
-    private bool _singleWeightResultsVisible;
+    private SingleWeightResult _selectedSingleWeightResult;
 
-    public bool SingleWeightResultsVisible
+    public SingleWeightResult SelectedSingleWeightResult
     {
-        get => _singleWeightResultsVisible;
+        get => _selectedSingleWeightResult;
 
-        set => SetProperty(ref _singleWeightResultsVisible, value);
+        set => SetProperty(ref _selectedSingleWeightResult, value);
     }
 
-    private string _errorMessage;
+    private bool _singleWeightResultVisible;
 
-    public string ErrorMessage
+    public bool SingleWeightResultVisible
     {
-        get => _errorMessage;
+        get => _singleWeightResultVisible;
 
-        set => SetProperty(ref _errorMessage, value);
+        set => SetProperty(ref _singleWeightResultVisible, value);
+    }
+
+    private bool _resultsVisible;
+
+    public bool ResultsVisible
+    {
+        get => _resultsVisible;
+
+        set => SetProperty(ref _resultsVisible, value);
     }
 
     #endregion Bindable properties
@@ -222,134 +314,9 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand MachineTypeChangedCommand { get; init; }
 
+    public ICommand PercentSelectedCommand { get; init; }
+
     #endregion Commands
-
-    // ---------------------------------------------------------------------------------------------
-    #region Validation methods
-
-    private bool ValidateMaxWeight()
-    {
-        // Check for number greater than 0.
-        if (MaxWeight is null or <= 0)
-        {
-            ErrorMessage = "Please enter a maximum weight greater than 0.";
-            return false;
-        }
-
-        ErrorMessage = "";
-        return true;
-    }
-
-    private bool ValidateStartingWeight()
-    {
-        // Check for number greater than or equal to 0.
-        if (StartingWeight is null or < 0)
-        {
-            ErrorMessage = "Please enter a starting weight greater than or equal to 0.";
-            return false;
-        }
-
-        ErrorMessage = "";
-        return true;
-    }
-
-    #endregion Validation methods
-
-    // ---------------------------------------------------------------------------------------------
-    #region Calculations
-
-    private async Task Calculate()
-    {
-        // Hide current results.
-        PlatesResultsVisible = false;
-        SingleWeightResultsVisible = false;
-
-        // Do the calculations based on the selected exercise type.
-        switch (SelectedExerciseType)
-        {
-            case ExerciseType.Barbell:
-                await DoBarbellCalculations();
-                break;
-
-            case ExerciseType.Machine:
-                await DoMachineCalculations();
-                break;
-
-            case ExerciseType.Dumbbell:
-                await DoDumbbellCalculations();
-                break;
-
-            case ExerciseType.Kettlebell:
-                await DoKettlebellCalculations();
-                break;
-
-            default:
-                throw new NoMatchingCaseException("Invalid exercise type.");
-        }
-    }
-
-    private async Task DoBarbellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate and display the results.
-        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
-            "Plates each end", plates);
-        PlatesResultsVisible = true;
-    }
-
-    private async Task DoMachineCalculations()
-    {
-        if (!ValidateMaxWeight() || !ValidateStartingWeight())
-        {
-            return;
-        }
-
-        // Get the available plates.
-        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
-
-        // Determine the number of plate stacks and total starting weight from the machine type.
-        var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
-        var totalStartingWeight = StartingWeight!.Value * nStacks;
-        var eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
-
-        // Calculate and display the results.
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
-            eachSideText, plates);
-        PlatesResultsVisible = true;
-    }
-
-    private async Task DoDumbbellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate and display the results.
-        var dumbbells = await _dumbbellRepo.GetSome(enabled: true, ascending: true);
-        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
-        SingleWeightResultsVisible = true;
-    }
-
-    private async Task DoKettlebellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate and display the results.
-        var kettlebells = await _kettlebellRepo.GetSome(enabled: true, ascending: true);
-        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
-        SingleWeightResultsVisible = true;
-    }
-
-    #endregion Calculations
 
     // ---------------------------------------------------------------------------------------------
     #region Initialization stuff
@@ -406,13 +373,6 @@ public class CalculatorViewModel : BaseViewModel
         StartingWeightUnits = units;
     }
 
-    public void MachineTypeChanged()
-    {
-        StartingWeightLabel = MachineType == MachineType.Isolateral
-            ? "Starting weight per side"
-            : "Starting weight";
-    }
-
     internal async Task Initialize()
     {
         // Set the units labels, which may have changed if the user went to the settings page.
@@ -427,4 +387,183 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     #endregion
+
+    // ---------------------------------------------------------------------------------------------
+    #region Validation methods
+
+    private bool ValidateMaxWeight()
+    {
+        // Check for number greater than 0.
+        if (MaxWeight is null or <= 0)
+        {
+            ErrorMessage = "Please enter a maximum weight greater than 0.";
+            return false;
+        }
+
+        ErrorMessage = "";
+        return true;
+    }
+
+    private bool ValidateStartingWeight()
+    {
+        // Check for number greater than or equal to 0.
+        if (StartingWeight is null or < 0)
+        {
+            ErrorMessage = "Please enter a starting weight greater than or equal to 0.";
+            return false;
+        }
+
+        ErrorMessage = "";
+        return true;
+    }
+
+    #endregion Validation methods
+
+    // ---------------------------------------------------------------------------------------------
+    #region Command methods
+
+    private async Task Calculate()
+    {
+        // Hide current results.
+        ResultsVisible = false;
+
+        // Do the calculations based on the selected exercise type.
+        switch (SelectedExerciseType)
+        {
+            case ExerciseType.Barbell:
+                await DoBarbellCalculations();
+                break;
+
+            case ExerciseType.Machine:
+                await DoMachineCalculations();
+                break;
+
+            case ExerciseType.Dumbbell:
+                await DoDumbbellCalculations();
+                break;
+
+            case ExerciseType.Kettlebell:
+                await DoKettlebellCalculations();
+                break;
+
+            default:
+                throw new NoMatchingCaseException("Invalid exercise type.");
+        }
+
+        // Select 100% to start with.
+        PercentSelected("100");
+    }
+
+    public void MachineTypeChanged()
+    {
+        StartingWeightLabel = MachineType == MachineType.Isolateral
+            ? "Starting weight per side"
+            : "Starting weight";
+    }
+
+    /// <summary>
+    /// Command method for when a percent button is tapped.
+    /// </summary>
+    /// <param name="sPercent">
+    /// The command parameter, which should be a string like "50", "60", etc.
+    /// </param>
+    public void PercentSelected(string sPercent)
+    {
+        SelectedPercent = int.TryParse(sPercent, out var percent) ? percent : 100;
+        SelectedPlatesResult = PlatesResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+        SelectedSingleWeightResult =
+            SingleWeightResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+
+        // Update percent button visual states.
+        PercentButtonVisualState50 = SelectedPercent == 50 ? "Selected" : "Normal";
+        PercentButtonVisualState60 = SelectedPercent == 60 ? "Selected" : "Normal";
+        PercentButtonVisualState70 = SelectedPercent == 70 ? "Selected" : "Normal";
+        PercentButtonVisualState80 = SelectedPercent == 80 ? "Selected" : "Normal";
+        PercentButtonVisualState90 = SelectedPercent == 90 ? "Selected" : "Normal";
+        PercentButtonVisualState100 = SelectedPercent == 100 ? "Selected" : "Normal";
+    }
+
+    #endregion Command methods
+
+    // ---------------------------------------------------------------------------------------------
+    #region Calculations
+
+    private async Task DoBarbellCalculations()
+    {
+        if (!ValidateMaxWeight())
+        {
+            return;
+        }
+
+        // Calculate the results.
+        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
+            "Plates each end", plates);
+
+        // Display the results.
+        PlatesResultVisible = true;
+        SingleWeightResultVisible = false;
+        ResultsVisible = true;
+    }
+
+    private async Task DoMachineCalculations()
+    {
+        if (!ValidateMaxWeight() || !ValidateStartingWeight())
+        {
+            return;
+        }
+
+        // Get the available plates.
+        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
+
+        // Determine the number of plate stacks and total starting weight from the machine type.
+        var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
+        var totalStartingWeight = StartingWeight!.Value * nStacks;
+        var eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
+
+        // Calculate the results.
+        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
+            eachSideText, plates);
+
+        // Display the results.
+        PlatesResultVisible = true;
+        SingleWeightResultVisible = false;
+        ResultsVisible = true;
+    }
+
+    private async Task DoDumbbellCalculations()
+    {
+        if (!ValidateMaxWeight())
+        {
+            return;
+        }
+
+        // Calculate the results.
+        var dumbbells = await _dumbbellRepo.GetSome(enabled: true, ascending: true);
+        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
+
+        // Display the results.
+        PlatesResultVisible = false;
+        SingleWeightResultVisible = true;
+        ResultsVisible = true;
+    }
+
+    private async Task DoKettlebellCalculations()
+    {
+        if (!ValidateMaxWeight())
+        {
+            return;
+        }
+
+        // Calculate the results.
+        var kettlebells = await _kettlebellRepo.GetSome(enabled: true, ascending: true);
+        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
+
+        // Display the results.
+        PlatesResultVisible = false;
+        SingleWeightResultVisible = true;
+        ResultsVisible = true;
+    }
+
+    #endregion Calculations
 }

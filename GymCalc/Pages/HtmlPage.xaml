@@ -18,7 +18,7 @@
             <RootComponent
                 x:Name="RootComponent"
                 Selector="#app"
-                ComponentType="{x:Type components:Main}" />
+                ComponentType="{x:Type components:Main}"/>
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 

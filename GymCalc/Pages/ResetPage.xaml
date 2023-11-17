@@ -15,7 +15,7 @@
         <Label
             Grid.Row="0"
             Text="{Binding ResetMessage}"
-            Padding="{x:Static graphics:PageLayout.Spacing}" />
+            Padding="{x:Static graphics:PageLayout.Spacing}"/>
 
         <!--  Buttons  -->
         <Grid
@@ -26,12 +26,12 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Command="{Binding CancelCommand}"
-                Style="{StaticResource CancelButtonStyle}" />
+                Style="{StaticResource CancelButtonStyle}"/>
             <Button
                 Grid.Row="0"
                 Grid.Column="1"
                 Command="{Binding ResetCommand}"
-                Style="{StaticResource ResetButtonStyle}" />
+                Style="{StaticResource ResetButtonStyle}"/>
         </Grid>
     </Grid>
 

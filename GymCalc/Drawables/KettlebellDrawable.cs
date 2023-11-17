@@ -1,5 +1,5 @@
 using System.Globalization;
-using Galaxon.Maui;
+using Galaxon.Maui.Utilities;
 using GymCalc.Graphics;
 using GymCalc.Models;
 using Font = Microsoft.Maui.Graphics.Font;

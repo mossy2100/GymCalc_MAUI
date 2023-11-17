@@ -22,7 +22,7 @@
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
             FontSize="14"
-            Text="{Binding Instructions}" />
+            Text="{Binding Instructions}"/>
 
         <CollectionView
             Grid.Row="1"
@@ -36,7 +36,7 @@
                         Padding="10">
                         <Grid.RowDefinitions>
                             <RowDefinition
-                                Height="{Binding Drawable.Height}" />
+                                Height="{Binding Drawable.Height}"/>
                         </Grid.RowDefinitions>
                         <GraphicsView
                             Grid.Column="0"
@@ -44,7 +44,7 @@
                             HeightRequest="{Binding Drawable.Height}"
                             WidthRequest="{Binding Drawable.Width}"
                             HorizontalOptions="Center"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Center"/>
                         <input:CheckBox
                             Grid.Column="1"
                             Type="Material"
@@ -55,7 +55,7 @@
                             IsChecked="{Binding Enabled, Mode=TwoWay}"
                             CheckChangedCommand="{Binding Model.EnableCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding .}" />
+                            CommandParameter="{Binding .}"/>
                         <Button
                             Grid.Column="2"
                             Style="{StaticResource EditIconButtonStyle}"
@@ -65,7 +65,7 @@
                             VerticalOptions="Center"
                             Command="{Binding Model.EditCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding GymObject}" />
+                            CommandParameter="{Binding GymObject}"/>
                         <Button
                             Grid.Column="3"
                             Style="{StaticResource DeleteIconButtonStyle}"
@@ -75,7 +75,7 @@
                             VerticalOptions="Center"
                             Command="{Binding Model.DeleteCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding GymObject}" />
+                            CommandParameter="{Binding GymObject}"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -88,11 +88,11 @@
             <Button
                 Grid.Column="0"
                 Command="{Binding AddCommand}"
-                Style="{StaticResource AddButtonStyle}" />
+                Style="{StaticResource AddButtonStyle}"/>
             <Button
                 Grid.Column="1"
                 Command="{Binding ResetCommand}"
-                Style="{StaticResource ResetButtonStyle}" />
+                Style="{StaticResource ResetButtonStyle}"/>
         </Grid>
     </Grid>
 

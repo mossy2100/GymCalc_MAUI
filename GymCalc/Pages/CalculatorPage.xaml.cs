@@ -1,5 +1,5 @@
 using Galaxon.Core.Exceptions;
-using Galaxon.Maui;
+using Galaxon.Maui.Utilities;
 using GymCalc.Constants;
 using GymCalc.ViewModels;
 
@@ -99,7 +99,7 @@ public partial class CalculatorPage : ContentPage
         ResetExerciseTypeButtonWidths();
 
         // If there are any results, re-render them for the altered width.
-        if (_model.PlatesResultsVisible || _model.SingleWeightResultsVisible)
+        if (_model.ResultsVisible)
         {
             switch (_model.SelectedExerciseType)
             {
@@ -215,14 +215,6 @@ public partial class CalculatorPage : ContentPage
                 throw new NoMatchingCaseException("Invalid exercise type.");
         }
     }
-
-    // private async Task ScrollToResults()
-    // {
-    //     var y = MauiUtility.GetOrientation() == DisplayOrientation.Portrait && _resultsDisplayed
-    //         ? CalculatorResults.Y
-    //         : 0;
-    //     await CalculatorScrollView.ScrollToAsync(0, y, true);
-    // }
 
     #endregion UI
 }
