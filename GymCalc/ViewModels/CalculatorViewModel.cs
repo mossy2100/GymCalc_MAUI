@@ -315,10 +315,11 @@ public class CalculatorViewModel : BaseViewModel
         // Determine the number of plate stacks and total starting weight from the machine type.
         var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
         var totalStartingWeight = StartingWeight!.Value * nStacks;
+        var eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
 
         // Calculate and display the results.
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
-            "Plates each side", plates);
+            eachSideText, plates);
         PlatesResultsVisible = true;
     }
 

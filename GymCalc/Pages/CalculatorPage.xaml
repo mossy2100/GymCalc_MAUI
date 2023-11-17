@@ -152,11 +152,11 @@
                             Converter={StaticResource DefaultMachineTypeConverter}}"
                         SelectedItemChangedCommand="{Binding MachineTypeChangedCommand}">
                         <input:RadioButton
-                            Text="Isolateral"
-                            Value="Isolateral" />
-                        <input:RadioButton
                             Text="Bilateral"
                             Value="Bilateral" />
+                        <input:RadioButton
+                            Text="Isolateral"
+                            Value="Isolateral" />
                     </input:RadioButtonGroupView>
                 </Grid>
 

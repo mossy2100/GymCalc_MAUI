@@ -10,7 +10,7 @@ public class PlatesDrawable : IDrawable
     {
         get
         {
-            var maxPlateWeight = Plates.Max(p => p.Weight);
+            var maxPlateWeight = Plates.Count == 0 ? 0 : Plates.Max(p => p.Weight);
             return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
         }
     }
