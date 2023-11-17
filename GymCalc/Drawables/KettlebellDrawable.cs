@@ -8,18 +8,18 @@ namespace GymCalc.Drawables;
 
 public class KettlebellDrawable : GymObjectDrawable
 {
-    public const decimal HEIGHT = 76;
+    public const int HEIGHT = 76;
 
-    public const decimal WIDTH = 60;
+    public const int WIDTH = 60;
 
     /// <inheritdoc/>
-    public override decimal GetWidth()
+    public override double GetWidth()
     {
         return WIDTH;
     }
 
     /// <inheritdoc/>
-    public override decimal GetHeight()
+    public override double GetHeight()
     {
         return HEIGHT;
     }

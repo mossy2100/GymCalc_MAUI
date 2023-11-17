@@ -4,39 +4,39 @@ namespace GymCalc.Drawables;
 
 public abstract class GymObjectDrawable : IDrawable
 {
-    public const decimal MIN_WIDTH = 50;
+    public const int MIN_WIDTH = 50;
 
-    public const decimal MAX_WIDTH = 200;
+    public const int MAX_WIDTH = 200;
 
     public GymObject GymObject { get; set; }
 
-    public decimal Width => GetWidth();
+    public double Width => GetWidth();
 
-    public decimal Height => GetHeight();
+    public double Height => GetHeight();
 
     internal decimal MaxWeight { get; set; }
 
     /// <inheritdoc/>
     public abstract void Draw(ICanvas canvas, RectF dirtyRect);
 
-    public abstract decimal GetWidth();
+    public abstract double GetWidth();
 
-    public abstract decimal GetHeight();
+    public abstract double GetHeight();
 
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
     /// Static version.
     /// </summary>
-    public static decimal CalculateWidth(decimal weight, decimal maxWeight)
+    public static double CalculateWidth(decimal weight, decimal maxWeight)
     {
-        return MIN_WIDTH + weight / maxWeight * (MAX_WIDTH - MIN_WIDTH);
+        return MIN_WIDTH + (double)weight / (double)maxWeight * (MAX_WIDTH - MIN_WIDTH);
     }
 
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
     /// Instance version.
     /// </summary>
-    public decimal CalculateWidth()
+    public double CalculateWidth()
     {
         return CalculateWidth(GymObject.Weight, MaxWeight);
     }

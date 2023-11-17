@@ -7,18 +7,18 @@ namespace GymCalc.Drawables;
 
 public class DumbbellDrawable : GymObjectDrawable
 {
-    public const decimal HEIGHT = 50;
+    public const int HEIGHT = 50;
 
-    public const decimal WIDTH = 100;
+    public const int WIDTH = 100;
 
     /// <inheritdoc/>
-    public override decimal GetWidth()
+    public override double GetWidth()
     {
         return WIDTH;
     }
 
     /// <inheritdoc/>
-    public override decimal GetHeight()
+    public override double GetHeight()
     {
         return HEIGHT;
     }

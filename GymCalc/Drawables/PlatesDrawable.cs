@@ -6,7 +6,7 @@ public class PlatesDrawable : IDrawable
 {
     public List<Plate> Plates { get; set; }
 
-    public decimal Width
+    public double Width
     {
         get
         {
@@ -15,7 +15,7 @@ public class PlatesDrawable : IDrawable
         }
     }
 
-    public decimal Height => Plates.Count * PlateDrawable.HEIGHT;
+    public double Height => Plates.Count * PlateDrawable.HEIGHT;
 
     internal decimal MaxWeight { get; set; }
 

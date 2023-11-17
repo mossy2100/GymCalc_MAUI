@@ -8,18 +8,18 @@ namespace GymCalc.Drawables;
 
 public class PlateDrawable : GymObjectDrawable
 {
-    public const decimal HEIGHT = 30;
+    public const int HEIGHT = 30;
 
     public const int CORNER_RADIUS = 4;
 
     /// <inheritdoc/>
-    public override decimal GetWidth()
+    public override double GetWidth()
     {
         return CalculateWidth();
     }
 
     /// <inheritdoc/>
-    public override decimal GetHeight()
+    public override double GetHeight()
     {
         return HEIGHT;
     }
