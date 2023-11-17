@@ -2,7 +2,6 @@
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=_002FUsers_002Fshaun_002FDocuments_002FWeb_0020_0026_0020software_0020development_002FC_0023_002FProjects_002FGalaxon_002FCore_002FCore_002Fbin_002FDebug_002Fnet7_002E0_002FGalaxon_002ECore_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=_002FUsers_002Fshaun_002FDocuments_002FWeb_0020_0026_0020software_0020development_002FC_0023_002FProjects_002FGalaxon_002FCore_002FCore_002Fbin_002FRelease_002Fnet7_002E0_002FGalaxon_002ECore_002Edll/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=_002FUsers_002Fshaun_002FDocuments_002FWeb_0020_0026_0020software_0020development_002FC_0023_002FProjects_002FGalaxon_002FMaui_002FMaui_002Fbin_002FDebug_002Fnet8_002E0_002FGalaxon_002EMaui_002Edll/@EntryIndexedValue">True</s:Boolean>
-	
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=CSharpWarnings_003A_003ACS1591/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InternalOrPrivateMemberNotDocumented/@EntryIndexedValue"></s:String>
 	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=InternalOrPrivateMemberNotDocumented/@EntryIndexRemoved">True</s:Boolean>
