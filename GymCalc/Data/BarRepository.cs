@@ -1,6 +1,6 @@
 using Galaxon.Core.Enums;
-using GymCalc.Models;
 using GymCalc.Constants;
+using GymCalc.Models;
 
 namespace GymCalc.Data;
 
@@ -10,14 +10,9 @@ namespace GymCalc.Data;
 public class BarRepository : GymObjectRepository
 {
     /// <summary>
-    /// Object cache.
-    /// </summary>
-    private Dictionary<int, Bar> _cache;
-
-    /// <summary>
     /// Default selected bar weight.
     /// </summary>
-    internal const double DEFAULT_WEIGHT = 20;
+    internal const decimal DEFAULT_WEIGHT = 20;
 
     /// <summary>
     /// Default bars weights to set up on app initialize.
@@ -34,12 +29,15 @@ public class BarRepository : GymObjectRepository
         (25, Units.Pounds, true),
         (35, Units.Pounds, true),
         (45, Units.Pounds, true),
-        (55, Units.Pounds, true),
+        (55, Units.Pounds, true)
     };
 
-    public BarRepository(Database database) : base(database)
-    {
-    }
+    /// <summary>
+    /// Object cache.
+    /// </summary>
+    private Dictionary<int, Bar> _cache;
+
+    public BarRepository(Database database) : base(database) { }
 
     /// <summary>
     /// Ensure the database table exist and contains some bars.
@@ -57,7 +55,7 @@ public class BarRepository : GymObjectRepository
             {
                 Weight = weight,
                 Units = units.GetDescription(),
-                Enabled = enable,
+                Enabled = enable
             };
             await Insert(bar);
         }
@@ -138,7 +136,7 @@ public class BarRepository : GymObjectRepository
         await Delete(_cache, id);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Bar>();

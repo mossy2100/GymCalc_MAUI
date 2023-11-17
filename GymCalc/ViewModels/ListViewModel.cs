@@ -4,7 +4,7 @@ using Galaxon.Core.Enums;
 using GymCalc.Data;
 using GymCalc.Drawables;
 using GymCalc.Models;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 
 namespace GymCalc.ViewModels;
 
@@ -15,11 +15,11 @@ public class ListViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
-    private readonly PlateRepository _plateRepo;
-
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
+
+    private readonly PlateRepository _plateRepo;
 
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
@@ -29,17 +29,52 @@ public class ListViewModel : BaseViewModel
     /// </summary>
     private string _gymObjectTypeName;
 
+    /// <summary>
+    /// Instructions text.
+    /// </summary>
+    private string _instructions;
+
+    /// <summary>
+    /// Results for the CollectionView.
+    /// </summary>
+    private List<ListItem> _listItems;
+
+    /// <summary>
+    /// Page title.
+    /// </summary>
+    private string _title;
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="barRepo"></param>
+    /// <param name="plateRepo"></param>
+    /// <param name="dumbbellRepo"></param>
+    /// <param name="kettlebellRepo"></param>
+    public ListViewModel(BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+    {
+        // Keep references to the dependencies.
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
+
+        // Commands.
+        EnableCommand = new AsyncCommand<ListItem>(EnableGymObject);
+        EditCommand = new AsyncCommand<GymObject>(EditGymObject);
+        DeleteCommand = new AsyncCommand<GymObject>(DeleteGymObject);
+        AddCommand = new AsyncCommand(AddGymObject);
+        ResetCommand = new AsyncCommand(ResetGymObjects);
+    }
+
     public string GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
         set => SetProperty(ref _gymObjectTypeName, value);
     }
-
-    /// <summary>
-    /// Results for the CollectionView.
-    /// </summary>
-    private List<ListItem> _listItems;
 
     public List<ListItem> ListItems
     {
@@ -48,22 +83,12 @@ public class ListViewModel : BaseViewModel
         set => SetProperty(ref _listItems, value);
     }
 
-    /// <summary>
-    /// Page title.
-    /// </summary>
-    private string _title;
-
     public string Title
     {
         get => _title;
 
         set => SetProperty(ref _title, value);
     }
-
-    /// <summary>
-    /// Instructions text.
-    /// </summary>
-    private string _instructions;
 
     public string Instructions
     {
@@ -99,31 +124,6 @@ public class ListViewModel : BaseViewModel
     /// Reset items command.
     /// </summary>
     public ICommand ResetCommand { get; init; }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Constructor.
-    /// </summary>
-    /// <param name="barRepo"></param>
-    /// <param name="plateRepo"></param>
-    /// <param name="dumbbellRepo"></param>
-    /// <param name="kettlebellRepo"></param>
-    public ListViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
-    {
-        // Keep references to the dependencies.
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
-
-        // Commands.
-        EnableCommand = new AsyncCommand<ListItem>(EnableGymObject);
-        EditCommand = new AsyncCommand<GymObject>(EditGymObject);
-        DeleteCommand = new AsyncCommand<GymObject>(DeleteGymObject);
-        AddCommand = new AsyncCommand(AddGymObject);
-        ResetCommand = new AsyncCommand(ResetGymObjects);
-    }
 
     // ---------------------------------------------------------------------------------------------
     internal async Task DisplayList()
@@ -202,7 +202,7 @@ public class ListViewModel : BaseViewModel
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

@@ -2,21 +2,21 @@ using System.Data;
 using Galaxon.Core.Enums;
 using GymCalc.Constants;
 using GymCalc.Models;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 
 namespace GymCalc.Data;
 
 public abstract class GymObjectRepository
 {
-    /// <summary>
-    /// Reference to the database (DI).
-    /// </summary>
-    protected Database Database { get; init; }
-
     protected GymObjectRepository(Database database)
     {
         Database = database;
     }
+
+    /// <summary>
+    /// Reference to the database (DI).
+    /// </summary>
+    protected Database Database { get; init; }
 
     /// <summary>
     /// To be implemented by concrete classes.
@@ -79,7 +79,7 @@ public abstract class GymObjectRepository
         // Add where clause for enabled/disabled weights if needed.
         if (enabled.HasValue)
         {
-            bool enabledValue = enabled.Value;
+            var enabledValue = enabled.Value;
             query = query.Where(item => item.Enabled == enabledValue);
         }
 
@@ -100,7 +100,7 @@ public abstract class GymObjectRepository
     /// <returns>The updated gym object.</returns>
     internal async Task<T> Update<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
     {
-        int nRowsUpdated = await Database.Connection.UpdateAsync(gymObject);
+        var nRowsUpdated = await Database.Connection.UpdateAsync(gymObject);
         if (nRowsUpdated != 1)
         {
             throw new DataException("Error updating record.");
@@ -115,7 +115,7 @@ public abstract class GymObjectRepository
     /// <returns>The new gym object.</returns>
     internal async Task<T> Insert<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
     {
-        int nRowsInserted = await Database.Connection.InsertAsync(gymObject);
+        var nRowsInserted = await Database.Connection.InsertAsync(gymObject);
         if (nRowsInserted != 1)
         {
             throw new DataException("Error inserting new record.");
@@ -138,7 +138,7 @@ public abstract class GymObjectRepository
     /// </summary>
     internal async Task Delete<T>(Dictionary<int, T> cache, int id) where T : GymObject
     {
-        int nRowsDeleted = await Database.Connection.DeleteAsync<T>(id);
+        var nRowsDeleted = await Database.Connection.DeleteAsync<T>(id);
         if (nRowsDeleted != 1)
         {
             throw new DataException("Error deleting record.");

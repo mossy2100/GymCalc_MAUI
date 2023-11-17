@@ -10,11 +10,11 @@ public class DatabaseHelperService
 
     private readonly BarRepository _barRepo;
 
-    private readonly PlateRepository _plateRepo;
-
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
+
+    private readonly PlateRepository _plateRepo;
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -51,7 +51,7 @@ public class DatabaseHelperService
             nameof(Dumbbell) => _dumbbellRepo,
             nameof(Kettlebell) => _kettlebellRepo,
             _ => throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
-                "Invalid object type."),
+                "Invalid object type.")
         };
 
         return repo;

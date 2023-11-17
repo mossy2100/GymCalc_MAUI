@@ -2,16 +2,46 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Enums;
 using Galaxon.Core.Exceptions;
-using GymCalc.Solvers;
 using GymCalc.Constants;
-using GymCalc.Models;
 using GymCalc.Data;
-using GymCalc.Utilities;
+using GymCalc.Models;
+using GymCalc.Shared;
+using GymCalc.Solvers;
 
 namespace GymCalc.ViewModels;
 
 public class CalculatorViewModel : BaseViewModel
 {
+    // ---------------------------------------------------------------------------------------------
+    #region Constructors
+
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
+        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+    {
+        // Keep references to the repositories.
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
+
+        // Create commands.
+        CalculateCommand = new AsyncCommand(Calculate);
+        MachineTypeChangedCommand = new Command(MachineTypeChanged);
+    }
+
+    #endregion Constructors
+
+    // ---------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// This is a non-bindable property set from the view.
+    /// Could be made bindable, but as yet there's no need for that.
+    /// </summary>
+    public ExerciseType SelectedExerciseType { get; set; }
+
     // ---------------------------------------------------------------------------------------------
     #region Dependencies
 
@@ -37,18 +67,18 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _maxWeightText, value);
     }
 
-    private double _barWeight;
+    private decimal _barWeight;
 
-    public double BarWeight
+    public decimal BarWeight
     {
         get => _barWeight;
 
         set => SetProperty(ref _barWeight, value);
     }
 
-    private List<double> _barWeights;
+    private List<decimal> _barWeights;
 
-    public List<double> BarWeights
+    public List<decimal> BarWeights
     {
         get => _barWeights;
 
@@ -157,14 +187,6 @@ public class CalculatorViewModel : BaseViewModel
     #endregion Bindable properties
 
     // ---------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// This is a non-bindable property set from the view.
-    /// Could be made bindable, but as yet there's no need for that.
-    /// </summary>
-    public ExerciseType SelectedExerciseType { get; set; }
-
-    // ---------------------------------------------------------------------------------------------
     #region Calculated properties
 
     /// <summary>
@@ -172,24 +194,24 @@ public class CalculatorViewModel : BaseViewModel
     /// Treat blank as equal to 0.
     /// Any other non-numeric value will return null.
     /// </summary>
-    private double? MaxWeight =>
+    private decimal? MaxWeight =>
         string.IsNullOrEmpty(MaxWeightText)
             ? 0
-            : (double.TryParse(MaxWeightText, out var maxWeight)
+            : decimal.TryParse(MaxWeightText, out var maxWeight)
                 ? maxWeight
-                : null);
+                : null;
 
     /// <summary>
     /// Determine the starting weight from the entry control.
     /// Treat blank as equal to 0.
     /// Any other non-numeric value will return null.
     /// </summary>
-    private double? StartingWeight =>
+    private decimal? StartingWeight =>
         string.IsNullOrEmpty(StartingWeightText)
             ? 0
-            : (double.TryParse(StartingWeightText, out var startingWeight)
+            : decimal.TryParse(StartingWeightText, out var startingWeight)
                 ? startingWeight
-                : null);
+                : null;
 
     #endregion
 
@@ -201,28 +223,6 @@ public class CalculatorViewModel : BaseViewModel
     public ICommand MachineTypeChangedCommand { get; init; }
 
     #endregion Commands
-
-    // ---------------------------------------------------------------------------------------------
-    #region Constructors
-
-    /// <summary>
-    /// Constructor.
-    /// </summary>
-    public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
-    {
-        // Keep references to the repositories.
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
-
-        // Create commands.
-        CalculateCommand = new AsyncCommand(Calculate);
-        MachineTypeChangedCommand = new Command(MachineTypeChanged);
-    }
-
-    #endregion Constructors
 
     // ---------------------------------------------------------------------------------------------
     #region Validation methods
@@ -359,7 +359,7 @@ public class CalculatorViewModel : BaseViewModel
         var plateTask = _plateRepo.Initialize();
         var dumbbellTask = _dumbbellRepo.Initialize();
         var kettlebellTask = _kettlebellRepo.Initialize();
-        await Task.WhenAll(new Task[] { barTask, plateTask, dumbbellTask, kettlebellTask });
+        await Task.WhenAll(barTask, plateTask, dumbbellTask, kettlebellTask);
     }
 
     /// <summary>

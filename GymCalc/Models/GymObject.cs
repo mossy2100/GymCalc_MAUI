@@ -1,5 +1,5 @@
 using Galaxon.Core.Enums;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 using SQLite;
 
 namespace GymCalc.Models;
@@ -10,11 +10,11 @@ public class GymObject
     [AutoIncrement]
     public int Id { get; set; }
 
-    public double Weight { get; set; }
+    public decimal Weight { get; set; }
 
     public string Units { get; set; }
 
-    public double WeightKg =>
+    public decimal WeightKg =>
         Units == Constants.Units.Kilograms.GetDescription()
             ? Weight
             : Weight * UnitsUtility.KG_PER_LB;

@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml
+    version="1.0"
+    encoding="UTF-8"?>
 <Shell
     x:Class="GymCalc.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -9,7 +11,8 @@
     NavBarHasShadow="true">
 
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior TextOverride=""></BackButtonBehavior>
+        <BackButtonBehavior
+            TextOverride="" />
     </Shell.BackButtonBehavior>
 
     <Shell.FlyoutHeader>
@@ -31,36 +34,43 @@
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Calculator" Style="{StaticResource CalculatorFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}" />
+    <FlyoutItem
+        Title="Calculator"
+        Style="{StaticResource CalculatorFlyoutItem}">
+        <ShellContent
+            ContentTemplate="{DataTemplate pages:CalculatorPage}" />
     </FlyoutItem>
 
     <MenuItem
         Text="Bars"
         IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
                                           Dark='bar_icon_white_300.png'}"
-        Command="{Binding ListCommand}" CommandParameter="Bar" />
-
+        Command="{Binding ListCommand}"
+        CommandParameter="Bar" />
     <MenuItem
         Text="Plates"
         IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
                                           Dark='plate_icon_white_300.png'}"
-        Command="{Binding ListCommand}" CommandParameter="Plate" />
-
+        Command="{Binding ListCommand}"
+        CommandParameter="Plate" />
     <MenuItem
         Text="Dumbbells"
         IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
                                           Dark='dumbbell_icon_white_300.png'}"
-        Command="{Binding ListCommand}" CommandParameter="Dumbbell" />
-
+        Command="{Binding ListCommand}"
+        CommandParameter="Dumbbell" />
     <MenuItem
         Text="Kettlebells"
         IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
                                           Dark='kettlebell_icon_white_300.png'}"
-        Command="{Binding ListCommand}" CommandParameter="Kettlebell" />
+        Command="{Binding ListCommand}"
+        CommandParameter="Kettlebell" />
 
-    <FlyoutItem Title="Settings" Style="{StaticResource SettingsFlyoutItem}">
-        <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+    <FlyoutItem
+        Title="Settings"
+        Style="{StaticResource SettingsFlyoutItem}">
+        <ShellContent
+            ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </FlyoutItem>
 
     <MenuItem
@@ -68,7 +78,6 @@
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
                                           Dark='help_icon_white_300.png'}"
         Command="{Binding InstructionsCommand}" />
-
     <MenuItem
         Text="About GymCalc"
         IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
@@ -77,7 +86,11 @@
 
     <!-- Global pages have to be declared as ShellContent and they're always singletons regardless
     of what you specify in DI. -->
-    <ShellContent ContentTemplate="{DataTemplate pages:ListPage}" Route="list" />
-    <ShellContent ContentTemplate="{DataTemplate pages:HtmlPage}" Route="html" />
+    <ShellContent
+        ContentTemplate="{DataTemplate pages:ListPage}"
+        Route="list" />
+    <ShellContent
+        ContentTemplate="{DataTemplate pages:HtmlPage}"
+        Route="html" />
 
 </Shell>

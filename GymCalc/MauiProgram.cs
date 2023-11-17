@@ -3,8 +3,8 @@ using GymCalc.Data;
 using GymCalc.Pages;
 using GymCalc.Services;
 using GymCalc.ViewModels;
-using Microsoft.Extensions.Logging;
 using InputKit.Handlers;
+using Microsoft.Extensions.Logging;
 
 namespace GymCalc;
 

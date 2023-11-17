@@ -13,41 +13,13 @@ public class ResetViewModel : BaseViewModel
     private readonly DatabaseHelperService _databaseHelperService;
 
     // ---------------------------------------------------------------------------------------------
-    // Commands.
-
-    public ICommand CancelCommand { get; init; }
-
-    public ICommand ResetCommand { get; init; }
-
-    // ---------------------------------------------------------------------------------------------
     // Bindable properties.
 
     private string _gymObjectTypeName;
 
-    public string GymObjectTypeName
-    {
-        get => _gymObjectTypeName;
-
-        set => SetProperty(ref _gymObjectTypeName, value);
-    }
-
-    private string _title;
-
-    public string Title
-    {
-        get => _title;
-
-        set => SetProperty(ref _title, value);
-    }
-
     private string _resetMessage;
 
-    public string ResetMessage
-    {
-        get => _resetMessage;
-
-        set => SetProperty(ref _resetMessage, value);
-    }
+    private string _title;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -61,9 +33,37 @@ public class ResetViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
+    // Commands.
+
+    public ICommand CancelCommand { get; init; }
+
+    public ICommand ResetCommand { get; init; }
+
+    public string GymObjectTypeName
+    {
+        get => _gymObjectTypeName;
+
+        set => SetProperty(ref _gymObjectTypeName, value);
+    }
+
+    public string Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
+    public string ResetMessage
+    {
+        get => _resetMessage;
+
+        set => SetProperty(ref _resetMessage, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
     // Event handlers.
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

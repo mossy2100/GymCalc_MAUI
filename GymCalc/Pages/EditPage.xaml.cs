@@ -8,54 +8,20 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class EditPage : ContentPage
 {
+    private int _gymObjectId;
+
+    private string _gymObjectTypeName;
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Reference to the view model.
     /// </summary>
-    private EditViewModel _model;
+    private readonly EditViewModel _model;
 
     // ---------------------------------------------------------------------------------------------
     // Page parameters.
 
     private string _operation;
-
-    public string Operation
-    {
-        get => _operation;
-
-        set
-        {
-            _operation = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _gymObjectTypeName;
-
-    public string GymObjectTypeName
-    {
-        get => _gymObjectTypeName;
-
-        set
-        {
-            _gymObjectTypeName = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private int _gymObjectId;
-
-    public int GymObjectId
-    {
-        get => _gymObjectId;
-
-        set
-        {
-            _gymObjectId = value;
-            OnPropertyChanged();
-        }
-    }
 
     // ---------------------------------------------------------------------------------------------
 
@@ -74,10 +40,43 @@ public partial class EditPage : ContentPage
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
+    public string Operation
+    {
+        get => _operation;
+
+        set
+        {
+            _operation = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string GymObjectTypeName
+    {
+        get => _gymObjectTypeName;
+
+        set
+        {
+            _gymObjectTypeName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int GymObjectId
+    {
+        get => _gymObjectId;
+
+        set
+        {
+            _gymObjectId = value;
+            OnPropertyChanged();
+        }
+    }
+
     // ---------------------------------------------------------------------------------------------
     // Event handlers.
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

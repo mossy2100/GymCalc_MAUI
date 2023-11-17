@@ -5,7 +5,7 @@ using Galaxon.Core.Enums;
 using Galaxon.Core.Exceptions;
 using GymCalc.Data;
 using GymCalc.Models;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 
 namespace GymCalc.ViewModels;
 
@@ -16,27 +16,17 @@ public class EditViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
-    private readonly PlateRepository _plateRepo;
-
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    // ---------------------------------------------------------------------------------------------
-    // Commands.
+    private readonly PlateRepository _plateRepo;
 
-    public ICommand CancelCommand { get; init; }
+    private string _bandColor;
 
-    public ICommand SaveCommand { get; init; }
+    private bool _enabled;
 
-    // ---------------------------------------------------------------------------------------------
-    // Page parameters.
-
-    private string _operation;
-
-    private string _gymObjectTypeName;
-
-    private int _gymObjectId;
+    private string _errorMessage;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -45,103 +35,36 @@ public class EditViewModel : BaseViewModel
     /// </summary>
     private GymObject _gymObject;
 
-    /// <summary>
-    /// The weight (parsed from the WeightText entry field).
-    /// </summary>
-    private double _weight;
+    private int _gymObjectId;
+
+    private string _gymObjectTypeName;
+
+    private bool _hasBands;
+
+    private bool _hasBandsIsVisible;
+
+    private string _mainColor;
+
+    private bool _mainColorIsVisible;
+
+    // ---------------------------------------------------------------------------------------------
+    // Page parameters.
+
+    private string _operation;
 
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
 
     private string _title;
 
-    public string Title
-    {
-        get => _title;
-
-        set => SetProperty(ref _title, value);
-    }
-
-    private string _weightText;
-
-    public string WeightText
-    {
-        get => _weightText;
-
-        set => SetProperty(ref _weightText, value);
-    }
-
     private string _units;
 
-    public string Units
-    {
-        get => _units;
+    /// <summary>
+    /// The weight (parsed from the WeightText entry field).
+    /// </summary>
+    private decimal _weight;
 
-        set => SetProperty(ref _units, value);
-    }
-
-    private bool _enabled;
-
-    public bool Enabled
-    {
-        get => _enabled;
-
-        set => SetProperty(ref _enabled, value);
-    }
-
-    private string _mainColor;
-
-    public string MainColor
-    {
-        get => _mainColor;
-
-        set => SetProperty(ref _mainColor, value);
-    }
-
-    private bool _hasBands;
-
-    public bool HasBands
-    {
-        get => _hasBands;
-
-        set => SetProperty(ref _hasBands, value);
-    }
-
-    private string _bandColor;
-
-    public string BandColor
-    {
-        get => _bandColor;
-
-        set => SetProperty(ref _bandColor, value);
-    }
-
-    private string _errorMessage;
-
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-
-        set => SetProperty(ref _errorMessage, value);
-    }
-
-    private bool _mainColorIsVisible;
-
-    public bool MainColorIsVisible
-    {
-        get => _mainColorIsVisible;
-
-        set => SetProperty(ref _mainColorIsVisible, value);
-    }
-
-    private bool _hasBandsIsVisible;
-
-    public bool HasBandsIsVisible
-    {
-        get => _hasBandsIsVisible;
-
-        set => SetProperty(ref _hasBandsIsVisible, value);
-    }
+    private string _weightText;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -167,6 +90,83 @@ public class EditViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
+    // Commands.
+
+    public ICommand CancelCommand { get; init; }
+
+    public ICommand SaveCommand { get; init; }
+
+    public string Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
+    public string WeightText
+    {
+        get => _weightText;
+
+        set => SetProperty(ref _weightText, value);
+    }
+
+    public string Units
+    {
+        get => _units;
+
+        set => SetProperty(ref _units, value);
+    }
+
+    public bool Enabled
+    {
+        get => _enabled;
+
+        set => SetProperty(ref _enabled, value);
+    }
+
+    public string MainColor
+    {
+        get => _mainColor;
+
+        set => SetProperty(ref _mainColor, value);
+    }
+
+    public bool HasBands
+    {
+        get => _hasBands;
+
+        set => SetProperty(ref _hasBands, value);
+    }
+
+    public string BandColor
+    {
+        get => _bandColor;
+
+        set => SetProperty(ref _bandColor, value);
+    }
+
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+
+        set => SetProperty(ref _errorMessage, value);
+    }
+
+    public bool MainColorIsVisible
+    {
+        get => _mainColorIsVisible;
+
+        set => SetProperty(ref _mainColorIsVisible, value);
+    }
+
+    public bool HasBandsIsVisible
+    {
+        get => _hasBandsIsVisible;
+
+        set => SetProperty(ref _hasBandsIsVisible, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
     // Command methods.
 
     /// <summary>
@@ -183,7 +183,7 @@ public class EditViewModel : BaseViewModel
     private async Task SaveGymObject()
     {
         // Validate the form.
-        var weightOk = double.TryParse(WeightText, out var weight) && weight > 0;
+        var weightOk = decimal.TryParse(WeightText, out var weight) && weight > 0;
         if (!weightOk)
         {
             ErrorMessage = "Please ensure the weight is a number greater than 0.";
@@ -300,24 +300,24 @@ public class EditViewModel : BaseViewModel
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                Bar bar = await _barRepo.Get(_gymObjectId);
+                var bar = await _barRepo.Get(_gymObjectId);
                 _gymObject = bar;
                 break;
 
             case nameof(Plate):
-                Plate plate = await _plateRepo.Get(_gymObjectId);
+                var plate = await _plateRepo.Get(_gymObjectId);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
             case nameof(Dumbbell):
-                Dumbbell dumbbell = await _dumbbellRepo.Get(_gymObjectId);
+                var dumbbell = await _dumbbellRepo.Get(_gymObjectId);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case nameof(Kettlebell):
-                Kettlebell kettlebell = await _kettlebellRepo.Get(_gymObjectId);
+                var kettlebell = await _kettlebellRepo.Get(_gymObjectId);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;
@@ -351,7 +351,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SaveBar()
     {
         // If this is an add operation, create new Bar.
-        Bar bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
+        var bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
 
         // Copy values from the view model to the model.
         CopyCommonValues(bar);
@@ -365,7 +365,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SavePlate()
     {
         // If this is an add operation, create new Bar.
-        Plate plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
+        var plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
 
         // Copy values from the view model to the model.
         CopyCommonValues(plate);
@@ -380,7 +380,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SaveDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
-        Dumbbell dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
+        var dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
 
         // Copy values from the view model to the model.
         CopyCommonValues(dumbbell);
@@ -395,7 +395,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SaveKettlebell()
     {
         // If this is an add operation, create new Kettlebell.
-        Kettlebell kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
+        var kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
 
         // Copy values from the view model to the model.
         CopyCommonValues(kettlebell);

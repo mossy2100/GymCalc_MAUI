@@ -4,11 +4,11 @@ namespace GymCalc.Converters;
 
 public class PercentVisualStateConverter : IValueConverter
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        var selectedPercent = (int)value;
-        if (int.TryParse(parameter as string, out var targetPercent))
+        if (value is int selectedPercent
+            && int.TryParse(parameter as string, out var targetPercent))
         {
             return selectedPercent == targetPercent
                 ? VisualStateManager.CommonStates.Selected
@@ -19,7 +19,7 @@ public class PercentVisualStateConverter : IValueConverter
         return VisualStateManager.CommonStates.Normal;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return null;

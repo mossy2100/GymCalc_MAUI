@@ -10,9 +10,9 @@ public partial class DeletePage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// Reference to the view model.
+    /// The id of the GymObject we want to delete.
     /// </summary>
-    private DeleteViewModel _model;
+    private int _gymObjectId;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -20,35 +20,12 @@ public partial class DeletePage : ContentPage
     /// The name of the GymObject type (e.g. "Bar").
     /// </summary>
     private string _gymObjectTypeName;
-
-    public string GymObjectTypeName
-    {
-        get => _gymObjectTypeName;
-
-        set
-        {
-            _gymObjectTypeName = value;
-            OnPropertyChanged();
-        }
-    }
-
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// The id of the GymObject we want to delete.
+    /// Reference to the view model.
     /// </summary>
-    private int _gymObjectId;
-
-    public int GymObjectId
-    {
-        get => _gymObjectId;
-
-        set
-        {
-            _gymObjectId = value;
-            OnPropertyChanged();
-        }
-    }
+    private readonly DeleteViewModel _model;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -68,9 +45,31 @@ public partial class DeletePage : ContentPage
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
+    public string GymObjectTypeName
+    {
+        get => _gymObjectTypeName;
+
+        set
+        {
+            _gymObjectTypeName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public int GymObjectId
+    {
+        get => _gymObjectId;
+
+        set
+        {
+            _gymObjectId = value;
+            OnPropertyChanged();
+        }
+    }
+
     // ---------------------------------------------------------------------------------------------
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

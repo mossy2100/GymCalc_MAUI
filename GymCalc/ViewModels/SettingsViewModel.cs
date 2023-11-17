@@ -1,11 +1,16 @@
 using Galaxon.Core.Enums;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 
 namespace GymCalc.ViewModels;
 
 public class SettingsViewModel : BaseViewModel
 {
     private string _units;
+
+    public SettingsViewModel()
+    {
+        Units = UnitsUtility.GetDefault().GetDescription();
+    }
 
     public string Units
     {
@@ -14,12 +19,7 @@ public class SettingsViewModel : BaseViewModel
         set => SetProperty(ref _units, value);
     }
 
-    public SettingsViewModel()
-    {
-        Units = UnitsUtility.GetDefault().GetDescription();
-    }
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

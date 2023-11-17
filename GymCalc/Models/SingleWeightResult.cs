@@ -4,15 +4,7 @@ namespace GymCalc.Models;
 
 public class SingleWeightResult
 {
-    public double Percent { get; set; }
-
-    public GymObject GymObject { get; set; }
-
-    public double Ideal { get; set; }
-
-    public GymObjectDrawable Drawable { get; set; }
-
-    internal SingleWeightResult(double percent, double ideal, GymObject gymObject,
+    internal SingleWeightResult(decimal percent, decimal ideal, GymObject gymObject,
         GymObjectDrawable drawable)
     {
         Percent = percent;
@@ -20,4 +12,12 @@ public class SingleWeightResult
         GymObject = gymObject;
         Drawable = drawable;
     }
+
+    public decimal Percent { get; set; }
+
+    public GymObject GymObject { get; set; }
+
+    public decimal Ideal { get; set; }
+
+    public GymObjectDrawable Drawable { get; set; }
 }

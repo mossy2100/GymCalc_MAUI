@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:drawables="clr-namespace:GymCalc.Drawables"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:models="clr-namespace:GymCalc.Models"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
@@ -13,24 +14,29 @@
     Title="Calculator">
 
     <ContentPage.Resources>
-        <converters:WeightTextConverter x:Key="DefaultWeightTextConverter" />
-        <converters:MachineTypeConverter x:Key="DefaultMachineTypeConverter" />
+        <converters:WeightTextConverter
+            x:Key="DefaultWeightTextConverter" />
+        <converters:MachineTypeConverter
+            x:Key="DefaultMachineTypeConverter" />
     </ContentPage.Resources>
 
     <ScrollView
         x:Name="CalculatorScrollView"
         Padding="{x:Static graphics:PageLayout.Spacing}"
         VerticalOptions="Fill">
-        <StackLayout x:Name="CalculatorLayout"
+        <StackLayout
+            x:Name="CalculatorLayout"
             Spacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
             <!--
             Calculator form.
             Appears on top or left-hand side of page, depending on orientation.
             -->
-            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <VerticalStackLayout
+                Spacing="{x:Static graphics:PageLayout.Spacing}">
                 <!-- Exercise type -->
-                <Label Text="Select exercise type:" />
+                <Label
+                    Text="Select exercise type:" />
                 <Grid
                     x:Name="ExerciseTypeButtonGrid"
                     ColumnDefinitions="*,*"
@@ -39,25 +45,29 @@
                     RowSpacing="{x:Static graphics:PageLayout.Spacing}">
                     <Button
                         x:Name="BarbellButton"
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         Clicked="OnBarbellButtonClicked"
                         Style="{StaticResource BarbellButtonStyle}"
                         Text="Barbell" />
                     <Button
                         x:Name="DumbbellButton"
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Clicked="OnDumbbellButtonClicked"
                         Style="{StaticResource DumbbellButtonStyle}"
                         Text="Dumbbell" />
                     <Button
                         x:Name="MachineButton"
-                        Grid.Row="1" Grid.Column="0"
+                        Grid.Row="1"
+                        Grid.Column="0"
                         Clicked="OnMachineButtonClicked"
                         Style="{StaticResource MachineButtonStyle}"
                         Text="Machine" />
                     <Button
                         x:Name="KettlebellButton"
-                        Grid.Row="1" Grid.Column="1"
+                        Grid.Row="1"
+                        Grid.Column="1"
                         Clicked="OnKettlebellButtonClicked"
                         Style="{StaticResource KettlebellButtonStyle}"
                         Text="Kettlebell" />
@@ -70,12 +80,14 @@
                     RowDefinitions="Auto">
                     <Label
                         x:Name="MaxWeightLabel"
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Text="Maximum weight"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
                             HorizontalTextAlignment="End"
@@ -84,7 +96,8 @@
                             Text="{Binding MaxWeightText, Mode=TwoWay}" />
                     </Frame>
                     <Label
-                        Grid.Row="0" Grid.Column="2"
+                        Grid.Row="0"
+                        Grid.Column="2"
                         HorizontalTextAlignment="Start"
                         Text="{Binding MaxWeightUnits}"
                         VerticalTextAlignment="Center" />
@@ -97,22 +110,27 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         FontSize="16"
                         HorizontalTextAlignment="Start"
                         Text="Bar weight"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Picker
                             ItemsSource="{Binding BarWeights}"
                             SelectedItem="{Binding BarWeight, Mode=TwoWay}"
-                            HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center" />
                     </Frame>
                     <Label
-                        Grid.Row="0" Grid.Column="2"
-                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
                         Text="{Binding BarWeightUnits}" />
                 </Grid>
 
@@ -123,7 +141,8 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         Text="Machine type"
                         VerticalTextAlignment="Center" />
                     <input:RadioButtonGroupView
@@ -132,8 +151,12 @@
                         SelectedItem="{Binding MachineType, Mode=TwoWay,
                             Converter={StaticResource DefaultMachineTypeConverter}}"
                         SelectedItemChangedCommand="{Binding MachineTypeChangedCommand}">
-                        <input:RadioButton Text="Isolateral" Value="Isolateral" />
-                        <input:RadioButton Text="Bilateral" Value="Bilateral" />
+                        <input:RadioButton
+                            Text="Isolateral"
+                            Value="Isolateral" />
+                        <input:RadioButton
+                            Text="Bilateral"
+                            Value="Bilateral" />
                     </input:RadioButtonGroupView>
                 </Grid>
 
@@ -144,12 +167,14 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
-                        Grid.Row="0" Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.Column="0"
                         HorizontalTextAlignment="Start"
                         Text="{Binding StartingWeightLabel}"
                         VerticalTextAlignment="Center" />
                     <Frame
-                        Grid.Row="0" Grid.Column="1"
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Style="{StaticResource ControlFrameStyle}">
                         <Entry
                             Text="{Binding StartingWeightText, Mode=TwoWay}"
@@ -160,19 +185,30 @@
                             VerticalTextAlignment="Center" />
                     </Frame>
                     <Label
-                        Grid.Row="0" Grid.Column="2"
-                        HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalTextAlignment="Start"
+                        VerticalTextAlignment="Center"
                         Text="{Binding StartingWeightUnits}" />
                 </Grid>
 
                 <!-- Calculate button -->
-                <Button Command="{Binding CalculateCommand}" Text="Calculate" />
+                <Button
+                    Command="{Binding CalculateCommand}"
+                    Text="Calculate" />
 
                 <!-- Error message -->
-                <Label Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}">
+                <Label
+                    Text="{Binding ErrorMessage}"
+                    Style="{StaticResource ErrorMessageStyle}">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="">
-                            <Setter Property="IsVisible" Value="False" />
+                        <DataTrigger
+                            TargetType="Label"
+                            Binding="{Binding ErrorMessage}"
+                            Value="">
+                            <Setter
+                                Property="IsVisible"
+                                Value="False" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -188,41 +224,68 @@
                     ItemsSource="{Binding PlatesResults}"
                     IsVisible="{Binding PlatesResultsVisible}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:PlatesResult">
+                        <DataTemplate
+                            x:DataType="models:PlatesResult">
                             <Grid
                                 Padding="0,10,0,10"
                                 RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                                 RowSpacing="{x:Static graphics:PageLayout.Spacing}"
                                 ColumnDefinitions="4*,3*,3*"
                                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
-                                <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                                    HeightRequest="1" BackgroundColor="Gray" />
-                                <Label Grid.Row="1" Grid.Column="0"
+                                <Rectangle
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    HeightRequest="1"
+                                    BackgroundColor="Gray" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="0"
                                     Text="{Binding Percent, StringFormat='{0}%'}"
                                     Style="{StaticResource ResultsTablePercent}" />
-                                <Label Grid.Row="1" Grid.Column="1" Text="Ideal"
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Text="Ideal"
                                     VerticalTextAlignment="End"
                                     Style="{StaticResource ResultsTableHeader}" />
-                                <Label Grid.Row="1" Grid.Column="2" Text="Closest"
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Text="Closest"
                                     VerticalTextAlignment="End"
                                     Style="{StaticResource ResultsTableHeader}" />
-                                <Label Grid.Row="2" Grid.Column="0" Text="Total"
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Text="Total"
                                     Style="{StaticResource ResultsTableHeader}" />
-                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding IdealTotalWeight,
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Text="{Binding IdealTotalWeight,
                                     Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableIdeal}" />
-                                <Label Grid.Row="2" Grid.Column="2"
+                                <Label
+                                    Grid.Row="2"
+                                    Grid.Column="2"
                                     Text="{Binding ClosestTotalWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableClosest}" />
-                                <Label Grid.Row="3" Grid.Column="0"
+                                <Label
+                                    Grid.Row="3"
+                                    Grid.Column="0"
                                     Text="{Binding EachSideText}"
                                     Style="{StaticResource ResultsTableHeader}" />
-                                <Label Grid.Row="3" Grid.Column="1"
+                                <Label
+                                    Grid.Row="3"
+                                    Grid.Column="1"
                                     Text="{Binding IdealPlatesWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableIdeal}" />
-                                <Label Grid.Row="3" Grid.Column="2"
+                                <Label
+                                    Grid.Row="3"
+                                    Grid.Column="2"
                                     Text="{Binding ClosestPlatesWeight,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                     Style="{StaticResource ResultsTableClosest}" />
@@ -244,10 +307,13 @@
                     ItemsSource="{Binding SingleWeightResults}"
                     IsVisible="{Binding SingleWeightResultsVisible}">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout ItemSpacing="10" Orientation="Vertical" />
+                        <LinearItemsLayout
+                            ItemSpacing="10"
+                            Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:SingleWeightResult">
+                        <DataTemplate
+                            x:DataType="models:SingleWeightResult">
                             <Frame
                                 CornerRadius="8"
                                 Padding="10"
@@ -259,27 +325,44 @@
                                     Padding="0,10,0,10"
                                     RowSpacing="{x:Static graphics:PageLayout.Spacing}"
                                     ColumnDefinitions="*,*,*"
-                                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                                    >
+                                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="{Binding Drawable.Height}" />
+                                        <RowDefinition
+                                            Height="Auto" />
+                                        <RowDefinition
+                                            Height="{Binding Drawable.Height}" />
                                     </Grid.RowDefinitions>
-                                    <Label Grid.Row="0" Grid.Column="0"
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
                                         Text="{Binding Percent, StringFormat='{0}%'}"
                                         Style="{StaticResource ResultsTablePercent}" />
-                                    <Label Grid.Row="0" Grid.Column="1" Text="Ideal"
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Text="Ideal"
                                         VerticalTextAlignment="End"
                                         Style="{StaticResource ResultsTableHeader}" />
-                                    <Label Grid.Row="0" Grid.Column="2" Text="Closest"
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Text="Closest"
                                         VerticalTextAlignment="End"
                                         Style="{StaticResource ResultsTableHeader}" />
-                                    <Label Grid.Row="1" Grid.Column="0" Text="Total"
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="Total"
                                         Style="{StaticResource ResultsTableHeader}" />
-                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Ideal,
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Text="{Binding Ideal,
                                         Converter={StaticResource DefaultWeightTextConverter}}"
                                         Style="{StaticResource ResultsTableIdeal}" />
-                                    <GraphicsView Grid.Row="1" Grid.Column="2"
+                                    <GraphicsView
+                                        Grid.Row="1"
+                                        Grid.Column="2"
                                         Drawable="{Binding Drawable}"
                                         WidthRequest="{Binding Drawable.Width}"
                                         HeightRequest="{Binding Drawable.Height}"

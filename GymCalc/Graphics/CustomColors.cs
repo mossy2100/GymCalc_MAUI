@@ -1,4 +1,3 @@
-using Galaxon.Core.Numbers;
 using GymCalc.Constants;
 
 namespace GymCalc.Graphics;
@@ -8,7 +7,7 @@ internal static class CustomColors
     /// <summary>
     /// Lookup table to map colors to names.
     /// </summary>
-    public static readonly Dictionary<string, string> Palette = new Dictionary<string, string>
+    public static readonly Dictionary<string, string> Palette = new()
     {
         { "Red", "#cc0022" },
         { "Orange", "#ff6c00" },
@@ -26,7 +25,7 @@ internal static class CustomColors
         { "Silver", "#c0c0c0" },
         { "Gray", "#808080" },
         { "OffBlack", "#333" },
-        { "PaleGray", "#d7d7d7" },
+        { "PaleGray", "#d7d7d7" }
     };
 
     internal static Color Get(string name)
@@ -38,19 +37,19 @@ internal static class CustomColors
     /// Get the default colors (as names) for a given kettlebell weight.
     ///
     /// Best image I've found showing a competition kettlebell with black bands:
-    /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1" />
+    /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1"/>
     /// </summary>
     /// <param name="weight">The weight of the kettlebell.</param>
     /// <param name="units">The units.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (string, bool, string) DefaultKettlebellColor(double weight, Units units)
+    internal static (string, bool, string) DefaultKettlebellColor(decimal weight, Units units)
     {
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;
         var n = weight;
         if (units == Units.Kilograms)
         {
-            hasBands = (weight % 4).FuzzyEquals(2);
+            hasBands = weight % 4 == 2;
             if (hasBands)
             {
                 n -= 2;
@@ -59,7 +58,7 @@ internal static class CustomColors
         }
         else
         {
-            hasBands = (weight % 10).FuzzyEquals(0);
+            hasBands = weight % 10 == 0;
             if (hasBands)
             {
                 n -= 5;
@@ -82,7 +81,7 @@ internal static class CustomColors
             10 => "OffWhite",
             11 => "Silver",
             12 => "Gold",
-            _ => "OffBlack",
+            _ => "OffBlack"
         };
 
         // Add black bands if it has them.

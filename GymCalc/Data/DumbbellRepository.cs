@@ -1,6 +1,6 @@
 using Galaxon.Core.Enums;
-using GymCalc.Models;
 using GymCalc.Constants;
+using GymCalc.Models;
 
 namespace GymCalc.Data;
 
@@ -14,9 +14,7 @@ public class DumbbellRepository : GymObjectRepository
     /// </summary>
     private Dictionary<int, Dumbbell> _cache;
 
-    public DumbbellRepository(Database database) : base(database)
-    {
-    }
+    public DumbbellRepository(Database database) : base(database) { }
 
     /// <summary>
     /// Ensure the database table exist and contains some dumbbells.
@@ -28,19 +26,19 @@ public class DumbbellRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var addedSoFar = new List<(double, Units)>();
+        var addedSoFar = new List<(decimal, Units)>();
 
         // Kilograms.
         addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(2.5, 60, 2.5, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddDumbbellSet(2.5m, 60, 2.5m, Units.Kilograms, true, addedSoFar);
 
         // Pounds.
         addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
         addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
     }
 
-    private async Task<List<(double, Units)>> AddDumbbellSet(double min, double max,
-        double step, Units units, bool enabled, List<(double, Units)> addedSoFar)
+    private async Task<List<(decimal, Units)>> AddDumbbellSet(decimal min, decimal max,
+        decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
     {
         for (var weight = min; weight <= max; weight += step)
         {
@@ -56,7 +54,7 @@ public class DumbbellRepository : GymObjectRepository
                 Weight = weight,
                 Units = units.GetDescription(),
                 Enabled = enabled,
-                Color = "OffBlack",
+                Color = "OffBlack"
             };
             await Insert(dumbbell);
 
@@ -143,7 +141,7 @@ public class DumbbellRepository : GymObjectRepository
         await Delete(_cache, id);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Dumbbell>();

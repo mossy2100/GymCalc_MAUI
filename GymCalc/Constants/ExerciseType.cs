@@ -8,5 +8,5 @@ public enum ExerciseType
 
     Machine,
 
-    Kettlebell,
+    Kettlebell
 }

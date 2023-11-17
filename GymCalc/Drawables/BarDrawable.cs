@@ -7,16 +7,16 @@ namespace GymCalc.Drawables;
 
 public class BarDrawable : GymObjectDrawable
 {
-    public const double HEIGHT = 20;
+    public const decimal HEIGHT = 20;
 
-    /// <inheritdoc />
-    public override double GetWidth()
+    /// <inheritdoc/>
+    public override decimal GetWidth()
     {
         return CalculateWidth();
     }
 
-    /// <inheritdoc />
-    public override double GetHeight()
+    /// <inheritdoc/>
+    public override decimal GetHeight()
     {
         return HEIGHT;
     }

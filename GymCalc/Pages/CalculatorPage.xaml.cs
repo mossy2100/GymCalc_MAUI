@@ -1,6 +1,6 @@
 using Galaxon.Core.Exceptions;
+using Galaxon.Maui;
 using GymCalc.Constants;
-using GymCalc.Utilities;
 using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
@@ -38,7 +38,7 @@ public partial class CalculatorPage : ContentPage
         UpdateLayoutOrientation();
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override async void OnAppearing()
     {
         // Initialize database on first page load.
@@ -82,7 +82,7 @@ public partial class CalculatorPage : ContentPage
     private void UpdateLayoutOrientation()
     {
         // Get the device orientation.
-        var newOrientation = MauiUtilities.GetOrientation() == DisplayOrientation.Landscape
+        var newOrientation = MauiUtility.GetOrientation() == DisplayOrientation.Landscape
             ? StackOrientation.Horizontal
             : StackOrientation.Vertical;
 
@@ -128,7 +128,7 @@ public partial class CalculatorPage : ContentPage
     {
         var scrollViewWidth = CalculatorScrollView.Width - CalculatorScrollView.Padding.Left
             - CalculatorScrollView.Padding.Right;
-        return MauiUtilities.GetOrientation() == DisplayOrientation.Landscape
+        return MauiUtility.GetOrientation() == DisplayOrientation.Landscape
             ? (scrollViewWidth - CalculatorLayout.Spacing) / 2
             : scrollViewWidth;
     }
@@ -218,7 +218,7 @@ public partial class CalculatorPage : ContentPage
 
     // private async Task ScrollToResults()
     // {
-    //     var y = MauiUtilities.GetOrientation() == DisplayOrientation.Portrait && _resultsDisplayed
+    //     var y = MauiUtility.GetOrientation() == DisplayOrientation.Portrait && _resultsDisplayed
     //         ? CalculatorResults.Y
     //         : 0;
     //     await CalculatorScrollView.ScrollToAsync(0, y, true);

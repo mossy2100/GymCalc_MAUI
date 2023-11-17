@@ -1,5 +1,5 @@
+using Galaxon.Maui;
 using GymCalc.Graphics;
-using GymCalc.Utilities;
 
 namespace GymCalc.Controls;
 
@@ -8,13 +8,6 @@ public partial class ColorPicker : ContentView
     public static readonly BindableProperty SelectedProperty = BindableProperty.Create(
         nameof(Selected), typeof(string), typeof(ColorPicker), "", BindingMode.TwoWay, null,
         OnSelectedChanged);
-
-    public string Selected
-    {
-        get => (string)GetValue(SelectedProperty);
-
-        set => SetValue(SelectedProperty, value);
-    }
 
     /// <summary>
     /// Dictionary mapping buttons to color names.
@@ -27,11 +20,18 @@ public partial class ColorPicker : ContentView
         ConstructGrid();
     }
 
+    public string Selected
+    {
+        get => (string)GetValue(SelectedProperty);
+
+        set => SetValue(SelectedProperty, value);
+    }
+
     private void ConstructGrid()
     {
         // Lookup styles.
-        var frameStyle = MauiUtilities.LookupStyle("ColorPickerFrameStyle");
-        var buttonStyle = MauiUtilities.LookupStyle("ColorPickerButtonStyle");
+        var frameStyle = MauiUtility.LookupStyle("ColorPickerFrameStyle");
+        var buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
 
         // Display the color buttons in the grid.
         const int N_ROWS = 4;
@@ -43,14 +43,14 @@ public partial class ColorPicker : ContentView
             // Create a frame.
             var frame = new Frame
             {
-                Style = frameStyle,
+                Style = frameStyle
             };
 
             // Create a button.
             var button = new Button
             {
                 Style = buttonStyle,
-                BackgroundColor = CustomColors.Get(colorName),
+                BackgroundColor = CustomColors.Get(colorName)
             };
 
             // Attach the event handler.
@@ -110,7 +110,7 @@ public partial class ColorPicker : ContentView
         {
             // I should probably set a visual state here, rather than directly modifying the style
             // attributes.
-            ((Frame)newButton.Parent).BackgroundColor = MauiUtilities.LookupColor("Primary");
+            ((Frame)newButton.Parent).BackgroundColor = MauiUtility.LookupColor("Primary");
         }
     }
 }

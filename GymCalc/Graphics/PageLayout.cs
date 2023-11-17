@@ -1,4 +1,4 @@
-using GymCalc.Utilities;
+using Galaxon.Maui;
 
 namespace GymCalc.Graphics;
 
@@ -20,6 +20,6 @@ internal static class PageLayout
     /// </summary>
     internal static int GetNumColumns()
     {
-        return MauiUtilities.GetOrientation() == DisplayOrientation.Portrait ? 1 : 2;
+        return MauiUtility.GetOrientation() == DisplayOrientation.Portrait ? 1 : 2;
     }
 }

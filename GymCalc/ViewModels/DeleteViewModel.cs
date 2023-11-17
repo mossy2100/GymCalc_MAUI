@@ -12,44 +12,16 @@ public class DeleteViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
-    private readonly PlateRepository _plateRepo;
-
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    // ---------------------------------------------------------------------------------------------
-    // Commands.
-
-    public ICommand CancelCommand { get; init; }
-
-    public ICommand DeleteItemCommand { get; init; }
-
-    // ---------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// Page title.
-    /// </summary>
-    private string _title;
-
-    public string Title
-    {
-        get => _title;
-
-        set => SetProperty(ref _title, value);
-    }
+    private readonly PlateRepository _plateRepo;
 
     /// <summary>
     /// Message to the user confirming the deletion.
     /// </summary>
     private string _confirmDeletionMessage;
-
-    public string ConfirmDeletionMessage
-    {
-        get => _confirmDeletionMessage;
-
-        set => SetProperty(ref _confirmDeletionMessage, value);
-    }
 
     // ---------------------------------------------------------------------------------------------
 
@@ -57,6 +29,13 @@ public class DeleteViewModel : BaseViewModel
     /// The gym object.
     /// </summary>
     private GymObject _gymObject;
+
+    // ---------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// Page title.
+    /// </summary>
+    private string _title;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -79,6 +58,27 @@ public class DeleteViewModel : BaseViewModel
         // Commands.
         CancelCommand = new AsyncCommand(Cancel);
         DeleteItemCommand = new AsyncCommand(DeleteItem);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Commands.
+
+    public ICommand CancelCommand { get; init; }
+
+    public ICommand DeleteItemCommand { get; init; }
+
+    public string Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
+    public string ConfirmDeletionMessage
+    {
+        get => _confirmDeletionMessage;
+
+        set => SetProperty(ref _confirmDeletionMessage, value);
     }
 
     // ---------------------------------------------------------------------------------------------

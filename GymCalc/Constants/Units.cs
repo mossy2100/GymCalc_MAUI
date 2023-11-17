@@ -10,5 +10,5 @@ public enum Units
 
     [Description("kg")] Kilograms,
 
-    [Description("lb")] Pounds,
+    [Description("lb")] Pounds
 }

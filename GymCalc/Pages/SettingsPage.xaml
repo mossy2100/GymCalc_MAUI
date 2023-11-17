@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -9,7 +11,9 @@
     x:DataType="viewModels:SettingsViewModel"
     Title="Settings">
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+    <ScrollView
+        Padding="{x:Static graphics:PageLayout.Spacing}"
+        VerticalOptions="Fill">
         <Grid
             ColumnDefinitions="*,*"
             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
@@ -25,8 +29,12 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 SelectedItem="{Binding Units, Mode=TwoWay}">
-                <input:RadioButton Text="kilograms (kg)" Value="kg" />
-                <input:RadioButton Text="pounds (lb)" Value="lb" />
+                <input:RadioButton
+                    Text="kilograms (kg)"
+                    Value="kg" />
+                <input:RadioButton
+                    Text="pounds (lb)"
+                    Value="lb" />
             </input:RadioButtonGroupView>
 
         </Grid>

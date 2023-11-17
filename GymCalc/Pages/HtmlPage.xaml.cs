@@ -8,25 +8,11 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(Route), "route")]
 public partial class HtmlPage : ContentPage
 {
-    private HtmlViewModel _model;
-
     private readonly HtmlUpdaterService _htmlUpdaterService;
 
+    private readonly HtmlViewModel _model;
+
     private string _route;
-
-    public string Route
-    {
-        get => _route;
-
-        set
-        {
-            if (_route != value)
-            {
-                _route = value;
-                OnPropertyChanged();
-            }
-        }
-    }
 
     private AppTheme _theme;
 
@@ -50,8 +36,22 @@ public partial class HtmlPage : ContentPage
             : AppTheme.Dark;
         RootComponent.Parameters = new Dictionary<string, object>
         {
-            { "Theme", _theme },
+            { "Theme", _theme }
         };
+    }
+
+    public string Route
+    {
+        get => _route;
+
+        set
+        {
+            if (_route != value)
+            {
+                _route = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
     private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
@@ -60,7 +60,7 @@ public partial class HtmlPage : ContentPage
         _htmlUpdaterService.UpdateTheme(_theme);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

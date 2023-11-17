@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -11,8 +13,10 @@
     x:DataType="viewModels:ListViewModel"
     Title="{Binding Title}">
 
-    <Grid Padding="0"
-        RowDefinitions="Auto,*,Auto" RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+    <Grid
+        Padding="0"
+        RowDefinitions="Auto,*,Auto"
+        RowSpacing="{x:Static graphics:PageLayout.Spacing}">
 
         <Label
             Grid.Row="0"
@@ -20,12 +24,19 @@
             FontSize="14"
             Text="{Binding Instructions}" />
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding ListItems}">
+        <CollectionView
+            Grid.Row="1"
+            ItemsSource="{Binding ListItems}">
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:ListItem">
-                    <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="5" Padding="10">
+                <DataTemplate
+                    x:DataType="models:ListItem">
+                    <Grid
+                        ColumnDefinitions="*,Auto,Auto,Auto"
+                        ColumnSpacing="5"
+                        Padding="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="{Binding Drawable.Height}" />
+                            <RowDefinition
+                                Height="{Binding Drawable.Height}" />
                         </Grid.RowDefinitions>
                         <GraphicsView
                             Grid.Column="0"

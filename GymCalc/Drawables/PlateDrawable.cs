@@ -1,25 +1,25 @@
 using System.Globalization;
+using Galaxon.Maui;
 using GymCalc.Graphics;
 using GymCalc.Models;
-using GymCalc.Utilities;
 using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Drawables;
 
 public class PlateDrawable : GymObjectDrawable
 {
-    public const double HEIGHT = 30;
+    public const decimal HEIGHT = 30;
 
     public const int CORNER_RADIUS = 4;
 
-    /// <inheritdoc />
-    public override double GetWidth()
+    /// <inheritdoc/>
+    public override decimal GetWidth()
     {
         return CalculateWidth();
     }
 
-    /// <inheritdoc />
-    public override double GetHeight()
+    /// <inheritdoc/>
+    public override decimal GetHeight()
     {
         return HEIGHT;
     }

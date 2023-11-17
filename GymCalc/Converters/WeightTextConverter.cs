@@ -1,20 +1,24 @@
 using System.Globalization;
 using Galaxon.Core.Enums;
-using GymCalc.Utilities;
+using GymCalc.Shared;
 
 namespace GymCalc.Converters;
 
 public class WeightTextConverter : IValueConverter
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        var weight = (double)value;
+        if (value is not decimal weight)
+        {
+            return null;
+        }
+
         var units = UnitsUtility.GetDefault().GetDescription();
         return $"{weight:F2} {units}";
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return null;

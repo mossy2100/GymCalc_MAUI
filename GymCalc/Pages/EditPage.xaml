@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -10,7 +12,8 @@
     x:DataType="viewModels:EditViewModel"
     Title="{Binding Title}">
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid
+        RowDefinitions="*,Auto">
         <ScrollView
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
@@ -21,7 +24,8 @@
                 VerticalOptions="Start">
 
                 <!--  Weight  -->
-                <Grid ColumnDefinitions="*,*,*">
+                <Grid
+                    ColumnDefinitions="*,*,*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -39,7 +43,8 @@
                 </Grid>
 
                 <!--  Units  -->
-                <Grid ColumnDefinitions="*,2*">
+                <Grid
+                    ColumnDefinitions="*,2*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -48,13 +53,18 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         SelectedItem="{Binding Units, Mode=TwoWay}">
-                        <input:RadioButton Text="kilograms (kg)" Value="kg" />
-                        <input:RadioButton Text="pounds (lb)" Value="lb" />
+                        <input:RadioButton
+                            Text="kilograms (kg)"
+                            Value="kg" />
+                        <input:RadioButton
+                            Text="pounds (lb)"
+                            Value="lb" />
                     </input:RadioButtonGroupView>
                 </Grid>
 
                 <!--  Enabled  -->
-                <Grid ColumnDefinitions="*,2*">
+                <Grid
+                    ColumnDefinitions="*,2*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -68,7 +78,9 @@
                 </Grid>
 
                 <!--  Plate color or ball color for kettlebells  -->
-                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding MainColorIsVisible}">
+                <Grid
+                    ColumnDefinitions="*,2*"
+                    IsVisible="{Binding MainColorIsVisible}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -80,7 +92,9 @@
                 </Grid>
 
                 <!--  Has bands  -->
-                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding HasBandsIsVisible}">
+                <Grid
+                    ColumnDefinitions="*,2*"
+                    IsVisible="{Binding HasBandsIsVisible}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -94,7 +108,9 @@
                 </Grid>
 
                 <!--  Band color  -->
-                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding HasBands}">
+                <Grid
+                    ColumnDefinitions="*,2*"
+                    IsVisible="{Binding HasBands}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -106,10 +122,17 @@
                 </Grid>
 
                 <!--  Error message  -->
-                <Label Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}">
+                <Label
+                    Text="{Binding ErrorMessage}"
+                    Style="{StaticResource ErrorMessageStyle}">
                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="">
-                            <Setter Property="IsVisible" Value="False" />
+                        <DataTrigger
+                            TargetType="Label"
+                            Binding="{Binding ErrorMessage}"
+                            Value="">
+                            <Setter
+                                Property="IsVisible"
+                                Value="False" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>

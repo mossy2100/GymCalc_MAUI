@@ -1,6 +1,5 @@
-using Galaxon.Core.Numbers;
-using GymCalc.Models;
 using GymCalc.Drawables;
+using GymCalc.Models;
 
 namespace GymCalc.Solvers;
 
@@ -8,16 +7,16 @@ internal static class PlateSolver
 {
     private static List<Plate> _availPlates;
 
-    private static double _maxPlateWeight;
+    private static decimal _maxPlateWeight;
 
     private static List<Plate> _bestSolution;
 
-    private static double _idealWeight;
+    private static decimal _idealWeight;
 
-    private static double _smallestDiff;
+    private static decimal _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(double maxTotalWeight,
-        double totalStartingWeight, int nStacks, string eachSideText,
+    internal static List<PlatesResult> CalculateResults(decimal maxTotalWeight,
+        decimal totalStartingWeight, int nStacks, string eachSideText,
         IEnumerable<Plate> availPlates)
     {
         var results = new List<PlatesResult>();
@@ -30,7 +29,7 @@ internal static class PlateSolver
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var idealTotal = maxTotalWeight * percent / 100.0;
+            var idealTotal = maxTotalWeight * percent / 100m;
             var idealPlates = (idealTotal - totalStartingWeight) / nStacks;
 
             // Get the set of plates that is closest to the ideal weight.
@@ -40,7 +39,7 @@ internal static class PlateSolver
             var drawable = new PlatesDrawable
             {
                 Plates = closestPlates,
-                MaxWeight = _maxPlateWeight,
+                MaxWeight = _maxPlateWeight
             };
 
             // Create the result object.
@@ -56,7 +55,7 @@ internal static class PlateSolver
     /// Find the stack of plates that will produce the closest total weight to the ideal weight.
     /// </summary>
     /// <returns></returns>
-    private static List<Plate> FindBestPlates(double idealWeight)
+    private static List<Plate> FindBestPlates(decimal idealWeight)
     {
         // Initialize fields.
         _idealWeight = idealWeight;
@@ -79,7 +78,7 @@ internal static class PlateSolver
     /// <param name="currentStack">The stack of plates so far.</param>
     /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
     private static void SearchSolutions(IReadOnlyCollection<Plate> currentStack,
-        double maxPlateWeight)
+        decimal maxPlateWeight)
     {
         foreach (var plate in _availPlates)
         {
@@ -98,11 +97,11 @@ internal static class PlateSolver
 
             // Test the solution.
             var sum = newStack.Sum(p => p.Weight);
-            var diff = double.Abs(sum - _idealWeight);
+            var diff = decimal.Abs(sum - _idealWeight);
 
             // Check if this is a new best solution.
             if (diff < _smallestDiff
-                || diff.FuzzyEquals(_smallestDiff) && newStack.Count < _bestSolution.Count)
+                || (diff == _smallestDiff && newStack.Count < _bestSolution.Count))
             {
                 // Update the best solution found so far.
                 _bestSolution = newStack;

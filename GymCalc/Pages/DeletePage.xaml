@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,7 +10,8 @@
     x:DataType="viewModels:DeleteViewModel"
     Title="{Binding Title}">
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid
+        RowDefinitions="*,Auto">
         <Label
             Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"

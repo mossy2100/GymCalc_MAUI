@@ -6,9 +6,21 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectTypeName), "type")]
 public partial class ResetPage : ContentPage
 {
-    private ResetViewModel _model;
-
     private string _gymObjectTypeName;
+
+    private readonly ResetViewModel _model;
+
+    public ResetPage(ResetViewModel model)
+    {
+        _model = model;
+
+        InitializeComponent();
+        BindingContext = _model;
+
+        // Workaround for issue with Back button label.
+        // <see href="https://github.com/dotnet/maui/issues/8335" />
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
+    }
 
     public string GymObjectTypeName
     {
@@ -24,19 +36,7 @@ public partial class ResetPage : ContentPage
         }
     }
 
-    public ResetPage(ResetViewModel model)
-    {
-        _model = model;
-
-        InitializeComponent();
-        BindingContext = _model;
-
-        // Workaround for issue with Back button label.
-        // <see href="https://github.com/dotnet/maui/issues/8335" />
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
-    }
-
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);

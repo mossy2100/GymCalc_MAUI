@@ -6,7 +6,7 @@ public class PlatesDrawable : IDrawable
 {
     public List<Plate> Plates { get; set; }
 
-    public double Width
+    public decimal Width
     {
         get
         {
@@ -15,11 +15,11 @@ public class PlatesDrawable : IDrawable
         }
     }
 
-    public double Height => Plates.Count * PlateDrawable.HEIGHT;
+    public decimal Height => Plates.Count * PlateDrawable.HEIGHT;
 
-    internal double MaxWeight { get; set; }
+    internal decimal MaxWeight { get; set; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var rectWidth = dirtyRect.Width;

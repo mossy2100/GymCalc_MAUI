@@ -4,7 +4,7 @@ namespace GymCalc.Pages;
 
 public partial class SettingsPage : ContentPage
 {
-    private SettingsViewModel _model;
+    private readonly SettingsViewModel _model;
 
     public SettingsPage(SettingsViewModel model)
     {

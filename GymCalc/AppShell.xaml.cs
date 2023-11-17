@@ -6,14 +6,6 @@ namespace GymCalc;
 
 public partial class AppShell : Shell
 {
-    public ICommand ListCommand => new AsyncCommand<string>(GoToList);
-
-    public ICommand InstructionsCommand =>
-        new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
-
-    public ICommand AboutCommand =>
-        new AsyncCommand(async () => await GoToHtml("About GymCalc", "/About"));
-
     public AppShell()
     {
         InitializeComponent();
@@ -21,6 +13,14 @@ public partial class AppShell : Shell
 
         RegisterRoutes();
     }
+
+    public ICommand ListCommand => new AsyncCommand<string>(GoToList);
+
+    public ICommand InstructionsCommand =>
+        new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
+
+    public ICommand AboutCommand =>
+        new AsyncCommand(async () => await GoToHtml("About GymCalc", "/About"));
 
     /// <summary>
     /// Register routes for navigation pages.
@@ -39,7 +39,7 @@ public partial class AppShell : Shell
         Current.FlyoutIsPresented = false;
         await Current.GoToAsync("//list", new Dictionary<string, object>
         {
-            { "type", gymObjectTypeName },
+            { "type", gymObjectTypeName }
         });
     }
 
@@ -49,7 +49,7 @@ public partial class AppShell : Shell
         await Current.GoToAsync("//html", new Dictionary<string, object>
         {
             { "title", title },
-            { "route", route },
+            { "route", route }
         });
     }
 

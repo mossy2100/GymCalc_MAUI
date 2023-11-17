@@ -1,4 +1,3 @@
-using Galaxon.Core.Numbers;
 using GymCalc.Drawables;
 using GymCalc.Models;
 
@@ -8,7 +7,7 @@ internal static class SingleWeightSolver
 {
     private static IEnumerable<GymObject> _availWeights;
 
-    internal static List<SingleWeightResult> CalculateResults(double maxWeight,
+    internal static List<SingleWeightResult> CalculateResults(decimal maxWeight,
         IEnumerable<GymObject> availWeights)
     {
         var results = new List<SingleWeightResult>();
@@ -19,7 +18,7 @@ internal static class SingleWeightSolver
         // Later, this might be configurable.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var idealWeight = maxWeight * percent / 100.0;
+            var idealWeight = maxWeight * percent / 100m;
 
             // Get the weight that is closest to the ideal weight.
             var closest = FindClosest(idealWeight);
@@ -40,7 +39,7 @@ internal static class SingleWeightSolver
     /// </summary>
     /// <param name="idealWeight"></param>
     /// <returns>The closest weight to the ideal weight.</returns>
-    private static GymObject FindClosest(double idealWeight)
+    private static GymObject FindClosest(decimal idealWeight)
     {
         var gymObjects = _availWeights.ToArray();
         GymObject current = null;
@@ -49,7 +48,7 @@ internal static class SingleWeightSolver
             current = gymObjects[i];
 
             // Check for exact match.
-            if (current.Weight.FuzzyEquals(idealWeight))
+            if (current.Weight == idealWeight)
             {
                 return current;
             }

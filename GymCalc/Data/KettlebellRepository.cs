@@ -1,7 +1,7 @@
 using Galaxon.Core.Enums;
-using GymCalc.Models;
 using GymCalc.Constants;
 using GymCalc.Graphics;
+using GymCalc.Models;
 
 namespace GymCalc.Data;
 
@@ -15,9 +15,7 @@ public class KettlebellRepository : GymObjectRepository
     /// </summary>
     private Dictionary<int, Kettlebell> _cache;
 
-    public KettlebellRepository(Database database) : base(database)
-    {
-    }
+    public KettlebellRepository(Database database) : base(database) { }
 
     /// <summary>
     /// Ensure the database table exist and contains some kettlebells.
@@ -29,7 +27,7 @@ public class KettlebellRepository : GymObjectRepository
 
     internal override async Task InsertDefaults()
     {
-        var addedSoFar = new List<(double, Units)>();
+        var addedSoFar = new List<(decimal, Units)>();
         // Kilograms.
         addedSoFar = await AddKettlebellSet(4, 32, 4, Units.Kilograms, true, addedSoFar);
         addedSoFar = await AddKettlebellSet(6, 50, 2, Units.Kilograms, false, addedSoFar);
@@ -38,8 +36,8 @@ public class KettlebellRepository : GymObjectRepository
         addedSoFar = await AddKettlebellSet(65, 120, 5, Units.Pounds, false, addedSoFar);
     }
 
-    private async Task<List<(double, Units)>> AddKettlebellSet(double min, double max,
-        double step, Units units, bool enabled, List<(double, Units)> addedSoFar)
+    private async Task<List<(decimal, Units)>> AddKettlebellSet(decimal min, decimal max,
+        decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
     {
         for (var weight = min; weight <= max; weight += step)
         {
@@ -61,7 +59,7 @@ public class KettlebellRepository : GymObjectRepository
                 Enabled = enabled,
                 BallColor = ballColor,
                 HasBands = hasBands,
-                BandColor = bandColor,
+                BandColor = bandColor
             };
             await Insert(kettlebell);
 
@@ -148,7 +146,7 @@ public class KettlebellRepository : GymObjectRepository
         await Delete(_cache, id);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     internal override async Task DeleteAll()
     {
         await base.DeleteAll<Kettlebell>();

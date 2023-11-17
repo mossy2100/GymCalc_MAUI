@@ -1,25 +1,25 @@
 using System.Globalization;
+using Galaxon.Maui;
 using GymCalc.Graphics;
 using GymCalc.Models;
-using GymCalc.Utilities;
 using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Drawables;
 
 public class KettlebellDrawable : GymObjectDrawable
 {
-    public const double HEIGHT = 76;
+    public const decimal HEIGHT = 76;
 
-    public const double WIDTH = 60;
+    public const decimal WIDTH = 60;
 
-    /// <inheritdoc />
-    public override double GetWidth()
+    /// <inheritdoc/>
+    public override decimal GetWidth()
     {
         return WIDTH;
     }
 
-    /// <inheritdoc />
-    public override double GetHeight()
+    /// <inheritdoc/>
+    public override decimal GetHeight()
     {
         return HEIGHT;
     }
@@ -32,7 +32,7 @@ public class KettlebellDrawable : GymObjectDrawable
 
         // Colors.
         var ballColor = CustomColors.Get(kettlebell.BallColor);
-        var bandColor = (kettlebell.HasBands && kettlebell.BandColor != null)
+        var bandColor = kettlebell.HasBands && kettlebell.BandColor != null
             ? CustomColors.Get(kettlebell.BandColor)
             : ballColor;
         bandColor ??= ballColor;

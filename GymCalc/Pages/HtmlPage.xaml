@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -8,10 +10,14 @@
     x:DataType="viewModels:HtmlViewModel"
     Title="{Binding Title}">
 
-    <BlazorWebView x:Name="BlazorWebView" HostPage="wwwroot/index.html"
+    <BlazorWebView
+        x:Name="BlazorWebView"
+        HostPage="wwwroot/index.html"
         BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
         <BlazorWebView.RootComponents>
-            <RootComponent x:Name="RootComponent" Selector="#app"
+            <RootComponent
+                x:Name="RootComponent"
+                Selector="#app"
                 ComponentType="{x:Type components:Main}" />
         </BlazorWebView.RootComponents>
     </BlazorWebView>

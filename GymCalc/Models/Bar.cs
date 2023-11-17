@@ -1,5 +1,3 @@
 namespace GymCalc.Models;
 
-public class Bar : GymObject
-{
-}
+public class Bar : GymObject { }
