@@ -63,26 +63,4 @@
         <Setter Property="FontSize" Value="14" />
     </Style>
 
-    <!--  FlyoutItems  -->
-
-    <Style x:Key="CalculatorFlyoutItem" TargetType="FlyoutItem">
-        <Setter Property="FlyoutIcon" Value="{AppThemeBinding
-            Light='calculator_icon_black_300.png', Dark='calculator_icon_white_300.png'}" />
-    </Style>
-
-    <Style x:Key="SettingsFlyoutItem" TargetType="FlyoutItem">
-        <Setter Property="FlyoutIcon" Value="{AppThemeBinding
-            Light='settings_icon_black_300.png', Dark='settings_icon_white_300.png'}" />
-    </Style>
-
-    <!-- <Style x:Key="InstructionsFlyoutItem" TargetType="FlyoutItem"> -->
-    <!--     <Setter Property="FlyoutIcon" Value="{AppThemeBinding -->
-    <!--         Light='help_icon_black_300.png', Dark='help_icon_white_300.png'}" /> -->
-    <!-- </Style> -->
-
-    <Style x:Key="AboutFlyoutItem" TargetType="FlyoutItem">
-        <Setter Property="FlyoutIcon" Value="{AppThemeBinding
-            Light='about_icon_black_300.png', Dark='about_icon_white_300.png'}" />
-    </Style>
-
 </ResourceDictionary>

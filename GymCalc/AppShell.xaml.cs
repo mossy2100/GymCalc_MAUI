@@ -10,16 +10,17 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
         BindingContext = this;
-
         RegisterRoutes();
     }
 
-    public ICommand ListCommand => new AsyncCommand<string>(GoToList);
+    public ICommand GoToRouteCommand => new AsyncCommand<string>(GoToRoute);
 
-    public ICommand InstructionsCommand =>
+    public ICommand GoToListCommand => new AsyncCommand<string>(GoToList);
+
+    public ICommand GoToInstructionsCommand =>
         new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
 
-    public ICommand AboutCommand =>
+    public ICommand GoToAboutCommand =>
         new AsyncCommand(async () => await GoToHtml("About GymCalc", "/About"));
 
     /// <summary>
@@ -27,12 +28,20 @@ public partial class AppShell : Shell
     /// </summary>
     private static void RegisterRoutes()
     {
+        // Routing.RegisterRoute("calculator", typeof(CalculatorPage));
         Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("delete", typeof(DeletePage));
         Routing.RegisterRoute("reset", typeof(ResetPage));
+        // Routing.RegisterRoute("settings", typeof(SettingsPage));
     }
 
     #region Command methods
+
+    internal static async Task GoToRoute(string route)
+    {
+        Current.FlyoutIsPresented = false;
+        await Current.GoToAsync($"//{route}");
+    }
 
     internal static async Task GoToList(string gymObjectTypeName)
     {

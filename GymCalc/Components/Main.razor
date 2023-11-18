@@ -16,23 +16,21 @@
     </NotFound>
 </Router>
 
-@if (Theme == AppTheme.Dark)
-{
-    <script>let initialTheme = "dark";</script>
-}
-else
-{
-    <script>let initialTheme = "light";</script>
-}
-
 <script>
 function updateStylesheet(theme)
 {
     document.getElementById("theme-css").href = `css/${theme}.css`;
 }
-
-updateStylesheet(initialTheme);
 </script>
+
+@if (Theme == AppTheme.Dark)
+{
+    <script>updateStylesheet("dark");</script>
+}
+else
+{
+    <script>updateStylesheet("light");</script>
+}
 
 @code
 {
