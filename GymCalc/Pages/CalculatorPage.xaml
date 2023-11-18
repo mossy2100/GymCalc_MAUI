@@ -281,11 +281,6 @@
                     IsVisible="{Binding PlatesResultVisible}">
                     <Label
                         Grid.Row="1"
-                        Grid.Column="0"
-                        Text="{Binding SelectedPlatesResult.Percent, StringFormat='{0}%'}"
-                        Style="{StaticResource ResultsTablePercent}"/>
-                    <Label
-                        Grid.Row="1"
                         Grid.Column="1"
                         Text="Ideal"
                         VerticalTextAlignment="End"
@@ -353,11 +348,6 @@
                         <RowDefinition
                             Height="{Binding SelectedSingleWeightResult.Drawable.Height}"/>
                     </Grid.RowDefinitions>
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Text="{Binding SelectedSingleWeightResult.Percent, StringFormat='{0}%'}"
-                        Style="{StaticResource ResultsTablePercent}"/>
                     <Label
                         Grid.Row="0"
                         Grid.Column="1"

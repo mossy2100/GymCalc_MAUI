@@ -51,6 +51,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Bindable properties
 
+    // ---------------------------------------------------------------------------------------------
     private string _maxWeightText;
 
     public string MaxWeightText
@@ -60,6 +61,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _maxWeightText, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private decimal _barWeight;
 
     public decimal BarWeight
@@ -69,6 +71,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _barWeight, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private List<decimal> _barWeights;
 
     public List<decimal> BarWeights
@@ -78,6 +81,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _barWeights, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _startingWeightText;
 
     public string StartingWeightText
@@ -87,6 +91,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _startingWeightText, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _startingWeightLabel;
 
     public string StartingWeightLabel
@@ -96,6 +101,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _startingWeightLabel, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private MachineType _machineType = MachineType.Bilateral;
 
     public MachineType MachineType
@@ -105,6 +111,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _machineType, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _maxWeightUnits;
 
     public string MaxWeightUnits
@@ -114,6 +121,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _maxWeightUnits, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _barWeightUnits;
 
     public string BarWeightUnits
@@ -123,6 +131,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _barWeightUnits, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _startingWeightUnits;
 
     public string StartingWeightUnits
@@ -132,6 +141,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _startingWeightUnits, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private ExerciseType _selectedExerciseType;
 
     public ExerciseType SelectedExerciseType
@@ -141,6 +151,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _selectedExerciseType, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _errorMessage;
 
     public string ErrorMessage
@@ -150,6 +161,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _errorMessage, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private int _selectedPercent;
 
     public int SelectedPercent
@@ -159,6 +171,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _selectedPercent, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState50;
 
     public string PercentButtonVisualState50
@@ -168,6 +181,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState50, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState60;
 
     public string PercentButtonVisualState60
@@ -177,6 +191,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState60, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState70;
 
     public string PercentButtonVisualState70
@@ -186,6 +201,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState70, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState80;
 
     public string PercentButtonVisualState80
@@ -195,6 +211,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState80, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState90;
 
     public string PercentButtonVisualState90
@@ -204,6 +221,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState90, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private string _percentButtonVisualState100;
 
     public string PercentButtonVisualState100
@@ -213,6 +231,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _percentButtonVisualState100, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private List<PlatesResult> _platesResults;
 
     public List<PlatesResult> PlatesResults
@@ -222,6 +241,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _platesResults, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private PlatesResult _selectedPlatesResult;
 
     public PlatesResult SelectedPlatesResult
@@ -231,6 +251,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _selectedPlatesResult, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private bool _platesResultVisible;
 
     public bool PlatesResultVisible
@@ -240,6 +261,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _platesResultVisible, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private List<SingleWeightResult> _singleWeightResults;
 
     public List<SingleWeightResult> SingleWeightResults
@@ -249,6 +271,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResults, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private SingleWeightResult _selectedSingleWeightResult;
 
     public SingleWeightResult SelectedSingleWeightResult
@@ -258,6 +281,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _selectedSingleWeightResult, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private bool _singleWeightResultVisible;
 
     public bool SingleWeightResultVisible
@@ -267,6 +291,7 @@ public class CalculatorViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResultVisible, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
     private bool _resultsVisible;
 
     public bool ResultsVisible
@@ -274,6 +299,16 @@ public class CalculatorViewModel : BaseViewModel
         get => _resultsVisible;
 
         set => SetProperty(ref _resultsVisible, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    private ExerciseType _resultsExerciseType;
+
+    public ExerciseType ResultsExerciseType
+    {
+        get => _resultsExerciseType;
+
+        set => SetProperty(ref _resultsExerciseType, value);
     }
 
     #endregion Bindable properties
@@ -470,9 +505,21 @@ public class CalculatorViewModel : BaseViewModel
     public void PercentSelected(string sPercent)
     {
         SelectedPercent = int.TryParse(sPercent, out var percent) ? percent : 100;
-        SelectedPlatesResult = PlatesResults.FirstOrDefault(r => r.Percent == SelectedPercent);
-        SelectedSingleWeightResult =
-            SingleWeightResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+
+        if (PlatesResultVisible)
+        {
+            SelectedPlatesResult = PlatesResults == null || PlatesResults.Count == 0
+                ? null
+                : PlatesResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+        }
+
+        if (SingleWeightResultVisible)
+        {
+            SelectedSingleWeightResult =
+                SingleWeightResults == null || SingleWeightResults.Count == 0
+                    ? null
+                    : SingleWeightResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+        }
 
         // Update percent button visual states.
         PercentButtonVisualState50 = SelectedPercent == 50 ? "Selected" : "Normal";
@@ -501,6 +548,7 @@ public class CalculatorViewModel : BaseViewModel
             "Plates each end", plates);
 
         // Display the results.
+        ResultsExerciseType = ExerciseType.Barbell;
         PlatesResultVisible = true;
         SingleWeightResultVisible = false;
         ResultsVisible = true;
@@ -526,6 +574,7 @@ public class CalculatorViewModel : BaseViewModel
             eachSideText, plates);
 
         // Display the results.
+        ResultsExerciseType = ExerciseType.Machine;
         PlatesResultVisible = true;
         SingleWeightResultVisible = false;
         ResultsVisible = true;
@@ -543,6 +592,7 @@ public class CalculatorViewModel : BaseViewModel
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
+        ResultsExerciseType = ExerciseType.Dumbbell;
         PlatesResultVisible = false;
         SingleWeightResultVisible = true;
         ResultsVisible = true;
@@ -560,6 +610,7 @@ public class CalculatorViewModel : BaseViewModel
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.
+        ResultsExerciseType = ExerciseType.Kettlebell;
         PlatesResultVisible = false;
         SingleWeightResultVisible = true;
         ResultsVisible = true;

@@ -214,6 +214,10 @@ public partial class CalculatorPage : ContentPage
             default:
                 throw new NoMatchingCaseException("Invalid exercise type.");
         }
+
+        // Display the results if the current results exercise type matches; otherwise hide them.
+        _model.ResultsVisible = exerciseType == _model.ResultsExerciseType
+            && (_model.PlatesResultVisible || _model.SingleWeightResultVisible);
     }
 
     #endregion UI
