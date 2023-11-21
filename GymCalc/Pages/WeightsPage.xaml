@@ -32,7 +32,7 @@
                 Grid.Row="2"
                 ImageSource="{AppThemeBinding Light='barbell_icon_black_300.png',
                                               Dark='barbell_icon_white_300.png'}"
-                Text="Fixed barbells"
+                Text="Fixed Barbells"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Barbell"/>

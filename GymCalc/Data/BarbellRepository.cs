@@ -33,10 +33,10 @@ public class BarbellRepository : GymObjectRepository
         var addedSoFar = new List<(decimal, Units)>();
 
         // Kilograms.
-        addedSoFar = await AddBarbellSet(10, 40, 2.5m, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddBarbellSet(7.5m, 70, 2.5m, Units.Kilograms, true, addedSoFar);
 
         // Pounds.
-        addedSoFar = await AddBarbellSet(20, 80, 5, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddBarbellSet(20, 140, 5, Units.Pounds, true, addedSoFar);
     }
 
     private async Task<List<(decimal, Units)>> AddBarbellSet(decimal min, decimal max,

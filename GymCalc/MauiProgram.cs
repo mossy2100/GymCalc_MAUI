@@ -42,9 +42,10 @@ public static class MauiProgram
             .AddSingleton<Database>()
             .AddSingleton<BarRepository>()
             .AddSingleton<PlateRepository>()
+            .AddSingleton<BarbellRepository>()
             .AddSingleton<DumbbellRepository>()
             .AddSingleton<KettlebellRepository>()
-            // Pages (views)
+            // Pages
             .AddSingleton<CalculatorPage>()
             .AddTransient<DeletePage>()
             .AddTransient<EditPage>()

@@ -9,7 +9,7 @@ public class BarbellDrawable : GymObjectDrawable
 {
     public const int HEIGHT = 50;
 
-    public const int WIDTH = 250;
+    public const int WIDTH = 200;
 
     /// <inheritdoc/>
     public override double GetWidth()
@@ -26,8 +26,6 @@ public class BarbellDrawable : GymObjectDrawable
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var barbell = (Barbell)GymObject;
-        // var rectWidth = dirtyRect.Width;
-        // var rectHeight = dirtyRect.Height;
 
         var height = (float)Height;
         var width = (float)Width;
@@ -46,7 +44,7 @@ public class BarbellDrawable : GymObjectDrawable
         const int cornerRadius = 2;
         var smallPlateTop = barTop / 3;
         var smallPlateHeight = height - 2 * smallPlateTop;
-        // canvas.FillColor = CustomColors.Get(barbell.Color);
+        canvas.FillColor = CustomColors.Get("OffBlack");
 
         // Left small plate.
         var leftSmallPlate =
