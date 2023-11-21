@@ -10,7 +10,7 @@ public partial class DeletePage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// Reference to the view model.
+    /// Reference to the viewmodel.
     /// </summary>
     private readonly DeleteViewModel _model;
     // ---------------------------------------------------------------------------------------------

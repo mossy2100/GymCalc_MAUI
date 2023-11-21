@@ -15,63 +15,92 @@
             TextOverride=""/>
     </Shell.BackButtonBehavior>
 
-    <Shell.FlyoutHeader>
-        <VerticalStackLayout
-            Padding="20"
-            BackgroundColor="{StaticResource Primary}"
-            Spacing="10"
-            VerticalOptions="Start">
-            <Label
-                FontAttributes="Bold"
-                FontSize="20"
-                Text="GymCalc"
-                TextColor="White"/>
-            <Label
-                FontAttributes="Bold"
-                FontSize="16"
-                Text="by Shaun Moss"
-                TextColor="White"/>
-        </VerticalStackLayout>
-    </Shell.FlyoutHeader>
+    <!-- <Shell.FlyoutHeader> -->
+    <!--     <VerticalStackLayout -->
+    <!--         Padding="20" -->
+    <!--         BackgroundColor="{StaticResource Primary}" -->
+    <!--         Spacing="10" -->
+    <!--         VerticalOptions="Start"> -->
+    <!--         <Label -->
+    <!--             FontAttributes="Bold" -->
+    <!--             FontSize="20" -->
+    <!--             Text="GymCalc" -->
+    <!--             TextColor="White"/> -->
+    <!--         <Label -->
+    <!--             FontAttributes="Bold" -->
+    <!--             FontSize="16" -->
+    <!--             Text="by Shaun Moss" -->
+    <!--             TextColor="White"/> -->
+    <!--     </VerticalStackLayout> -->
+    <!-- </Shell.FlyoutHeader> -->
 
-    <!-- <FlyoutItem -->
-    <!--     Title="Calculator" -->
-    <!--     FlyoutIcon="{AppThemeBinding Light='calculator_icon_black_300.png', -->
-    <!--                                  Dark='calculator_icon_white_300.png'}"> -->
     <!--     <ShellContent -->
+    <!--         Title="Calculator" -->
+    <!--         Icon="{AppThemeBinding Light='calculator_icon_black_300.png', -->
+    <!--                                Dark='calculator_icon_white_300.png'}" -->
     <!--         ContentTemplate="{DataTemplate pages:CalculatorPage}"/> -->
-    <!-- </FlyoutItem> -->
 
+    <FlyoutItem
+        Title="Calculator"
+        FlyoutIcon="{AppThemeBinding Light='calculator_icon_black_300.png',
+                                     Dark='calculator_icon_white_300.png'}">
+        <ShellContent
+            ContentTemplate="{DataTemplate pages:CalculatorPage}"/>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Weights"
+        FlyoutIcon="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                     Dark='dumbbell_icon_white_300.png'}">
+        <ShellContent
+            ContentTemplate="{DataTemplate pages:WeightsPage}"/>
+    </FlyoutItem>
+    <!-- <MenuItem -->
+    <!--     Text="Bars" -->
+    <!--     IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png', -->
+    <!--                                       Dark='bar_icon_white_300.png'}" -->
+    <!--     Command="{Binding GoToPageCommand}" -->
+    <!--     CommandParameter="Bars"/> -->
+    <!-- <MenuItem -->
+    <!--     Text="Plates" -->
+    <!--     IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png', -->
+    <!--                                       Dark='plate_icon_white_300.png'}" -->
+    <!--     Command="{Binding GoToPageCommand}" -->
+    <!--     CommandParameter="Plate"/> -->
+    <!-- <MenuItem -->
+    <!--     Text="Dumbbells" -->
+    <!--     IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png', -->
+    <!--                                       Dark='dumbbell_icon_white_300.png'}" -->
+    <!--     Command="{Binding GoToPageCommand}" -->
+    <!--     CommandParameter="Dumbbell"/> -->
+    <!-- <MenuItem -->
+    <!--     Text="Kettlebells" -->
+    <!--     IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png', -->
+    <!--                                       Dark='kettlebell_icon_white_300.png'}" -->
+    <!--     Command="{Binding GoToPageCommand}" -->
+    <!--     CommandParameter="Kettlebell"/> -->
     <MenuItem
-        Text="Calculator"
-        IconImageSource="{AppThemeBinding Light='calculator_icon_black_300.png',
-                                          Dark='calculator_icon_white_300.png'}"
-        Command="{Binding GoToRouteCommand}"
-        CommandParameter="calculator"/>
+        Text="Instructions"
+        IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
+                                          Dark='help_icon_white_300.png'}"
+        Command="{Binding GoToPageCommand}"
+        CommandParameter="Instructions"/>
     <MenuItem
-        Text="Bars"
-        IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
-                                          Dark='bar_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Bar"/>
-    <MenuItem
-        Text="Plates"
-        IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
-                                          Dark='plate_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Plate"/>
-    <MenuItem
-        Text="Dumbbells"
-        IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
-                                          Dark='dumbbell_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Dumbbell"/>
-    <MenuItem
-        Text="Kettlebells"
-        IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
-                                          Dark='kettlebell_icon_white_300.png'}"
-        Command="{Binding GoToListCommand}"
-        CommandParameter="Kettlebell"/>
+        Text="About GymCalc"
+        IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
+                                          Dark='about_icon_white_300.png'}"
+        Command="{Binding GoToPageCommand}"
+        CommandParameter="About"/>
+    <!-- <MenuItem -->
+    <!--     Text="Settings" -->
+    <!--     IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png', -->
+    <!--                                       Dark='settings_icon_white_300.png'}" -->
+    <!--     Command="{Binding GoToPageCommand}" -->
+    <!--     CommandParameter="Settings"/> -->
+    <ShellContent
+        Title="Settings"
+        Icon="{AppThemeBinding Light='settings_icon_black_300.png',
+                                          Dark='settings_icon_white_300.png'}"
+        ContentTemplate="{DataTemplate pages:SettingsPage}"/>
 
     <!-- <FlyoutItem -->
     <!--     Title="Settings" -->
@@ -81,36 +110,13 @@
     <!--         ContentTemplate="{DataTemplate pages:SettingsPage}"/> -->
     <!-- </FlyoutItem> -->
 
-    <MenuItem
-        Text="Instructions"
-        IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
-                                          Dark='help_icon_white_300.png'}"
-        Command="{Binding GoToInstructionsCommand}"/>
-    <MenuItem
-        Text="About GymCalc"
-        IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
-                                          Dark='about_icon_white_300.png'}"
-        Command="{Binding GoToAboutCommand}"/>
-    <MenuItem
-        Text="Settings"
-        IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png',
-                                          Dark='settings_icon_white_300.png'}"
-        Command="{Binding GoToRouteCommand}"
-        CommandParameter="settings"/>
-
     <!-- Global pages have to be declared as ShellContent and they're always singletons regardless
     of what you specify in DI. -->
-    <ShellContent
-        ContentTemplate="{DataTemplate pages:CalculatorPage}"
-        Route="calculator"/>
-    <ShellContent
-        ContentTemplate="{DataTemplate pages:ListPage}"
-        Route="list"/>
+    <!-- <ShellContent -->
+    <!--     ContentTemplate="{DataTemplate pages:ListPage}" -->
+    <!--     Route="list"/> -->
     <ShellContent
         ContentTemplate="{DataTemplate pages:HtmlPage}"
         Route="html"/>
-    <ShellContent
-        ContentTemplate="{DataTemplate pages:SettingsPage}"
-        Route="settings"/>
 
 </Shell>

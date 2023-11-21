@@ -19,11 +19,13 @@ public class CalculatorViewModel : BaseViewModel
     /// Constructor.
     /// </summary>
     public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
     {
         // Keep references to the repositories.
         _barRepo = barRepo;
         _plateRepo = plateRepo;
+        _barbellRepo = barbellRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
 
@@ -41,6 +43,8 @@ public class CalculatorViewModel : BaseViewModel
     private readonly BarRepository _barRepo;
 
     private readonly PlateRepository _plateRepo;
+
+    private readonly BarbellRepository _barbellRepo;
 
     private readonly DumbbellRepository _dumbbellRepo;
 
@@ -360,9 +364,10 @@ public class CalculatorViewModel : BaseViewModel
     {
         var barTask = _barRepo.Initialize();
         var plateTask = _plateRepo.Initialize();
+        var barbellTask = _barbellRepo.Initialize();
         var dumbbellTask = _dumbbellRepo.Initialize();
         var kettlebellTask = _kettlebellRepo.Initialize();
-        await Task.WhenAll(barTask, plateTask, dumbbellTask, kettlebellTask);
+        await Task.WhenAll(barTask, plateTask, barbellTask, dumbbellTask, kettlebellTask);
     }
 
     /// <summary>

@@ -1,0 +1,58 @@
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="GymCalc.Pages.WeightsPage">
+    <ContentPage.Content>
+        <Grid
+            Padding="20"
+            ColumnDefinitions="*"
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+            RowSpacing="10">
+
+            <Button
+                Grid.Row="0"
+                ImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
+                                              Dark='bar_icon_white_300.png'}"
+                Text="Bars"
+                ContentLayout="Left,20"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Bar"/>
+            <Button
+                Grid.Row="1"
+                ImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
+                                              Dark='plate_icon_white_300.png'}"
+                Text="Plates"
+                ContentLayout="Left,20"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Plate"/>
+            <Button
+                Grid.Row="2"
+                ImageSource="{AppThemeBinding Light='barbell_icon_black_300.png',
+                                              Dark='barbell_icon_white_300.png'}"
+                Text="Fixed barbells"
+                ContentLayout="Left,20"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Barbell"/>
+            <Button
+                Grid.Row="3"
+                ImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                              Dark='dumbbell_icon_white_300.png'}"
+                Text="Dumbbells"
+                ContentLayout="Left,20"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Dumbbell"/>
+            <Button
+                Grid.Row="4"
+                ImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
+                                              Dark='kettlebell_icon_white_300.png'}"
+                Text="Kettlebells"
+                ContentLayout="Left,20"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Kettlebell"/>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -147,7 +147,7 @@ public partial class CalculatorPage : ContentPage
         // Clear the error message.
         _model.ErrorMessage = "";
 
-        // Update the view model.
+        // Update the viewmodel.
         _model.SelectedExerciseType = exerciseType;
 
         // Deselect all exercise type buttons.

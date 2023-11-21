@@ -15,11 +15,13 @@ public class ListViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
+    private readonly PlateRepository _plateRepo;
+
+    private readonly BarbellRepository _barbellRepo;
+
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
-
-    private readonly PlateRepository _plateRepo;
 
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
@@ -50,14 +52,17 @@ public class ListViewModel : BaseViewModel
     /// </summary>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
+    /// <param name="barbellRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
     public ListViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
     {
         // Keep references to the dependencies.
         _barRepo = barRepo;
         _plateRepo = plateRepo;
+        _barbellRepo = barbellRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
 
@@ -155,6 +160,11 @@ public class ListViewModel : BaseViewModel
                 DisplayList(plates);
                 break;
 
+            case nameof(Barbell):
+                var barbells = await _barbellRepo.GetSome(ascending: true);
+                DisplayList(barbells);
+                break;
+
             case nameof(Dumbbell):
                 var dumbbells = await _dumbbellRepo.GetSome(ascending: true);
                 DisplayList(dumbbells);
@@ -237,6 +247,10 @@ public class ListViewModel : BaseViewModel
 
             case Plate plate:
                 await _plateRepo.Upsert(plate);
+                break;
+
+            case Barbell barbell:
+                await _barbellRepo.Upsert(barbell);
                 break;
 
             case Dumbbell dumbbell:

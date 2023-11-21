@@ -52,6 +52,7 @@ public static class MauiProgram
             .AddSingleton<ListPage>()
             .AddSingleton<ResetPage>()
             .AddSingleton<SettingsPage>()
+            .AddSingleton<WeightsPage>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
             .AddTransient<DeleteViewModel>()
@@ -60,6 +61,7 @@ public static class MauiProgram
             .AddSingleton<ListViewModel>()
             .AddSingleton<ResetViewModel>()
             .AddSingleton<SettingsViewModel>()
+            .AddSingleton<WeightsViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
             .AddSingleton<DatabaseHelperService>()

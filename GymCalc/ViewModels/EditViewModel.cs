@@ -16,11 +16,16 @@ public class EditViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
+    private readonly PlateRepository _plateRepo;
+
+    private readonly BarbellRepository _barbellRepo;
+
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    private readonly PlateRepository _plateRepo;
+    // ---------------------------------------------------------------------------------------------
+    // Fields
 
     private string _bandColor;
 
@@ -28,11 +33,6 @@ public class EditViewModel : BaseViewModel
 
     private string _errorMessage;
 
-    // ---------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// The gym object.
-    /// </summary>
     private GymObject _gymObject;
 
     private int _gymObjectId;
@@ -46,9 +46,6 @@ public class EditViewModel : BaseViewModel
     private string _mainColor;
 
     private bool _mainColorIsVisible;
-
-    // ---------------------------------------------------------------------------------------------
-    // Page parameters.
 
     private string _operation;
 
@@ -73,14 +70,17 @@ public class EditViewModel : BaseViewModel
     /// </summary>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
+    /// <param name="barbellRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
     public EditViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
         _barRepo = barRepo;
         _plateRepo = plateRepo;
+        _barbellRepo = barbellRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
 
@@ -197,6 +197,7 @@ public class EditViewModel : BaseViewModel
         {
             nameof(Bar) => await SaveBar(),
             nameof(Plate) => await SavePlate(),
+            nameof(Barbell) => await SaveBarbell(),
             nameof(Dumbbell) => await SaveDumbbell(),
             nameof(Kettlebell) => await SaveKettlebell(),
             _ => throw new Exception("Invalid gym object type.")
@@ -270,6 +271,7 @@ public class EditViewModel : BaseViewModel
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
+            case nameof(Barbell):
                 MainColorIsVisible = false;
                 HasBandsIsVisible = false;
                 break;
@@ -310,6 +312,11 @@ public class EditViewModel : BaseViewModel
                 _gymObject = plate;
                 break;
 
+            case nameof(Barbell):
+                var barbell = await _barbellRepo.Get(_gymObjectId);
+                _gymObject = barbell;
+                break;
+
             case nameof(Dumbbell):
                 var dumbbell = await _dumbbellRepo.Get(_gymObjectId);
                 MainColor = dumbbell.Color;
@@ -339,7 +346,7 @@ public class EditViewModel : BaseViewModel
     // Save-related methods.
 
     /// <summary>
-    /// Copy common values from the view model to the model.
+    /// Copy common values from the viewmodel to the model.
     /// </summary>
     private void CopyCommonValues(GymObject gymObject)
     {
@@ -353,7 +360,7 @@ public class EditViewModel : BaseViewModel
         // If this is an add operation, create new Bar.
         var bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
 
-        // Copy values from the view model to the model.
+        // Copy values from the viewmodel to the model.
         CopyCommonValues(bar);
 
         // Update the database.
@@ -367,7 +374,7 @@ public class EditViewModel : BaseViewModel
         // If this is an add operation, create new Bar.
         var plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
 
-        // Copy values from the view model to the model.
+        // Copy values from the viewmodel to the model.
         CopyCommonValues(plate);
         plate.Color = MainColor;
 
@@ -377,12 +384,26 @@ public class EditViewModel : BaseViewModel
         return plate;
     }
 
+    private async Task<GymObject> SaveBarbell()
+    {
+        // If this is an add operation, create new Barbell.
+        var barbell = _operation == "add" ? new Barbell() : (Barbell)_gymObject;
+
+        // Copy values from the viewmodel to the model.
+        CopyCommonValues(barbell);
+
+        // Update the database.
+        await _barbellRepo.Upsert(barbell);
+
+        return barbell;
+    }
+
     private async Task<GymObject> SaveDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
         var dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
 
-        // Copy values from the view model to the model.
+        // Copy values from the viewmodel to the model.
         CopyCommonValues(dumbbell);
         dumbbell.Color = MainColor;
 
@@ -397,7 +418,7 @@ public class EditViewModel : BaseViewModel
         // If this is an add operation, create new Kettlebell.
         var kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
 
-        // Copy values from the view model to the model.
+        // Copy values from the viewmodel to the model.
         CopyCommonValues(kettlebell);
         kettlebell.BallColor = MainColor;
         kettlebell.HasBands = HasBands;

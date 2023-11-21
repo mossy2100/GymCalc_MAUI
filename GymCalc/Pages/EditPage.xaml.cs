@@ -11,7 +11,7 @@ public partial class EditPage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// Reference to the view model.
+    /// Reference to the viewmodel.
     /// </summary>
     private readonly EditViewModel _model;
 

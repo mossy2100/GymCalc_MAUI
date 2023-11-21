@@ -13,54 +13,80 @@ public partial class AppShell : Shell
         RegisterRoutes();
     }
 
-    public ICommand GoToRouteCommand => new AsyncCommand<string>(GoToRoute);
+    public ICommand GoToPageCommand => new AsyncCommand<string>(GoToPage);
 
-    public ICommand GoToListCommand => new AsyncCommand<string>(GoToList);
-
-    public ICommand GoToInstructionsCommand =>
-        new AsyncCommand(async () => await GoToHtml("Instructions", "/Instructions"));
-
-    public ICommand GoToAboutCommand =>
-        new AsyncCommand(async () => await GoToHtml("About GymCalc", "/About"));
-
-    /// <summary>
-    /// Register routes for navigation pages.
-    /// </summary>
+    /// <summary>Register routes for navigation (non-global) pages.</summary>
     private static void RegisterRoutes()
     {
-        // Routing.RegisterRoute("calculator", typeof(CalculatorPage));
+        Routing.RegisterRoute("list", typeof(ListPage));
         Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("delete", typeof(DeletePage));
         Routing.RegisterRoute("reset", typeof(ResetPage));
+        // Routing.RegisterRoute("//html", typeof(HtmlPage));
         // Routing.RegisterRoute("settings", typeof(SettingsPage));
     }
 
-    #region Command methods
-
-    internal static async Task GoToRoute(string route)
+    private static async Task GoToPage(string pageName)
     {
         Current.FlyoutIsPresented = false;
-        await Current.GoToAsync($"//{route}");
-    }
 
-    internal static async Task GoToList(string gymObjectTypeName)
-    {
-        Current.FlyoutIsPresented = false;
-        await Current.GoToAsync("//list", new Dictionary<string, object>
+        string route = null;
+        Dictionary<string, object> parameters = null;
+
+        switch (pageName)
         {
-            { "type", gymObjectTypeName }
-        });
-    }
+            case "Calculator":
+                route = "//calculator";
+                break;
 
-    internal static async Task GoToHtml(string title, string route)
-    {
-        Current.FlyoutIsPresented = false;
-        await Current.GoToAsync("//html", new Dictionary<string, object>
+            case "Bars":
+                route = "//list";
+                parameters = new Dictionary<string, object> { { "type", "Bar" } };
+                break;
+
+            case "Plates":
+                route = "//list";
+                parameters = new Dictionary<string, object> { { "type", "Plate" } };
+                break;
+
+            case "Dumbbells":
+                route = "//list";
+                parameters = new Dictionary<string, object> { { "type", "Dumbbell" } };
+                break;
+
+            case "Kettlebells":
+                route = "//list";
+                parameters = new Dictionary<string, object> { { "type", "Kettlebell" } };
+                break;
+
+            case "Instructions":
+                route = "//html";
+                parameters = new Dictionary<string, object>
+                    { { "title", "Instructions" }, { "route", "/Instructions" } };
+                break;
+
+            case "About":
+                route = "//html";
+                parameters = new Dictionary<string, object>
+                    { { "title", "About GymCalc" }, { "route", "/About" } };
+                break;
+
+            case "Settings":
+                route = "//settings";
+                break;
+        }
+
+        // If a route is specified, go to that page.
+        if (route != null)
         {
-            { "title", title },
-            { "route", route }
-        });
+            if (parameters == null)
+            {
+                await Current.GoToAsync(route);
+            }
+            else
+            {
+                await Current.GoToAsync(route, parameters);
+            }
+        }
     }
-
-    #endregion Command methods
 }

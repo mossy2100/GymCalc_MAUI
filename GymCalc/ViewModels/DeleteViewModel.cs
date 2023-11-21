@@ -12,25 +12,26 @@ public class DeleteViewModel : BaseViewModel
 
     private readonly BarRepository _barRepo;
 
+    private readonly PlateRepository _plateRepo;
+
+    private readonly BarbellRepository _barbellRepo;
+
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    private readonly PlateRepository _plateRepo;
+    // ---------------------------------------------------------------------------------------------
+    // Fields
 
     /// <summary>
     /// Message to the user confirming the deletion.
     /// </summary>
     private string _confirmDeletionMessage;
 
-    // ---------------------------------------------------------------------------------------------
-
     /// <summary>
     /// The gym object.
     /// </summary>
     private GymObject _gymObject;
-
-    // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// Page title.
@@ -44,14 +45,17 @@ public class DeleteViewModel : BaseViewModel
     /// </summary>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
+    /// <param name="barbellRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
     public DeleteViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        DumbbellRepository dumbbellRepo, KettlebellRepository kettlebellRepo)
+        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
         _barRepo = barRepo;
         _plateRepo = plateRepo;
+        _barbellRepo = barbellRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
 
@@ -107,6 +111,10 @@ public class DeleteViewModel : BaseViewModel
                 await _plateRepo.Delete(_gymObject.Id);
                 break;
 
+            case Barbell:
+                await _barbellRepo.Delete(_gymObject.Id);
+                break;
+
             case Dumbbell:
                 await _dumbbellRepo.Delete(_gymObject.Id);
                 break;
@@ -145,6 +153,10 @@ public class DeleteViewModel : BaseViewModel
 
             case nameof(Plate):
                 _gymObject = await _plateRepo.Get(gymObjectId);
+                break;
+
+            case nameof(Barbell):
+                _gymObject = await _barbellRepo.Get(gymObjectId);
                 break;
 
             case nameof(Dumbbell):

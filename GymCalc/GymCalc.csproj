@@ -84,6 +84,15 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_white_300.png">
+            <BaseSize>30,30</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
         <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_black_300.png">
             <BaseSize>30,30</BaseSize>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

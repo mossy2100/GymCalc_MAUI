@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Galaxon.Core.Enums;
 using GymCalc.Shared;
 using SQLite;
@@ -14,6 +15,7 @@ public class GymObject
 
     public string Units { get; set; }
 
+    [NotMapped]
     public decimal WeightKg =>
         Units == Constants.Units.Kilograms.GetDescription()
             ? Weight

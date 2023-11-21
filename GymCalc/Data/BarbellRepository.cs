@@ -5,27 +5,27 @@ using GymCalc.Models;
 namespace GymCalc.Data;
 
 /// <summary>
-/// Methods for CRUD operations on dumbbells.
+/// Methods for CRUD operations on fixed-weight barbells.
 /// </summary>
-public class DumbbellRepository : GymObjectRepository
+public class BarbellRepository : GymObjectRepository
 {
     /// <summary>
     /// Object cache.
     /// </summary>
-    private Dictionary<int, Dumbbell> _cache;
+    private Dictionary<int, Barbell> _cache;
 
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="database">Injected database object.</param>
-    public DumbbellRepository(Database database) : base(database) { }
+    public BarbellRepository(Database database) : base(database) { }
 
     /// <summary>
-    /// Ensure the database table exist and contains some dumbbells.
+    /// Ensure the database table exist and contains some barbells.
     /// </summary>
     internal override async Task Initialize()
     {
-        await base.Initialize<Dumbbell>();
+        await base.Initialize<Barbell>();
     }
 
     internal override async Task InsertDefaults()
@@ -33,15 +33,13 @@ public class DumbbellRepository : GymObjectRepository
         var addedSoFar = new List<(decimal, Units)>();
 
         // Kilograms.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Kilograms, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(2.5m, 60, 2.5m, Units.Kilograms, true, addedSoFar);
+        addedSoFar = await AddBarbellSet(10, 40, 2.5m, Units.Kilograms, true, addedSoFar);
 
         // Pounds.
-        addedSoFar = await AddDumbbellSet(1, 10, 1, Units.Pounds, true, addedSoFar);
-        addedSoFar = await AddDumbbellSet(5, 120, 5, Units.Pounds, true, addedSoFar);
+        addedSoFar = await AddBarbellSet(20, 80, 5, Units.Pounds, true, addedSoFar);
     }
 
-    private async Task<List<(decimal, Units)>> AddDumbbellSet(decimal min, decimal max,
+    private async Task<List<(decimal, Units)>> AddBarbellSet(decimal min, decimal max,
         decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
     {
         for (var weight = min; weight <= max; weight += step)
@@ -52,15 +50,14 @@ public class DumbbellRepository : GymObjectRepository
                 continue;
             }
 
-            // Add the dumbbell.
-            var dumbbell = new Dumbbell
+            // Add the barbell.
+            var barbell = new Barbell
             {
                 Weight = weight,
                 Units = units.GetDescription(),
-                Enabled = enabled,
-                Color = "OffBlack"
+                Enabled = enabled
             };
-            await Insert(dumbbell);
+            await Insert(barbell);
 
             // Remember it.
             addedSoFar.Add((weight, units));
@@ -76,18 +73,18 @@ public class DumbbellRepository : GymObjectRepository
     {
         if (_cache == null)
         {
-            var dumbbells = await Database.Connection.Table<Dumbbell>().ToListAsync();
-            var pairs = dumbbells.Select(dumbbell =>
-                new KeyValuePair<int, Dumbbell>(dumbbell.Id, dumbbell));
-            _cache = new Dictionary<int, Dumbbell>(pairs);
+            var barbells = await Database.Connection.Table<Barbell>().ToListAsync();
+            var pairs = barbells.Select(barbell =>
+                new KeyValuePair<int, Barbell>(barbell.Id, barbell));
+            _cache = new Dictionary<int, Barbell>(pairs);
         }
     }
 
     /// <summary>
-    /// Get some dumbbells.
+    /// Get some barbells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Dumbbell>> GetSome(Units units = Units.Default, bool? enabled = null,
+    internal async Task<List<Barbell>> GetSome(Units units = Units.Default, bool? enabled = null,
         bool? ascending = null)
     {
         await InitCache();
@@ -95,48 +92,48 @@ public class DumbbellRepository : GymObjectRepository
     }
 
     /// <summary>
-    /// Get a dumbbell by id.
+    /// Get a barbell by id.
     /// </summary>
     /// <returns></returns>
-    internal override async Task<Dumbbell> Get(int id)
+    internal override async Task<Barbell> Get(int id)
     {
         await InitCache();
         return _cache[id];
     }
 
     /// <summary>
-    /// Update a dumbbell.
+    /// Update a barbell.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Dumbbell> Update(Dumbbell dumbbell)
+    internal async Task<Barbell> Update(Barbell barbell)
     {
         await InitCache();
-        return await Update(_cache, dumbbell);
+        return await Update(_cache, barbell);
     }
 
     /// <summary>
-    /// Insert a new dumbbell.
+    /// Insert a new barbell.
     /// </summary>
     /// <returns></returns>
-    internal async Task<Dumbbell> Insert(Dumbbell dumbbell)
+    internal async Task<Barbell> Insert(Barbell barbell)
     {
         await InitCache();
-        return await Insert(_cache, dumbbell);
+        return await Insert(_cache, barbell);
     }
 
     /// <summary>
     /// Update or insert as required.
     /// </summary>
-    /// <param name="dumbbell"></param>
+    /// <param name="barbell"></param>
     /// <returns></returns>
-    internal async Task<Dumbbell> Upsert(Dumbbell dumbbell)
+    internal async Task<Barbell> Upsert(Barbell barbell)
     {
         await InitCache();
-        return await Upsert(_cache, dumbbell);
+        return await Upsert(_cache, barbell);
     }
 
     /// <summary>
-    /// Delete a dumbbell.
+    /// Delete a barbell.
     /// </summary>
     /// <returns></returns>
     internal override async Task Delete(int id)
@@ -148,7 +145,7 @@ public class DumbbellRepository : GymObjectRepository
     /// <inheritdoc/>
     internal override async Task DeleteAll()
     {
-        await base.DeleteAll<Dumbbell>();
+        await base.DeleteAll<Barbell>();
         _cache.Clear();
     }
 }

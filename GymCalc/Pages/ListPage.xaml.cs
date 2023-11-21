@@ -14,8 +14,11 @@ public partial class ListPage : ContentPage
     private string _gymObjectTypeName;
 
     /// <summary>
-    /// Constructon
+    /// Reference to the viewmodel.
     /// </summary>
+    public ListViewModel Model { get; }
+
+    /// <summary>Constructor.</summary>
     /// <param name="listViewModel"></param>
     public ListPage(ListViewModel listViewModel)
     {
@@ -29,11 +32,6 @@ public partial class ListPage : ContentPage
         // Event handlers.
         SizeChanged += OnSizeChanged;
     }
-
-    /// <summary>
-    /// Reference to the viewmodel.
-    /// </summary>
-    public ListViewModel Model { get; }
 
     public string GymObjectTypeName
     {
