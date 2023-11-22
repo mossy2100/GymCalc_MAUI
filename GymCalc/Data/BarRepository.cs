@@ -37,6 +37,10 @@ public class BarRepository : GymObjectRepository
     /// </summary>
     private Dictionary<int, Bar> _cache;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="database">Reference to the single Database object (DI).</param>
     public BarRepository(Database database) : base(database) { }
 
     /// <summary>
@@ -68,7 +72,7 @@ public class BarRepository : GymObjectRepository
     {
         if (_cache == null)
         {
-            var bars = await Database.Connection.Table<Bar>().ToListAsync();
+            var bars = await _Database.Connection.Table<Bar>().ToListAsync();
             var pairs = bars.Select(bar => new KeyValuePair<int, Bar>(bar.Id, bar));
             _cache = new Dictionary<int, Bar>(pairs);
         }

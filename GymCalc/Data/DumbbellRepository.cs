@@ -17,7 +17,7 @@ public class DumbbellRepository : GymObjectRepository
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="database">Injected database object.</param>
+    /// <param name="database">Reference to the single Database object (DI).</param>
     public DumbbellRepository(Database database) : base(database) { }
 
     /// <summary>
@@ -76,7 +76,7 @@ public class DumbbellRepository : GymObjectRepository
     {
         if (_cache == null)
         {
-            var dumbbells = await Database.Connection.Table<Dumbbell>().ToListAsync();
+            var dumbbells = await _Database.Connection.Table<Dumbbell>().ToListAsync();
             var pairs = dumbbells.Select(dumbbell =>
                 new KeyValuePair<int, Dumbbell>(dumbbell.Id, dumbbell));
             _cache = new Dictionary<int, Dumbbell>(pairs);

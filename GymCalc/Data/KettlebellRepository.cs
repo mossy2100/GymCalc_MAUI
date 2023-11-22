@@ -15,6 +15,10 @@ public class KettlebellRepository : GymObjectRepository
     /// </summary>
     private Dictionary<int, Kettlebell> _cache;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="database">Reference to the single Database object (DI).</param>
     public KettlebellRepository(Database database) : base(database) { }
 
     /// <summary>
@@ -77,7 +81,7 @@ public class KettlebellRepository : GymObjectRepository
     {
         if (_cache == null)
         {
-            var kettlebells = await Database.Connection.Table<Kettlebell>().ToListAsync();
+            var kettlebells = await _Database.Connection.Table<Kettlebell>().ToListAsync();
             var pairs = kettlebells.Select(kettlebell =>
                 new KeyValuePair<int, Kettlebell>(kettlebell.Id, kettlebell));
             _cache = new Dictionary<int, Kettlebell>(pairs);

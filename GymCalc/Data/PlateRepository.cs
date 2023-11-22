@@ -53,6 +53,10 @@ public class PlateRepository : GymObjectRepository
     /// </summary>
     private Dictionary<int, Plate> _cache;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="database">Reference to the single Database object (DI).</param>
     public PlateRepository(Database database) : base(database) { }
 
     /// <summary>
@@ -85,7 +89,7 @@ public class PlateRepository : GymObjectRepository
     {
         if (_cache == null)
         {
-            var plates = await Database.Connection.Table<Plate>().ToListAsync();
+            var plates = await _Database.Connection.Table<Plate>().ToListAsync();
             var pairs = plates.Select(plate => new KeyValuePair<int, Plate>(plate.Id, plate));
             _cache = new Dictionary<int, Plate>(pairs);
         }

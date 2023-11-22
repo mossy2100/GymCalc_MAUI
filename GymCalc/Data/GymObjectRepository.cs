@@ -10,13 +10,13 @@ public abstract class GymObjectRepository
 {
     protected GymObjectRepository(Database database)
     {
-        Database = database;
+        _Database = database;
     }
 
     /// <summary>
     /// Reference to the database (DI).
     /// </summary>
-    protected Database Database { get; init; }
+    protected Database _Database { get; init; }
 
     /// <summary>
     /// To be implemented by concrete classes.
@@ -28,7 +28,7 @@ public abstract class GymObjectRepository
     /// </summary>
     internal async Task Initialize<T>() where T : new()
     {
-        var conn = Database.Connection;
+        var conn = _Database.Connection;
 
         // Create the table if it doesn't already exist.
         await conn.CreateTableAsync<T>();
@@ -100,7 +100,7 @@ public abstract class GymObjectRepository
     /// <returns>The updated gym object.</returns>
     internal async Task<T> Update<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
     {
-        var nRowsUpdated = await Database.Connection.UpdateAsync(gymObject);
+        var nRowsUpdated = await _Database.Connection.UpdateAsync(gymObject);
         if (nRowsUpdated != 1)
         {
             throw new DataException("Error updating record.");
@@ -115,7 +115,7 @@ public abstract class GymObjectRepository
     /// <returns>The new gym object.</returns>
     internal async Task<T> Insert<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
     {
-        var nRowsInserted = await Database.Connection.InsertAsync(gymObject);
+        var nRowsInserted = await _Database.Connection.InsertAsync(gymObject);
         if (nRowsInserted != 1)
         {
             throw new DataException("Error inserting new record.");
@@ -138,7 +138,7 @@ public abstract class GymObjectRepository
     /// </summary>
     internal async Task Delete<T>(Dictionary<int, T> cache, int id) where T : GymObject
     {
-        var nRowsDeleted = await Database.Connection.DeleteAsync<T>(id);
+        var nRowsDeleted = await _Database.Connection.DeleteAsync<T>(id);
         if (nRowsDeleted != 1)
         {
             throw new DataException("Error deleting record.");
@@ -154,7 +154,7 @@ public abstract class GymObjectRepository
     /// <typeparam name="T"></typeparam>
     internal async Task DeleteAll<T>()
     {
-        await Database.Connection.DeleteAllAsync<T>();
+        await _Database.Connection.DeleteAllAsync<T>();
     }
 
     internal abstract Task Get(int id);
