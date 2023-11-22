@@ -65,7 +65,6 @@ public static class MauiProgram
             .AddSingleton<WeightsViewModel>()
             // Services
             .AddSingleton<HtmlUpdaterService>()
-            .AddSingleton<DatabaseHelperService>()
             ;
     }
 }
