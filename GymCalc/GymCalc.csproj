@@ -244,7 +244,7 @@
 
     <ItemGroup>
       <Reference Include="Galaxon.Core">
-        <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Release\net7.0\Galaxon.Core.dll</HintPath>
+        <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net8.0\Galaxon.Core.dll</HintPath>
       </Reference>
       <Reference Include="Galaxon.Maui">
         <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Maui\Maui\bin\Debug\net8.0\Galaxon.Maui.dll</HintPath>

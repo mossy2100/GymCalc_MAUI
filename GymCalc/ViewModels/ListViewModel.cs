@@ -1,6 +1,6 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using GymCalc.Data;
 using GymCalc.Drawables;
 using GymCalc.Models;

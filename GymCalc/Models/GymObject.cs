@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using GymCalc.Shared;
 using SQLite;
 

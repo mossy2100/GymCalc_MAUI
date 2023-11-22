@@ -13,21 +13,19 @@ public partial class ListPage : ContentPage
     /// </summary>
     private string _gymObjectTypeName;
 
-    /// <summary>
-    /// Reference to the viewmodel.
-    /// </summary>
-    public ListViewModel Model { get; }
+    /// <summary>Reference to the viewmodel.</summary>
+    private readonly ListViewModel _model;
 
     /// <summary>Constructor.</summary>
     /// <param name="listViewModel"></param>
     public ListPage(ListViewModel listViewModel)
     {
         // Keep references to dependencies.
-        Model = listViewModel;
+        _model = listViewModel;
 
         // Initialize.
         InitializeComponent();
-        BindingContext = Model;
+        BindingContext = _model;
 
         // Event handlers.
         SizeChanged += OnSizeChanged;
@@ -42,7 +40,7 @@ public partial class ListPage : ContentPage
             _gymObjectTypeName = value;
 
             // Copy the value to the model.
-            Model.GymObjectTypeName = value;
+            _model.GymObjectTypeName = value;
         }
     }
 
@@ -50,7 +48,7 @@ public partial class ListPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await Model.DisplayList();
+        await _model.DisplayList();
     }
 
     /// <summary>
@@ -60,6 +58,6 @@ public partial class ListPage : ContentPage
     /// <param name="e"></param>
     private async void OnSizeChanged(object sender, EventArgs e)
     {
-        await Model.DisplayList();
+        await _model.DisplayList();
     }
 }

@@ -18,6 +18,8 @@
             x:Key="DefaultWeightTextConverter"/>
         <converters:MachineTypeConverter
             x:Key="DefaultMachineTypeConverter"/>
+        <converters:BarbellTypeConverter
+            x:Key="DefaultBarbellTypeConverter"/>
     </ContentPage.Resources>
 
     <ScrollView
@@ -34,6 +36,7 @@
             -->
             <VerticalStackLayout
                 Spacing="{x:Static graphics:PageLayout.Spacing}">
+
                 <!-- Exercise type -->
                 <Label
                     Text="Select exercise type:"/>
@@ -43,6 +46,7 @@
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto,Auto"
                     RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+                    <!-- Row 0 -->
                     <Button
                         x:Name="BarbellButton"
                         Grid.Row="0"
@@ -57,6 +61,7 @@
                         Clicked="OnDumbbellButtonClicked"
                         Style="{StaticResource DumbbellButtonStyle}"
                         Text="Dumbbell"/>
+                    <!-- Row 1 -->
                     <Button
                         x:Name="MachineButton"
                         Grid.Row="1"
@@ -75,7 +80,7 @@
 
                 <!-- Max weight -->
                 <Grid
-                    ColumnDefinitions="8*,3*,*"
+                    ColumnDefinitions="7*,4*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -103,10 +108,39 @@
                         VerticalTextAlignment="Center"/>
                 </Grid>
 
+                <!-- Barbell type -->
+                <Grid
+                    x:Name="BarbellTypeGrid"
+                    ColumnDefinitions="7*,5*"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    RowDefinitions="Auto">
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Barbell type"
+                        VerticalTextAlignment="Center"/>
+                    <input:RadioButtonGroupView
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        SelectedItem="{Binding BarbellType, Mode=TwoWay,
+                            Converter={StaticResource DefaultBarbellTypeConverter}}">
+                        <input:RadioButton
+                            Text="Plate-loaded"
+                            Value="PlateLoaded"
+                            Clicked="OnBarbellTypePlateLoadedSelected"
+                            IsChecked="True"/>
+                        <input:RadioButton
+                            Text="Fixed"
+                            Value="Fixed"
+                            Clicked="OnBarbellTypeFixedSelected"
+                            IsChecked="False"/>
+                    </input:RadioButtonGroupView>
+                </Grid>
+
                 <!-- Bar weight -->
                 <Grid
                     x:Name="BarWeightGrid"
-                    ColumnDefinitions="8*,3*,*"
+                    ColumnDefinitions="7*,4*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -137,7 +171,7 @@
                 <!-- Machine type -->
                 <Grid
                     x:Name="MachineTypeGrid"
-                    ColumnDefinitions="8*,4*"
+                    ColumnDefinitions="7*,5*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -163,7 +197,7 @@
                 <!-- Machine starting weight -->
                 <Grid
                     x:Name="StartingWeightGrid"
-                    ColumnDefinitions="8*,3*,*"
+                    ColumnDefinitions="7*,4*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     RowDefinitions="Auto">
                     <Label
@@ -274,59 +308,72 @@
                 <!-- Plates Results -->
                 <Grid
                     Padding="0,10,0,10"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto"
                     RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    ColumnDefinitions="4*,3*,3*"
+                    ColumnDefinitions="*,*,*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     IsVisible="{Binding PlatesResultVisible}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="{Binding SelectedPlatesResult.Drawable.Height}"/>
+                    </Grid.RowDefinitions>
+                    <!-- Row 0 -->
                     <Label
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="1"
                         Text="Ideal"
                         VerticalTextAlignment="End"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <Label
-                        Grid.Row="1"
+                        Grid.Row="0"
                         Grid.Column="2"
                         Text="Closest"
                         VerticalTextAlignment="End"
                         Style="{StaticResource ResultsTableHeader}"/>
+                    <!-- Row 1 -->
                     <Label
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Grid.Column="0"
                         Text="Total"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <Label
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Text="{Binding SelectedPlatesResult.IdealTotalWeight,
                         Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableIdeal}"/>
                     <Label
-                        Grid.Row="2"
+                        Grid.Row="1"
                         Grid.Column="2"
                         Text="{Binding SelectedPlatesResult.ClosestTotalWeight,
                             Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableClosest}"/>
+                    <!-- Row 2 -->
                     <Label
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="0"
                         Text="{Binding SelectedPlatesResult.EachSideText}"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <Label
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Text="{Binding SelectedPlatesResult.IdealPlatesWeight,
                             Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableIdeal}"/>
                     <Label
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="2"
                         Text="{Binding SelectedPlatesResult.ClosestPlatesWeight,
                             Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableClosest}"/>
+                    <!-- Row 3 -->
                     <GraphicsView
-                        Grid.Row="4"
+                        Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="3"
                         Drawable="{Binding SelectedPlatesResult.Drawable}"
@@ -348,6 +395,7 @@
                         <RowDefinition
                             Height="{Binding SelectedSingleWeightResult.Drawable.Height}"/>
                     </Grid.RowDefinitions>
+                    <!-- Row 0 -->
                     <Label
                         Grid.Row="0"
                         Grid.Column="1"
@@ -360,6 +408,7 @@
                         Text="Closest"
                         VerticalTextAlignment="End"
                         Style="{StaticResource ResultsTableHeader}"/>
+                    <!-- Row 1 -->
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"

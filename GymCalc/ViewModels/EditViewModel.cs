@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using Galaxon.Core.Exceptions;
 using GymCalc.Data;
 using GymCalc.Models;

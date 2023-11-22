@@ -10,6 +10,7 @@ public partial class HtmlPage : ContentPage
 {
     private readonly HtmlUpdaterService _htmlUpdaterService;
 
+    /// <summary>Reference to the viewmodel.</summary>
     private readonly HtmlViewModel _model;
 
     private string _route;

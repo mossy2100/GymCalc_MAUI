@@ -10,9 +10,7 @@ public partial class EditPage : ContentPage
 {
     // ---------------------------------------------------------------------------------------------
 
-    /// <summary>
-    /// Reference to the viewmodel.
-    /// </summary>
+    /// <summary>Reference to the viewmodel.</summary>
     private readonly EditViewModel _model;
 
     private int _gymObjectId;

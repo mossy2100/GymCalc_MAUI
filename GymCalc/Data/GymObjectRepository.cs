@@ -1,5 +1,5 @@
 using System.Data;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 using GymCalc.Shared;

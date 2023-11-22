@@ -2,6 +2,7 @@ using Galaxon.Core.Exceptions;
 using Galaxon.Maui.Utilities;
 using GymCalc.Constants;
 using GymCalc.ViewModels;
+using InputKitRadioButton = InputKit.Shared.Controls.RadioButton;
 
 namespace GymCalc.Pages;
 
@@ -73,6 +74,22 @@ public partial class CalculatorPage : ContentPage
     private void OnKettlebellButtonClicked(object sender, EventArgs e)
     {
         SetExerciseType(ExerciseType.Kettlebell);
+    }
+
+    private void OnBarbellTypePlateLoadedSelected(object sender, EventArgs e)
+    {
+        if (sender is InputKitRadioButton rb)
+        {
+            BarWeightGrid.IsVisible = rb.IsChecked;
+        }
+    }
+
+    private void OnBarbellTypeFixedSelected(object sender, EventArgs e)
+    {
+        if (sender is InputKitRadioButton rb)
+        {
+            BarWeightGrid.IsVisible = !rb.IsChecked;
+        }
     }
 
     #endregion Event handlers
@@ -167,7 +184,8 @@ public partial class CalculatorPage : ContentPage
                 MaxWeightLabel.Text = "Maximum total weight";
 
                 // Hide/show rows.
-                BarWeightGrid.IsVisible = true;
+                BarbellTypeGrid.IsVisible = true;
+                BarWeightGrid.IsVisible = _model.BarbellType == BarbellType.PlateLoaded;
                 MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;
@@ -180,6 +198,7 @@ public partial class CalculatorPage : ContentPage
                 MaxWeightLabel.Text = "Maximum weight per dumbbell";
 
                 // Hide/show rows.
+                BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
                 MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
@@ -193,6 +212,7 @@ public partial class CalculatorPage : ContentPage
                 MaxWeightLabel.Text = "Maximum total weight";
 
                 // Hide/show rows.
+                BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
                 MachineTypeGrid.IsVisible = true;
                 StartingWeightGrid.IsVisible = true;
@@ -206,6 +226,7 @@ public partial class CalculatorPage : ContentPage
                 MaxWeightLabel.Text = "Maximum weight";
 
                 // Hide/show rows.
+                BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
                 MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;

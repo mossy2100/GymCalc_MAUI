@@ -1,6 +1,6 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using Galaxon.Core.Exceptions;
 using GymCalc.Constants;
 using GymCalc.Data;
@@ -31,6 +31,7 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
+        BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
         PercentSelectedCommand = new Command<string>(PercentSelected);
     }
@@ -63,6 +64,16 @@ public class CalculatorViewModel : BaseViewModel
         get => _maxWeightText;
 
         set => SetProperty(ref _maxWeightText, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    private BarbellType _barbellType = BarbellType.PlateLoaded;
+
+    public BarbellType BarbellType
+    {
+        get => _barbellType;
+
+        set => SetProperty(ref _barbellType, value);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -351,6 +362,8 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand CalculateCommand { get; init; }
 
+    public ICommand BarbellTypeChangedCommand { get; init; }
+
     public ICommand MachineTypeChangedCommand { get; init; }
 
     public ICommand PercentSelectedCommand { get; init; }
@@ -494,6 +507,11 @@ public class CalculatorViewModel : BaseViewModel
         PercentSelected("100");
     }
 
+    public void BarbellTypeChanged()
+    {
+
+    }
+
     public void MachineTypeChanged()
     {
         StartingWeightLabel = MachineType == MachineType.Isolateral
@@ -548,14 +566,24 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
-            "Plates each end", plates);
+        if (BarbellType == BarbellType.PlateLoaded)
+        {
+            var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
+            PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
+                "Plates each end", plates);
+            PlatesResultVisible = true;
+            SingleWeightResultVisible = false;
+        }
+        else
+        {
+            var barbells = await _barbellRepo.GetSome(enabled: true, ascending: true);
+            SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
+            PlatesResultVisible = false;
+            SingleWeightResultVisible = true;
+        }
 
         // Display the results.
         ResultsExerciseType = ExerciseType.Barbell;
-        PlatesResultVisible = true;
-        SingleWeightResultVisible = false;
         ResultsVisible = true;
     }
 

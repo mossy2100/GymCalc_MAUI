@@ -6,6 +6,7 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectTypeName), "type")]
 public partial class ResetPage : ContentPage
 {
+    /// <summary>Reference to the viewmodel.</summary>
     private readonly ResetViewModel _model;
 
     private string _gymObjectTypeName;

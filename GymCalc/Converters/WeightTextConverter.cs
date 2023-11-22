@@ -1,5 +1,5 @@
 using System.Globalization;
-using Galaxon.Core.Enums;
+using Galaxon.Core.Types;
 using GymCalc.Shared;
 
 namespace GymCalc.Converters;
