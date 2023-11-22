@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using GymCalc.Services;
+using GymCalc.Data;
 
 namespace GymCalc.ViewModels;
 
@@ -10,7 +10,7 @@ public class ResetViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Dependencies.
 
-    private readonly DatabaseHelperService _databaseHelperService;
+    private readonly Database _database;
 
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
@@ -23,9 +23,9 @@ public class ResetViewModel : BaseViewModel
 
     // ---------------------------------------------------------------------------------------------
 
-    public ResetViewModel(DatabaseHelperService databaseHelperService)
+    public ResetViewModel(Database database)
     {
-        _databaseHelperService = databaseHelperService;
+        _database = database;
 
         // Commands.
         CancelCommand = new AsyncCommand(Cancel);
@@ -88,11 +88,9 @@ public class ResetViewModel : BaseViewModel
 
     private async Task ResetGymObjects()
     {
-        var repo = _databaseHelperService.GetRepo(GymObjectTypeName);
-
+        var repo = _database.GetRepo(GymObjectTypeName);
         await repo.DeleteAll();
         await repo.InsertDefaults();
-
         await Shell.Current.GoToAsync("..");
     }
 }

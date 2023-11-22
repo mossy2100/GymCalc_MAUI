@@ -1,6 +1,5 @@
 using System.Globalization;
 using GymCalc.Constants;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace GymCalc.Converters;
 
@@ -11,14 +10,7 @@ public class MachineTypeConverter : IValueConverter
     {
         if (value is MachineType mt)
         {
-            try
-            {
-                return mt.ToString();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return mt.ToString();
         }
 
         return null;
@@ -27,16 +19,9 @@ public class MachineTypeConverter : IValueConverter
     /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string sValue)
+        if (value is string s)
         {
-            try
-            {
-                return Enum.Parse<MachineType>(sValue);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return Enum.TryParse(s, out MachineType mt) ? mt : null;
         }
 
         return null;

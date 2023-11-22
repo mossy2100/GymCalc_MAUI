@@ -151,27 +151,27 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
-                var bars = await _barRepo.GetSome(ascending: true);
+                var bars = await _barRepo.GetSome();
                 DisplayList(bars);
                 break;
 
             case nameof(Plate):
-                var plates = await _plateRepo.GetSome(ascending: true);
+                var plates = await _plateRepo.GetSome();
                 DisplayList(plates);
                 break;
 
             case nameof(Barbell):
-                var barbells = await _barbellRepo.GetSome(ascending: true);
+                var barbells = await _barbellRepo.GetSome();
                 DisplayList(barbells);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbells = await _dumbbellRepo.GetSome(ascending: true);
+                var dumbbells = await _dumbbellRepo.GetSome();
                 DisplayList(dumbbells);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebells = await _kettlebellRepo.GetSome(ascending: true);
+                var kettlebells = await _kettlebellRepo.GetSome();
                 DisplayList(kettlebells);
                 break;
         }

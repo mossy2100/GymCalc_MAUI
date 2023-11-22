@@ -1,5 +1,4 @@
 using System.Globalization;
-using Galaxon.Core.Types;
 using GymCalc.Constants;
 
 namespace GymCalc.Converters;
@@ -11,14 +10,7 @@ public class BarbellTypeConverter : IValueConverter
     {
         if (value is BarbellType bt)
         {
-            try
-            {
-                return bt.GetDescription();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return bt.ToString();
         }
 
         return null;
@@ -29,14 +21,7 @@ public class BarbellTypeConverter : IValueConverter
     {
         if (value is string s)
         {
-            try
-            {
-                return XEnum.FindValueByDescription<BarbellType>(s);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return Enum.TryParse(s, out BarbellType bt) ? bt : null;
         }
 
         return null;

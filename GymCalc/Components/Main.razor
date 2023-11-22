@@ -1,5 +1,6 @@
 @using GymCalc.Services
 @using Microsoft.Maui.ApplicationModel
+
 @inject NavigationManager NavigationManager
 @inject HtmlUpdaterService HtmlUpdaterService
 @inject IJSRuntime JsRuntime
@@ -23,6 +24,7 @@ function updateStylesheet(theme)
 }
 </script>
 
+@* Set the initial theme on page load. *@
 @if (Theme == AppTheme.Dark)
 {
     <script>updateStylesheet("dark");</script>
@@ -49,7 +51,6 @@ else
         // Set up the event handlers.
         HtmlUpdaterService.OnUpdateRoute += UpdateRoute;
         HtmlUpdaterService.OnUpdateTheme += UpdateTheme;
-
     }
 
     /// <inheritdoc />
@@ -71,8 +72,7 @@ else
     /// Update the route.
     private void UpdateRoute()
     {
-        if (!string.IsNullOrEmpty(HtmlUpdaterService.Route) &&
-            HtmlUpdaterService.Route != _route)
+        if (!string.IsNullOrEmpty(HtmlUpdaterService.Route) && HtmlUpdaterService.Route != _route)
         {
             // Go to the new route.
             _route = HtmlUpdaterService.Route;

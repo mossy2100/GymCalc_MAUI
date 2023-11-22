@@ -84,11 +84,11 @@ public class BarbellRepository : GymObjectRepository
     /// Get some barbells.
     /// </summary>
     /// <returns></returns>
-    internal async Task<List<Barbell>> GetSome(Units units = Units.Default, bool? enabled = null,
-        bool? ascending = null)
+    internal async Task<List<Barbell>> GetSome(bool? enabled = null, bool? ascending = true,
+        Units units = Units.Default)
     {
         await InitCache();
-        return GetSome(_cache, units, enabled, ascending);
+        return GetSome(_cache, enabled, ascending, units);
     }
 
     /// <summary>

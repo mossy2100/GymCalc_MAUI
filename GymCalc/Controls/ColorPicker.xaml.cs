@@ -14,6 +14,9 @@ public partial class ColorPicker : ContentView
     /// </summary>
     private readonly Dictionary<Button, string> _buttonToColor = new ();
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public ColorPicker()
     {
         InitializeComponent();
@@ -54,7 +57,7 @@ public partial class ColorPicker : ContentView
             };
 
             // Attach the event handler.
-            button.Clicked += ColorPickerButton_OnClicked;
+            button.Clicked += OnColorPickerButtonClicked;
 
             // Add it to the dictionary for easy lookup later.
             _buttonToColor[button] = colorName;
@@ -81,7 +84,7 @@ public partial class ColorPicker : ContentView
         }
     }
 
-    private void ColorPickerButton_OnClicked(object sender, EventArgs e)
+    private void OnColorPickerButtonClicked(object sender, EventArgs e)
     {
         // Update the Selected property to the matching color name.
         Selected = _buttonToColor[(Button)sender];

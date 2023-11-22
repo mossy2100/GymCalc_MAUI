@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml
+    version="1.0"
+    encoding="UTF-8"?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -7,22 +9,40 @@
 
     <!--  InputKit styles  -->
 
-    <Style ApplyToDerivedTypes="True" TargetType="input:CheckBox">
-        <Setter Property="TextFontSize" Value="16" />
-        <Setter Property="Color" Value="{StaticResource Primary}" />
-        <Setter Property="BorderColor" Value="{StaticResource Primary}" />
-        <Setter Property="VisualStateManager.VisualStateGroups">
+    <Style
+        ApplyToDerivedTypes="True"
+        TargetType="input:CheckBox">
+        <Setter
+            Property="TextFontSize"
+            Value="16"/>
+        <Setter
+            Property="Color"
+            Value="{StaticResource Primary}"/>
+        <Setter
+            Property="BorderColor"
+            Value="{StaticResource Primary}"/>
+        <Setter
+            Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
+                <VisualStateGroup
+                    x:Name="CommonStates">
+                    <VisualState
+                        x:Name="Normal">
                         <VisualState.Setters>
-                            <Setter Property="IconColor" Value="{StaticResource Primary}" />
+                            <Setter
+                                Property="IconColor"
+                                Value="{StaticResource Primary}"/>
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState x:Name="Selected">
+                    <VisualState
+                        x:Name="Selected">
                         <VisualState.Setters>
-                            <Setter Property="IconColor" Value="{StaticResource White}" />
-                            <Setter Property="BoxBackgroundColor" Value="{StaticResource Primary}" />
+                            <Setter
+                                Property="IconColor"
+                                Value="{StaticResource White}"/>
+                            <Setter
+                                Property="BoxBackgroundColor"
+                                Value="{StaticResource Primary}"/>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -30,11 +50,21 @@
         </Setter>
     </Style>
 
-    <Style TargetType="input:RadioButton">
-        <Setter Property="Color" Value="{StaticResource Primary}" />
-        <Setter Property="CircleColor" Value="{StaticResource Primary}" />
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="TextFontSize" Value="16" />
+    <Style
+        TargetType="input:RadioButton">
+        <Setter
+            Property="Color"
+            Value="{StaticResource Primary}"/>
+        <Setter
+            Property="CircleColor"
+            Value="{StaticResource Primary}"/>
+        <Setter
+            Property="TextColor"
+            Value="{AppThemeBinding Light={StaticResource Black},
+                                    Dark={StaticResource White}}"/>
+        <Setter
+            Property="TextFontSize"
+            Value="16"/>
     </Style>
 
 </ResourceDictionary>

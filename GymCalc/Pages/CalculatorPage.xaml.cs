@@ -78,7 +78,7 @@ public partial class CalculatorPage : ContentPage
 
     private void OnBarbellTypePlateLoadedSelected(object sender, EventArgs e)
     {
-        if (sender is InputKitRadioButton rb)
+        if (sender is InputKitRadioButton rb && BarWeightGrid != null)
         {
             BarWeightGrid.IsVisible = rb.IsChecked;
         }
@@ -86,7 +86,7 @@ public partial class CalculatorPage : ContentPage
 
     private void OnBarbellTypeFixedSelected(object sender, EventArgs e)
     {
-        if (sender is InputKitRadioButton rb)
+        if (sender is InputKitRadioButton rb && BarWeightGrid != null)
         {
             BarWeightGrid.IsVisible = !rb.IsChecked;
         }

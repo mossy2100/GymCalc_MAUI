@@ -58,8 +58,8 @@ public abstract class GymObjectRepository
     /// <param name="ascending"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    internal List<T> GetSome<T>(Dictionary<int, T> cache, Units units, bool? enabled,
-        bool? ascending) where T : GymObject
+    internal List<T> GetSome<T>(Dictionary<int, T> cache, bool? enabled, bool? ascending,
+        Units units) where T : GymObject
     {
         // Get the bars from the cache.
         var query = cache.Select(item => item.Value);

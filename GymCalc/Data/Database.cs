@@ -5,7 +5,7 @@ namespace GymCalc.Data;
 /// <summary>
 /// Container for database stuff.
 /// </summary>
-public class Database
+public class Database(IServiceProvider serviceProvider)
 {
     /// <summary>
     /// Flags used to define the features of database connection.
@@ -29,8 +29,6 @@ public class Database
     private static readonly string _Path =
         Path.Combine(FileSystem.AppDataDirectory, _DB_FILENAME);
 
-    // ---------------------------------------------------------------------------------------------
-
     /// <summary>
     /// The database connection field.
     /// </summary>
@@ -41,4 +39,24 @@ public class Database
     /// </summary>
     internal SQLiteAsyncConnection Connection =>
         _connection ??= new SQLiteAsyncConnection(_Path, _FLAGS);
+
+    /// <summary>
+    /// Given a gym object type name, get the matching repository object.
+    /// </summary>
+    /// <param name="gymObjectTypeName">The gym object type name.</param>
+    /// <returns>The single instance of the matching repository object.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If the gym object type name is invalid.
+    /// </exception>
+    internal GymObjectRepository GetRepo(string gymObjectTypeName)
+    {
+        var repoType = Type.GetType($"GymCalc.Data.{gymObjectTypeName}Repository");
+        if (repoType != null)
+        {
+            return (GymObjectRepository)serviceProvider.GetService(repoType);
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
+            "Invalid gym object type name.");
+    }
 }

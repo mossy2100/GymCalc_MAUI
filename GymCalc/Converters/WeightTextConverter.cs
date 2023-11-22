@@ -9,13 +9,13 @@ public class WeightTextConverter : IValueConverter
     /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is not decimal weight)
+        if (value is decimal weight)
         {
-            return null;
+            var units = UnitsUtility.GetDefault().GetDescription();
+            return $"{weight:F2} {units}";
         }
 
-        var units = UnitsUtility.GetDefault().GetDescription();
-        return $"{weight:F2} {units}";
+        return null;
     }
 
     /// <inheritdoc/>

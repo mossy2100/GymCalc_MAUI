@@ -395,7 +395,7 @@ public class CalculatorViewModel : BaseViewModel
         BarWeight = 0;
 
         // Repopulate the picker options.
-        var bars = await _barRepo.GetSome(enabled: true, ascending: true);
+        var bars = await _barRepo.GetSome(true);
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // Select the previously selected value, if available.
@@ -507,16 +507,23 @@ public class CalculatorViewModel : BaseViewModel
         PercentSelected("100");
     }
 
-    public void BarbellTypeChanged()
-    {
-
-    }
+    public void BarbellTypeChanged() { }
 
     public void MachineTypeChanged()
     {
         StartingWeightLabel = MachineType == MachineType.Isolateral
             ? "Starting weight per side"
             : "Starting weight";
+    }
+
+    /// <summary>
+    /// Get the visual state for a percent button.
+    /// </summary>
+    /// <param name="pc">The percentage value of the percent button.</param>
+    /// <returns>The button's visual state.</returns>
+    private string GetPercentButtonVisualState(int pc)
+    {
+        return SelectedPercent == pc ? "Selected" : "Normal";
     }
 
     /// <summary>
@@ -527,30 +534,27 @@ public class CalculatorViewModel : BaseViewModel
     /// </param>
     public void PercentSelected(string sPercent)
     {
+        // Get the percent value of the button.
         SelectedPercent = int.TryParse(sPercent, out var percent) ? percent : 100;
 
+        // Display the matching result.
         if (PlatesResultVisible)
         {
-            SelectedPlatesResult = PlatesResults == null || PlatesResults.Count == 0
-                ? null
-                : PlatesResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+            SelectedPlatesResult = PlatesResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
         }
-
         if (SingleWeightResultVisible)
         {
             SelectedSingleWeightResult =
-                SingleWeightResults == null || SingleWeightResults.Count == 0
-                    ? null
-                    : SingleWeightResults.FirstOrDefault(r => r.Percent == SelectedPercent);
+                SingleWeightResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
         }
 
-        // Update percent button visual states.
-        PercentButtonVisualState50 = SelectedPercent == 50 ? "Selected" : "Normal";
-        PercentButtonVisualState60 = SelectedPercent == 60 ? "Selected" : "Normal";
-        PercentButtonVisualState70 = SelectedPercent == 70 ? "Selected" : "Normal";
-        PercentButtonVisualState80 = SelectedPercent == 80 ? "Selected" : "Normal";
-        PercentButtonVisualState90 = SelectedPercent == 90 ? "Selected" : "Normal";
-        PercentButtonVisualState100 = SelectedPercent == 100 ? "Selected" : "Normal";
+        // Update all the percent button visual states.
+        PercentButtonVisualState50 = GetPercentButtonVisualState(50);
+        PercentButtonVisualState60 = GetPercentButtonVisualState(60);
+        PercentButtonVisualState70 = GetPercentButtonVisualState(70);
+        PercentButtonVisualState80 = GetPercentButtonVisualState(80);
+        PercentButtonVisualState90 = GetPercentButtonVisualState(90);
+        PercentButtonVisualState100 = GetPercentButtonVisualState(100);
     }
 
     #endregion Command methods
@@ -568,7 +572,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate the results.
         if (BarbellType == BarbellType.PlateLoaded)
         {
-            var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
+            var plates = await _plateRepo.GetSome(true);
             PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
                 "Plates each end", plates);
             PlatesResultVisible = true;
@@ -576,7 +580,7 @@ public class CalculatorViewModel : BaseViewModel
         }
         else
         {
-            var barbells = await _barbellRepo.GetSome(enabled: true, ascending: true);
+            var barbells = await _barbellRepo.GetSome(true);
             SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
             PlatesResultVisible = false;
             SingleWeightResultVisible = true;
@@ -595,7 +599,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Get the available plates.
-        var plates = await _plateRepo.GetSome(enabled: true, ascending: true);
+        var plates = await _plateRepo.GetSome(true);
 
         // Determine the number of plate stacks and total starting weight from the machine type.
         var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
@@ -621,7 +625,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var dumbbells = await _dumbbellRepo.GetSome(enabled: true, ascending: true);
+        var dumbbells = await _dumbbellRepo.GetSome(true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
@@ -639,7 +643,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var kettlebells = await _kettlebellRepo.GetSome(enabled: true, ascending: true);
+        var kettlebells = await _kettlebellRepo.GetSome(true);
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.
