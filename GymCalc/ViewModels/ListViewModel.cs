@@ -131,7 +131,7 @@ public class ListViewModel : BaseViewModel
     public ICommand ResetCommand { get; init; }
 
     // ---------------------------------------------------------------------------------------------
-    internal async Task DisplayList()
+    internal void DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(GymObjectTypeName))
@@ -151,27 +151,27 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
-                var bars = await _barRepo.GetSome();
+                var bars = _barRepo.Get();
                 DisplayList(bars);
                 break;
 
             case nameof(Plate):
-                var plates = await _plateRepo.GetSome();
+                var plates = _plateRepo.Get();
                 DisplayList(plates);
                 break;
 
             case nameof(Barbell):
-                var barbells = await _barbellRepo.GetSome();
+                var barbells = _barbellRepo.Get();
                 DisplayList(barbells);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbells = await _dumbbellRepo.GetSome();
+                var dumbbells = _dumbbellRepo.Get();
                 DisplayList(dumbbells);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebells = await _kettlebellRepo.GetSome();
+                var kettlebells = _kettlebellRepo.Get();
                 DisplayList(kettlebells);
                 break;
         }
@@ -220,7 +220,7 @@ public class ListViewModel : BaseViewModel
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                Task.Run(async () => await DisplayList()).Wait();
+                DisplayList();
                 break;
         }
     }

@@ -309,7 +309,7 @@
                 <Grid
                     Padding="0,10,0,10"
                     RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    ColumnDefinitions="*,*,*"
+                    ColumnDefinitions="6*,3*,3*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     IsVisible="{Binding PlatesResultVisible}">
                     <Grid.RowDefinitions>
@@ -386,7 +386,7 @@
                 <Grid
                     Padding="0,10,0,10"
                     RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    ColumnDefinitions="*,*,*"
+                    ColumnDefinitions="3*,9*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                     IsVisible="{Binding SingleWeightResultVisible}">
                     <Grid.RowDefinitions>
@@ -398,31 +398,27 @@
                     <!-- Row 0 -->
                     <Label
                         Grid.Row="0"
-                        Grid.Column="1"
+                        Grid.Column="0"
                         Text="Ideal"
-                        VerticalTextAlignment="End"
+                        HorizontalOptions="Start"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <Label
                         Grid.Row="0"
-                        Grid.Column="2"
+                        Grid.Column="1"
                         Text="Closest"
-                        VerticalTextAlignment="End"
+                        HorizontalOptions="Center"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <!-- Row 1 -->
                     <Label
                         Grid.Row="1"
                         Grid.Column="0"
-                        Text="Total"
-                        Style="{StaticResource ResultsTableHeader}"/>
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="1"
                         Text="{Binding SelectedSingleWeightResult.Ideal,
                         Converter={StaticResource DefaultWeightTextConverter}}"
-                        Style="{StaticResource ResultsTableIdeal}"/>
+                        Style="{StaticResource ResultsTableIdeal}"
+                        HorizontalOptions="Start"/>
                     <GraphicsView
                         Grid.Row="1"
-                        Grid.Column="2"
+                        Grid.Column="1"
                         Drawable="{Binding SelectedSingleWeightResult.Drawable}"
                         WidthRequest="{Binding SelectedSingleWeightResult.Drawable.Width}"
                         HeightRequest="{Binding SelectedSingleWeightResult.Drawable.Height}"

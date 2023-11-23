@@ -53,7 +53,7 @@ public partial class CalculatorPage : ContentPage
         SetExerciseType(ExerciseType.Barbell);
 
         // Initialize other form elements.
-        await _model.Initialize();
+        _model.Initialize();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)

@@ -212,8 +212,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal async Task Initialize(string operation, string gymObjectTypeName,
-        int gymObjectId)
+    internal void Initialize(string operation, string gymObjectTypeName, int gymObjectId)
     {
         // Don't do anything unless all required parameters have been set.
         if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
@@ -245,7 +244,7 @@ public class EditViewModel : BaseViewModel
         if (operation == "edit")
         {
             // This can throw a KeyNotFoundException if the gym object id is invalid.
-            await LoadGymObject();
+            LoadGymObject();
         }
         else
         {
@@ -297,34 +296,34 @@ public class EditViewModel : BaseViewModel
     /// Load an existing gym object from the database.
     /// </summary>
     /// <exception cref="NoMatchingCaseException"></exception>
-    private async Task LoadGymObject()
+    private void LoadGymObject()
     {
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                var bar = await _barRepo.Get(_gymObjectId);
+                var bar = _barRepo.Get(_gymObjectId);
                 _gymObject = bar;
                 break;
 
             case nameof(Plate):
-                var plate = await _plateRepo.Get(_gymObjectId);
+                var plate = _plateRepo.Get(_gymObjectId);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
             case nameof(Barbell):
-                var barbell = await _barbellRepo.Get(_gymObjectId);
+                var barbell = _barbellRepo.Get(_gymObjectId);
                 _gymObject = barbell;
                 break;
 
             case nameof(Dumbbell):
-                var dumbbell = await _dumbbellRepo.Get(_gymObjectId);
+                var dumbbell = _dumbbellRepo.Get(_gymObjectId);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case nameof(Kettlebell):
-                var kettlebell = await _kettlebellRepo.Get(_gymObjectId);
+                var kettlebell = _kettlebellRepo.Get(_gymObjectId);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;

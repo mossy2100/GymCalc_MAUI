@@ -7,28 +7,16 @@ namespace GymCalc.Data;
 /// <summary>
 /// Methods for CRUD operations on fixed-weight barbells.
 /// </summary>
-public class BarbellRepository : GymObjectRepository
+public class BarbellRepository : GymObjectRepository<Barbell>
 {
-    /// <summary>
-    /// Object cache.
-    /// </summary>
-    private Dictionary<int, Barbell> _cache;
-
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="database">Reference to the single Database object (DI).</param>
     public BarbellRepository(Database database) : base(database) { }
 
-    /// <summary>
-    /// Ensure the database table exist and contains some barbells.
-    /// </summary>
-    internal override async Task Initialize()
-    {
-        await base.Initialize<Barbell>();
-    }
-
-    internal override async Task InsertDefaults()
+    /// <inheritdoc/>
+    public override async Task InsertDefaults()
     {
         var addedSoFar = new List<(decimal, Units)>();
 
@@ -39,6 +27,16 @@ public class BarbellRepository : GymObjectRepository
         addedSoFar = await AddBarbellSet(20, 140, 5, Units.Pounds, true, addedSoFar);
     }
 
+    /// <summary>
+    /// Add a set of barbells to the database.
+    /// </summary>
+    /// <param name="min">The minimum weight.</param>
+    /// <param name="max">The maximum weight.</param>
+    /// <param name="step">The difference between each weight.</param>
+    /// <param name="units">The mass units.</param>
+    /// <param name="enabled">If they should be enabled by default.</param>
+    /// <param name="addedSoFar">The barbells added to so far, so we can avoid duplicates.</param>
+    /// <returns></returns>
     private async Task<List<(decimal, Units)>> AddBarbellSet(decimal min, decimal max,
         decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
     {
@@ -64,88 +62,5 @@ public class BarbellRepository : GymObjectRepository
         }
 
         return addedSoFar;
-    }
-
-    /// <summary>
-    /// Initialize the object cache.
-    /// </summary>
-    internal override async Task InitCache()
-    {
-        if (_cache == null)
-        {
-            var barbells = await _Database.Connection.Table<Barbell>().ToListAsync();
-            var pairs = barbells.Select(barbell =>
-                new KeyValuePair<int, Barbell>(barbell.Id, barbell));
-            _cache = new Dictionary<int, Barbell>(pairs);
-        }
-    }
-
-    /// <summary>
-    /// Get some barbells.
-    /// </summary>
-    /// <returns></returns>
-    internal async Task<List<Barbell>> GetSome(bool? enabled = null, bool? ascending = true,
-        Units units = Units.Default)
-    {
-        await InitCache();
-        return GetSome(_cache, enabled, ascending, units);
-    }
-
-    /// <summary>
-    /// Get a barbell by id.
-    /// </summary>
-    /// <returns></returns>
-    internal override async Task<Barbell> Get(int id)
-    {
-        await InitCache();
-        return _cache[id];
-    }
-
-    /// <summary>
-    /// Update a barbell.
-    /// </summary>
-    /// <returns></returns>
-    internal async Task<Barbell> Update(Barbell barbell)
-    {
-        await InitCache();
-        return await Update(_cache, barbell);
-    }
-
-    /// <summary>
-    /// Insert a new barbell.
-    /// </summary>
-    /// <returns></returns>
-    internal async Task<Barbell> Insert(Barbell barbell)
-    {
-        await InitCache();
-        return await Insert(_cache, barbell);
-    }
-
-    /// <summary>
-    /// Update or insert as required.
-    /// </summary>
-    /// <param name="barbell"></param>
-    /// <returns></returns>
-    internal async Task<Barbell> Upsert(Barbell barbell)
-    {
-        await InitCache();
-        return await Upsert(_cache, barbell);
-    }
-
-    /// <summary>
-    /// Delete a barbell.
-    /// </summary>
-    /// <returns></returns>
-    internal override async Task Delete(int id)
-    {
-        await InitCache();
-        await Delete(_cache, id);
-    }
-
-    /// <inheritdoc/>
-    internal override async Task DeleteAll()
-    {
-        await base.DeleteAll<Barbell>();
-        _cache.Clear();
     }
 }

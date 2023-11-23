@@ -48,12 +48,12 @@ public class Database(IServiceProvider serviceProvider)
     /// <exception cref="ArgumentOutOfRangeException">
     /// If the gym object type name is invalid.
     /// </exception>
-    internal GymObjectRepository GetRepo(string gymObjectTypeName)
+    internal IGymObjectRepository GetRepo(string gymObjectTypeName)
     {
         var repoType = Type.GetType($"GymCalc.Data.{gymObjectTypeName}Repository");
         if (repoType != null)
         {
-            return (GymObjectRepository)serviceProvider.GetService(repoType);
+            return (IGymObjectRepository)serviceProvider.GetService(repoType);
         }
 
         throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),

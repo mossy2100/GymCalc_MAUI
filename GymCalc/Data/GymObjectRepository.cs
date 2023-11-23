@@ -6,63 +6,73 @@ using GymCalc.Shared;
 
 namespace GymCalc.Data;
 
-public abstract class GymObjectRepository
+public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepository where T : GymObject, new()
 {
-    protected GymObjectRepository(Database database)
-    {
-        _Database = database;
-    }
-
     /// <summary>
-    /// Reference to the database (DI).
+    /// The cache of database objects.
     /// </summary>
-    protected Database _Database { get; init; }
+    private Dictionary<int, T> Cache { get; set; }
 
-    /// <summary>
-    /// To be implemented by concrete classes.
-    /// </summary>
-    internal abstract Task InsertDefaults();
+    /// <inheritdoc />
+    public abstract Task InsertDefaults();
 
     /// <summary>
     /// Ensure the database table exist and contains some objects.
     /// </summary>
-    internal async Task Initialize<T>() where T : new()
+    internal async Task Initialize()
     {
-        var conn = _Database.Connection;
-
         // Create the table if it doesn't already exist.
-        await conn.CreateTableAsync<T>();
+        await database.Connection.CreateTableAsync<T>();
 
         // Count how many rows there are.
-        var n = await conn.Table<T>().CountAsync();
+        var n = await database.Connection.Table<T>().CountAsync();
 
         // If there aren't any rows, initialize with the defaults.
         if (n == 0)
         {
             await InsertDefaults();
         }
+
+        // Initialize the cache.
+        var gymObjects = await database.Connection.Table<T>().ToListAsync();
+        var pairs =
+            gymObjects.Select(gymObject => new KeyValuePair<int, T>(gymObject.Id, gymObject));
+        Cache = new Dictionary<int, T>(pairs);
     }
 
     /// <summary>
-    /// Ensure the database table exist and contains some objects.
-    /// This version has the type specified in the implementation.
+    /// Get a gym object from the database.
     /// </summary>
-    internal abstract Task Initialize();
+    /// <param name="id">The id of the gym object.</param>
+    /// <returns>The gym object.</returns>
+    internal T Get(int id)
+    {
+        return Cache[id];
+    }
 
     /// <summary>
-    /// Get some (or all) objects from the provided cache.
+    /// Get some (or all) gym objects from the database.
     /// </summary>
-    /// <param name="cache"></param>
-    /// <param name="units"></param>
-    /// <param name="enabled"></param>
-    /// <param name="ascending"></param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="enabled">
+    /// If the method should get:
+    ///     true  : enabled objects
+    ///     false : disabled objects
+    ///     null  : both
+    /// </param>
+    /// <param name="ascending">
+    /// If the results should be ordered:
+    ///     true  : ascending by weight
+    ///     false : descending by weight
+    ///     null  : unordered
+    /// </param>
+    /// <param name="units">
+    /// What units the results should have (Kilograms, Pounds, All, or Default).
+    /// </param>
     /// <returns></returns>
-    internal List<T> GetSome<T>(Dictionary<int, T> cache, bool? enabled, bool? ascending,
-        Units units) where T : GymObject
+    internal List<T> Get(bool? enabled = true, bool? ascending = true, Units units = Units.Default)
     {
         // Get the bars from the cache.
-        var query = cache.Select(item => item.Value);
+        var query = Cache.Select(item => item.Value);
 
         // Add where clause for units if needed.
         if (units != Units.All)
@@ -91,6 +101,7 @@ public abstract class GymObjectRepository
                 : query.OrderByDescending(item => item.Weight);
         }
 
+        // Convert the results to a list of the gym object type stored in the repository.
         return query.ToList();
     }
 
@@ -98,14 +109,14 @@ public abstract class GymObjectRepository
     /// Update a gym object.
     /// </summary>
     /// <returns>The updated gym object.</returns>
-    internal async Task<T> Update<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
+    internal async Task<T> Update(T gymObject)
     {
-        var nRowsUpdated = await _Database.Connection.UpdateAsync(gymObject);
+        var nRowsUpdated = await database.Connection.UpdateAsync(gymObject);
         if (nRowsUpdated != 1)
         {
             throw new DataException("Error updating record.");
         }
-        cache[gymObject.Id] = gymObject;
+        Cache[gymObject.Id] = gymObject;
         return gymObject;
     }
 
@@ -113,14 +124,14 @@ public abstract class GymObjectRepository
     /// Insert a new gym object.
     /// </summary>
     /// <returns>The new gym object.</returns>
-    internal async Task<T> Insert<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
+    internal async Task<T> Insert(T gymObject)
     {
-        var nRowsInserted = await _Database.Connection.InsertAsync(gymObject);
+        var nRowsInserted = await database.Connection.InsertAsync(gymObject);
         if (nRowsInserted != 1)
         {
             throw new DataException("Error inserting new record.");
         }
-        cache[gymObject.Id] = gymObject;
+        Cache[gymObject.Id] = gymObject;
         return gymObject;
     }
 
@@ -128,38 +139,31 @@ public abstract class GymObjectRepository
     /// Update or insert as required.
     /// </summary>
     /// <returns>The new or updated gym object.</returns>
-    internal async Task<T> Upsert<T>(Dictionary<int, T> cache, T gymObject) where T : GymObject
+    internal async Task<T> Upsert(T gymObject)
     {
-        return await (gymObject.Id == 0 ? Insert(cache, gymObject) : Update(cache, gymObject));
+        return await (gymObject.Id == 0 ? Insert(gymObject) : Update(gymObject));
     }
 
     /// <summary>
     /// Delete a gym object with a given type and id.
     /// </summary>
-    internal async Task Delete<T>(Dictionary<int, T> cache, int id) where T : GymObject
+    /// <param name="id">The id of the gym object to delete.</param>
+    internal async Task Delete(int id)
     {
-        var nRowsDeleted = await _Database.Connection.DeleteAsync<T>(id);
+        var nRowsDeleted = await database.Connection.DeleteAsync<T>(id);
         if (nRowsDeleted != 1)
         {
             throw new DataException("Error deleting record.");
         }
-        cache.Remove(id);
+        Cache.Remove(id);
     }
-
-    internal abstract Task InitCache();
 
     /// <summary>
     /// Delete all objects of a given type.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    internal async Task DeleteAll<T>()
+    public async Task DeleteAll()
     {
-        await _Database.Connection.DeleteAllAsync<T>();
+        await database.Connection.DeleteAllAsync<T>();
+        Cache.Clear();
     }
-
-    internal abstract Task Get(int id);
-
-    internal abstract Task Delete(int id);
-
-    internal abstract Task DeleteAll();
 }

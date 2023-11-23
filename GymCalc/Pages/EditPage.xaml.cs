@@ -76,7 +76,7 @@ public partial class EditPage : ContentPage
     // Event handlers.
 
     /// <inheritdoc/>
-    protected override async void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
@@ -85,7 +85,7 @@ public partial class EditPage : ContentPage
             case nameof(Operation):
             case nameof(GymObjectTypeName):
             case nameof(GymObjectId):
-                await _model.Initialize(Operation, GymObjectTypeName, GymObjectId);
+                _model.Initialize(Operation, GymObjectTypeName, GymObjectId);
                 break;
         }
     }
