@@ -38,8 +38,9 @@ public static class MauiProgram
     private static void RegisterDependencyInjection(MauiAppBuilder builder)
     {
         builder.Services
-            // Database and repositories
+            // Database
             .AddSingleton<Database>()
+            // Repositories
             .AddSingleton<BarRepository>()
             .AddSingleton<PlateRepository>()
             .AddSingleton<BarbellRepository>()
@@ -47,8 +48,8 @@ public static class MauiProgram
             .AddSingleton<KettlebellRepository>()
             // Pages
             .AddSingleton<CalculatorPage>()
-            .AddTransient<DeletePage>()
-            .AddTransient<EditPage>()
+            .AddSingleton<DeletePage>()
+            .AddSingleton<EditPage>()
             .AddSingleton<HtmlPage>()
             .AddSingleton<ListPage>()
             .AddSingleton<ResetPage>()
@@ -56,8 +57,8 @@ public static class MauiProgram
             .AddSingleton<WeightsPage>()
             // ViewModels
             .AddSingleton<CalculatorViewModel>()
-            .AddTransient<DeleteViewModel>()
-            .AddTransient<EditViewModel>()
+            .AddSingleton<DeleteViewModel>()
+            .AddSingleton<EditViewModel>()
             .AddSingleton<HtmlViewModel>()
             .AddSingleton<ListViewModel>()
             .AddSingleton<ResetViewModel>()

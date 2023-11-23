@@ -10,8 +10,7 @@ namespace GymCalc.ViewModels;
 
 public class ListViewModel : BaseViewModel
 {
-    // ---------------------------------------------------------------------------------------------
-    // Dependencies.
+    #region Dependencies
 
     private readonly BarRepository _barRepo;
 
@@ -23,28 +22,7 @@ public class ListViewModel : BaseViewModel
 
     private readonly KettlebellRepository _kettlebellRepo;
 
-    // ---------------------------------------------------------------------------------------------
-    // Bindable properties.
-
-    /// <summary>
-    /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
-    /// </summary>
-    private string _gymObjectTypeName;
-
-    /// <summary>
-    /// Instructions text.
-    /// </summary>
-    private string _instructions;
-
-    /// <summary>
-    /// Results for the CollectionView.
-    /// </summary>
-    private List<ListItem> _listItems;
-
-    /// <summary>
-    /// Page title.
-    /// </summary>
-    private string _title;
+    #endregion Dependencies
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
@@ -74,12 +52,26 @@ public class ListViewModel : BaseViewModel
         ResetCommand = new AsyncCommand(ResetGymObjects);
     }
 
+    #region Bindable properties
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
+    /// </summary>
+    private string _gymObjectTypeName;
+
     public string GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
         set => SetProperty(ref _gymObjectTypeName, value);
     }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Results for the CollectionView.
+    /// </summary>
+    private List<ListItem> _listItems;
 
     public List<ListItem> ListItems
     {
@@ -88,12 +80,24 @@ public class ListViewModel : BaseViewModel
         set => SetProperty(ref _listItems, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Page title.
+    /// </summary>
+    private string _title;
+
     public string Title
     {
         get => _title;
 
         set => SetProperty(ref _title, value);
     }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Instructions text.
+    /// </summary>
+    private string _instructions;
 
     public string Instructions
     {
@@ -102,8 +106,9 @@ public class ListViewModel : BaseViewModel
         set => SetProperty(ref _instructions, value);
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Commands.
+    #endregion Bindable properties
+
+    #region Commands
 
     /// <summary>
     /// Command to enable/disable an item.
@@ -130,103 +135,9 @@ public class ListViewModel : BaseViewModel
     /// </summary>
     public ICommand ResetCommand { get; init; }
 
-    // ---------------------------------------------------------------------------------------------
-    internal void DisplayList()
-    {
-        // Make sure GymObjectTypeName is set.
-        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
-        {
-            return;
-        }
+    #endregion Commands
 
-        Title = $"{GymObjectTypeName}s";
-
-        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
-            + $" weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
-            + $" Use the edit and delete icon buttons to make changes."
-            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
-            + $" button to reset to the defaults.";
-
-        // Display all gym objects of the specified type.
-        switch (GymObjectTypeName)
-        {
-            case nameof(Bar):
-                var bars = _barRepo.Get();
-                DisplayList(bars);
-                break;
-
-            case nameof(Plate):
-                var plates = _plateRepo.Get();
-                DisplayList(plates);
-                break;
-
-            case nameof(Barbell):
-                var barbells = _barbellRepo.Get();
-                DisplayList(barbells);
-                break;
-
-            case nameof(Dumbbell):
-                var dumbbells = _dumbbellRepo.Get();
-                DisplayList(dumbbells);
-                break;
-
-            case nameof(Kettlebell):
-                var kettlebells = _kettlebellRepo.Get();
-                DisplayList(kettlebells);
-                break;
-        }
-    }
-
-    /// <summary>
-    /// Initialize the list of gym objects.
-    /// </summary>
-    private void DisplayList<T>(List<T> gymObjects) where T : GymObject
-    {
-        // Initialize the empty list.
-        ListItems = new List<ListItem>();
-
-        // Check if there's anything to draw.
-        if (gymObjects.Count == 0)
-        {
-            return;
-        }
-
-        // Get the maximum weight, which is used to determine the width of bars and plates.
-        var maxWeight = gymObjects.Last().Weight;
-
-        // Create drawables and add to list.
-        foreach (var gymObject in gymObjects)
-        {
-            // Create the drawable.
-            var drawable = GymObjectDrawable.Create(gymObject);
-            drawable.MaxWeight = maxWeight;
-
-            // Create the list item and add it to the list.
-            var listItem = new ListItem
-            {
-                GymObject = gymObject,
-                Drawable = drawable,
-                Enabled = gymObject.Enabled
-            };
-            ListItems.Add(listItem);
-        }
-    }
-
-    /// <inheritdoc/>
-    protected override void OnPropertyChanged(string propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-
-        switch (propertyName)
-        {
-            case nameof(GymObjectTypeName):
-                DisplayList();
-                break;
-        }
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    // Command methods.
+    #region Command methods
 
     private async Task EnableGymObject(ListItem listItem)
     {
@@ -281,5 +192,101 @@ public class ListViewModel : BaseViewModel
     private async Task ResetGymObjects()
     {
         await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
+    }
+
+    #endregion Command methods
+
+    internal void DisplayList()
+    {
+        // Make sure GymObjectTypeName is set.
+        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
+        {
+            return;
+        }
+
+        Title = $"{GymObjectTypeName}s";
+
+        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
+            + $" weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
+            + $" Use the edit and delete icon buttons to make changes."
+            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
+            + $" button to reset to the defaults.";
+
+        // Display all gym objects of the specified type.
+        switch (GymObjectTypeName)
+        {
+            case nameof(Bar):
+                var bars = _barRepo.Get(null);
+                DisplayList(bars);
+                break;
+
+            case nameof(Plate):
+                var plates = _plateRepo.Get(null);
+                DisplayList(plates);
+                break;
+
+            case nameof(Barbell):
+                var barbells = _barbellRepo.Get(null);
+                DisplayList(barbells);
+                break;
+
+            case nameof(Dumbbell):
+                var dumbbells = _dumbbellRepo.Get(null);
+                DisplayList(dumbbells);
+                break;
+
+            case nameof(Kettlebell):
+                var kettlebells = _kettlebellRepo.Get(null);
+                DisplayList(kettlebells);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Initialize the list of gym objects.
+    /// </summary>
+    private void DisplayList<T>(List<T> gymObjects) where T : GymObject
+    {
+        // Initialize the empty list.
+        ListItems = new List<ListItem>();
+
+        // Check if there's anything to draw.
+        if (gymObjects.Count == 0)
+        {
+            return;
+        }
+
+        // Get the maximum weight, which is used to determine the width of bars and plates.
+        var maxWeight = gymObjects.Last().Weight;
+
+        // Create drawables and add to list.
+        foreach (var gymObject in gymObjects)
+        {
+            // Create the drawable.
+            var drawable = GymObjectDrawable.Create(gymObject);
+            drawable.MaxWeight = maxWeight;
+
+            // Create the list item and add it to the list.
+            var listItem = new ListItem
+            {
+                GymObject = gymObject,
+                Drawable = drawable,
+                Enabled = gymObject.Enabled
+            };
+            ListItems.Add(listItem);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPropertyChanged(string propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(GymObjectTypeName):
+                DisplayList();
+                break;
+        }
     }
 }

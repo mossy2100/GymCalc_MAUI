@@ -1,7 +1,6 @@
 using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Types;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Data;
 using GymCalc.Models;
@@ -13,6 +12,7 @@ namespace GymCalc.ViewModels;
 public class CalculatorViewModel : BaseViewModel
 {
     // ---------------------------------------------------------------------------------------------
+
     #region Constructors
 
     /// <summary>
@@ -39,6 +39,7 @@ public class CalculatorViewModel : BaseViewModel
     #endregion Constructors
 
     // ---------------------------------------------------------------------------------------------
+
     #region Dependencies
 
     private readonly BarRepository _barRepo;
@@ -54,6 +55,7 @@ public class CalculatorViewModel : BaseViewModel
     #endregion Dependencies
 
     // ---------------------------------------------------------------------------------------------
+
     #region Bindable properties
 
     // ---------------------------------------------------------------------------------------------
