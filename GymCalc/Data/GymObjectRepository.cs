@@ -29,8 +29,6 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     protected async Task AddSet(decimal min, decimal max, decimal step, Units units, bool enabled,
         Func<decimal, Units, bool, GymObject> fnCreate)
     {
-        await CheckCacheReady();
-
         var sUnits = units.GetDescription();
         for (var weight = min; weight <= max; weight += step)
         {
@@ -50,7 +48,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// Ensure the database table exist and contains some objects.
     /// Also initialize the in-memory object cache.
     /// </summary>
-    internal async Task InitializeTable()
+    internal async Task Initialize()
     {
         // Create the table if it doesn't already exist.
         await database.Connection.CreateTableAsync<T>();
@@ -63,26 +61,13 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         {
             await InsertDefaults();
         }
-    }
 
-    /// <summary>
-    /// Check the cache has been created.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">
-    /// If the cache hasn't been created yet.
-    /// </exception>
-    protected async Task CheckCacheReady()
-    {
-        // Make sure the cache is ready.
-        if (Cache == null)
+        // Initialize the cache.
+        Cache = new Dictionary<int, T>();
+        var gymObjects = await database.Connection.Table<T>().ToListAsync();
+        foreach (var gymObject in gymObjects)
         {
-            // Initialize the cache.
-            Cache = new Dictionary<int, T>();
-            var gymObjects = await database.Connection.Table<T>().ToListAsync();
-            foreach (var gymObject in gymObjects)
-            {
-                Cache.Add(gymObject.Id, gymObject);
-            }
+            Cache.Add(gymObject.Id, gymObject);
         }
     }
 
@@ -94,10 +79,8 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <exception cref="KeyNotFoundException">
     /// If there's no dictionary entry with a key matching the provided id.
     /// </exception>
-    internal async Task<T> LoadOne(int id)
+    internal T LoadOne(int id)
     {
-        await CheckCacheReady();
-
         // Try to get the value from the cache.
         if (Cache!.TryGetValue(id, out var gymObject))
         {
@@ -128,11 +111,9 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// The "Default" units are set on the Settings page (default Kilograms).
     /// </param>
     /// <returns></returns>
-    internal async Task<List<T>> LoadSome(bool? enabled = true, bool? ascending = true,
+    internal List<T> LoadSome(bool? enabled = true, bool? ascending = true,
         Units units = Units.Default)
     {
-        await CheckCacheReady();
-
         // Get the bars from the cache.
         var query = Cache!.Select(item => item.Value);
 
@@ -178,9 +159,9 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// </summary>
     /// <param name="ascending">If to order the results by weight.</param>
     /// <returns>The list of all objects of the type T.</returns>
-    internal async Task<List<T>> LoadAll(bool? ascending = true)
+    internal List<T> LoadAll(bool? ascending = true)
     {
-        return await LoadSome(null, ascending, Units.All);
+        return LoadSome(null, ascending, Units.All);
     }
 
     /// <summary>
@@ -189,8 +170,6 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <returns>The updated gym object.</returns>
     internal async Task<T> Update(T gymObject)
     {
-        await CheckCacheReady();
-
         // Update the database.
         var nRowsUpdated = await database.Connection.UpdateAsync(gymObject);
         if (nRowsUpdated != 1)
@@ -210,8 +189,6 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <returns>The new gym object.</returns>
     internal async Task<T> Insert(T gymObject)
     {
-        await CheckCacheReady();
-
         // Update the database.
         var nRowsInserted = await database.Connection.InsertAsync(gymObject);
         if (nRowsInserted != 1)
@@ -240,8 +217,6 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="id">The id of the gym object to delete.</param>
     internal async Task Delete(int id)
     {
-        await CheckCacheReady();
-
         // Update the database;
         var nRowsDeleted = await database.Connection.DeleteAsync<T>(id);
         if (nRowsDeleted != 1)
@@ -258,8 +233,6 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// </summary>
     public async Task DeleteAll()
     {
-        await CheckCacheReady();
-
         // Update the database.
         await database.Connection.DeleteAllAsync<T>();
 

@@ -57,8 +57,6 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
-        await CheckCacheReady();
-
         foreach (var (weight, units, enabled, color) in _DefaultPlates)
         {
             // Check that we haven't added this one already.

@@ -212,7 +212,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal async Task Initialize(string? operation, string? gymObjectTypeName, int? gymObjectId)
+    internal void Initialize(string? operation, string? gymObjectTypeName, int? gymObjectId)
     {
         // Don't do anything unless all required parameters have been set.
         if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
@@ -244,7 +244,7 @@ public class EditViewModel : BaseViewModel
         if (operation == "edit")
         {
             // This can throw a KeyNotFoundException if the gym object id is invalid.
-            await LoadGymObject();
+            LoadGymObject();
         }
         else
         {
@@ -301,34 +301,34 @@ public class EditViewModel : BaseViewModel
     /// <exception cref="KeyNotFoundException">
     ///If the gym object with the given type and id is not found in the database.
     /// </exception>
-    private async Task LoadGymObject()
+    private void LoadGymObject()
     {
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                var bar = await _barRepo.LoadOne(_gymObjectId!.Value);
+                var bar = _barRepo.LoadOne(_gymObjectId!.Value);
                 _gymObject = bar;
                 break;
 
             case nameof(Plate):
-                var plate = await _plateRepo.LoadOne(_gymObjectId!.Value);
+                var plate = _plateRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
             case nameof(Barbell):
-                var barbell = await _barbellRepo.LoadOne(_gymObjectId!.Value);
+                var barbell = _barbellRepo.LoadOne(_gymObjectId!.Value);
                 _gymObject = barbell;
                 break;
 
             case nameof(Dumbbell):
-                var dumbbell = await _dumbbellRepo.LoadOne(_gymObjectId!.Value);
+                var dumbbell = _dumbbellRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case nameof(Kettlebell):
-                var kettlebell = await _kettlebellRepo.LoadOne(_gymObjectId!.Value);
+                var kettlebell = _kettlebellRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;

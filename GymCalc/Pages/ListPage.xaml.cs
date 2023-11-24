@@ -48,10 +48,10 @@ public partial class ListPage : ContentPage
     }
 
     /// <inheritdoc/>
-    protected override async void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
-        await Model.DisplayList();
+        Model.DisplayList();
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ public partial class ListPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private async void OnSizeChanged(object? sender, EventArgs e)
+    private void OnSizeChanged(object? sender, EventArgs e)
     {
-        await Model.DisplayList();
+        Model.DisplayList();
     }
 }

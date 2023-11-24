@@ -196,7 +196,7 @@ public class ListViewModel : BaseViewModel
 
     #endregion Command methods
 
-    internal async Task DisplayList()
+    internal void DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(GymObjectTypeName))
@@ -216,27 +216,27 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
-                var bars = await _barRepo.LoadSome(null);
+                var bars = _barRepo.LoadSome(null);
                 DisplayList(bars);
                 break;
 
             case nameof(Plate):
-                var plates = await _plateRepo.LoadSome(null);
+                var plates = _plateRepo.LoadSome(null);
                 DisplayList(plates);
                 break;
 
             case nameof(Barbell):
-                var barbells = await _barbellRepo.LoadSome(null);
+                var barbells = _barbellRepo.LoadSome(null);
                 DisplayList(barbells);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbells = await _dumbbellRepo.LoadSome(null);
+                var dumbbells = _dumbbellRepo.LoadSome(null);
                 DisplayList(dumbbells);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebells = await _kettlebellRepo.LoadSome(null);
+                var kettlebells = _kettlebellRepo.LoadSome(null);
                 DisplayList(kettlebells);
                 break;
         }
@@ -278,14 +278,14 @@ public class ListViewModel : BaseViewModel
     }
 
     /// <inheritdoc/>
-    protected override async void OnPropertyChanged(string? propertyName = null)
+    protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                await DisplayList();
+                DisplayList();
                 break;
         }
     }

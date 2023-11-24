@@ -70,7 +70,7 @@ public partial class DeletePage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
-    protected override async void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
@@ -78,11 +78,11 @@ public partial class DeletePage : ContentPage
         {
             case nameof(GymObjectTypeName):
                 Title = $"Delete {GymObjectTypeName}";
-                await _model.Initialize(GymObjectTypeName, GymObjectId);
+                _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
 
             case nameof(GymObjectId):
-                await _model.Initialize(GymObjectTypeName, GymObjectId);
+                _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
         }
     }

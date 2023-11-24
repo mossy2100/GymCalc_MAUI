@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
 using GymCalc.Constants;
@@ -31,7 +30,7 @@ public class CalculatorViewModel : BaseViewModel
         _kettlebellRepo = kettlebellRepo;
 
         // Create commands.
-        CalculateCommand = new AsyncCommand(Calculate);
+        CalculateCommand = new Command(Calculate);
         BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
         PercentSelectedCommand = new Command<string>(PercentSelected);
@@ -378,18 +377,18 @@ public class CalculatorViewModel : BaseViewModel
 
     internal async Task InitializeDatabase()
     {
-        var barTask = _barRepo.InitializeTable();
-        var plateTask = _plateRepo.InitializeTable();
-        var barbellTask = _barbellRepo.InitializeTable();
-        var dumbbellTask = _dumbbellRepo.InitializeTable();
-        var kettlebellTask = _kettlebellRepo.InitializeTable();
+        var barTask = _barRepo.Initialize();
+        var plateTask = _plateRepo.Initialize();
+        var barbellTask = _barbellRepo.Initialize();
+        var dumbbellTask = _dumbbellRepo.Initialize();
+        var kettlebellTask = _kettlebellRepo.Initialize();
         await Task.WhenAll(barTask, plateTask, barbellTask, dumbbellTask, kettlebellTask);
     }
 
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    internal async Task ResetBarWeightPicker()
+    internal void ResetBarWeightPicker()
     {
         // Remember the original selection.
         var selectedBarWeight = BarWeight;
@@ -398,7 +397,7 @@ public class CalculatorViewModel : BaseViewModel
         BarWeight = 0;
 
         // Repopulate the picker options.
-        var bars = await _barRepo.LoadSome();
+        var bars = _barRepo.LoadSome();
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // Select the previously selected value, if available.
@@ -429,7 +428,7 @@ public class CalculatorViewModel : BaseViewModel
         StartingWeightUnits = units;
     }
 
-    internal async Task Initialize()
+    internal void Initialize()
     {
         // Set the units labels, which may have changed if the user went to the settings page.
         SetUnits();
@@ -439,7 +438,7 @@ public class CalculatorViewModel : BaseViewModel
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        await ResetBarWeightPicker();
+        ResetBarWeightPicker();
     }
 
     #endregion
@@ -478,7 +477,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Command methods
 
-    private async Task Calculate()
+    private void Calculate()
     {
         // Hide current results.
         ResultsVisible = false;
@@ -487,19 +486,19 @@ public class CalculatorViewModel : BaseViewModel
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                await DoBarbellCalculations();
+                DoBarbellCalculations();
                 break;
 
             case ExerciseType.Machine:
-                await DoMachineCalculations();
+                DoMachineCalculations();
                 break;
 
             case ExerciseType.Dumbbell:
-                await DoDumbbellCalculations();
+                DoDumbbellCalculations();
                 break;
 
             case ExerciseType.Kettlebell:
-                await DoKettlebellCalculations();
+                DoKettlebellCalculations();
                 break;
 
             default:
@@ -565,7 +564,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Calculations
 
-    private async Task DoBarbellCalculations()
+    private void DoBarbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -575,7 +574,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate the results.
         if (BarbellType == BarbellType.PlateLoaded)
         {
-            var plates = await _plateRepo.LoadSome();
+            var plates = _plateRepo.LoadSome();
             PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
                 "Plates each end", plates);
             PlatesResultVisible = true;
@@ -583,7 +582,7 @@ public class CalculatorViewModel : BaseViewModel
         }
         else
         {
-            var barbells = await _barbellRepo.LoadSome();
+            var barbells = _barbellRepo.LoadSome();
             SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
             PlatesResultVisible = false;
             SingleWeightResultVisible = true;
@@ -594,7 +593,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private async Task DoMachineCalculations()
+    private void DoMachineCalculations()
     {
         if (!ValidateMaxWeight() || !ValidateStartingWeight())
         {
@@ -602,7 +601,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Get the available plates.
-        var plates = await _plateRepo.LoadSome();
+        var plates = _plateRepo.LoadSome();
 
         // Determine the number of plate stacks and total starting weight from the machine type.
         var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
@@ -620,7 +619,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private async Task DoDumbbellCalculations()
+    private void DoDumbbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -628,7 +627,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var dumbbells = await _dumbbellRepo.LoadSome();
+        var dumbbells = _dumbbellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
@@ -638,7 +637,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private async Task DoKettlebellCalculations()
+    private void DoKettlebellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -646,7 +645,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var kettlebells = await _kettlebellRepo.LoadSome();
+        var kettlebells = _kettlebellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.
