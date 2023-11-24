@@ -55,18 +55,19 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// </summary>
     /// <param name="enabled">
     /// If the method should get:
-    ///     true  : enabled objects
+    ///     true  : enabled objects (default)
     ///     false : disabled objects
     ///     null  : both
     /// </param>
     /// <param name="ascending">
     /// If the results should be ordered:
-    ///     true  : ascending by weight
+    ///     true  : ascending by weight (default)
     ///     false : descending by weight
     ///     null  : unordered
     /// </param>
     /// <param name="units">
     /// What units the results should have (Kilograms, Pounds, All, or Default).
+    /// The "Default" units are set on the Settings page (default Kilograms).
     /// </param>
     /// <returns></returns>
     internal List<T> Get(bool? enabled = true, bool? ascending = true, Units units = Units.Default)

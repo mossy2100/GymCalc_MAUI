@@ -1,3 +1,4 @@
+using System.Globalization;
 using Galaxon.Core.Types;
 using GymCalc.Constants;
 
@@ -18,12 +19,24 @@ public static class UnitsUtility
     public const decimal LB_PER_KG = 1 / KG_PER_LB;
 
     /// <summary>
-    /// Get the user's preferred units of mass. Defaults to kilograms.
+    /// Get the user's preferred units of mass. Defaults to pounds in the US, kilograms elsewhere.
     /// </summary>
     /// <returns>The user's preferred units of mass.</returns>
     internal static Units GetDefault()
     {
         var sUnits = Preferences.Default.Get("Units", "");
-        return sUnits == Units.Pounds.GetDescription() ? Units.Pounds : Units.Kilograms;
+        if (sUnits == Units.Pounds.GetDescription())
+        {
+            return Units.Pounds;
+        }
+        else if (sUnits == Units.Kilograms.GetDescription())
+        {
+            return Units.Kilograms;
+        }
+        else
+        {
+            // See if they are from the US; or, at least, if their phone is set up for US.
+            return CultureInfo.CurrentCulture.Name == "en-US" ? Units.Pounds : Units.Kilograms;
+        }
     }
 }
