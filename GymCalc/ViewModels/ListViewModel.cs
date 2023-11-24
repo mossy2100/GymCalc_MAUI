@@ -176,12 +176,22 @@ public class ListViewModel : BaseViewModel
 
     private async Task EditGymObject(GymObject? gymObject)
     {
-        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject!.Id}");
+        if (gymObject == null)
+        {
+            throw new InvalidOperationException($"Gym object not set.");
+        }
+
+        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
     private async Task DeleteGymObject(GymObject? gymObject)
     {
-        await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject!.Id}");
+        if (gymObject == null)
+        {
+            throw new InvalidOperationException($"Gym object not set.");
+        }
+
+        await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
     private async Task AddGymObject()

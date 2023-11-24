@@ -53,18 +53,21 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         // Create the table if it doesn't already exist.
         await database.Connection.CreateTableAsync<T>();
 
+        // Get a reference to the table.
+        var table = database.Connection.Table<T>();
+
         // Count how many rows there are.
-        var n = await database.Connection.Table<T>().CountAsync();
+        var nRows = await table.CountAsync();
 
         // If there aren't any rows, initialize with the defaults.
-        if (n == 0)
+        if (nRows == 0)
         {
             await InsertDefaults();
         }
 
         // Initialize the cache.
         Cache = new Dictionary<int, T>();
-        var gymObjects = await database.Connection.Table<T>().ToListAsync();
+        var gymObjects = await table.ToListAsync();
         foreach (var gymObject in gymObjects)
         {
             Cache.Add(gymObject.Id, gymObject);
@@ -88,7 +91,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         }
 
         throw new KeyNotFoundException(
-            $"No object found in the {typeof(T).Name} cache with id {id}.");
+            $"No object found in the {typeof(T).Name} cache with Id = {id}.");
     }
 
     /// <summary>

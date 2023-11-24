@@ -135,10 +135,10 @@ public class DeleteViewModel : BaseViewModel
     /// <param name="gymObjectTypeName"></param>
     /// <param name="gymObjectId"></param>
     /// <returns>If the initialization completed ok.</returns>
-    internal void Initialize(string? gymObjectTypeName, int? gymObjectId)
+    internal void Initialize(string? gymObjectTypeName, int gymObjectId)
     {
         // Don't do anything unless both parameters have been set.
-        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == null)
+        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == 0)
         {
             return;
         }
@@ -148,23 +148,23 @@ public class DeleteViewModel : BaseViewModel
         switch (gymObjectTypeName)
         {
             case nameof(Bar):
-                _gymObject = _barRepo.LoadOne(gymObjectId.Value);
+                _gymObject = _barRepo.LoadOne(gymObjectId);
                 break;
 
             case nameof(Plate):
-                _gymObject = _plateRepo.LoadOne(gymObjectId.Value);
+                _gymObject = _plateRepo.LoadOne(gymObjectId);
                 break;
 
             case nameof(Barbell):
-                _gymObject = _barbellRepo.LoadOne(gymObjectId.Value);
+                _gymObject = _barbellRepo.LoadOne(gymObjectId);
                 break;
 
             case nameof(Dumbbell):
-                _gymObject = _dumbbellRepo.LoadOne(gymObjectId.Value);
+                _gymObject = _dumbbellRepo.LoadOne(gymObjectId);
                 break;
 
             case nameof(Kettlebell):
-                _gymObject = _kettlebellRepo.LoadOne(gymObjectId.Value);
+                _gymObject = _kettlebellRepo.LoadOne(gymObjectId);
                 break;
 
             default:

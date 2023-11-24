@@ -35,7 +35,7 @@ public class EditViewModel : BaseViewModel
 
     private GymObject? _gymObject;
 
-    private int? _gymObjectId;
+    private int _gymObjectId;
 
     private string? _gymObjectTypeName;
 
@@ -212,11 +212,11 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal void Initialize(string? operation, string? gymObjectTypeName, int? gymObjectId)
+    internal void Initialize(string? operation, string? gymObjectTypeName, int gymObjectId)
     {
         // Don't do anything unless all required parameters have been set.
         if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
-            || (operation == "edit" && gymObjectId == null))
+            || (operation == "edit" && gymObjectId == 0))
         {
             return;
         }
@@ -306,29 +306,29 @@ public class EditViewModel : BaseViewModel
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                var bar = _barRepo.LoadOne(_gymObjectId!.Value);
+                var bar = _barRepo.LoadOne(_gymObjectId);
                 _gymObject = bar;
                 break;
 
             case nameof(Plate):
-                var plate = _plateRepo.LoadOne(_gymObjectId!.Value);
+                var plate = _plateRepo.LoadOne(_gymObjectId);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
             case nameof(Barbell):
-                var barbell = _barbellRepo.LoadOne(_gymObjectId!.Value);
+                var barbell = _barbellRepo.LoadOne(_gymObjectId);
                 _gymObject = barbell;
                 break;
 
             case nameof(Dumbbell):
-                var dumbbell = _dumbbellRepo.LoadOne(_gymObjectId!.Value);
+                var dumbbell = _dumbbellRepo.LoadOne(_gymObjectId);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case nameof(Kettlebell):
-                var kettlebell = _kettlebellRepo.LoadOne(_gymObjectId!.Value);
+                var kettlebell = _kettlebellRepo.LoadOne(_gymObjectId);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;

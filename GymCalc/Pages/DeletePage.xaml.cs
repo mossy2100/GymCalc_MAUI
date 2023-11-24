@@ -18,7 +18,7 @@ public partial class DeletePage : ContentPage
     /// <summary>
     /// The id of the GymObject we want to delete.
     /// </summary>
-    private int? _gymObjectId;
+    private int _gymObjectId;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ public partial class DeletePage : ContentPage
         }
     }
 
-    public int? GymObjectId
+    public int GymObjectId
     {
         get => _gymObjectId;
 
