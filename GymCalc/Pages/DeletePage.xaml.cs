@@ -18,14 +18,14 @@ public partial class DeletePage : ContentPage
     /// <summary>
     /// The id of the GymObject we want to delete.
     /// </summary>
-    private int _gymObjectId;
+    private int? _gymObjectId;
 
     // ---------------------------------------------------------------------------------------------
 
     /// <summary>
     /// The name of the GymObject type (e.g. "Bar").
     /// </summary>
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ public partial class DeletePage : ContentPage
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
@@ -56,7 +56,7 @@ public partial class DeletePage : ContentPage
         }
     }
 
-    public int GymObjectId
+    public int? GymObjectId
     {
         get => _gymObjectId;
 
@@ -70,7 +70,7 @@ public partial class DeletePage : ContentPage
     // ---------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override async void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
@@ -78,11 +78,11 @@ public partial class DeletePage : ContentPage
         {
             case nameof(GymObjectTypeName):
                 Title = $"Delete {GymObjectTypeName}";
-                _model.Initialize(GymObjectTypeName, GymObjectId);
+                await _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
 
             case nameof(GymObjectId):
-                _model.Initialize(GymObjectTypeName, GymObjectId);
+                await _model.Initialize(GymObjectTypeName, GymObjectId);
                 break;
         }
     }

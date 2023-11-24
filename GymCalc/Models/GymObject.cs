@@ -13,7 +13,7 @@ public class GymObject
 
     public decimal Weight { get; set; }
 
-    public string Units { get; set; }
+    public string? Units { get; set; }
 
     [NotMapped]
     public decimal WeightKg =>
@@ -22,4 +22,14 @@ public class GymObject
             : Weight * UnitsUtility.KG_PER_LB;
 
     public bool Enabled { get; set; }
+
+    /// <summary>
+    /// Clone the gym object.
+    /// </summary>
+    /// <typeparam name="T">The gym object derived type.</typeparam>
+    /// <returns>A copy of the object.</returns>
+    public T Clone<T>() where T : GymObject
+    {
+        return (T)MemberwiseClone();
+    }
 }

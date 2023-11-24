@@ -13,7 +13,7 @@ public partial class HtmlPage : ContentPage
     /// <summary>Reference to the viewmodel.</summary>
     private readonly HtmlViewModel _model;
 
-    private string _route;
+    private string? _route;
 
     private AppTheme _theme;
 
@@ -35,13 +35,10 @@ public partial class HtmlPage : ContentPage
         _theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
             ? AppTheme.Light
             : AppTheme.Dark;
-        RootComponent.Parameters = new Dictionary<string, object>
-        {
-            { "Theme", _theme }
-        };
+        RootComponent.Parameters = new Dictionary<string, object?> { { "Theme", _theme } };
     }
 
-    public string Route
+    public string? Route
     {
         get => _route;
 
@@ -55,14 +52,14 @@ public partial class HtmlPage : ContentPage
         }
     }
 
-    private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+    private void OnRequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
     {
         _theme = Application.Current!.RequestedTheme;
         _htmlUpdaterService.UpdateTheme(_theme);
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 

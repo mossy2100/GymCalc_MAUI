@@ -2,9 +2,9 @@ namespace GymCalc.ViewModels;
 
 public class HtmlViewModel : BaseViewModel
 {
-    private string _title;
+    private string? _title;
 
-    public string Title
+    public string? Title
     {
         get => _title;
 

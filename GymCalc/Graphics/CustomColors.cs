@@ -28,9 +28,16 @@ internal static class CustomColors
         { "PaleGray", "#d7d7d7" }
     };
 
-    internal static Color Get(string name)
+    /// <summary>
+    /// Get a color object given a color name.
+    /// Null if not found.
+    /// </summary>
+    /// <param name="name">The color name.</param>
+    /// <returns>The corresponding Color object.</returns>
+    internal static Color? Get(string? name)
     {
-        return Palette.TryGetValue(name, out var hex) ? Color.Parse(hex) : null;
+        return name == null ? null :
+            Palette.TryGetValue(name, out var hex) ? Color.Parse(hex) : null;
     }
 
     /// <summary>
@@ -42,7 +49,7 @@ internal static class CustomColors
     /// <param name="weight">The weight of the kettlebell.</param>
     /// <param name="units">The units.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (string, bool, string) DefaultKettlebellColor(decimal weight, Units units)
+    internal static (string, bool, string?) DefaultKettlebellColor(decimal weight, Units units)
     {
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;

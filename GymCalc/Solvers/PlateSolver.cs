@@ -5,17 +5,17 @@ namespace GymCalc.Solvers;
 
 internal static class PlateSolver
 {
-    private static List<Plate> _availPlates;
+    private static List<Plate>? _availPlates;
 
     private static decimal _maxPlateWeight;
 
-    private static List<Plate> _bestSolution;
+    private static List<Plate>? _bestSolution;
 
     private static decimal _idealWeight;
 
     private static decimal _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(decimal maxTotalWeight,
+    internal static List<PlatesResult>? CalculateResults(decimal maxTotalWeight,
         decimal totalStartingWeight, int nStacks, string eachSideText,
         IEnumerable<Plate> availPlates)
     {
@@ -80,7 +80,7 @@ internal static class PlateSolver
     private static void SearchSolutions(IReadOnlyCollection<Plate> currentStack,
         decimal maxPlateWeight)
     {
-        foreach (var plate in _availPlates)
+        foreach (var plate in _availPlates!)
         {
             // Only add plates that are less than or equal to the largest plate added so far.
             // Ensuring plates are added in order of decreasing weight eliminates duplicate
@@ -101,7 +101,7 @@ internal static class PlateSolver
 
             // Check if this is a new best solution.
             if (diff < _smallestDiff
-                || (diff == _smallestDiff && newStack.Count < _bestSolution.Count))
+                || (diff == _smallestDiff && newStack.Count < _bestSolution!.Count))
             {
                 // Update the best solution found so far.
                 _bestSolution = newStack;

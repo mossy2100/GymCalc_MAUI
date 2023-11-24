@@ -58,9 +58,9 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
     /// </summary>
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
@@ -71,9 +71,9 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Results for the CollectionView.
     /// </summary>
-    private List<ListItem> _listItems;
+    private List<ListItem>? _listItems;
 
-    public List<ListItem> ListItems
+    public List<ListItem>? ListItems
     {
         get => _listItems;
 
@@ -84,9 +84,9 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Page title.
     /// </summary>
-    private string _title;
+    private string? _title;
 
-    public string Title
+    public string? Title
     {
         get => _title;
 
@@ -97,9 +97,9 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Instructions text.
     /// </summary>
-    private string _instructions;
+    private string? _instructions;
 
-    public string Instructions
+    public string? Instructions
     {
         get => _instructions;
 
@@ -139,11 +139,11 @@ public class ListViewModel : BaseViewModel
 
     #region Command methods
 
-    private async Task EnableGymObject(ListItem listItem)
+    private async Task EnableGymObject(ListItem? listItem)
     {
         // Check if an update is actually needed. This method is called on initialization of the
         // CollectionView, when no changes have occurred. Could be a bug in InputKit.
-        if (listItem.Enabled == listItem.GymObject.Enabled)
+        if (listItem!.Enabled == listItem.GymObject!.Enabled)
         {
             return;
         }
@@ -174,14 +174,14 @@ public class ListViewModel : BaseViewModel
         }
     }
 
-    private async Task EditGymObject(GymObject gymObject)
+    private async Task EditGymObject(GymObject? gymObject)
     {
-        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
+        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject!.Id}");
     }
 
-    private async Task DeleteGymObject(GymObject gymObject)
+    private async Task DeleteGymObject(GymObject? gymObject)
     {
-        await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
+        await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject!.Id}");
     }
 
     private async Task AddGymObject()
@@ -196,7 +196,7 @@ public class ListViewModel : BaseViewModel
 
     #endregion Command methods
 
-    internal void DisplayList()
+    internal async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(GymObjectTypeName))
@@ -216,27 +216,27 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
-                var bars = _barRepo.Get(null);
+                var bars = await _barRepo.LoadSome(null);
                 DisplayList(bars);
                 break;
 
             case nameof(Plate):
-                var plates = _plateRepo.Get(null);
+                var plates = await _plateRepo.LoadSome(null);
                 DisplayList(plates);
                 break;
 
             case nameof(Barbell):
-                var barbells = _barbellRepo.Get(null);
+                var barbells = await _barbellRepo.LoadSome(null);
                 DisplayList(barbells);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbells = _dumbbellRepo.Get(null);
+                var dumbbells = await _dumbbellRepo.LoadSome(null);
                 DisplayList(dumbbells);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebells = _kettlebellRepo.Get(null);
+                var kettlebells = await _kettlebellRepo.LoadSome(null);
                 DisplayList(kettlebells);
                 break;
         }
@@ -278,14 +278,14 @@ public class ListViewModel : BaseViewModel
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged(string propertyName = null)
+    protected override async void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                DisplayList();
+                await DisplayList();
                 break;
         }
     }

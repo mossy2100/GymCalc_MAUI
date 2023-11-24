@@ -9,7 +9,7 @@ public partial class ResetPage : ContentPage
     /// <summary>Reference to the viewmodel.</summary>
     private readonly ResetViewModel _model;
 
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
     public ResetPage(ResetViewModel model)
     {
@@ -23,7 +23,7 @@ public partial class ResetPage : ContentPage
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
@@ -38,7 +38,7 @@ public partial class ResetPage : ContentPage
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 

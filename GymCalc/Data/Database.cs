@@ -32,7 +32,7 @@ public class Database(IServiceProvider serviceProvider)
     /// <summary>
     /// The database connection field.
     /// </summary>
-    private SQLiteAsyncConnection _connection;
+    private SQLiteAsyncConnection? _connection;
 
     /// <summary>
     /// The database connection property. Create and initialize when needed.
@@ -48,12 +48,12 @@ public class Database(IServiceProvider serviceProvider)
     /// <exception cref="ArgumentOutOfRangeException">
     /// If the gym object type name is invalid.
     /// </exception>
-    internal IGymObjectRepository GetRepo(string gymObjectTypeName)
+    internal IGymObjectRepository GetRepo(string? gymObjectTypeName)
     {
         var repoType = Type.GetType($"GymCalc.Data.{gymObjectTypeName}Repository");
-        if (repoType != null)
+        if (repoType != null && serviceProvider.GetService(repoType) is IGymObjectRepository igor)
         {
-            return (IGymObjectRepository)serviceProvider.GetService(repoType);
+            return igor;
         }
 
         throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),

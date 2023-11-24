@@ -6,7 +6,7 @@ namespace GymCalc.Converters;
 public class BarbellTypeConverter : IValueConverter
 {
     /// <inheritdoc/>
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is BarbellType bt)
         {
@@ -17,7 +17,7 @@ public class BarbellTypeConverter : IValueConverter
     }
 
     /// <inheritdoc/>
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is string s)
         {

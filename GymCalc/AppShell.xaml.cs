@@ -26,12 +26,12 @@ public partial class AppShell : Shell
         // Routing.RegisterRoute("settings", typeof(SettingsPage));
     }
 
-    private static async Task GoToPage(string pageName)
+    private static async Task GoToPage(string? pageName)
     {
         Current.FlyoutIsPresented = false;
 
-        string route = null;
-        Dictionary<string, object> parameters = null;
+        string? route = null;
+        Dictionary<string, object>? parameters = null;
 
         switch (pageName)
         {

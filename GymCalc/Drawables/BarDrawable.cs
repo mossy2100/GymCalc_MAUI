@@ -23,10 +23,7 @@ public class BarDrawable : GymObjectDrawable
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        var bar = (Bar)GymObject;
-        // var rectWidth = dirtyRect.Width;
-        // var barWidth = (float)(MIN_WIDTH + (bar.Weight / MaxWeight) * (rectWidth - MIN_WIDTH));
-
+        var bar = (Bar)GymObject!;
         var height = (float)Height;
         var width = (float)Width;
 

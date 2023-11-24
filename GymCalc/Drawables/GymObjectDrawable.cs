@@ -8,7 +8,7 @@ public abstract class GymObjectDrawable : IDrawable
 
     public const int MAX_WIDTH = 200;
 
-    public GymObject GymObject { get; set; }
+    public GymObject? GymObject { get; set; }
 
     public double Width => GetWidth();
 
@@ -38,25 +38,36 @@ public abstract class GymObjectDrawable : IDrawable
     /// </summary>
     public double CalculateWidth()
     {
-        return CalculateWidth(GymObject.Weight, MaxWeight);
+        return CalculateWidth(GymObject!.Weight, MaxWeight);
     }
 
     /// <summary>
     /// Construct a new drawable for a given GymObject.
     /// </summary>
-    /// <param name="gymObject"></param>
-    /// <returns></returns>
+    /// <param name="gymObject">A gym object.</param>
+    /// <returns>A GymObjectDrawable corresponding to the provided GymObject.</returns>
     /// <exception cref="Exception"></exception>
     public static GymObjectDrawable Create(GymObject gymObject)
     {
-        var drawableTypeName = "GymCalc.Drawables." + gymObject.GetType().Name + "Drawable";
-        var drawable = (GymObjectDrawable)Activator.CreateInstance(null, drawableTypeName)!
-            .Unwrap();
+        // Get the type.
+        var gymObjectTypeName = gymObject.GetType().Name;
+        var drawableTypeName = $"GymCalc.Drawables.{gymObjectTypeName}Drawable";
+        var drawableType = Type.GetType(drawableTypeName);
+        if (drawableType == null)
+        {
+            throw new InvalidOperationException(
+                $"Could not create a drawable for the {gymObjectTypeName} object.");
+        }
+
+        // Create the drawable object.
+        var drawable = Activator.CreateInstance(drawableType);
         if (drawable == null)
         {
-            throw new Exception("Could not create drawable.");
+            throw new InvalidOperationException(
+                $"Could not create a drawable for the {gymObjectTypeName} object.");
         }
-        drawable.GymObject = gymObject;
-        return drawable;
+        var gymObjectDrawable = (GymObjectDrawable)drawable;
+        gymObjectDrawable.GymObject = gymObject;
+        return gymObjectDrawable;
     }
 }

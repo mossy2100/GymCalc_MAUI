@@ -13,14 +13,14 @@ public partial class EditPage : ContentPage
     /// <summary>Reference to the viewmodel.</summary>
     private readonly EditViewModel _model;
 
-    private int _gymObjectId;
+    private int? _gymObjectId;
 
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
     // ---------------------------------------------------------------------------------------------
     // Page parameters.
 
-    private string _operation;
+    private string? _operation;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ public partial class EditPage : ContentPage
         Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
 
-    public string Operation
+    public string? Operation
     {
         get => _operation;
 
@@ -50,7 +50,7 @@ public partial class EditPage : ContentPage
         }
     }
 
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
@@ -61,7 +61,7 @@ public partial class EditPage : ContentPage
         }
     }
 
-    public int GymObjectId
+    public int? GymObjectId
     {
         get => _gymObjectId;
 
@@ -76,7 +76,7 @@ public partial class EditPage : ContentPage
     // Event handlers.
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override async void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
@@ -85,7 +85,7 @@ public partial class EditPage : ContentPage
             case nameof(Operation):
             case nameof(GymObjectTypeName):
             case nameof(GymObjectId):
-                _model.Initialize(Operation, GymObjectTypeName, GymObjectId);
+                await _model.Initialize(Operation, GymObjectTypeName, GymObjectId);
                 break;
         }
     }

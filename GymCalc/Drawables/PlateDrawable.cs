@@ -36,10 +36,10 @@ public class PlateDrawable : GymObjectDrawable
     public static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
-        var bgColor = CustomColors.Get(plate.Color);
+        var bgColor = CustomColors.Get(plate.Color) ?? CustomColors.Get("OffBlack");
 
         // Plate background.
-        canvas.FillColor = bgColor.AddLuminosity(-0.1f);
+        canvas.FillColor = bgColor!.AddLuminosity(-0.1f);
         var plateBackground = new RectF(x, y, w, h);
         canvas.FillRoundedRectangle(plateBackground, CORNER_RADIUS);
 
@@ -61,7 +61,7 @@ public class PlateDrawable : GymObjectDrawable
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        var plate = (Plate)GymObject;
+        var plate = (Plate)GymObject!;
         var w = (float)Width;
         var h = (float)Height;
         var x = (dirtyRect.Width - w) / 2f;

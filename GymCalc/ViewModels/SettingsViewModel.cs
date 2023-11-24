@@ -5,12 +5,7 @@ namespace GymCalc.ViewModels;
 
 public class SettingsViewModel : BaseViewModel
 {
-    private string _units;
-
-    public SettingsViewModel()
-    {
-        Units = UnitsUtility.GetDefault().GetDescription();
-    }
+    private string _units = UnitsUtility.GetDefault().GetDescription();
 
     public string Units
     {
@@ -20,7 +15,7 @@ public class SettingsViewModel : BaseViewModel
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged(string propertyName = null)
+    protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 

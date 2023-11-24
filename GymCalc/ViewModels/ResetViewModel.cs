@@ -15,11 +15,11 @@ public class ResetViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
 
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
-    private string _resetMessage;
+    private string? _resetMessage;
 
-    private string _title;
+    private string? _title;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -39,21 +39,21 @@ public class ResetViewModel : BaseViewModel
 
     public ICommand ResetCommand { get; init; }
 
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
         set => SetProperty(ref _gymObjectTypeName, value);
     }
 
-    public string Title
+    public string? Title
     {
         get => _title;
 
         set => SetProperty(ref _title, value);
     }
 
-    public string ResetMessage
+    public string? ResetMessage
     {
         get => _resetMessage;
 
@@ -64,7 +64,7 @@ public class ResetViewModel : BaseViewModel
     // Event handlers.
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
@@ -72,7 +72,7 @@ public class ResetViewModel : BaseViewModel
         {
             case nameof(GymObjectTypeName):
                 Title = $"Reset {GymObjectTypeName}s";
-                ResetMessage = $"WARNING: This will remove all {GymObjectTypeName.ToLower()}s from "
+                ResetMessage = $"WARNING: This will remove all {GymObjectTypeName!.ToLower()}s from "
                     + "the database and restore the defaults. Are you sure you want to do this?";
                 break;
         }

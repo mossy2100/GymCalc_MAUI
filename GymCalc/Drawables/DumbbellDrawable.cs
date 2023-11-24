@@ -25,18 +25,14 @@ public class DumbbellDrawable : GymObjectDrawable
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        var dumbbell = (Dumbbell)GymObject;
-        // var rectWidth = dirtyRect.Width;
-        // var rectHeight = dirtyRect.Height;
-
+        var dumbbell = (Dumbbell)GymObject!;
         var height = (float)Height;
         var width = (float)Width;
 
         // Bar.
         const int barHeight = 20;
         var barTop = (float)((height - barHeight) / 2.0);
-        var barLeft = 0; //(float)((width - Width) / 2.0);
-        var bar = new RectF(barLeft, barTop, width, barHeight);
+        var bar = new RectF(0, barTop, width, barHeight);
         canvas.FillColor = CustomColors.Get("PaleGray");
         canvas.FillRectangle(bar);
 
@@ -46,26 +42,23 @@ public class DumbbellDrawable : GymObjectDrawable
         const int cornerRadius = 2;
         var smallPlateTop = barTop / 3;
         var smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = CustomColors.Get(dumbbell.Color);
+        canvas.FillColor = CustomColors.Get(dumbbell.Color) ?? CustomColors.Get("OffBlack");
 
         // Left small plate.
-        var leftSmallPlate =
-            new RectF(barLeft + gapWidth, smallPlateTop, plateWidth, smallPlateHeight);
+        var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);
         canvas.FillRoundedRectangle(leftSmallPlate, cornerRadius);
 
         // Right small plate.
-        var rightSmallPlate = new RectF(width - barLeft - gapWidth - plateWidth, smallPlateTop,
-            plateWidth, smallPlateHeight);
+        var rightSmallPlate = new RectF(width - gapWidth - plateWidth, smallPlateTop, plateWidth,
+            smallPlateHeight);
         canvas.FillRoundedRectangle(rightSmallPlate, cornerRadius);
 
         // Left large plate.
-        var leftLargePlate =
-            new RectF(barLeft + gapWidth * 2 + plateWidth, 0, plateWidth, height);
+        var leftLargePlate = new RectF(gapWidth * 2 + plateWidth, 0, plateWidth, height);
         canvas.FillRoundedRectangle(leftLargePlate, cornerRadius);
 
         // Right large plate.
-        var rightLargePlate = new RectF(width - barLeft - 2 * (gapWidth + plateWidth), 0,
-            plateWidth, height);
+        var rightLargePlate = new RectF(width - 2 * (gapWidth + plateWidth), 0, plateWidth, height);
         canvas.FillRoundedRectangle(rightLargePlate, cornerRadius);
 
         // Weight label.
@@ -76,7 +69,7 @@ public class DumbbellDrawable : GymObjectDrawable
         const int m = (gapWidth + plateWidth) * 2;
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         var p = (height - barHeight) / 2 + offset;
-        canvas.DrawString(weightString, m, p, width - m * 2, barHeight,
-            HorizontalAlignment.Center, VerticalAlignment.Center);
+        canvas.DrawString(weightString, m, p, width - m * 2, barHeight, HorizontalAlignment.Center,
+            VerticalAlignment.Center);
     }
 }

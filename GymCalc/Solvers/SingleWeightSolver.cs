@@ -5,9 +5,9 @@ namespace GymCalc.Solvers;
 
 internal static class SingleWeightSolver
 {
-    private static IEnumerable<GymObject> _availWeights;
+    private static IEnumerable<GymObject>? _availWeights;
 
-    internal static List<SingleWeightResult> CalculateResults(decimal maxWeight,
+    internal static List<SingleWeightResult>? CalculateResults(decimal maxWeight,
         IEnumerable<GymObject> availWeights)
     {
         var results = new List<SingleWeightResult>();
@@ -41,8 +41,9 @@ internal static class SingleWeightSolver
     /// <returns>The closest weight to the ideal weight.</returns>
     private static GymObject FindClosest(decimal idealWeight)
     {
-        var gymObjects = _availWeights.ToArray();
-        GymObject current = null;
+        GymObject? current = null;
+
+        var gymObjects = _availWeights!.ToArray();
         for (var i = 0; i < gymObjects.Length; i++)
         {
             current = gymObjects[i];
@@ -68,6 +69,12 @@ internal static class SingleWeightSolver
                 var diffAbove = current.Weight - idealWeight;
                 return diffAbove < diffBelow ? current : previous;
             }
+        }
+
+        // Null check. Should never happen.
+        if (current == null)
+        {
+            throw new InvalidOperationException("Could not find closest weight.");
         }
 
         // We checked all available weight and none have a weight equal to or greater then the

@@ -84,10 +84,13 @@ public partial class ColorPicker : ContentView
         }
     }
 
-    private void OnColorPickerButtonClicked(object sender, EventArgs e)
+    private void OnColorPickerButtonClicked(object? sender, EventArgs e)
     {
         // Update the Selected property to the matching color name.
-        Selected = _buttonToColor[(Button)sender];
+        if (sender is Button btn)
+        {
+            Selected = _buttonToColor[btn];
+        }
     }
 
     private static void OnSelectedChanged(BindableObject bindable, object oldValue, object newValue)

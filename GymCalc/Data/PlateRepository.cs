@@ -57,8 +57,18 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
+        await CheckCacheReady();
+
         foreach (var (weight, units, enabled, color) in _DefaultPlates)
         {
+            // Check that we haven't added this one already.
+            var sUnits = units.GetDescription();
+            if (Cache!.Any(pair => pair.Value.Weight == weight && pair.Value.Units == sUnits))
+            {
+                continue;
+            }
+
+            // Construct and add the new Plate object.
             var plate = new Plate
             {
                 Weight = weight,

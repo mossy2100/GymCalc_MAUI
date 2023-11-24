@@ -27,41 +27,41 @@ public class EditViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     // Fields
 
-    private string _bandColor;
+    private string? _bandColor;
 
     private bool _enabled;
 
-    private string _errorMessage;
+    private string? _errorMessage;
 
-    private GymObject _gymObject;
+    private GymObject? _gymObject;
 
-    private int _gymObjectId;
+    private int? _gymObjectId;
 
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
-    private bool _hasBands;
+    private bool? _hasBands;
 
     private bool _hasBandsIsVisible;
 
-    private string _mainColor;
+    private string? _mainColor;
 
     private bool _mainColorIsVisible;
 
-    private string _operation;
+    private string? _operation;
 
     // ---------------------------------------------------------------------------------------------
     // Bindable properties.
 
-    private string _title;
+    private string? _title;
 
-    private string _units;
+    private string? _units;
 
     /// <summary>
     /// The weight (parsed from the WeightText entry field).
     /// </summary>
     private decimal _weight;
 
-    private string _weightText;
+    private string? _weightText;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -96,21 +96,21 @@ public class EditViewModel : BaseViewModel
 
     public ICommand SaveCommand { get; init; }
 
-    public string Title
+    public string? Title
     {
         get => _title;
 
         set => SetProperty(ref _title, value);
     }
 
-    public string WeightText
+    public string? WeightText
     {
         get => _weightText;
 
         set => SetProperty(ref _weightText, value);
     }
 
-    public string Units
+    public string? Units
     {
         get => _units;
 
@@ -124,28 +124,28 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _enabled, value);
     }
 
-    public string MainColor
+    public string? MainColor
     {
         get => _mainColor;
 
         set => SetProperty(ref _mainColor, value);
     }
 
-    public bool HasBands
+    public bool? HasBands
     {
         get => _hasBands;
 
         set => SetProperty(ref _hasBands, value);
     }
 
-    public string BandColor
+    public string? BandColor
     {
         get => _bandColor;
 
         set => SetProperty(ref _bandColor, value);
     }
 
-    public string ErrorMessage
+    public string? ErrorMessage
     {
         get => _errorMessage;
 
@@ -212,11 +212,11 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal void Initialize(string operation, string gymObjectTypeName, int gymObjectId)
+    internal async Task Initialize(string? operation, string? gymObjectTypeName, int? gymObjectId)
     {
         // Don't do anything unless all required parameters have been set.
         if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
-            || (operation == "edit" && gymObjectId == 0))
+            || (operation == "edit" && gymObjectId == null))
         {
             return;
         }
@@ -244,7 +244,7 @@ public class EditViewModel : BaseViewModel
         if (operation == "edit")
         {
             // This can throw a KeyNotFoundException if the gym object id is invalid.
-            LoadGymObject();
+            await LoadGymObject();
         }
         else
         {
@@ -295,35 +295,40 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Load an existing gym object from the database.
     /// </summary>
-    /// <exception cref="NoMatchingCaseException"></exception>
-    private void LoadGymObject()
+    /// <exception cref="NoMatchingCaseException">
+    /// If the gym object type is invalid (should never happen).
+    /// </exception>
+    /// <exception cref="KeyNotFoundException">
+    ///If the gym object with the given type and id is not found in the database.
+    /// </exception>
+    private async Task LoadGymObject()
     {
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                var bar = _barRepo.Get(_gymObjectId);
+                var bar = await _barRepo.LoadOne(_gymObjectId!.Value);
                 _gymObject = bar;
                 break;
 
             case nameof(Plate):
-                var plate = _plateRepo.Get(_gymObjectId);
+                var plate = await _plateRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = plate.Color;
                 _gymObject = plate;
                 break;
 
             case nameof(Barbell):
-                var barbell = _barbellRepo.Get(_gymObjectId);
+                var barbell = await _barbellRepo.LoadOne(_gymObjectId!.Value);
                 _gymObject = barbell;
                 break;
 
             case nameof(Dumbbell):
-                var dumbbell = _dumbbellRepo.Get(_gymObjectId);
+                var dumbbell = await _dumbbellRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = dumbbell.Color;
                 _gymObject = dumbbell;
                 break;
 
             case nameof(Kettlebell):
-                var kettlebell = _kettlebellRepo.Get(_gymObjectId);
+                var kettlebell = await _kettlebellRepo.LoadOne(_gymObjectId!.Value);
                 MainColor = kettlebell.BallColor;
                 HasBands = kettlebell.HasBands;
                 BandColor = kettlebell.BandColor;
@@ -357,7 +362,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SaveBar()
     {
         // If this is an add operation, create new Bar.
-        var bar = _operation == "add" ? new Bar() : (Bar)_gymObject;
+        var bar = (_operation == "add" || _gymObject == null) ? new Bar() : (Bar)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(bar);
@@ -368,10 +373,10 @@ public class EditViewModel : BaseViewModel
         return bar;
     }
 
-    private async Task<GymObject> SavePlate()
+    private async Task<GymObject?> SavePlate()
     {
         // If this is an add operation, create new Bar.
-        var plate = _operation == "add" ? new Plate() : (Plate)_gymObject;
+        var plate = (_operation == "add" || _gymObject == null) ? new Plate() : (Plate)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(plate);
@@ -383,10 +388,12 @@ public class EditViewModel : BaseViewModel
         return plate;
     }
 
-    private async Task<GymObject> SaveBarbell()
+    private async Task<GymObject?> SaveBarbell()
     {
         // If this is an add operation, create new Barbell.
-        var barbell = _operation == "add" ? new Barbell() : (Barbell)_gymObject;
+        var barbell = (_operation == "add" || _gymObject == null)
+            ? new Barbell()
+            : (Barbell)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(barbell);
@@ -397,10 +404,12 @@ public class EditViewModel : BaseViewModel
         return barbell;
     }
 
-    private async Task<GymObject> SaveDumbbell()
+    private async Task<GymObject?> SaveDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
-        var dumbbell = _operation == "add" ? new Dumbbell() : (Dumbbell)_gymObject;
+        var dumbbell = (_operation == "add" || _gymObject == null)
+            ? new Dumbbell()
+            : (Dumbbell)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(dumbbell);
@@ -412,10 +421,12 @@ public class EditViewModel : BaseViewModel
         return dumbbell;
     }
 
-    private async Task<GymObject> SaveKettlebell()
+    private async Task<GymObject?> SaveKettlebell()
     {
         // If this is an add operation, create new Kettlebell.
-        var kettlebell = _operation == "add" ? new Kettlebell() : (Kettlebell)_gymObject;
+        var kettlebell = (_operation == "add" || _gymObject == null)
+            ? new Kettlebell()
+            : (Kettlebell)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(kettlebell);

@@ -26,17 +26,17 @@ public class DeleteViewModel : BaseViewModel
     /// <summary>
     /// Message to the user confirming the deletion.
     /// </summary>
-    private string _confirmDeletionMessage;
+    private string? _confirmDeletionMessage;
 
     /// <summary>
     /// The gym object.
     /// </summary>
-    private GymObject _gymObject;
+    private GymObject? _gymObject;
 
     /// <summary>
     /// Page title.
     /// </summary>
-    private string _title;
+    private string? _title;
 
     // ---------------------------------------------------------------------------------------------
 
@@ -71,14 +71,14 @@ public class DeleteViewModel : BaseViewModel
 
     public ICommand DeleteItemCommand { get; init; }
 
-    public string Title
+    public string? Title
     {
         get => _title;
 
         set => SetProperty(ref _title, value);
     }
 
-    public string ConfirmDeletionMessage
+    public string? ConfirmDeletionMessage
     {
         get => _confirmDeletionMessage;
 
@@ -135,10 +135,10 @@ public class DeleteViewModel : BaseViewModel
     /// <param name="gymObjectTypeName"></param>
     /// <param name="gymObjectId"></param>
     /// <returns>If the initialization completed ok.</returns>
-    internal void Initialize(string gymObjectTypeName, int gymObjectId)
+    internal async Task Initialize(string? gymObjectTypeName, int? gymObjectId)
     {
         // Don't do anything unless both parameters have been set.
-        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == 0)
+        if (string.IsNullOrEmpty(gymObjectTypeName) || gymObjectId == null)
         {
             return;
         }
@@ -148,23 +148,23 @@ public class DeleteViewModel : BaseViewModel
         switch (gymObjectTypeName)
         {
             case nameof(Bar):
-                _gymObject = _barRepo.Get(gymObjectId);
+                _gymObject = await _barRepo.LoadOne(gymObjectId.Value);
                 break;
 
             case nameof(Plate):
-                _gymObject = _plateRepo.Get(gymObjectId);
+                _gymObject = await _plateRepo.LoadOne(gymObjectId.Value);
                 break;
 
             case nameof(Barbell):
-                _gymObject = _barbellRepo.Get(gymObjectId);
+                _gymObject = await _barbellRepo.LoadOne(gymObjectId.Value);
                 break;
 
             case nameof(Dumbbell):
-                _gymObject = _dumbbellRepo.Get(gymObjectId);
+                _gymObject = await _dumbbellRepo.LoadOne(gymObjectId.Value);
                 break;
 
             case nameof(Kettlebell):
-                _gymObject = _kettlebellRepo.Get(gymObjectId);
+                _gymObject = await _kettlebellRepo.LoadOne(gymObjectId.Value);
                 break;
 
             default:

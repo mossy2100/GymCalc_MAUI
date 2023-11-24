@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
 using GymCalc.Constants;
@@ -30,7 +31,7 @@ public class CalculatorViewModel : BaseViewModel
         _kettlebellRepo = kettlebellRepo;
 
         // Create commands.
-        CalculateCommand = new Command(Calculate);
+        CalculateCommand = new AsyncCommand(Calculate);
         BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
         PercentSelectedCommand = new Command<string>(PercentSelected);
@@ -59,9 +60,9 @@ public class CalculatorViewModel : BaseViewModel
     #region Bindable properties
 
     // ---------------------------------------------------------------------------------------------
-    private string _maxWeightText;
+    private string? _maxWeightText;
 
-    public string MaxWeightText
+    public string? MaxWeightText
     {
         get => _maxWeightText;
 
@@ -89,9 +90,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private List<decimal> _barWeights;
+    private List<decimal>? _barWeights;
 
-    public List<decimal> BarWeights
+    public List<decimal>? BarWeights
     {
         get => _barWeights;
 
@@ -99,9 +100,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _startingWeightText;
+    private string? _startingWeightText;
 
-    public string StartingWeightText
+    public string? StartingWeightText
     {
         get => _startingWeightText;
 
@@ -109,9 +110,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _startingWeightLabel;
+    private string? _startingWeightLabel;
 
-    public string StartingWeightLabel
+    public string? StartingWeightLabel
     {
         get => _startingWeightLabel;
 
@@ -129,9 +130,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _maxWeightUnits;
+    private string? _maxWeightUnits;
 
-    public string MaxWeightUnits
+    public string? MaxWeightUnits
     {
         get => _maxWeightUnits;
 
@@ -139,9 +140,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _barWeightUnits;
+    private string? _barWeightUnits;
 
-    public string BarWeightUnits
+    public string? BarWeightUnits
     {
         get => _barWeightUnits;
 
@@ -149,9 +150,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _startingWeightUnits;
+    private string? _startingWeightUnits;
 
-    public string StartingWeightUnits
+    public string? StartingWeightUnits
     {
         get => _startingWeightUnits;
 
@@ -169,9 +170,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _errorMessage;
+    private string? _errorMessage;
 
-    public string ErrorMessage
+    public string? ErrorMessage
     {
         get => _errorMessage;
 
@@ -189,9 +190,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState50;
+    private string? _percentButtonVisualState50;
 
-    public string PercentButtonVisualState50
+    public string? PercentButtonVisualState50
     {
         get => _percentButtonVisualState50;
 
@@ -199,9 +200,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState60;
+    private string? _percentButtonVisualState60;
 
-    public string PercentButtonVisualState60
+    public string? PercentButtonVisualState60
     {
         get => _percentButtonVisualState60;
 
@@ -209,9 +210,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState70;
+    private string? _percentButtonVisualState70;
 
-    public string PercentButtonVisualState70
+    public string? PercentButtonVisualState70
     {
         get => _percentButtonVisualState70;
 
@@ -219,9 +220,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState80;
+    private string? _percentButtonVisualState80;
 
-    public string PercentButtonVisualState80
+    public string? PercentButtonVisualState80
     {
         get => _percentButtonVisualState80;
 
@@ -229,9 +230,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState90;
+    private string? _percentButtonVisualState90;
 
-    public string PercentButtonVisualState90
+    public string? PercentButtonVisualState90
     {
         get => _percentButtonVisualState90;
 
@@ -239,9 +240,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string _percentButtonVisualState100;
+    private string? _percentButtonVisualState100;
 
-    public string PercentButtonVisualState100
+    public string? PercentButtonVisualState100
     {
         get => _percentButtonVisualState100;
 
@@ -249,9 +250,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private List<PlatesResult> _platesResults;
+    private List<PlatesResult>? _platesResults;
 
-    public List<PlatesResult> PlatesResults
+    public List<PlatesResult>? PlatesResults
     {
         get => _platesResults;
 
@@ -259,9 +260,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private PlatesResult _selectedPlatesResult;
+    private PlatesResult? _selectedPlatesResult;
 
-    public PlatesResult SelectedPlatesResult
+    public PlatesResult? SelectedPlatesResult
     {
         get => _selectedPlatesResult;
 
@@ -279,9 +280,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private List<SingleWeightResult> _singleWeightResults;
+    private List<SingleWeightResult>? _singleWeightResults;
 
-    public List<SingleWeightResult> SingleWeightResults
+    public List<SingleWeightResult>? SingleWeightResults
     {
         get => _singleWeightResults;
 
@@ -289,9 +290,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private SingleWeightResult _selectedSingleWeightResult;
+    private SingleWeightResult? _selectedSingleWeightResult;
 
-    public SingleWeightResult SelectedSingleWeightResult
+    public SingleWeightResult? SelectedSingleWeightResult
     {
         get => _selectedSingleWeightResult;
 
@@ -377,18 +378,18 @@ public class CalculatorViewModel : BaseViewModel
 
     internal async Task InitializeDatabase()
     {
-        var barTask = _barRepo.Initialize();
-        var plateTask = _plateRepo.Initialize();
-        var barbellTask = _barbellRepo.Initialize();
-        var dumbbellTask = _dumbbellRepo.Initialize();
-        var kettlebellTask = _kettlebellRepo.Initialize();
+        var barTask = _barRepo.InitializeTable();
+        var plateTask = _plateRepo.InitializeTable();
+        var barbellTask = _barbellRepo.InitializeTable();
+        var dumbbellTask = _dumbbellRepo.InitializeTable();
+        var kettlebellTask = _kettlebellRepo.InitializeTable();
         await Task.WhenAll(barTask, plateTask, barbellTask, dumbbellTask, kettlebellTask);
     }
 
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    internal void ResetBarWeightPicker()
+    internal async Task ResetBarWeightPicker()
     {
         // Remember the original selection.
         var selectedBarWeight = BarWeight;
@@ -397,7 +398,7 @@ public class CalculatorViewModel : BaseViewModel
         BarWeight = 0;
 
         // Repopulate the picker options.
-        var bars = _barRepo.Get();
+        var bars = await _barRepo.LoadSome();
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // Select the previously selected value, if available.
@@ -428,7 +429,7 @@ public class CalculatorViewModel : BaseViewModel
         StartingWeightUnits = units;
     }
 
-    internal void Initialize()
+    internal async Task Initialize()
     {
         // Set the units labels, which may have changed if the user went to the settings page.
         SetUnits();
@@ -438,7 +439,7 @@ public class CalculatorViewModel : BaseViewModel
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        ResetBarWeightPicker();
+        await ResetBarWeightPicker();
     }
 
     #endregion
@@ -477,7 +478,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Command methods
 
-    private void Calculate()
+    private async Task Calculate()
     {
         // Hide current results.
         ResultsVisible = false;
@@ -486,19 +487,19 @@ public class CalculatorViewModel : BaseViewModel
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                DoBarbellCalculations();
+                await DoBarbellCalculations();
                 break;
 
             case ExerciseType.Machine:
-                DoMachineCalculations();
+                await DoMachineCalculations();
                 break;
 
             case ExerciseType.Dumbbell:
-                DoDumbbellCalculations();
+                await DoDumbbellCalculations();
                 break;
 
             case ExerciseType.Kettlebell:
-                DoKettlebellCalculations();
+                await DoKettlebellCalculations();
                 break;
 
             default:
@@ -523,7 +524,7 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     /// <param name="pc">The percentage value of the percent button.</param>
     /// <returns>The button's visual state.</returns>
-    private string GetPercentButtonVisualState(int pc)
+    private string? GetPercentButtonVisualState(int pc)
     {
         return SelectedPercent == pc ? "Selected" : "Normal";
     }
@@ -564,7 +565,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Calculations
 
-    private void DoBarbellCalculations()
+    private async Task DoBarbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -574,7 +575,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate the results.
         if (BarbellType == BarbellType.PlateLoaded)
         {
-            var plates = _plateRepo.Get();
+            var plates = await _plateRepo.LoadSome();
             PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
                 "Plates each end", plates);
             PlatesResultVisible = true;
@@ -582,7 +583,7 @@ public class CalculatorViewModel : BaseViewModel
         }
         else
         {
-            var barbells = _barbellRepo.Get();
+            var barbells = await _barbellRepo.LoadSome();
             SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
             PlatesResultVisible = false;
             SingleWeightResultVisible = true;
@@ -593,7 +594,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoMachineCalculations()
+    private async Task DoMachineCalculations()
     {
         if (!ValidateMaxWeight() || !ValidateStartingWeight())
         {
@@ -601,7 +602,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Get the available plates.
-        var plates = _plateRepo.Get();
+        var plates = await _plateRepo.LoadSome();
 
         // Determine the number of plate stacks and total starting weight from the machine type.
         var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
@@ -619,7 +620,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoDumbbellCalculations()
+    private async Task DoDumbbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -627,7 +628,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var dumbbells = _dumbbellRepo.Get();
+        var dumbbells = await _dumbbellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
@@ -637,7 +638,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoKettlebellCalculations()
+    private async Task DoKettlebellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -645,7 +646,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var kettlebells = _kettlebellRepo.Get();
+        var kettlebells = await _kettlebellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.

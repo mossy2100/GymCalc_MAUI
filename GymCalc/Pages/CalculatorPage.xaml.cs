@@ -34,7 +34,7 @@ public partial class CalculatorPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnSizeChanged(object sender, EventArgs e)
+    private void OnSizeChanged(object? sender, EventArgs e)
     {
         UpdateLayoutOrientation();
     }
@@ -53,7 +53,7 @@ public partial class CalculatorPage : ContentPage
         SetExerciseType(ExerciseType.Barbell);
 
         // Initialize other form elements.
-        _model.Initialize();
+        await _model.Initialize();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)

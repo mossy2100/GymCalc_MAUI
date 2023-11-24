@@ -17,7 +17,7 @@ public class WeightsViewModel : BaseViewModel
 
     /// <summary>Navigate to the list page for a gym object type.</summary>
     /// <param name="gymObjectTypeName">The gym object type name.</param>
-    private async Task ListGymObjects(string gymObjectTypeName)
+    private async Task ListGymObjects(string? gymObjectTypeName)
     {
         await Shell.Current.GoToAsync($"list?type={gymObjectTypeName}");
     }

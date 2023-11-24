@@ -26,16 +26,14 @@ public class KettlebellDrawable : GymObjectDrawable
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        var kettlebell = (Kettlebell)GymObject;
-        // var height = (float)Height;
+        var kettlebell = (Kettlebell)GymObject!;
         var width = (float)Width;
 
         // Colors.
-        var ballColor = CustomColors.Get(kettlebell.BallColor);
-        var bandColor = kettlebell.HasBands && kettlebell.BandColor != null
-            ? CustomColors.Get(kettlebell.BandColor)
-            : ballColor;
-        bandColor ??= ballColor;
+        var ballColor = CustomColors.Get(kettlebell.BallColor) ?? CustomColors.Get("OffBlack");
+        var bandColor =
+            (kettlebell.HasBands == true ? CustomColors.Get(kettlebell.BandColor) : null)
+            ?? ballColor;
 
         // Useful dimensions.
         const int y0 = 5;
@@ -68,7 +66,7 @@ public class KettlebellDrawable : GymObjectDrawable
         // Weight label.
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 20;
-        canvas.FontColor = ballColor.GetTextColor();
+        canvas.FontColor = ballColor!.GetTextColor();
         var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
         var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         canvas.DrawString(weightString, 10, 35 + offset, 40, 30, HorizontalAlignment.Center,

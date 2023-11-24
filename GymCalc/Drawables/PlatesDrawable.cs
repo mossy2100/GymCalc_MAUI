@@ -4,18 +4,19 @@ namespace GymCalc.Drawables;
 
 public class PlatesDrawable : IDrawable
 {
-    public List<Plate> Plates { get; set; }
+    public List<Plate>? Plates { get; set; }
 
     public double Width
     {
         get
         {
-            var maxPlateWeight = Plates.Count == 0 ? 0 : Plates.Max(p => p.Weight);
+            var maxPlateWeight =
+                (Plates == null || Plates.Count == 0) ? 0 : Plates.Max(p => p.Weight);
             return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
         }
     }
 
-    public double Height => Plates.Count * PlateDrawable.HEIGHT;
+    public double Height => (Plates?.Count ?? 0) * PlateDrawable.HEIGHT;
 
     internal decimal MaxWeight { get; set; }
 
@@ -24,7 +25,7 @@ public class PlatesDrawable : IDrawable
     {
         var rectWidth = dirtyRect.Width;
         var i = 0;
-        foreach (var plate in Plates)
+        foreach (var plate in Plates!)
         {
             // Get the dimensions.
             var w = (float)GymObjectDrawable.CalculateWidth(plate.Weight, MaxWeight);

@@ -11,7 +11,7 @@ public partial class ListPage : ContentPage
     /// As this page is a singleton, whenever the page is navigated to, the list is refreshed with
     /// gym objects of the specified type.
     /// </summary>
-    private string _gymObjectTypeName;
+    private string? _gymObjectTypeName;
 
     /// <summary>Reference to the viewmodel.</summary>
     public ListViewModel Model { get; }
@@ -34,7 +34,7 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Page parameter specifying what type of gym object to list.
     /// </summary>
-    public string GymObjectTypeName
+    public string? GymObjectTypeName
     {
         get => _gymObjectTypeName;
 
@@ -48,10 +48,10 @@ public partial class ListPage : ContentPage
     }
 
     /// <inheritdoc/>
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        Model.DisplayList();
+        await Model.DisplayList();
     }
 
     /// <summary>
@@ -59,8 +59,8 @@ public partial class ListPage : ContentPage
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnSizeChanged(object sender, EventArgs e)
+    private async void OnSizeChanged(object? sender, EventArgs e)
     {
-        Model.DisplayList();
+        await Model.DisplayList();
     }
 }
