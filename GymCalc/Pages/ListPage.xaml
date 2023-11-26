@@ -33,7 +33,7 @@
                     <Grid
                         ColumnDefinitions="*,Auto,Auto,Auto"
                         ColumnSpacing="5"
-                        Padding="10">
+                        Padding="{x:Static graphics:PageLayout.Spacing}">
                         <Grid.RowDefinitions>
                             <RowDefinition
                                 Height="{Binding Drawable.Height}"/>

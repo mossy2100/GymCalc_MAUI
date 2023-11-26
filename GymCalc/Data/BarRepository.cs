@@ -14,24 +14,6 @@ public class BarRepository : GymObjectRepository<Bar>
     /// </summary>
     internal const decimal DEFAULT_WEIGHT = 20;
 
-    // /// <summary>
-    // /// Default bars weights to set up on app initialize.
-    // /// </summary>
-    // private static readonly (int, Units, bool)[] _DefaultBars =
-    // {
-    //     // Metric.
-    //     (10, Units.Kilograms, true),
-    //     (15, Units.Kilograms, true),
-    //     (20, Units.Kilograms, true),
-    //     (25, Units.Kilograms, true),
-    //     // US units.
-    //     (15, Units.Pounds, true),
-    //     (25, Units.Pounds, true),
-    //     (35, Units.Pounds, true),
-    //     (45, Units.Pounds, true),
-    //     (55, Units.Pounds, true)
-    // };
-
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -49,9 +31,9 @@ public class BarRepository : GymObjectRepository<Bar>
             Enabled = enabled
         };
 
-        // Kilograms - enabled.
+        // Kilograms (common).
         await AddSet(10, 25, 5, Units.Kilograms, true, fn);
-        // Pounds - enabled.
+        // Pounds (common).
         await AddSet(15, 55, 10, Units.Pounds, true, fn);
     }
 }

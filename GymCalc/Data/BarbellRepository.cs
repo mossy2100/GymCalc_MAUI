@@ -26,46 +26,13 @@ public class BarbellRepository : GymObjectRepository<Barbell>
             Enabled = enabled
         };
 
-        // Kilograms - enabled.
-        await AddSet(7.5m, 70, 2.5m, Units.Kilograms, true, fn);
-        // Pounds - enabled.
-        await AddSet(20, 140, 5, Units.Pounds, true, fn);
+        // Kilograms (common).
+        await AddSet(10, 50, 2.5m, Units.Kilograms, true, fn);
+        // Kilograms (uncommon).
+        await AddSet(52.5m, 70, 2.5m, Units.Kilograms, false, fn);
+        // Pounds (common).
+        await AddSet(20, 110, 5, Units.Pounds, true, fn);
+        // Pounds (uncommon).
+        await AddSet(115, 140, 5, Units.Pounds, false, fn);
     }
-
-    // /// <summary>
-    // /// Add a set of barbells to the database.
-    // /// </summary>
-    // /// <param name="min">The minimum weight.</param>
-    // /// <param name="max">The maximum weight.</param>
-    // /// <param name="step">The difference between each weight.</param>
-    // /// <param name="units">The mass units.</param>
-    // /// <param name="enabled">If they should be enabled by default.</param>
-    // /// <param name="addedSoFar">The barbells added to so far, so we can avoid duplicates.</param>
-    // /// <returns></returns>
-    // private async Task<List<(decimal, Units)>> AddBarbellSet(decimal min, decimal max,
-    //     decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
-    // {
-    //     for (var weight = min; weight <= max; weight += step)
-    //     {
-    //         // Check we didn't add this one already.
-    //         if (addedSoFar.Contains((weight, units)))
-    //         {
-    //             continue;
-    //         }
-    //
-    //         // Add the barbell.
-    //         var barbell = new Barbell
-    //         {
-    //             Weight = weight,
-    //             Units = units.GetDescription(),
-    //             Enabled = enabled
-    //         };
-    //         await Insert(barbell);
-    //
-    //         // Remember it.
-    //         addedSoFar.Add((weight, units));
-    //     }
-    //
-    //     return addedSoFar;
-    // }
 }

@@ -72,8 +72,13 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <returns>The gym object or null if not found.</returns>
     internal async Task<T?> LoadOneByWeight(decimal weight, Units units)
     {
+        // Find units as a string before running the query, because GetDescription() can't be
+        // converted to an SQL function.
+        var sUnits = units.GetDescription();
+
+        // Query the database.
         return await database.Connection.Table<T>().FirstOrDefaultAsync(gymObject =>
-            gymObject.Weight == weight && gymObject.Units == units.GetDescription());
+            gymObject.Weight == weight && gymObject.Units == sUnits);
     }
 
     /// <summary>
@@ -117,7 +122,13 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
             {
                 units = UnitsUtility.GetDefault();
             }
-            query = query.Where(item => item.Units == units.GetDescription());
+
+            // Find units as a string before running the query, because GetDescription() can't be
+            // converted to an SQL function.
+            var sUnits = units.GetDescription();
+
+            // Add the where clause.
+            query = query.Where(item => item.Units == sUnits);
         }
         else
         {

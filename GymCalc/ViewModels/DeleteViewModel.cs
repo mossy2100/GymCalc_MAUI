@@ -144,27 +144,43 @@ public class DeleteViewModel : BaseViewModel
         }
 
         Title = $"Delete {gymObjectTypeName}";
+        _gymObject = await LoadGymObject(gymObjectTypeName, gymObjectId);
+        ConfirmDeletionMessage =
+            $"Are you sure you want to delete the {_gymObject.Weight} {_gymObject.Units} {gymObjectTypeName.ToLower()}?";
+    }
+
+    /// <summary>
+    /// Load the gym object from the database.
+    /// </summary>
+    /// <param name="gymObjectTypeName">The gym object type name.</param>
+    /// <param name="gymObjectId">The gym object id.</param>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// If the gym object type name is invalid (should never happen).
+    /// </exception>
+    private async Task<GymObject> LoadGymObject(string gymObjectTypeName, int gymObjectId)
+    {
+        GymObject? gymObject;
 
         switch (gymObjectTypeName)
         {
             case nameof(Bar):
-                _gymObject = await _barRepo.LoadOneById(gymObjectId);
+                gymObject = await _barRepo.LoadOneById(gymObjectId);
                 break;
 
             case nameof(Plate):
-                _gymObject = await _plateRepo.LoadOneById(gymObjectId);
+                gymObject = await _plateRepo.LoadOneById(gymObjectId);
                 break;
 
             case nameof(Barbell):
-                _gymObject = await _barbellRepo.LoadOneById(gymObjectId);
+                gymObject = await _barbellRepo.LoadOneById(gymObjectId);
                 break;
 
             case nameof(Dumbbell):
-                _gymObject = await _dumbbellRepo.LoadOneById(gymObjectId);
+                gymObject = await _dumbbellRepo.LoadOneById(gymObjectId);
                 break;
 
             case nameof(Kettlebell):
-                _gymObject = await _kettlebellRepo.LoadOneById(gymObjectId);
+                gymObject = await _kettlebellRepo.LoadOneById(gymObjectId);
                 break;
 
             default:
@@ -172,13 +188,12 @@ public class DeleteViewModel : BaseViewModel
                     $"Invalid gym object type '{gymObjectTypeName}'.");
         }
 
-        if (_gymObject == null)
+        if (gymObject == null)
         {
             throw new ArgumentOutOfRangeException(nameof(gymObjectId),
-                $"Invalid gym object id ({gymObjectId}).");
+                $"No {gymObjectTypeName} object with Id = {gymObjectId} found in the database.");
         }
 
-        ConfirmDeletionMessage =
-            $"Are you sure you want to delete the {_gymObject.Weight} {_gymObject.Units} {gymObjectTypeName.ToLower()}?";
+        return gymObject;
     }
 }

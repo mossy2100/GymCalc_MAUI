@@ -27,41 +27,11 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
             Color = "OffBlack"
         };
 
-        // Kilograms - enabled.
+        // Kilograms (common).
         await AddSet(1, 10, 1, Units.Kilograms, true, fn);
-        // Kilograms - disabled.
         await AddSet(2.5m, 60, 2.5m, Units.Kilograms, true, fn);
-        // Pounds - enabled.
+        // Pounds (common).
         await AddSet(1, 10, 1, Units.Pounds, true, fn);
-        // Pounds - disabled.
         await AddSet(5, 120, 5, Units.Pounds, true, fn);
     }
-
-    // private async Task<List<(decimal, Units)>> AddDumbbellSet(decimal min, decimal max,
-    //     decimal step, Units units, bool enabled, List<(decimal, Units)> addedSoFar)
-    // {
-    //     for (var weight = min; weight <= max; weight += step)
-    //     {
-    //         // Check we didn't add this one already.
-    //         if (addedSoFar.Contains((weight, units)))
-    //         {
-    //             continue;
-    //         }
-    //
-    //         // Add the dumbbell.
-    //         var dumbbell = new Dumbbell
-    //         {
-    //             Weight = weight,
-    //             Units = units.GetDescription(),
-    //             Enabled = enabled,
-    //             Color = "OffBlack"
-    //         };
-    //         await Insert(dumbbell);
-    //
-    //         // Remember it.
-    //         addedSoFar.Add((weight, units));
-    //     }
-    //
-    //     return addedSoFar;
-    // }
 }
