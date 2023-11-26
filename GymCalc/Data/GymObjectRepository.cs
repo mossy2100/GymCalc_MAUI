@@ -31,8 +31,8 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
             // If the object isn't already in the database, construct and insert it.
             if (gymObject == null)
             {
-                var newObject = (T)fnCreate(weight, units, enabled);
-                await Insert(newObject);
+                gymObject = (T)fnCreate(weight, units, enabled);
+                await Insert(gymObject);
             }
         }
     }
@@ -152,30 +152,28 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// Update a gym object.
     /// </summary>
     /// <param name="gymObject">The object to update.</param>
-    /// <returns>If the update operation was successful.</returns>
-    internal async Task<bool> Update(T gymObject)
+    /// <returns>The number of rows updated.</returns>
+    internal async Task<int> Update(T gymObject)
     {
-        var nRowsUpdated = await database.Connection.UpdateAsync(gymObject);
-        return nRowsUpdated == 1;
+        return await database.Connection.UpdateAsync(gymObject);
     }
 
     /// <summary>
     /// Insert a new gym object.
     /// </summary>
     /// <param name="gymObject">The object to insert.</param>
-    /// <returns>If the insert operation was successful.</returns>
-    internal async Task<bool> Insert(T gymObject)
+    /// <returns>The number of rows inserted.</returns>
+    internal async Task<int> Insert(T gymObject)
     {
-        var nRowsInserted = await database.Connection.InsertAsync(gymObject);
-        return nRowsInserted == 1;
+        return await database.Connection.InsertAsync(gymObject);
     }
 
     /// <summary>
     /// Update or insert as required.
     /// </summary>
     /// <param name="gymObject">The object to update or insert.</param>
-    /// <returns>If the update or insert operation was successful.</returns>
-    internal async Task<bool> Upsert(T gymObject)
+    /// <returns>The number of rows updated or inserted.</returns>
+    internal async Task<int> Upsert(T gymObject)
     {
         return await (gymObject.Id == 0 ? Insert(gymObject) : Update(gymObject));
     }
@@ -184,20 +182,18 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// Delete a gym object with a given type and id.
     /// </summary>
     /// <param name="id">The id of the gym object to delete.</param>
-    /// <returns>If any rows were deleted.</returns>
-    internal async Task<bool> Delete(int id)
+    /// <returns>The number of deleted rows.</returns>
+    internal async Task<int> Delete(int id)
     {
-        var nRowsDeleted = await database.Connection.DeleteAsync<T>(id);
-        return nRowsDeleted == 1;
+        return await database.Connection.DeleteAsync<T>(id);
     }
 
     /// <summary>
     /// Delete all objects of a given type.
     /// </summary>
-    /// <returns>If any rows were deleted.</returns>
-    public async Task<bool> DeleteAll()
+    /// <returns>The number of deleted rows.</returns>
+    public async Task<int> DeleteAll()
     {
-        var nRowsDeleted = await database.Connection.DeleteAllAsync<T>();
-        return nRowsDeleted == 1;
+        return await database.Connection.DeleteAllAsync<T>();
     }
 }
