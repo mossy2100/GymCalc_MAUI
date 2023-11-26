@@ -60,21 +60,20 @@ public class PlateRepository : GymObjectRepository<Plate>
         foreach (var (weight, units, enabled, color) in _DefaultPlates)
         {
             // Check that we haven't added this one already.
-            var sUnits = units.GetDescription();
-            if (Cache!.Any(pair => pair.Value.Weight == weight && pair.Value.Units == sUnits))
-            {
-                continue;
-            }
+            var plate = await LoadOneByWeight(weight, units);
 
-            // Construct and add the new Plate object.
-            var plate = new Plate
+            // If this plate isn't already in the database, construct and insert it.
+            if (plate == null)
             {
-                Weight = weight,
-                Units = units.GetDescription(),
-                Enabled = enabled,
-                Color = color
-            };
-            await Insert(plate);
+                plate = new Plate
+                {
+                    Weight = weight,
+                    Units = units.GetDescription(),
+                    Enabled = enabled,
+                    Color = color
+                };
+                await Insert(plate);
+            }
         }
     }
 }

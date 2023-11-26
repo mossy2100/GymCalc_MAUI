@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
 using GymCalc.Constants;
@@ -30,7 +31,7 @@ public class CalculatorViewModel : BaseViewModel
         _kettlebellRepo = kettlebellRepo;
 
         // Create commands.
-        CalculateCommand = new Command(Calculate);
+        CalculateCommand = new AsyncCommand(Calculate);
         BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
         PercentSelectedCommand = new Command<string>(PercentSelected);
@@ -388,7 +389,7 @@ public class CalculatorViewModel : BaseViewModel
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    internal void ResetBarWeightPicker()
+    internal async Task ResetBarWeightPicker()
     {
         // Remember the original selection.
         var selectedBarWeight = BarWeight;
@@ -397,7 +398,7 @@ public class CalculatorViewModel : BaseViewModel
         BarWeight = 0;
 
         // Repopulate the picker options.
-        var bars = _barRepo.LoadSome();
+        var bars = await _barRepo.LoadSome();
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // Select the previously selected value, if available.
@@ -428,7 +429,7 @@ public class CalculatorViewModel : BaseViewModel
         StartingWeightUnits = units;
     }
 
-    internal void Initialize()
+    internal async Task Initialize()
     {
         // Set the units labels, which may have changed if the user went to the settings page.
         SetUnits();
@@ -438,7 +439,7 @@ public class CalculatorViewModel : BaseViewModel
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
-        ResetBarWeightPicker();
+        await ResetBarWeightPicker();
     }
 
     #endregion
@@ -477,7 +478,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Command methods
 
-    private void Calculate()
+    private async Task Calculate()
     {
         // Hide current results.
         ResultsVisible = false;
@@ -486,19 +487,19 @@ public class CalculatorViewModel : BaseViewModel
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                DoBarbellCalculations();
+                await DoBarbellCalculations();
                 break;
 
             case ExerciseType.Machine:
-                DoMachineCalculations();
+                await DoMachineCalculations();
                 break;
 
             case ExerciseType.Dumbbell:
-                DoDumbbellCalculations();
+                await DoDumbbellCalculations();
                 break;
 
             case ExerciseType.Kettlebell:
-                DoKettlebellCalculations();
+                await DoKettlebellCalculations();
                 break;
 
             default:
@@ -564,7 +565,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     #region Calculations
 
-    private void DoBarbellCalculations()
+    private async Task DoBarbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -574,7 +575,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate the results.
         if (BarbellType == BarbellType.PlateLoaded)
         {
-            var plates = _plateRepo.LoadSome();
+            var plates = await _plateRepo.LoadSome();
             PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
                 "Plates each end", plates);
             PlatesResultVisible = true;
@@ -582,7 +583,7 @@ public class CalculatorViewModel : BaseViewModel
         }
         else
         {
-            var barbells = _barbellRepo.LoadSome();
+            var barbells = await _barbellRepo.LoadSome();
             SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
             PlatesResultVisible = false;
             SingleWeightResultVisible = true;
@@ -593,7 +594,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoMachineCalculations()
+    private async Task DoMachineCalculations()
     {
         if (!ValidateMaxWeight() || !ValidateStartingWeight())
         {
@@ -601,7 +602,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Get the available plates.
-        var plates = _plateRepo.LoadSome();
+        var plates = await _plateRepo.LoadSome();
 
         // Determine the number of plate stacks and total starting weight from the machine type.
         var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
@@ -619,7 +620,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoDumbbellCalculations()
+    private async Task DoDumbbellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -627,7 +628,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var dumbbells = _dumbbellRepo.LoadSome();
+        var dumbbells = await _dumbbellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
@@ -637,7 +638,7 @@ public class CalculatorViewModel : BaseViewModel
         ResultsVisible = true;
     }
 
-    private void DoKettlebellCalculations()
+    private async Task DoKettlebellCalculations()
     {
         if (!ValidateMaxWeight())
         {
@@ -645,7 +646,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var kettlebells = _kettlebellRepo.LoadSome();
+        var kettlebells = await _kettlebellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.

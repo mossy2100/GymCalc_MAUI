@@ -1,3 +1,4 @@
+using System.Data;
 using System.Globalization;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
@@ -13,6 +14,8 @@ public class EditViewModel : BaseViewModel
 {
     // ---------------------------------------------------------------------------------------------
     // Dependencies.
+
+    private readonly Database _database;
 
     private readonly BarRepository _barRepo;
 
@@ -68,16 +71,18 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
     /// <param name="barbellRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
-    public EditViewModel(BarRepository barRepo, PlateRepository plateRepo,
+    public EditViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
         BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
         KettlebellRepository kettlebellRepo)
     {
         // Dependencies.
+        _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _barbellRepo = barbellRepo;
@@ -212,7 +217,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
     /// </summary>
-    internal void Initialize(string? operation, string? gymObjectTypeName, int gymObjectId)
+    internal async Task Initialize(string? operation, string? gymObjectTypeName, int gymObjectId)
     {
         // Don't do anything unless all required parameters have been set.
         if (string.IsNullOrWhiteSpace(operation) || string.IsNullOrWhiteSpace(gymObjectTypeName)
@@ -244,7 +249,7 @@ public class EditViewModel : BaseViewModel
         if (operation == "edit")
         {
             // This can throw a KeyNotFoundException if the gym object id is invalid.
-            LoadGymObject();
+            await LoadGymObjectIntoForm();
         }
         else
         {
@@ -301,38 +306,28 @@ public class EditViewModel : BaseViewModel
     /// <exception cref="KeyNotFoundException">
     ///If the gym object with the given type and id is not found in the database.
     /// </exception>
-    private void LoadGymObject()
+    private async Task LoadGymObjectIntoForm()
     {
         switch (_gymObjectTypeName)
         {
             case nameof(Bar):
-                var bar = _barRepo.LoadOne(_gymObjectId);
-                _gymObject = bar;
+                _gymObject = await _barRepo.LoadOneById(_gymObjectId);
                 break;
 
             case nameof(Plate):
-                var plate = _plateRepo.LoadOne(_gymObjectId);
-                MainColor = plate.Color;
-                _gymObject = plate;
+                _gymObject = await _plateRepo.LoadOneById(_gymObjectId);
                 break;
 
             case nameof(Barbell):
-                var barbell = _barbellRepo.LoadOne(_gymObjectId);
-                _gymObject = barbell;
+                _gymObject = await _barbellRepo.LoadOneById(_gymObjectId);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbell = _dumbbellRepo.LoadOne(_gymObjectId);
-                MainColor = dumbbell.Color;
-                _gymObject = dumbbell;
+                _gymObject = await _dumbbellRepo.LoadOneById(_gymObjectId);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebell = _kettlebellRepo.LoadOne(_gymObjectId);
-                MainColor = kettlebell.BallColor;
-                HasBands = kettlebell.HasBands;
-                BandColor = kettlebell.BandColor;
-                _gymObject = kettlebell;
+                _gymObject = await _kettlebellRepo.LoadOneById(_gymObjectId);
                 break;
 
             default:
@@ -340,10 +335,37 @@ public class EditViewModel : BaseViewModel
                     $"Invalid gym object type '{_gymObjectTypeName}'.");
         }
 
-        // Set the common form values.
+        if (_gymObject == null)
+        {
+            throw new DataException(
+                $"{_gymObjectTypeName} object with Id = {_gymObjectId} was not found.");
+        }
+
+        // Set the form values.
         WeightText = _gymObject.Weight.ToString(CultureInfo.InvariantCulture);
         Units = _gymObject.Units;
         Enabled = _gymObject.Enabled;
+
+        // Set the type-specific form values.
+        switch (_gymObjectTypeName)
+        {
+            case nameof(Plate):
+                var plate = (Plate)_gymObject;
+                MainColor = plate.Color;
+                break;
+
+            case nameof(Dumbbell):
+                var dumbbell = (Dumbbell)_gymObject;
+                MainColor = dumbbell.Color;
+                break;
+
+            case nameof(Kettlebell):
+                var kettlebell = (Kettlebell)_gymObject;
+                MainColor = kettlebell.BallColor;
+                HasBands = kettlebell.HasBands;
+                BandColor = kettlebell.BandColor;
+                break;
+        }
     }
 
     // ---------------------------------------------------------------------------------------------

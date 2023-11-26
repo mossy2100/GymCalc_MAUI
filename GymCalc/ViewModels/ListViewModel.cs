@@ -206,7 +206,7 @@ public class ListViewModel : BaseViewModel
 
     #endregion Command methods
 
-    internal void DisplayList()
+    internal async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(GymObjectTypeName))
@@ -226,28 +226,28 @@ public class ListViewModel : BaseViewModel
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
-                var bars = _barRepo.LoadSome(null);
-                DisplayList(bars);
+                var bars = await _barRepo.LoadSome(null);
+                DisplayObjects(bars);
                 break;
 
             case nameof(Plate):
-                var plates = _plateRepo.LoadSome(null);
-                DisplayList(plates);
+                var plates = await _plateRepo.LoadSome(null);
+                DisplayObjects(plates);
                 break;
 
             case nameof(Barbell):
-                var barbells = _barbellRepo.LoadSome(null);
-                DisplayList(barbells);
+                var barbells = await _barbellRepo.LoadSome(null);
+                DisplayObjects(barbells);
                 break;
 
             case nameof(Dumbbell):
-                var dumbbells = _dumbbellRepo.LoadSome(null);
-                DisplayList(dumbbells);
+                var dumbbells = await _dumbbellRepo.LoadSome(null);
+                DisplayObjects(dumbbells);
                 break;
 
             case nameof(Kettlebell):
-                var kettlebells = _kettlebellRepo.LoadSome(null);
-                DisplayList(kettlebells);
+                var kettlebells = await _kettlebellRepo.LoadSome(null);
+                DisplayObjects(kettlebells);
                 break;
         }
     }
@@ -255,7 +255,7 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Initialize the list of gym objects.
     /// </summary>
-    private void DisplayList<T>(List<T> gymObjects) where T : GymObject
+    private void DisplayObjects<T>(List<T> gymObjects) where T : GymObject
     {
         // Initialize the empty list.
         ListItems = new List<ListItem>();
@@ -288,14 +288,14 @@ public class ListViewModel : BaseViewModel
     }
 
     /// <inheritdoc/>
-    protected override void OnPropertyChanged(string? propertyName = null)
+    protected override async void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
 
         switch (propertyName)
         {
             case nameof(GymObjectTypeName):
-                DisplayList();
+                await DisplayList();
                 break;
         }
     }

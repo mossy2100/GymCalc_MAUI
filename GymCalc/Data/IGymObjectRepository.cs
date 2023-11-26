@@ -4,5 +4,5 @@ public interface IGymObjectRepository
 {
     internal Task InsertDefaults();
 
-    public Task DeleteAll();
+    public Task<bool> DeleteAll();
 }
