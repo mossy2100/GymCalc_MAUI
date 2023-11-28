@@ -34,12 +34,6 @@
     <!--     </VerticalStackLayout> -->
     <!-- </Shell.FlyoutHeader> -->
 
-    <!--     <ShellContent -->
-    <!--         Title="Calculator" -->
-    <!--         Icon="{AppThemeBinding Light='calculator_icon_black_300.png', -->
-    <!--                                Dark='calculator_icon_white_300.png'}" -->
-    <!--         ContentTemplate="{DataTemplate pages:CalculatorPage}"/> -->
-
     <FlyoutItem
         Title="Calculator"
         FlyoutIcon="{AppThemeBinding Light='calculator_icon_black_300.png',
@@ -47,37 +41,18 @@
         <ShellContent
             ContentTemplate="{DataTemplate pages:CalculatorPage}"/>
     </FlyoutItem>
-    <FlyoutItem
-        Title="Weights"
-        FlyoutIcon="{AppThemeBinding Light='dumbbell_icon_black_300.png',
-                                     Dark='dumbbell_icon_white_300.png'}">
-        <ShellContent
-            ContentTemplate="{DataTemplate pages:WeightsPage}"/>
-    </FlyoutItem>
-    <!-- <MenuItem -->
-    <!--     Text="Bars" -->
-    <!--     IconImageSource="{AppThemeBinding Light='bar_icon_black_300.png', -->
-    <!--                                       Dark='bar_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Bars"/> -->
-    <!-- <MenuItem -->
-    <!--     Text="Plates" -->
-    <!--     IconImageSource="{AppThemeBinding Light='plate_icon_black_300.png', -->
-    <!--                                       Dark='plate_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Plate"/> -->
-    <!-- <MenuItem -->
-    <!--     Text="Dumbbells" -->
-    <!--     IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png', -->
-    <!--                                       Dark='dumbbell_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Dumbbell"/> -->
-    <!-- <MenuItem -->
-    <!--     Text="Kettlebells" -->
-    <!--     IconImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png', -->
-    <!--                                       Dark='kettlebell_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Kettlebell"/> -->
+    <MenuItem
+        Text="Weights"
+        IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                          Dark='dumbbell_icon_white_300.png'}"
+        Command="{Binding GoToPageCommand}"
+        CommandParameter="Weights"/>
+    <MenuItem
+        Text="Settings"
+        IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png',
+                                          Dark='settings_icon_white_300.png'}"
+        Command="{Binding GoToPageCommand}"
+        CommandParameter="Settings"/>
     <MenuItem
         Text="Instructions"
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
@@ -90,33 +65,5 @@
                                           Dark='about_icon_white_300.png'}"
         Command="{Binding GoToPageCommand}"
         CommandParameter="About"/>
-    <!-- <MenuItem -->
-    <!--     Text="Settings" -->
-    <!--     IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png', -->
-    <!--                                       Dark='settings_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Settings"/> -->
-    <ShellContent
-        Title="Settings"
-        Icon="{AppThemeBinding Light='settings_icon_black_300.png',
-                                          Dark='settings_icon_white_300.png'}"
-        ContentTemplate="{DataTemplate pages:SettingsPage}"/>
-
-    <!-- <FlyoutItem -->
-    <!--     Title="Settings" -->
-    <!--     FlyoutIcon="{AppThemeBinding Light='settings_icon_black_300.png', -->
-    <!--                                  Dark='settings_icon_white_300.png'}"> -->
-    <!--     <ShellContent -->
-    <!--         ContentTemplate="{DataTemplate pages:SettingsPage}"/> -->
-    <!-- </FlyoutItem> -->
-
-    <!-- Global pages have to be declared as ShellContent and they're always singletons regardless
-    of what you specify in DI. -->
-    <!-- <ShellContent -->
-    <!--     ContentTemplate="{DataTemplate pages:ListPage}" -->
-    <!--     Route="list"/> -->
-    <ShellContent
-        ContentTemplate="{DataTemplate pages:HtmlPage}"
-        Route="html"/>
 
 </Shell>

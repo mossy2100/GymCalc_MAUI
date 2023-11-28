@@ -18,8 +18,11 @@ public partial class AppShell : Shell
     /// <summary>Register routes for navigation (non-global) pages.</summary>
     private static void RegisterRoutes()
     {
+        Routing.RegisterRoute("weights", typeof(WeightsPage));
         Routing.RegisterRoute("list", typeof(ListPage));
         Routing.RegisterRoute("edit", typeof(EditPage));
+        Routing.RegisterRoute("settings", typeof(SettingsPage));
+        Routing.RegisterRoute("html", typeof(HtmlPage));
     }
 
     private static async Task GoToPage(string? pageName)
@@ -31,44 +34,24 @@ public partial class AppShell : Shell
 
         switch (pageName)
         {
-            case "Calculator":
-                route = "//calculator";
+            case "Weights":
+                route = "weights";
                 break;
 
-            case "Bars":
-                route = "//list";
-                parameters = new Dictionary<string, object> { { "type", "Bar" } };
-                break;
-
-            case "Plates":
-                route = "//list";
-                parameters = new Dictionary<string, object> { { "type", "Plate" } };
-                break;
-
-            case "Dumbbells":
-                route = "//list";
-                parameters = new Dictionary<string, object> { { "type", "Dumbbell" } };
-                break;
-
-            case "Kettlebells":
-                route = "//list";
-                parameters = new Dictionary<string, object> { { "type", "Kettlebell" } };
+            case "Settings":
+                route = "settings";
                 break;
 
             case "Instructions":
-                route = "//html";
+                route = "html";
                 parameters = new Dictionary<string, object>
                     { { "title", "Instructions" }, { "route", "/Instructions" } };
                 break;
 
             case "About":
-                route = "//html";
+                route = "html";
                 parameters = new Dictionary<string, object>
                     { { "title", "About GymCalc" }, { "route", "/About" } };
-                break;
-
-            case "Settings":
-                route = "//settings";
                 break;
         }
 
