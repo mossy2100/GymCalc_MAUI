@@ -77,7 +77,7 @@ public partial class ListPage : ContentPage
     private async void OnDeleteButtonClicked(object? sender, EventArgs e)
     {
         // Check we have the necessary information.
-        if ((sender as Button)?.CommandParameter is not GymObject gymObject
+        if ((sender as Button)!.CommandParameter is not GymObject gymObject
             || GymObjectTypeName == null)
         {
             return;
@@ -85,7 +85,7 @@ public partial class ListPage : ContentPage
 
         // Show the confirmation dialog.
         var msg =
-            $"Are you sure you want to delete the {gymObject.Weight} {gymObject!.Units} {GymObjectTypeName!.ToLower()}?";
+            $"Are you sure you want to delete the {gymObject.Weight} {gymObject.Units} {GymObjectTypeName.ToLower()}?";
         var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
 
         // If confirmed, do the deletion.
@@ -110,7 +110,7 @@ public partial class ListPage : ContentPage
 
         // Show the confirmation dialog.
         var msg =
-            $"This will remove all {GymObjectTypeName!.ToLower()}s from the database and restore the defaults. Are you sure you want to do this?";
+            $"This will remove all {GymObjectTypeName.ToLower()}s from the database and restore the defaults. Are you sure you want to do this?";
         var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
 
         // If confirmed, do the reset.
