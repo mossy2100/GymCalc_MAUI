@@ -20,10 +20,6 @@ public partial class AppShell : Shell
     {
         Routing.RegisterRoute("list", typeof(ListPage));
         Routing.RegisterRoute("edit", typeof(EditPage));
-        Routing.RegisterRoute("delete", typeof(DeletePage));
-        Routing.RegisterRoute("reset", typeof(ResetPage));
-        // Routing.RegisterRoute("//html", typeof(HtmlPage));
-        // Routing.RegisterRoute("settings", typeof(SettingsPage));
     }
 
     private static async Task GoToPage(string? pageName)

@@ -73,8 +73,7 @@
                             WidthRequest="32"
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
-                            Command="{Binding Model.DeleteCommand,
-                                Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
+                            Clicked="OnDeleteButtonClicked"
                             CommandParameter="{Binding GymObject}"/>
                     </Grid>
                 </DataTemplate>
@@ -91,7 +90,7 @@
                 Style="{StaticResource AddButtonStyle}"/>
             <Button
                 Grid.Column="1"
-                Command="{Binding ResetCommand}"
+                Clicked="OnResetButtonClicked"
                 Style="{StaticResource ResetButtonStyle}"/>
         </Grid>
     </Grid>

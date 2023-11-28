@@ -1,3 +1,4 @@
+using GymCalc.Models;
 using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
@@ -13,11 +14,15 @@ public partial class ListPage : ContentPage
     /// </summary>
     private string? _gymObjectTypeName;
 
-    /// <summary>Reference to the viewmodel.</summary>
+    /// <summary>
+    /// Reference to the viewmodel.
+    /// </summary>
     public ListViewModel Model { get; }
 
-    /// <summary>Constructor.</summary>
-    /// <param name="listViewModel"></param>
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="listViewModel">Reference to the viewmodel.</param>
     public ListPage(ListViewModel listViewModel)
     {
         // Keep references to dependencies.
@@ -57,10 +62,61 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Re-render the list if the page orientation changes.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">The object sending the event.</param>
+    /// <param name="e">The event arguments.</param>
     private async void OnSizeChanged(object? sender, EventArgs e)
     {
         await Model.DisplayList();
+    }
+
+    /// <summary>
+    /// Event handler for when a delete icon button is clicked.
+    /// </summary>
+    /// <param name="sender">The object sending the event.</param>
+    /// <param name="e">The event arguments.</param>
+    private async void OnDeleteButtonClicked(object? sender, EventArgs e)
+    {
+        // Check we have the necessary information.
+        if ((sender as Button)?.CommandParameter is not GymObject gymObject
+            || GymObjectTypeName == null)
+        {
+            return;
+        }
+
+        // Show the confirmation dialog.
+        var msg =
+            $"Are you sure you want to delete the {gymObject.Weight} {gymObject!.Units} {GymObjectTypeName!.ToLower()}?";
+        var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
+
+        // If confirmed, do the deletion.
+        if (confirmed)
+        {
+            await Model.DeleteGymObject(gymObject);
+        }
+    }
+
+    /// <summary>
+    /// Event handler for when the Reset button is clicked.
+    /// </summary>
+    /// <param name="sender">The object sending the event.</param>
+    /// <param name="e">The event arguments.</param>
+    private async void OnResetButtonClicked(object? sender, EventArgs e)
+    {
+        // Check we have the necessary information.
+        if (GymObjectTypeName == null)
+        {
+            return;
+        }
+
+        // Show the confirmation dialog.
+        var msg =
+            $"This will remove all {GymObjectTypeName!.ToLower()}s from the database and restore the defaults. Are you sure you want to do this?";
+        var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
+
+        // If confirmed, do the reset.
+        if (confirmed)
+        {
+            await Model.ResetGymObjects();
+        }
     }
 }

@@ -12,6 +12,8 @@ public class ListViewModel : BaseViewModel
 {
     #region Dependencies
 
+    private readonly Database _database;
+
     private readonly BarRepository _barRepo;
 
     private readonly PlateRepository _plateRepo;
@@ -28,16 +30,18 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
+    /// <param name="database"></param>
     /// <param name="barRepo"></param>
     /// <param name="plateRepo"></param>
     /// <param name="barbellRepo"></param>
     /// <param name="dumbbellRepo"></param>
     /// <param name="kettlebellRepo"></param>
-    public ListViewModel(BarRepository barRepo, PlateRepository plateRepo,
+    public ListViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
         BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
         KettlebellRepository kettlebellRepo)
     {
         // Keep references to the dependencies.
+        _database = database;
         _barRepo = barRepo;
         _plateRepo = plateRepo;
         _barbellRepo = barbellRepo;
@@ -178,20 +182,49 @@ public class ListViewModel : BaseViewModel
     {
         if (gymObject == null)
         {
-            throw new InvalidOperationException($"Gym object not set.");
+            throw new InvalidOperationException("Gym object not set.");
         }
 
         await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
     }
 
-    private async Task DeleteGymObject(GymObject? gymObject)
+    /// <summary>
+    /// Delete a gym object and refresh the list.
+    /// </summary>
+    /// <param name="gymObject">The gym object to delete.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    internal async Task DeleteGymObject(GymObject? gymObject)
     {
         if (gymObject == null)
         {
-            throw new InvalidOperationException($"Gym object not set.");
+            throw new InvalidOperationException("Gym object not set.");
         }
 
-        await Shell.Current.GoToAsync($"delete?type={GymObjectTypeName}&id={gymObject.Id}");
+        switch (gymObject)
+        {
+            case Bar:
+                await _barRepo.Delete(gymObject.Id);
+                break;
+
+            case Plate:
+                await _plateRepo.Delete(gymObject.Id);
+                break;
+
+            case Barbell:
+                await _barbellRepo.Delete(gymObject.Id);
+                break;
+
+            case Dumbbell:
+                await _dumbbellRepo.Delete(gymObject.Id);
+                break;
+
+            case Kettlebell:
+                await _kettlebellRepo.Delete(gymObject.Id);
+                break;
+        }
+
+        // Refresh the list of objects.
+        await DisplayList();
     }
 
     private async Task AddGymObject()
@@ -199,9 +232,19 @@ public class ListViewModel : BaseViewModel
         await Shell.Current.GoToAsync($"edit?op=add&type={GymObjectTypeName}");
     }
 
-    private async Task ResetGymObjects()
+    internal async Task ResetGymObjects()
     {
-        await Shell.Current.GoToAsync($"reset?type={GymObjectTypeName}");
+        // Get the repo.
+        var repo = _database.GetRepo(GymObjectTypeName);
+
+        // Delete all current objects of the specified type.
+        await repo.DeleteAll();
+
+        // Insert the defaults.
+        await repo.InsertDefaults();
+
+        // Refresh the list.
+        await DisplayList();
     }
 
     #endregion Command methods
