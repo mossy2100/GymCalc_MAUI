@@ -230,10 +230,6 @@
             Value="{AppThemeBinding Light={StaticResource Black},
                                     Dark={StaticResource White}}"/>
         <Setter
-            Property="Background"
-            Value="{AppThemeBinding Light={StaticResource Secondary},
-                                    Dark={StaticResource Tertiary}}"/>
-        <Setter
             Property="FontFamily"
             Value="OpenSansRegular"/>
         <Setter
@@ -382,10 +378,6 @@
             Property="TitleColor"
             Value="{AppThemeBinding Light={StaticResource Gray900},
                                     Dark={StaticResource Gray200}}"/>
-        <Setter
-            Property="Background"
-            Value="{AppThemeBinding Light={StaticResource Secondary},
-                                    Dark={StaticResource Tertiary}}"/>
         <Setter
             Property="FontFamily"
             Value="OpenSansRegular"/>

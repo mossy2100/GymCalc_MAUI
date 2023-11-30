@@ -90,16 +90,16 @@
                         HorizontalTextAlignment="Start"
                         Text="Maximum weight"
                         VerticalTextAlignment="Center"/>
-                    <Frame
+                    <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Style="{StaticResource ControlFrameStyle}">
+                        Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center"
                             Text="{Binding MaxWeightText, Mode=TwoWay}"/>
-                    </Frame>
+                    </Border>
                     <Label
                         Grid.Row="0"
                         Grid.Column="2"
@@ -150,16 +150,16 @@
                         HorizontalTextAlignment="Start"
                         Text="Bar weight"
                         VerticalTextAlignment="Center"/>
-                    <Frame
+                    <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Style="{StaticResource ControlFrameStyle}">
+                        Style="{StaticResource ControlBorderStyle}">
                         <Picker
                             ItemsSource="{Binding BarWeights}"
                             SelectedItem="{Binding BarWeight, Mode=TwoWay}"
                             HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center"/>
-                    </Frame>
+                    </Border>
                     <Label
                         Grid.Row="0"
                         Grid.Column="2"
@@ -206,10 +206,10 @@
                         HorizontalTextAlignment="Start"
                         Text="{Binding StartingWeightLabel}"
                         VerticalTextAlignment="Center"/>
-                    <Frame
+                    <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Style="{StaticResource ControlFrameStyle}">
+                        Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Text="{Binding StartingWeightText, Mode=TwoWay}"
                             BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
@@ -217,7 +217,7 @@
                             HorizontalTextAlignment="End"
                             Keyboard="Numeric"
                             VerticalTextAlignment="Center"/>
-                    </Frame>
+                    </Border>
                     <Label
                         Grid.Row="0"
                         Grid.Column="2"

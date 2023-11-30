@@ -10,17 +10,21 @@
     <!--  Frame and border styles  -->
 
     <Style
-        x:Key="ControlFrameStyle"
-        TargetType="Frame">
+        x:Key="ControlBorderStyle"
+        TargetType="Border">
         <Setter
-            Property="BorderColor"
+            Property="Stroke"
             Value="{StaticResource Primary}"/>
         <Setter
             Property="Padding"
             Value="0"/>
         <Setter
-            Property="CornerRadius"
-            Value="5"/>
+            Property="StrokeShape"
+            Value="RoundRectangle 4"/>
+        <Setter
+            Property="Background"
+            Value="{AppThemeBinding Light={StaticResource Secondary},
+                                    Dark={StaticResource Tertiary}}"/>
     </Style>
 
     <Style

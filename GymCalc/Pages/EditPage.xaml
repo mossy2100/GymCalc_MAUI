@@ -31,15 +31,15 @@
                         Grid.Column="0"
                         Text="Weight"
                         VerticalTextAlignment="Center"/>
-                    <Frame
+                    <Border
                         Grid.Row="0"
                         Grid.Column="1"
-                        Style="{StaticResource ControlFrameStyle}">
+                        Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Keyboard="Numeric"
                             Text="{Binding WeightText}"
                             VerticalTextAlignment="Center"/>
-                    </Frame>
+                    </Border>
                 </Grid>
 
                 <!--  Units  -->
