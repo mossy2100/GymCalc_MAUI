@@ -22,7 +22,7 @@
             Property="StrokeShape"
             Value="RoundRectangle 4"/>
         <Setter
-            Property="Background"
+            Property="BackgroundColor"
             Value="{AppThemeBinding Light={StaticResource Secondary},
                                     Dark={StaticResource Tertiary}}"/>
     </Style>

@@ -201,10 +201,10 @@
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="7.0.0" />
         <PackageReference Include="CommunityToolkit.Maui" Version="7.0.0" />
         <PackageReference Include="CommunityToolkit.Maui.Core" Version="7.0.0" />
-        <PackageReference Include="InputKit.Maui" Version="4.3.5" />
+        <PackageReference Include="InputKit.Maui" Version="4.4.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
         <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.6" />
+        <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.7" />
         <PackageReference Update="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
         <PackageReference Update="Xamarin.Android.Glide" Version="4.15.1.2" />
         <PackageReference Update="Xamarin.AndroidX.Browser" Version="1.6.0.1" />
@@ -240,6 +240,9 @@
         <SubType>Code</SubType>
       </Compile>
       <Compile Remove="old\**" />
+      <Compile Update="Platforms\Android\Services\DeviceOrientationService.cs">
+        <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

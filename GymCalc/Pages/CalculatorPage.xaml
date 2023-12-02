@@ -95,10 +95,10 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
-                            HorizontalTextAlignment="End"
+                            Text="{Binding MaxWeightText, Mode=TwoWay}"
                             Keyboard="Numeric"
-                            VerticalTextAlignment="Center"
-                            Text="{Binding MaxWeightText, Mode=TwoWay}"/>
+                            HorizontalTextAlignment="End"
+                            VerticalTextAlignment="Center"/>
                     </Border>
                     <Label
                         Grid.Row="0"
@@ -212,10 +212,8 @@
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Text="{Binding StartingWeightText, Mode=TwoWay}"
-                            BackgroundColor="{AppThemeBinding Light={StaticResource Secondary},
-                                                              Dark={StaticResource Tertiary}}"
-                            HorizontalTextAlignment="End"
                             Keyboard="Numeric"
+                            HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center"/>
                     </Border>
                     <Label

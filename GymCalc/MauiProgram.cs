@@ -5,6 +5,7 @@ using GymCalc.Services;
 using GymCalc.ViewModels;
 using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
 
 namespace GymCalc;
 
@@ -28,6 +29,8 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
+        ModifyEntry();
+
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
         builder.Logging.AddDebug();
@@ -36,6 +39,22 @@ public static class MauiProgram
         RegisterDependencyInjection(builder);
 
         return builder.Build();
+    }
+
+    private static void ModifyEntry()
+    {
+        EntryHandler.Mapper.AppendToMapping("BorderlessEntry", (handler, view) =>
+        {
+#if ANDROID
+            var nativeEntry = handler.PlatformView as Android.Widget.EditText;
+            if (nativeEntry != null)
+            {
+                // Remove the border on Android.
+                nativeEntry.Background = null; // This removes the underline
+                nativeEntry.SetPadding(0, nativeEntry.PaddingTop, 0, nativeEntry.PaddingBottom);
+            }
+#endif
+        });
     }
 
     private static void RegisterDependencyInjection(MauiAppBuilder builder)

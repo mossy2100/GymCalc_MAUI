@@ -36,8 +36,9 @@
                         Grid.Column="1"
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
-                            Keyboard="Numeric"
                             Text="{Binding WeightText}"
+                            Keyboard="Numeric"
+                            HorizontalTextAlignment="End"
                             VerticalTextAlignment="Center"/>
                     </Border>
                 </Grid>
