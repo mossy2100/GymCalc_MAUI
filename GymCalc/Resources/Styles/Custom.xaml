@@ -47,6 +47,39 @@
             Value="10"/>
     </Style>
 
+    <!-- Entry and Picker styles -->
+
+    <Style
+        x:Key="NumericEntryStyle"
+        TargetType="Entry">
+        <Setter
+            Property="BackgroundColor"
+            Value="Transparent"/>
+        <Setter
+            Property="Keyboard"
+            Value="Numeric"/>
+        <Setter
+            Property="HorizontalTextAlignment"
+            Value="End"/>
+        <Setter
+            Property="VerticalTextAlignment"
+            Value="Center"/>
+    </Style>
+
+    <Style
+        x:Key="NumericPickerStyle"
+        TargetType="Picker">
+        <Setter
+            Property="BackgroundColor"
+            Value="Transparent"/>
+        <Setter
+            Property="HorizontalTextAlignment"
+            Value="End"/>
+        <Setter
+            Property="VerticalTextAlignment"
+            Value="Center"/>
+    </Style>
+
     <!--  Grid styles  -->
 
     <Style

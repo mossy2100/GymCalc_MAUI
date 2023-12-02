@@ -96,9 +96,7 @@
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Text="{Binding MaxWeightText, Mode=TwoWay}"
-                            Keyboard="Numeric"
-                            HorizontalTextAlignment="End"
-                            VerticalTextAlignment="Center"/>
+                            Style="{StaticResource NumericEntryStyle}"/>
                     </Border>
                     <Label
                         Grid.Row="0"
@@ -157,8 +155,7 @@
                         <Picker
                             ItemsSource="{Binding BarWeights}"
                             SelectedItem="{Binding BarWeight, Mode=TwoWay}"
-                            HorizontalTextAlignment="End"
-                            VerticalTextAlignment="Center"/>
+                            Style="{StaticResource NumericPickerStyle}"/>
                     </Border>
                     <Label
                         Grid.Row="0"
@@ -212,9 +209,7 @@
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Text="{Binding StartingWeightText, Mode=TwoWay}"
-                            Keyboard="Numeric"
-                            HorizontalTextAlignment="End"
-                            VerticalTextAlignment="Center"/>
+                            Style="{StaticResource NumericEntryStyle}"/>
                     </Border>
                     <Label
                         Grid.Row="0"

@@ -22,14 +22,9 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             })
-            .ConfigureMauiHandlers(handlers =>
-            {
-                handlers.AddInputKitHandlers();
-            });
+            .ConfigureMauiHandlers(handlers => { handlers.AddInputKitHandlers(); });
 
         builder.Services.AddMauiBlazorWebView();
-
-        ModifyEntry();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
@@ -38,23 +33,10 @@ public static class MauiProgram
 
         RegisterDependencyInjection(builder);
 
-        return builder.Build();
-    }
+        RemoveUnderlineFromEntryControls();
+        RemoveUnderlineFromPickerControls();
 
-    private static void ModifyEntry()
-    {
-        EntryHandler.Mapper.AppendToMapping("BorderlessEntry", (handler, view) =>
-        {
-#if ANDROID
-            var nativeEntry = handler.PlatformView as Android.Widget.EditText;
-            if (nativeEntry != null)
-            {
-                // Remove the border on Android.
-                nativeEntry.Background = null; // This removes the underline
-                nativeEntry.SetPadding(0, nativeEntry.PaddingTop, 0, nativeEntry.PaddingBottom);
-            }
-#endif
-        });
+        return builder.Build();
     }
 
     private static void RegisterDependencyInjection(MauiAppBuilder builder)
@@ -86,5 +68,35 @@ public static class MauiProgram
             // Services.
             .AddSingleton<HtmlUpdaterService>()
             ;
+    }
+
+    private static void RemoveUnderlineFromEntryControls()
+    {
+        EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+        {
+#if ANDROID
+            if (handler.PlatformView is Android.Widget.EditText nativeEntry)
+            {
+                Android.Graphics.Color entryLineColor = Android.Graphics.Color.Transparent;
+                nativeEntry.BackgroundTintList =
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Android.Content.Res.ColorStateList.ValueOf(entryLineColor);
+            }
+#endif
+        });
+    }
+
+    private static void RemoveUnderlineFromPickerControls()
+    {
+        PickerHandler.Mapper.AppendToMapping(nameof(Picker), (handler, view) =>
+        {
+#if ANDROID
+            if (handler.PlatformView is Android.Widget.EditText nativePicker)
+            {
+                Android.Graphics.Color entryLineColor = Android.Graphics.Color.Transparent;
+                nativePicker.BackgroundTintList =
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Android.Content.Res.ColorStateList.ValueOf(entryLineColor);
+            }
+#endif
+        });
     }
 }

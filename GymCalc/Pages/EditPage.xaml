@@ -37,9 +37,7 @@
                         Style="{StaticResource ControlBorderStyle}">
                         <Entry
                             Text="{Binding WeightText}"
-                            Keyboard="Numeric"
-                            HorizontalTextAlignment="End"
-                            VerticalTextAlignment="Center"/>
+                            Style="{StaticResource NumericEntryStyle}"/>
                     </Border>
                 </Grid>
 
