@@ -37,7 +37,7 @@ internal static class CustomColors
     internal static Color? Get(string? name)
     {
         return name == null ? null :
-            Palette.TryGetValue(name, out var hex) ? Color.Parse(hex) : null;
+            Palette.TryGetValue(name, out string? hex) ? Color.Parse(hex) : null;
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ internal static class CustomColors
     {
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;
-        var n = weight;
+        decimal n = weight;
         if (units == Units.Kilograms)
         {
             hasBands = weight % 4 == 2;
@@ -74,7 +74,7 @@ internal static class CustomColors
         }
 
         // Get ball color.
-        var ballColor = n switch
+        string ballColor = n switch
         {
             1 => "Cyan",
             2 => "Pink",
@@ -92,7 +92,7 @@ internal static class CustomColors
         };
 
         // Add black bands if it has them.
-        var bandColor = hasBands ? "OffBlack" : null;
+        string? bandColor = hasBands ? "OffBlack" : null;
 
         return (ballColor, hasBands, bandColor);
     }

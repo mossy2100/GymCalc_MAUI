@@ -3,7 +3,7 @@ using GymCalc.Constants;
 using GymCalc.Graphics;
 using GymCalc.Models;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on kettlebells.
@@ -20,10 +20,10 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Kettlebell objects.
-        var fn = (decimal weight, Units units, bool enabled) =>
+        Func<decimal, Units, bool, Kettlebell> fn = (weight, units, enabled) =>
         {
             // Get the default color parameters.
-            var (ballColor, hasBands, bandColor) =
+            (string ballColor, bool hasBands, string? bandColor) =
                 CustomColors.DefaultKettlebellColor(weight, units);
 
             // Construct the new Kettlebell object.

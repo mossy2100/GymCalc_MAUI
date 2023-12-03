@@ -3,8 +3,8 @@ using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
 using GymCalc.Constants;
-using GymCalc.Data;
 using GymCalc.Models;
+using GymCalc.Repositories;
 using GymCalc.Shared;
 using GymCalc.Solvers;
 
@@ -342,7 +342,7 @@ public class CalculatorViewModel : BaseViewModel
     private decimal? MaxWeight =>
         string.IsNullOrEmpty(MaxWeightText)
             ? 0
-            : decimal.TryParse(MaxWeightText, out var maxWeight)
+            : decimal.TryParse(MaxWeightText, out decimal maxWeight)
                 ? maxWeight
                 : null;
 
@@ -354,7 +354,7 @@ public class CalculatorViewModel : BaseViewModel
     private decimal? StartingWeight =>
         string.IsNullOrEmpty(StartingWeightText)
             ? 0
-            : decimal.TryParse(StartingWeightText, out var startingWeight)
+            : decimal.TryParse(StartingWeightText, out decimal startingWeight)
                 ? startingWeight
                 : null;
 
@@ -378,11 +378,11 @@ public class CalculatorViewModel : BaseViewModel
 
     internal async Task InitializeDatabase()
     {
-        var barTask = _barRepo.Initialize();
-        var plateTask = _plateRepo.Initialize();
-        var barbellTask = _barbellRepo.Initialize();
-        var dumbbellTask = _dumbbellRepo.Initialize();
-        var kettlebellTask = _kettlebellRepo.Initialize();
+        Task barTask = _barRepo.Initialize();
+        Task plateTask = _plateRepo.Initialize();
+        Task barbellTask = _barbellRepo.Initialize();
+        Task dumbbellTask = _dumbbellRepo.Initialize();
+        Task kettlebellTask = _kettlebellRepo.Initialize();
         await Task.WhenAll(barTask, plateTask, barbellTask, dumbbellTask, kettlebellTask);
     }
 
@@ -392,13 +392,13 @@ public class CalculatorViewModel : BaseViewModel
     internal async Task ResetBarWeightPicker()
     {
         // Remember the original selection.
-        var selectedBarWeight = BarWeight;
+        decimal selectedBarWeight = BarWeight;
 
         // Reset to force an update when the property is set again.
         BarWeight = 0;
 
         // Repopulate the picker options.
-        var bars = await _barRepo.LoadSome();
+        List<Bar> bars = await _barRepo.LoadSome();
         BarWeights = bars.Select(b => b.Weight).ToList();
 
         // Select the previously selected value, if available.
@@ -423,7 +423,7 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     internal void SetUnits()
     {
-        var units = UnitsUtility.GetDefault().GetDescription();
+        string units = UnitsUtility.GetDefault().GetDescription();
         MaxWeightUnits = units;
         BarWeightUnits = units;
         StartingWeightUnits = units;
@@ -538,7 +538,7 @@ public class CalculatorViewModel : BaseViewModel
     public void PercentSelected(string sPercent)
     {
         // Get the percent value of the button.
-        SelectedPercent = int.TryParse(sPercent, out var percent) ? percent : 100;
+        SelectedPercent = int.TryParse(sPercent, out int percent) ? percent : 100;
 
         // Display the matching result.
         if (PlatesResultVisible)
@@ -575,7 +575,7 @@ public class CalculatorViewModel : BaseViewModel
         // Calculate the results.
         if (BarbellType == BarbellType.PlateLoaded)
         {
-            var plates = await _plateRepo.LoadSome();
+            List<Plate> plates = await _plateRepo.LoadSome();
             PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
                 "Plates each end", plates);
             PlatesResultVisible = true;
@@ -583,7 +583,7 @@ public class CalculatorViewModel : BaseViewModel
         }
         else
         {
-            var barbells = await _barbellRepo.LoadSome();
+            List<Barbell> barbells = await _barbellRepo.LoadSome();
             SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
             PlatesResultVisible = false;
             SingleWeightResultVisible = true;
@@ -602,12 +602,12 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Get the available plates.
-        var plates = await _plateRepo.LoadSome();
+        List<Plate> plates = await _plateRepo.LoadSome();
 
         // Determine the number of plate stacks and total starting weight from the machine type.
-        var nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
-        var totalStartingWeight = StartingWeight!.Value * nStacks;
-        var eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
+        int nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
+        decimal totalStartingWeight = StartingWeight!.Value * nStacks;
+        string eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
 
         // Calculate the results.
         PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
@@ -628,7 +628,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var dumbbells = await _dumbbellRepo.LoadSome();
+        List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
 
         // Display the results.
@@ -646,7 +646,7 @@ public class CalculatorViewModel : BaseViewModel
         }
 
         // Calculate the results.
-        var kettlebells = await _kettlebellRepo.LoadSome();
+        List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
 
         // Display the results.

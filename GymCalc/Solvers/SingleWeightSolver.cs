@@ -18,10 +18,10 @@ internal static class SingleWeightSolver
         // Later, this might be configurable.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var idealWeight = maxWeight * percent / 100m;
+            decimal idealWeight = maxWeight * percent / 100m;
 
             // Get the weight that is closest to the ideal weight.
-            var closest = FindClosest(idealWeight);
+            GymObject closest = FindClosest(idealWeight);
 
             // Construct the drawable.
             var drawable = GymObjectDrawable.Create(closest);
@@ -43,7 +43,7 @@ internal static class SingleWeightSolver
     {
         GymObject? current = null;
 
-        var gymObjects = _availWeights!.ToArray();
+        GymObject[] gymObjects = _availWeights!.ToArray();
         for (var i = 0; i < gymObjects.Length; i++)
         {
             current = gymObjects[i];
@@ -64,9 +64,9 @@ internal static class SingleWeightSolver
                 }
 
                 // Compare the weights above and below.
-                var previous = gymObjects[i - 1];
-                var diffBelow = idealWeight - previous.Weight;
-                var diffAbove = current.Weight - idealWeight;
+                GymObject previous = gymObjects[i - 1];
+                decimal diffBelow = idealWeight - previous.Weight;
+                decimal diffAbove = current.Weight - idealWeight;
                 return diffAbove < diffBelow ? current : previous;
             }
         }

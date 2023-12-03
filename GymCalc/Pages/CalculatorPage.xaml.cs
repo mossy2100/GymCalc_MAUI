@@ -99,9 +99,10 @@ public partial class CalculatorPage : ContentPage
     private void UpdateLayoutOrientation()
     {
         // Get the device orientation.
-        var newOrientation = MauiUtility.GetOrientation() == DisplayOrientation.Landscape
-            ? StackOrientation.Horizontal
-            : StackOrientation.Vertical;
+        StackOrientation newOrientation =
+            MauiUtility.GetOrientation() == DisplayOrientation.Landscape
+                ? StackOrientation.Horizontal
+                : StackOrientation.Vertical;
 
         // Skip the redraw if we don't need to do it.
         if (_layoutInitialized && newOrientation == CalculatorLayout.Orientation)
@@ -143,7 +144,7 @@ public partial class CalculatorPage : ContentPage
 
     private double GetAvailWidth()
     {
-        var scrollViewWidth = CalculatorScrollView.Width - CalculatorScrollView.Padding.Left
+        double scrollViewWidth = CalculatorScrollView.Width - CalculatorScrollView.Padding.Left
             - CalculatorScrollView.Padding.Right;
         return MauiUtility.GetOrientation() == DisplayOrientation.Landscape
             ? (scrollViewWidth - CalculatorLayout.Spacing) / 2
@@ -152,7 +153,7 @@ public partial class CalculatorPage : ContentPage
 
     private void ResetExerciseTypeButtonWidths()
     {
-        var width = (GetAvailWidth() - ExerciseTypeButtonGrid.ColumnSpacing) / 2;
+        double width = (GetAvailWidth() - ExerciseTypeButtonGrid.ColumnSpacing) / 2;
         BarbellButton.WidthRequest = width;
         DumbbellButton.WidthRequest = width;
         MachineButton.WidthRequest = width;

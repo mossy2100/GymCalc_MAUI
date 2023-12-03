@@ -10,15 +10,15 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary
-                    Source="Resources/Styles/Colors.xaml" />
+                    Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary
-                    Source="Resources/Styles/Styles.xaml" />
+                    Source="Resources/Styles/Styles.xaml"/>
                 <ResourceDictionary
-                    Source="Resources/Styles/Custom.xaml" />
+                    Source="Resources/Styles/Custom.xaml"/>
                 <ResourceDictionary
-                    Source="Resources/Styles/Buttons.xaml" />
+                    Source="Resources/Styles/Buttons.xaml"/>
                 <ResourceDictionary
-                    Source="Resources/Styles/InputKit.xaml" />
+                    Source="Resources/Styles/InputKit.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

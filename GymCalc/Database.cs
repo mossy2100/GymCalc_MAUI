@@ -1,6 +1,7 @@
+using GymCalc.Repositories;
 using SQLite;
 
-namespace GymCalc.Data;
+namespace GymCalc;
 
 /// <summary>
 /// Container for database stuff.
@@ -50,7 +51,7 @@ public class Database(IServiceProvider serviceProvider)
     /// </exception>
     internal IGymObjectRepository GetRepo(string? gymObjectTypeName)
     {
-        var repoType = Type.GetType($"GymCalc.Data.{gymObjectTypeName}Repository");
+        var repoType = Type.GetType($"GymCalc.Repositories.{gymObjectTypeName}Repository");
         if (repoType != null && serviceProvider.GetService(repoType) is IGymObjectRepository igor)
         {
             return igor;

@@ -11,7 +11,7 @@ public class WeightTextConverter : IValueConverter
     {
         if (value is decimal weight)
         {
-            var units = UnitsUtility.GetDefault().GetDescription();
+            string units = UnitsUtility.GetDefault().GetDescription();
             return $"{weight:F2} {units}";
         }
 
@@ -19,7 +19,8 @@ public class WeightTextConverter : IValueConverter
     }
 
     /// <inheritdoc/>
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? ConvertBack(object? value, Type targetType, object? parameter,
+        CultureInfo culture)
     {
         return null;
     }

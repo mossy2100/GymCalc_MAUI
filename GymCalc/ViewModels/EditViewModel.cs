@@ -2,18 +2,17 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Types;
 using Galaxon.Core.Exceptions;
-using GymCalc.Data;
+using Galaxon.Core.Types;
 using GymCalc.Models;
+using GymCalc.Repositories;
 using GymCalc.Shared;
 
 namespace GymCalc.ViewModels;
 
 public class EditViewModel : BaseViewModel
 {
-    // ---------------------------------------------------------------------------------------------
-    // Dependencies.
+    #region Dependencies
 
     private readonly Database _database;
 
@@ -26,6 +25,8 @@ public class EditViewModel : BaseViewModel
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
+
+    #endregion Dependencies
 
     // ---------------------------------------------------------------------------------------------
     // Fields
@@ -188,7 +189,7 @@ public class EditViewModel : BaseViewModel
     private async Task SaveGymObject()
     {
         // Validate the form.
-        var weightOk = decimal.TryParse(WeightText, out var weight) && weight > 0;
+        bool weightOk = decimal.TryParse(WeightText, out decimal weight) && weight > 0;
         if (!weightOk)
         {
             ErrorMessage = "Please ensure the weight is a number greater than 0.";
@@ -239,7 +240,7 @@ public class EditViewModel : BaseViewModel
         _gymObjectId = gymObjectId;
 
         // Set the title.
-        var ti = new CultureInfo("en-US", false).TextInfo;
+        TextInfo ti = new CultureInfo("en-US", false).TextInfo;
         Title = $"{ti.ToTitleCase(operation)} {_gymObjectTypeName}";
 
         // Reset the form.
@@ -298,13 +299,13 @@ public class EditViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Load an existing gym object from the database.
+    ///  Load an existing gym object from the database.
     /// </summary>
     /// <exception cref="NoMatchingCaseException">
-    /// If the gym object type is invalid (should never happen).
+    ///  If the gym object type is invalid (should never happen).
     /// </exception>
     /// <exception cref="KeyNotFoundException">
-    ///If the gym object with the given type and id is not found in the database.
+    /// If the gym object with the given type and id is not found in the database.
     /// </exception>
     private async Task LoadGymObjectIntoForm()
     {
@@ -384,7 +385,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject> SaveBar()
     {
         // If this is an add operation, create new Bar.
-        var bar = (_operation == "add" || _gymObject == null) ? new Bar() : (Bar)_gymObject;
+        Bar? bar = _operation == "add" || _gymObject == null ? new Bar() : (Bar)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(bar);
@@ -398,7 +399,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject?> SavePlate()
     {
         // If this is an add operation, create new Bar.
-        var plate = (_operation == "add" || _gymObject == null) ? new Plate() : (Plate)_gymObject;
+        Plate? plate = _operation == "add" || _gymObject == null ? new Plate() : (Plate)_gymObject;
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(plate);
@@ -413,7 +414,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject?> SaveBarbell()
     {
         // If this is an add operation, create new Barbell.
-        var barbell = (_operation == "add" || _gymObject == null)
+        Barbell? barbell = _operation == "add" || _gymObject == null
             ? new Barbell()
             : (Barbell)_gymObject;
 
@@ -429,7 +430,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject?> SaveDumbbell()
     {
         // If this is an add operation, create new Dumbbell.
-        var dumbbell = (_operation == "add" || _gymObject == null)
+        Dumbbell? dumbbell = _operation == "add" || _gymObject == null
             ? new Dumbbell()
             : (Dumbbell)_gymObject;
 
@@ -446,7 +447,7 @@ public class EditViewModel : BaseViewModel
     private async Task<GymObject?> SaveKettlebell()
     {
         // If this is an add operation, create new Kettlebell.
-        var kettlebell = (_operation == "add" || _gymObject == null)
+        Kettlebell? kettlebell = _operation == "add" || _gymObject == null
             ? new Kettlebell()
             : (Kettlebell)_gymObject;
 

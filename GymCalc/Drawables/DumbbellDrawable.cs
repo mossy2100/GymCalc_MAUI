@@ -40,8 +40,8 @@ public class DumbbellDrawable : GymObjectDrawable
         const int gapWidth = 1;
         const int plateWidth = 12;
         const int cornerRadius = 2;
-        var smallPlateTop = barTop / 3;
-        var smallPlateHeight = height - 2 * smallPlateTop;
+        float smallPlateTop = barTop / 3;
+        float smallPlateHeight = height - 2 * smallPlateTop;
         canvas.FillColor = CustomColors.Get(dumbbell.Color) ?? CustomColors.Get("OffBlack");
 
         // Left small plate.
@@ -67,8 +67,8 @@ public class DumbbellDrawable : GymObjectDrawable
         canvas.FontColor = Colors.Black;
         var weightString = dumbbell.Weight.ToString(CultureInfo.InvariantCulture);
         const int m = (gapWidth + plateWidth) * 2;
-        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        var p = (height - barHeight) / 2 + offset;
+        int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        float p = (height - barHeight) / 2 + offset;
         canvas.DrawString(weightString, m, p, width - m * 2, barHeight, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }

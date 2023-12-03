@@ -2,7 +2,7 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on fixed-weight barbells.
@@ -19,12 +19,13 @@ public class BarbellRepository : GymObjectRepository<Barbell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Barbell objects.
-        var fn = (decimal weight, Units units, bool enabled) => new Barbell
-        {
-            Weight = weight,
-            Units = units.GetDescription(),
-            Enabled = enabled
-        };
+        Func<decimal, Units, bool, Barbell> fn = (weight, units, enabled) =>
+            new Barbell
+            {
+                Weight = weight,
+                Units = units.GetDescription(),
+                Enabled = enabled
+            };
 
         // Kilograms (common).
         await AddSet(10, 50, 2.5m, Units.Kilograms, true, fn);

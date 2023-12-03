@@ -2,7 +2,7 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on bars.
@@ -24,7 +24,7 @@ public class BarRepository : GymObjectRepository<Bar>
     public override async Task InsertDefaults()
     {
         // Function to construct new Bar objects.
-        var fn = (decimal weight, Units units, bool enabled) => new Bar
+        Func<decimal, Units, bool, Bar> fn = (weight, units, enabled) => new Bar
         {
             Weight = weight,
             Units = units.GetDescription(),

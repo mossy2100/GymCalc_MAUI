@@ -10,8 +10,8 @@ public class PlatesDrawable : IDrawable
     {
         get
         {
-            var maxPlateWeight =
-                (Plates == null || Plates.Count == 0) ? 0 : Plates.Max(p => p.Weight);
+            decimal maxPlateWeight =
+                Plates == null || Plates.Count == 0 ? 0 : Plates.Max(p => p.Weight);
             return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
         }
     }
@@ -23,17 +23,17 @@ public class PlatesDrawable : IDrawable
     /// <inheritdoc/>
     public void Draw(ICanvas canvas, RectF dirtyRect)
     {
-        var rectWidth = dirtyRect.Width;
+        float rectWidth = dirtyRect.Width;
         var i = 0;
-        foreach (var plate in Plates!)
+        foreach (Plate plate in Plates!)
         {
             // Get the dimensions.
             var w = (float)GymObjectDrawable.CalculateWidth(plate.Weight, MaxWeight);
             var h = (float)PlateDrawable.HEIGHT;
 
             // Get the coordinates of the upper-left corner of the plate in the canvas.
-            var x = (rectWidth - w) / 2f;
-            var y = i * h;
+            float x = (rectWidth - w) / 2f;
+            float y = i * h;
 
             // Draw the plate on the canvas.
             PlateDrawable.DrawPlate(canvas, plate, x, y, w, h);

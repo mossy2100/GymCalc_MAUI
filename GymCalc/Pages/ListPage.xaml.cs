@@ -15,11 +15,6 @@ public partial class ListPage : ContentPage
     private string? _gymObjectTypeName;
 
     /// <summary>
-    /// Reference to the viewmodel.
-    /// </summary>
-    public ListViewModel Model { get; }
-
-    /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="listViewModel">Reference to the viewmodel.</param>
@@ -35,6 +30,11 @@ public partial class ListPage : ContentPage
         // Event handlers.
         SizeChanged += OnSizeChanged;
     }
+
+    /// <summary>
+    /// Reference to the viewmodel.
+    /// </summary>
+    public ListViewModel Model { get; }
 
     /// <summary>
     /// Page parameter specifying what type of gym object to list.
@@ -86,7 +86,7 @@ public partial class ListPage : ContentPage
         // Show the confirmation dialog.
         var msg =
             $"Are you sure you want to delete the {gymObject.Weight} {gymObject.Units} {GymObjectTypeName.ToLower()}?";
-        var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
+        bool confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
 
         // If confirmed, do the deletion.
         if (confirmed)
@@ -111,7 +111,7 @@ public partial class ListPage : ContentPage
         // Show the confirmation dialog.
         var msg =
             $"This will remove all {GymObjectTypeName.ToLower()}s from the database and restore the defaults. Are you sure you want to do this?";
-        var confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
+        bool confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
 
         // If confirmed, do the reset.
         if (confirmed)

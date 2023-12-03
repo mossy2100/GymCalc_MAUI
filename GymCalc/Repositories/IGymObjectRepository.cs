@@ -1,4 +1,4 @@
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 public interface IGymObjectRepository
 {

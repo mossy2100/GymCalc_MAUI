@@ -2,14 +2,24 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 using GymCalc.Shared;
+using SQLite;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepository
     where T : GymObject, new()
 {
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public abstract Task InsertDefaults();
+
+    /// <summary>
+    /// Delete all objects of a given type.
+    /// </summary>
+    /// <returns>The number of deleted rows.</returns>
+    public async Task<int> DeleteAll()
+    {
+        return await database.Connection.DeleteAllAsync<T>();
+    }
 
     /// <summary>
     /// Add a set of objects to the database.
@@ -23,10 +33,10 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     protected async Task AddSet(decimal min, decimal max, decimal step, Units units, bool enabled,
         Func<decimal, Units, bool, GymObject> fnCreate)
     {
-        for (var weight = min; weight <= max; weight += step)
+        for (decimal weight = min; weight <= max; weight += step)
         {
             // Check that we haven't added this one already.
-            var gymObject = await LoadOneByWeight(weight, units);
+            T? gymObject = await LoadOneByWeight(weight, units);
 
             // If the object isn't already in the database, construct and insert it.
             if (gymObject == null)
@@ -47,7 +57,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         await database.Connection.CreateTableAsync<T>();
 
         // If there aren't any rows, initialize with the defaults.
-        var nRows = await database.Connection.Table<T>().CountAsync();
+        int nRows = await database.Connection.Table<T>().CountAsync();
         if (nRows == 0)
         {
             await InsertDefaults();
@@ -74,7 +84,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     {
         // Find units as a string before running the query, because GetDescription() can't be
         // converted to an SQL function.
-        var sUnits = units.GetDescription();
+        string sUnits = units.GetDescription();
 
         // Query the database.
         return await database.Connection.Table<T>().FirstOrDefaultAsync(gymObject =>
@@ -105,12 +115,12 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         Units units = Units.Default)
     {
         // Start constructing the query to select the objects.
-        var query = database.Connection.Table<T>();
+        AsyncTableQuery<T>? query = database.Connection.Table<T>();
 
         // Add where clause for enabled/disabled weights if needed.
         if (enabled.HasValue)
         {
-            var enabledValue = enabled.Value;
+            bool enabledValue = enabled.Value;
             query = query.Where(item => item.Enabled == enabledValue);
         }
 
@@ -125,7 +135,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
 
             // Find units as a string before running the query, because GetDescription() can't be
             // converted to an SQL function.
-            var sUnits = units.GetDescription();
+            string sUnits = units.GetDescription();
 
             // Add the where clause.
             query = query.Where(item => item.Units == sUnits);
@@ -197,14 +207,5 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     internal async Task<int> Delete(int id)
     {
         return await database.Connection.DeleteAsync<T>(id);
-    }
-
-    /// <summary>
-    /// Delete all objects of a given type.
-    /// </summary>
-    /// <returns>The number of deleted rows.</returns>
-    public async Task<int> DeleteAll()
-    {
-        return await database.Connection.DeleteAllAsync<T>();
     }
 }

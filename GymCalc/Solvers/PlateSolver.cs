@@ -29,11 +29,11 @@ internal static class PlateSolver
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
         for (var percent = 100; percent >= 50; percent -= 10)
         {
-            var idealTotal = maxTotalWeight * percent / 100m;
-            var idealPlates = (idealTotal - totalStartingWeight) / nStacks;
+            decimal idealTotal = maxTotalWeight * percent / 100m;
+            decimal idealPlates = (idealTotal - totalStartingWeight) / nStacks;
 
             // Get the set of plates that is closest to the ideal weight.
-            var closestPlates = FindBestPlates(idealPlates);
+            List<Plate> closestPlates = FindBestPlates(idealPlates);
 
             // Create the drawable.
             var drawable = new PlatesDrawable
@@ -80,7 +80,7 @@ internal static class PlateSolver
     private static void SearchSolutions(IReadOnlyCollection<Plate> currentStack,
         decimal maxPlateWeight)
     {
-        foreach (var plate in _availPlates!)
+        foreach (Plate plate in _availPlates!)
         {
             // Only add plates that are less than or equal to the largest plate added so far.
             // Ensuring plates are added in order of decreasing weight eliminates duplicate
@@ -96,7 +96,7 @@ internal static class PlateSolver
             newStack.Add(plate);
 
             // Test the solution.
-            var sum = newStack.Sum(p => p.Weight);
+            decimal sum = newStack.Sum(p => p.Weight);
             var diff = decimal.Abs(sum - _idealWeight);
 
             // Check if this is a new best solution.

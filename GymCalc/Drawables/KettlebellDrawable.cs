@@ -30,8 +30,8 @@ public class KettlebellDrawable : GymObjectDrawable
         var width = (float)Width;
 
         // Colors.
-        var ballColor = CustomColors.Get(kettlebell.BallColor) ?? CustomColors.Get("OffBlack");
-        var bandColor =
+        Color? ballColor = CustomColors.Get(kettlebell.BallColor) ?? CustomColors.Get("OffBlack");
+        Color? bandColor =
             (kettlebell.HasBands == true ? CustomColors.Get(kettlebell.BandColor) : null)
             ?? ballColor;
 
@@ -68,7 +68,7 @@ public class KettlebellDrawable : GymObjectDrawable
         canvas.FontSize = 20;
         canvas.FontColor = ballColor!.GetTextColor();
         var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
-        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         canvas.DrawString(weightString, 10, 35 + offset, 40, 30, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }

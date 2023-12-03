@@ -37,7 +37,7 @@ public class BarDrawable : GymObjectDrawable
         canvas.FontSize = 16;
         canvas.FontColor = Colors.Black;
         var weightString = bar.Weight.ToString(CultureInfo.InvariantCulture);
-        var offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
+        int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         canvas.DrawString(weightString, 0, offset, width, height, HorizontalAlignment.Center,
             VerticalAlignment.Center);
     }

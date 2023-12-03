@@ -2,7 +2,7 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on plates.
@@ -57,10 +57,10 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
-        foreach (var (weight, units, enabled, color) in _DefaultPlates)
+        foreach ((decimal weight, Units units, bool enabled, string color) in _DefaultPlates)
         {
             // Check that we haven't added this one already.
-            var plate = await LoadOneByWeight(weight, units);
+            Plate? plate = await LoadOneByWeight(weight, units);
 
             // If this plate isn't already in the database, construct and insert it.
             if (plate == null)

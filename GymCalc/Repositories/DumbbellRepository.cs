@@ -2,7 +2,7 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 
-namespace GymCalc.Data;
+namespace GymCalc.Repositories;
 
 /// <summary>
 /// Methods for CRUD operations on dumbbells.
@@ -19,13 +19,14 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Dumbbell objects.
-        var fn = (decimal weight, Units units, bool enabled) => new Dumbbell()
-        {
-            Weight = weight,
-            Units = units.GetDescription(),
-            Enabled = enabled,
-            Color = "OffBlack"
-        };
+        Func<decimal, Units, bool, Dumbbell> fn = (weight, units, enabled) =>
+            new Dumbbell
+            {
+                Weight = weight,
+                Units = units.GetDescription(),
+                Enabled = enabled,
+                Color = "OffBlack"
+            };
 
         // Kilograms (common).
         await AddSet(1, 10, 1, Units.Kilograms, true, fn);

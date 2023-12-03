@@ -50,7 +50,7 @@ public abstract class GymObjectDrawable : IDrawable
     public static GymObjectDrawable Create(GymObject gymObject)
     {
         // Get the type.
-        var gymObjectTypeName = gymObject.GetType().Name;
+        string gymObjectTypeName = gymObject.GetType().Name;
         var drawableTypeName = $"GymCalc.Drawables.{gymObjectTypeName}Drawable";
         var drawableType = Type.GetType(drawableTypeName);
         if (drawableType == null)
@@ -60,7 +60,7 @@ public abstract class GymObjectDrawable : IDrawable
         }
 
         // Create the drawable object.
-        var drawable = Activator.CreateInstance(drawableType);
+        object? drawable = Activator.CreateInstance(drawableType);
         if (drawable == null)
         {
             throw new InvalidOperationException(

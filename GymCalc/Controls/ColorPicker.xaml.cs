@@ -33,15 +33,15 @@ public partial class ColorPicker : ContentView
     private void ConstructGrid()
     {
         // Lookup styles.
-        var frameStyle = MauiUtility.LookupStyle("ColorPickerFrameStyle");
-        var buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
+        Style? frameStyle = MauiUtility.LookupStyle("ColorPickerFrameStyle");
+        Style? buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
 
         // Display the color buttons in the grid.
         const int N_ROWS = 4;
         const int N_COLS = 4;
         var r = 0;
         var c = 0;
-        foreach (var (colorName, colorHex) in CustomColors.Palette)
+        foreach ((string colorName, string colorHex) in CustomColors.Palette)
         {
             // Create a frame.
             var frame = new Frame
@@ -100,7 +100,8 @@ public partial class ColorPicker : ContentView
         var colorPicker = (ColorPicker)bindable;
 
         // Deselect the old selected button, if there is one.
-        var oldButton = colorPicker._buttonToColor.FirstOrDefault(pair => pair.Value == sOldValue)
+        Button? oldButton = colorPicker._buttonToColor
+            .FirstOrDefault(pair => pair.Value == sOldValue)
             .Key;
         if (oldButton != null)
         {
@@ -110,7 +111,8 @@ public partial class ColorPicker : ContentView
         }
 
         // Select the button that was clicked.
-        var newButton = colorPicker._buttonToColor.FirstOrDefault(pair => pair.Value == sNewValue)
+        Button? newButton = colorPicker._buttonToColor
+            .FirstOrDefault(pair => pair.Value == sNewValue)
             .Key;
         if (newButton != null)
         {
