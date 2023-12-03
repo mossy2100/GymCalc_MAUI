@@ -5,50 +5,46 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    x:Class="GymCalc.Pages.WeightsPage">
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:Class="GymCalc.Pages.WeightsPage"
+    x:DataType="viewModels:WeightsViewModel">
     <ContentPage.Content>
-        <Grid
-            Padding="{x:Static graphics:PageLayout.DoubleSpacing}"
-            ColumnDefinitions="*"
-            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-            RowSpacing="{x:Static graphics:PageLayout.Spacing}">
-
+        <VerticalStackLayout
+            Padding="{x:Static graphics:PageLayout.Spacing}"
+            Spacing="{x:Static graphics:PageLayout.Spacing}">
+            <Label
+                FontSize="14"
+                Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."></Label>
             <Button
-                Grid.Row="0"
                 ImageSource="bar_icon_white_300.png"
                 Text="Bars"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Bar"/>
             <Button
-                Grid.Row="1"
                 ImageSource="plate_icon_white_300.png"
                 Text="Plates"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Plate"/>
             <Button
-                Grid.Row="2"
                 ImageSource="barbell_icon_white_300.png"
                 Text="Fixed Barbells"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Barbell"/>
             <Button
-                Grid.Row="3"
                 ImageSource="dumbbell_icon_white_300.png"
                 Text="Dumbbells"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Dumbbell"/>
             <Button
-                Grid.Row="4"
                 ImageSource="kettlebell_icon_white_300.png"
                 Text="Kettlebells"
                 ContentLayout="Left,20"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Kettlebell"/>
-
-        </Grid>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>
