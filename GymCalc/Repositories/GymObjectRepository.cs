@@ -22,6 +22,27 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     }
 
     /// <summary>
+    /// Add an object to the database.
+    /// </summary>
+    /// <param name="weight">The weight.</param>
+    /// <param name="units">The mass units.</param>
+    /// <param name="enabled">If it should be enabled by default.</param>
+    /// <param name="fnCreate">Function to construct new objects.</param>
+    protected async Task AddWeight(decimal weight, Units units, bool enabled,
+        Func<decimal, Units, bool, GymObject> fnCreate)
+    {
+        // Check that we haven't added this one already.
+        T? gymObject = await LoadOneByWeight(weight, units);
+
+        // If the object isn't already in the database, construct and insert it.
+        if (gymObject == null)
+        {
+            gymObject = (T)fnCreate(weight, units, enabled);
+            await Insert(gymObject);
+        }
+    }
+
+    /// <summary>
     /// Add a set of objects to the database.
     /// </summary>
     /// <param name="min">The minimum weight.</param>
@@ -35,15 +56,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     {
         for (decimal weight = min; weight <= max; weight += step)
         {
-            // Check that we haven't added this one already.
-            T? gymObject = await LoadOneByWeight(weight, units);
-
-            // If the object isn't already in the database, construct and insert it.
-            if (gymObject == null)
-            {
-                gymObject = (T)fnCreate(weight, units, enabled);
-                await Insert(gymObject);
-            }
+            await AddWeight(weight, units, enabled, fnCreate);
         }
     }
 

@@ -30,9 +30,12 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
 
         // Kilograms (common).
         await AddSet(1, 10, 1, Units.Kilograms, true, fn);
-        await AddSet(2.5m, 60, 2.5m, Units.Kilograms, true, fn);
+        await AddSet(12.5m, 50, 2.5m, Units.Kilograms, true, fn);
+        // Kilograms (uncommon).
+        await AddWeight(7.5m, Units.Kilograms, false, fn);
+        await AddSet(52.5m, 60, 2.5m, Units.Kilograms, false, fn);
         // Pounds (common).
         await AddSet(1, 10, 1, Units.Pounds, true, fn);
-        await AddSet(5, 120, 5, Units.Pounds, true, fn);
+        await AddSet(15, 120, 5, Units.Pounds, true, fn);
     }
 }
