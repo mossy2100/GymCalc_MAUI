@@ -12,9 +12,31 @@ namespace GymCalc.ViewModels;
 
 public class EditViewModel : BaseViewModel
 {
-    #region Dependencies
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="barRepo"></param>
+    /// <param name="plateRepo"></param>
+    /// <param name="barbellRepo"></param>
+    /// <param name="dumbbellRepo"></param>
+    /// <param name="kettlebellRepo"></param>
+    public EditViewModel(BarRepository barRepo, PlateRepository plateRepo,
+        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
+        KettlebellRepository kettlebellRepo)
+    {
+        // Dependencies.
+        _barRepo = barRepo;
+        _plateRepo = plateRepo;
+        _barbellRepo = barbellRepo;
+        _dumbbellRepo = dumbbellRepo;
+        _kettlebellRepo = kettlebellRepo;
 
-    private readonly Database _database;
+        // Commands.
+        CancelCommand = new AsyncCommand(Cancel);
+        SaveCommand = new AsyncCommand(Save);
+    }
+
+    #region Dependencies
 
     private readonly BarRepository _barRepo;
 
@@ -28,8 +50,7 @@ public class EditViewModel : BaseViewModel
 
     #endregion Dependencies
 
-    // ---------------------------------------------------------------------------------------------
-    // Fields
+    #region Fields
 
     private string? _bandColor;
 
@@ -53,9 +74,6 @@ public class EditViewModel : BaseViewModel
 
     private string? _operation;
 
-    // ---------------------------------------------------------------------------------------------
-    // Bindable properties.
-
     private string? _title;
 
     private string? _units;
@@ -67,40 +85,9 @@ public class EditViewModel : BaseViewModel
 
     private string? _weightText;
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion Fields
 
-    /// <summary>
-    /// Constructor.
-    /// </summary>
-    /// <param name="database"></param>
-    /// <param name="barRepo"></param>
-    /// <param name="plateRepo"></param>
-    /// <param name="barbellRepo"></param>
-    /// <param name="dumbbellRepo"></param>
-    /// <param name="kettlebellRepo"></param>
-    public EditViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
-        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo)
-    {
-        // Dependencies.
-        _database = database;
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _barbellRepo = barbellRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
-
-        // Commands.
-        CancelCommand = new AsyncCommand(Cancel);
-        SaveCommand = new AsyncCommand(SaveGymObject);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    // Commands.
-
-    public ICommand CancelCommand { get; init; }
-
-    public ICommand SaveCommand { get; init; }
+    #region Bindable properties
 
     public string? Title
     {
@@ -172,8 +159,17 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _hasBandsIsVisible, value);
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Command methods.
+    #endregion Bindable properties
+
+    #region Commands
+
+    public ICommand CancelCommand { get; init; }
+
+    public ICommand SaveCommand { get; init; }
+
+    #endregion Commands
+
+    #region Command methods
 
     /// <summary>
     /// Go back to the list page, showing items of the current type.
@@ -186,7 +182,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Save the item to the database, then go back to the list page.
     /// </summary>
-    private async Task SaveGymObject()
+    private async Task Save()
     {
         // Validate the form.
         bool weightOk = decimal.TryParse(WeightText, out decimal weight) && weight > 0;
@@ -213,7 +209,9 @@ public class EditViewModel : BaseViewModel
         await Shell.Current.GoToAsync("..");
     }
 
-    // ---------------------------------------------------------------------------------------------
+    #endregion Command methods
+
+    #region Other methods
 
     /// <summary>
     /// Hide and show the form fields appropriate to this object type.
@@ -369,9 +367,6 @@ public class EditViewModel : BaseViewModel
         }
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Save-related methods.
-
     /// <summary>
     /// Copy common values from the viewmodel to the model.
     /// </summary>
@@ -381,6 +376,10 @@ public class EditViewModel : BaseViewModel
         gymObject.Units = Units;
         gymObject.Enabled = Enabled;
     }
+
+    #endregion Other methods
+
+    #region Save methods
 
     private async Task<GymObject> SaveBar()
     {
@@ -462,4 +461,6 @@ public class EditViewModel : BaseViewModel
 
         return kettlebell;
     }
+
+    #endregion Save methods
 }

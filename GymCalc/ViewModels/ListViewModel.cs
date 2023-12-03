@@ -10,7 +10,6 @@ namespace GymCalc.ViewModels;
 
 public class ListViewModel : BaseViewModel
 {
-    // ---------------------------------------------------------------------------------------------
     /// <summary>
     /// Constructor.
     /// </summary>
