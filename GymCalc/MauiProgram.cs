@@ -52,20 +52,24 @@ public static class MauiProgram
             .AddSingleton<KettlebellRepository>()
             // Singleton pages.
             .AddSingleton<CalculatorPage>()
+            .AddSingleton<ResultsPage>()
             .AddSingleton<HtmlPage>()
             .AddSingleton<ListPage>()
             .AddSingleton<SettingsPage>()
             .AddSingleton<WeightsPage>()
-            // Transient pages. Pages must be transient if they have more than one parameter.
+            // Transient pages.
+            // It seems pages must be transient if they have more than one parameter.
             .AddTransient<EditPage>()
             // ViewModels.
             .AddSingleton<CalculatorViewModel>()
+            .AddSingleton<ResultsViewModel>()
             .AddSingleton<EditViewModel>()
             .AddSingleton<HtmlViewModel>()
             .AddSingleton<ListViewModel>()
             .AddSingleton<SettingsViewModel>()
             .AddSingleton<WeightsViewModel>()
             // Services.
+            .AddSingleton<CalculatorService>()
             .AddSingleton<HtmlUpdaterService>()
             ;
     }
@@ -77,9 +81,8 @@ public static class MauiProgram
 #if ANDROID
             if (handler.PlatformView is Android.Widget.EditText nativeEntry)
             {
-                Android.Graphics.Color entryLineColor = Android.Graphics.Color.Transparent;
                 nativeEntry.BackgroundTintList =
-                    Android.Content.Res.ColorStateList.ValueOf(entryLineColor);
+                    Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
             }
 #endif
         });
@@ -92,9 +95,8 @@ public static class MauiProgram
 #if ANDROID
             if (handler.PlatformView is Android.Widget.EditText nativePicker)
             {
-                Android.Graphics.Color entryLineColor = Android.Graphics.Color.Transparent;
                 nativePicker.BackgroundTintList =
-                    Android.Content.Res.ColorStateList.ValueOf(entryLineColor);
+                    Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
             }
 #endif
         });

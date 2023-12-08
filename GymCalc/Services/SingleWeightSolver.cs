@@ -1,7 +1,7 @@
 using GymCalc.Drawables;
 using GymCalc.Models;
 
-namespace GymCalc.Solvers;
+namespace GymCalc.Services;
 
 internal static class SingleWeightSolver
 {

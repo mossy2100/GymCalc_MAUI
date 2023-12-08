@@ -108,20 +108,20 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// Get some (or all) gym objects from the database.
     /// </summary>
     /// <param name="enabled">
-    /// If the method should get:
+    /// If the method should only get enabled objects:
     ///     true  : enabled objects (default)
     ///     false : disabled objects
     ///     null  : both
     /// </param>
     /// <param name="ascending">
-    /// If the results should be ordered:
+    /// If the results should be ordered by weight:
     ///     true  : ascending by weight (default)
     ///     false : descending by weight
     ///     null  : unordered
     /// </param>
     /// <param name="units">
     /// What units the results should have (Kilograms, Pounds, All, or Default).
-    /// The "Default" units are set on the Settings page (default Kilograms).
+    /// The "Default" units are specified by the user on the Settings page (default Kilograms).
     /// </param>
     /// <returns>The matching objects.</returns>
     internal async Task<List<T>> LoadSome(bool? enabled = true, bool? ascending = true,
@@ -133,7 +133,11 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         // Add where clause for enabled/disabled weights if needed.
         if (enabled.HasValue)
         {
+            // Get the enabled setting as a bool before running the query, because .Value can't be
+            // converted to an SQL function.
             bool enabledValue = enabled.Value;
+
+            // Add the where clause.
             query = query.Where(item => item.Enabled == enabledValue);
         }
 
@@ -159,7 +163,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
             query = query.OrderBy(item => item.Units);
         }
 
-        // Add order by ascending or descending weight if needed.
+        // Order results ascending or descending by weight if needed.
         if (ascending.HasValue)
         {
             query = ascending.Value

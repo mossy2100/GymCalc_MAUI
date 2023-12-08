@@ -5,8 +5,8 @@ using Galaxon.Core.Types;
 using GymCalc.Constants;
 using GymCalc.Models;
 using GymCalc.Repositories;
+using GymCalc.Services;
 using GymCalc.Shared;
-using GymCalc.Solvers;
 
 namespace GymCalc.ViewModels;
 
@@ -21,7 +21,7 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     public CalculatorViewModel(BarRepository barRepo, PlateRepository plateRepo,
         BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo)
+        KettlebellRepository kettlebellRepo, CalculatorService calculatorService)
     {
         // Keep references to the repositories.
         _barRepo = barRepo;
@@ -29,12 +29,15 @@ public class CalculatorViewModel : BaseViewModel
         _barbellRepo = barbellRepo;
         _dumbbellRepo = dumbbellRepo;
         _kettlebellRepo = kettlebellRepo;
+        _calculatorService = calculatorService;
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
         BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
-        PercentSelectedCommand = new Command<string>(PercentSelected);
+
+        // Initial selected exercise type.
+        SelectedExerciseType = ExerciseType.Barbell;
     }
 
     #endregion Constructors
@@ -52,6 +55,8 @@ public class CalculatorViewModel : BaseViewModel
     private readonly DumbbellRepository _dumbbellRepo;
 
     private readonly KettlebellRepository _kettlebellRepo;
+
+    private readonly CalculatorService _calculatorService;
 
     #endregion Dependencies
 
@@ -162,7 +167,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     private ExerciseType _selectedExerciseType;
 
-    public ExerciseType SelectedExerciseType
+    internal ExerciseType SelectedExerciseType
     {
         get => _selectedExerciseType;
 
@@ -177,156 +182,6 @@ public class CalculatorViewModel : BaseViewModel
         get => _errorMessage;
 
         set => SetProperty(ref _errorMessage, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private int _selectedPercent;
-
-    public int SelectedPercent
-    {
-        get => _selectedPercent;
-
-        set => SetProperty(ref _selectedPercent, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState50;
-
-    public string? PercentButtonVisualState50
-    {
-        get => _percentButtonVisualState50;
-
-        set => SetProperty(ref _percentButtonVisualState50, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState60;
-
-    public string? PercentButtonVisualState60
-    {
-        get => _percentButtonVisualState60;
-
-        set => SetProperty(ref _percentButtonVisualState60, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState70;
-
-    public string? PercentButtonVisualState70
-    {
-        get => _percentButtonVisualState70;
-
-        set => SetProperty(ref _percentButtonVisualState70, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState80;
-
-    public string? PercentButtonVisualState80
-    {
-        get => _percentButtonVisualState80;
-
-        set => SetProperty(ref _percentButtonVisualState80, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState90;
-
-    public string? PercentButtonVisualState90
-    {
-        get => _percentButtonVisualState90;
-
-        set => SetProperty(ref _percentButtonVisualState90, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private string? _percentButtonVisualState100;
-
-    public string? PercentButtonVisualState100
-    {
-        get => _percentButtonVisualState100;
-
-        set => SetProperty(ref _percentButtonVisualState100, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private List<PlatesResult>? _platesResults;
-
-    public List<PlatesResult>? PlatesResults
-    {
-        get => _platesResults;
-
-        set => SetProperty(ref _platesResults, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private PlatesResult? _selectedPlatesResult;
-
-    public PlatesResult? SelectedPlatesResult
-    {
-        get => _selectedPlatesResult;
-
-        set => SetProperty(ref _selectedPlatesResult, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private bool _platesResultVisible;
-
-    public bool PlatesResultVisible
-    {
-        get => _platesResultVisible;
-
-        set => SetProperty(ref _platesResultVisible, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private List<SingleWeightResult>? _singleWeightResults;
-
-    public List<SingleWeightResult>? SingleWeightResults
-    {
-        get => _singleWeightResults;
-
-        set => SetProperty(ref _singleWeightResults, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private SingleWeightResult? _selectedSingleWeightResult;
-
-    public SingleWeightResult? SelectedSingleWeightResult
-    {
-        get => _selectedSingleWeightResult;
-
-        set => SetProperty(ref _selectedSingleWeightResult, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private bool _singleWeightResultVisible;
-
-    public bool SingleWeightResultVisible
-    {
-        get => _singleWeightResultVisible;
-
-        set => SetProperty(ref _singleWeightResultVisible, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private bool _resultsVisible;
-
-    public bool ResultsVisible
-    {
-        get => _resultsVisible;
-
-        set => SetProperty(ref _resultsVisible, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private ExerciseType _resultsExerciseType;
-
-    public ExerciseType ResultsExerciseType
-    {
-        get => _resultsExerciseType;
-
-        set => SetProperty(ref _resultsExerciseType, value);
     }
 
     #endregion Bindable properties
@@ -365,11 +220,9 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand CalculateCommand { get; init; }
 
-    public ICommand BarbellTypeChangedCommand { get; init; }
+    public ICommand? BarbellTypeChangedCommand { get; init; }
 
     public ICommand MachineTypeChangedCommand { get; init; }
-
-    public ICommand PercentSelectedCommand { get; init; }
 
     #endregion Commands
 
@@ -389,7 +242,7 @@ public class CalculatorViewModel : BaseViewModel
     /// <summary>
     /// Reset the bar weight picker items.
     /// </summary>
-    internal async Task ResetBarWeightPicker()
+    private async Task ResetBarWeightPicker()
     {
         // Remember the original selection.
         decimal selectedBarWeight = BarWeight;
@@ -421,7 +274,7 @@ public class CalculatorViewModel : BaseViewModel
     /// <summary>
     /// Set the user's preferred units, which may have changed on the settings page.
     /// </summary>
-    internal void SetUnits()
+    private void SetUnits()
     {
         string units = UnitsUtility.GetDefault().GetDescription();
         MaxWeightUnits = units;
@@ -476,185 +329,60 @@ public class CalculatorViewModel : BaseViewModel
     #endregion Validation methods
 
     // ---------------------------------------------------------------------------------------------
+
     #region Command methods
 
     private async Task Calculate()
     {
-        // Hide current results.
-        ResultsVisible = false;
-
         // Do the calculations based on the selected exercise type.
         switch (SelectedExerciseType)
         {
             case ExerciseType.Barbell:
-                await DoBarbellCalculations();
+                if (ValidateMaxWeight())
+                {
+                    await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
+                        BarWeight);
+                }
                 break;
 
             case ExerciseType.Machine:
-                await DoMachineCalculations();
+                if (ValidateMaxWeight() && ValidateStartingWeight())
+                {
+                    await _calculatorService.DoMachineCalculations(MachineType, MaxWeight!.Value,
+                        StartingWeight!.Value);
+                }
                 break;
 
             case ExerciseType.Dumbbell:
-                await DoDumbbellCalculations();
+                if (ValidateMaxWeight())
+                {
+                    await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
+                }
                 break;
 
             case ExerciseType.Kettlebell:
-                await DoKettlebellCalculations();
+                if (ValidateMaxWeight())
+                {
+                    await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
+                }
                 break;
 
             default:
                 throw new NoMatchingCaseException("Invalid exercise type.");
         }
 
-        // Select 100% to start with.
-        PercentSelected("100");
+        // Go to the results page.
+        await Shell.Current.GoToAsync("results");
     }
 
-    public void BarbellTypeChanged() { }
+    private void BarbellTypeChanged() { }
 
-    public void MachineTypeChanged()
+    private void MachineTypeChanged()
     {
         StartingWeightLabel = MachineType == MachineType.Isolateral
             ? "Starting weight per side"
             : "Starting weight";
     }
 
-    /// <summary>
-    /// Get the visual state for a percent button.
-    /// </summary>
-    /// <param name="pc">The percentage value of the percent button.</param>
-    /// <returns>The button's visual state.</returns>
-    private string? GetPercentButtonVisualState(int pc)
-    {
-        return SelectedPercent == pc ? "Selected" : "Normal";
-    }
-
-    /// <summary>
-    /// Command method for when a percent button is tapped.
-    /// </summary>
-    /// <param name="sPercent">
-    /// The command parameter, which should be a string like "50", "60", etc.
-    /// </param>
-    public void PercentSelected(string sPercent)
-    {
-        // Get the percent value of the button.
-        SelectedPercent = int.TryParse(sPercent, out int percent) ? percent : 100;
-
-        // Display the matching result.
-        if (PlatesResultVisible)
-        {
-            SelectedPlatesResult = PlatesResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
-        }
-        if (SingleWeightResultVisible)
-        {
-            SelectedSingleWeightResult =
-                SingleWeightResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
-        }
-
-        // Update all the percent button visual states.
-        PercentButtonVisualState50 = GetPercentButtonVisualState(50);
-        PercentButtonVisualState60 = GetPercentButtonVisualState(60);
-        PercentButtonVisualState70 = GetPercentButtonVisualState(70);
-        PercentButtonVisualState80 = GetPercentButtonVisualState(80);
-        PercentButtonVisualState90 = GetPercentButtonVisualState(90);
-        PercentButtonVisualState100 = GetPercentButtonVisualState(100);
-    }
-
     #endregion Command methods
-
-    // ---------------------------------------------------------------------------------------------
-    #region Calculations
-
-    private async Task DoBarbellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate the results.
-        if (BarbellType == BarbellType.PlateLoaded)
-        {
-            List<Plate> plates = await _plateRepo.LoadSome();
-            PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, BarWeight, 2,
-                "Plates each end", plates);
-            PlatesResultVisible = true;
-            SingleWeightResultVisible = false;
-        }
-        else
-        {
-            List<Barbell> barbells = await _barbellRepo.LoadSome();
-            SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, barbells);
-            PlatesResultVisible = false;
-            SingleWeightResultVisible = true;
-        }
-
-        // Display the results.
-        ResultsExerciseType = ExerciseType.Barbell;
-        ResultsVisible = true;
-    }
-
-    private async Task DoMachineCalculations()
-    {
-        if (!ValidateMaxWeight() || !ValidateStartingWeight())
-        {
-            return;
-        }
-
-        // Get the available plates.
-        List<Plate> plates = await _plateRepo.LoadSome();
-
-        // Determine the number of plate stacks and total starting weight from the machine type.
-        int nStacks = MachineType == MachineType.Isolateral ? 2 : 1;
-        decimal totalStartingWeight = StartingWeight!.Value * nStacks;
-        string eachSideText = MachineType == MachineType.Isolateral ? "Plates each side" : "Plates";
-
-        // Calculate the results.
-        PlatesResults = PlateSolver.CalculateResults(MaxWeight!.Value, totalStartingWeight, nStacks,
-            eachSideText, plates);
-
-        // Display the results.
-        ResultsExerciseType = ExerciseType.Machine;
-        PlatesResultVisible = true;
-        SingleWeightResultVisible = false;
-        ResultsVisible = true;
-    }
-
-    private async Task DoDumbbellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate the results.
-        List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome();
-        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, dumbbells);
-
-        // Display the results.
-        ResultsExerciseType = ExerciseType.Dumbbell;
-        PlatesResultVisible = false;
-        SingleWeightResultVisible = true;
-        ResultsVisible = true;
-    }
-
-    private async Task DoKettlebellCalculations()
-    {
-        if (!ValidateMaxWeight())
-        {
-            return;
-        }
-
-        // Calculate the results.
-        List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome();
-        SingleWeightResults = SingleWeightSolver.CalculateResults(MaxWeight!.Value, kettlebells);
-
-        // Display the results.
-        ResultsExerciseType = ExerciseType.Kettlebell;
-        PlatesResultVisible = false;
-        SingleWeightResultVisible = true;
-        ResultsVisible = true;
-    }
-
-    #endregion Calculations
 }

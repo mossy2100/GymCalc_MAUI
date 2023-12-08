@@ -1,0 +1,230 @@
+<?xml
+    version="1.0"
+    encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:GymCalc.Controls"
+    xmlns:converters="clr-namespace:GymCalc.Converters"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    x:Class="GymCalc.Pages.ResultsPage"
+    x:DataType="viewModels:ResultsViewModel"
+    Title="Results">
+
+    <ContentPage.Resources>
+        <converters:WeightTextConverter
+            x:Key="DefaultWeightTextConverter"/>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView
+            x:Name="ResultsScrollView"
+            Padding="{x:Static graphics:PageLayout.Spacing}"
+            VerticalOptions="Fill">
+
+            <!-- Calculator results. -->
+            <VerticalStackLayout
+                x:Name="ResultsLayout"
+                Spacing="{x:Static graphics:PageLayout.Spacing}">
+
+                <!-- Percentage selector -->
+                <Grid
+                    RowDefinitions="Auto"
+                    ColumnDefinitions="*,*,*,*,*,*"
+                    ColumnSpacing="5">
+                    <controls:VisualStateButton
+                        Grid.Column="0"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="50"
+                        VisualState="{Binding PercentButtonVisualState50}"
+                        Text="50%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                    <controls:VisualStateButton
+                        Grid.Column="1"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="60"
+                        VisualState="{Binding PercentButtonVisualState60}"
+                        Text="60%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                    <controls:VisualStateButton
+                        Grid.Column="2"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="70"
+                        VisualState="{Binding PercentButtonVisualState70}"
+                        Text="70%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                    <controls:VisualStateButton
+                        Grid.Column="3"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="80"
+                        VisualState="{Binding PercentButtonVisualState80}"
+                        Text="80%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                    <controls:VisualStateButton
+                        Grid.Column="4"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="90"
+                        VisualState="{Binding PercentButtonVisualState90}"
+                        Text="90%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                    <controls:VisualStateButton
+                        Grid.Column="5"
+                        Command="{Binding PercentSelectedCommand}"
+                        CommandParameter="100"
+                        VisualState="{Binding PercentButtonVisualState100}"
+                        Text="100%"
+                        Style="{StaticResource PercentButtonStyle}"/>
+                </Grid>
+
+                <!-- Plates Results -->
+                <Grid
+                    Padding="0,10,0,10"
+                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    ColumnDefinitions="6*,3*,3*"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    IsVisible="{Binding PlatesResultVisible}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="{Binding
+                                SelectedPlatesResult.Drawable.Height,
+                                FallbackValue=0}"/>
+                    </Grid.RowDefinitions>
+                    <!-- Row 0 -->
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Ideal"
+                        VerticalTextAlignment="End"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="Closest"
+                        VerticalTextAlignment="End"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <!-- Row 1 -->
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="Total"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding
+                            SelectedPlatesResult.IdealTotalWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableIdeal}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Text="{Binding
+                            SelectedPlatesResult.ClosestTotalWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableClosest}"/>
+                    <!-- Row 2 -->
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{Binding
+                            SelectedPlatesResult.EachSideText,
+                            FallbackValue=''}"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding
+                            SelectedPlatesResult.IdealPlatesWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableIdeal}"/>
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="{Binding
+                            SelectedPlatesResult.ClosestPlatesWeight,
+                            FallbackValue='',
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableClosest}"/>
+                    <!-- Row 3 -->
+                    <GraphicsView
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Drawable="{Binding
+                            SelectedPlatesResult.Drawable,
+                            FallbackValue=null}"
+                        WidthRequest="{Binding
+                            SelectedPlatesResult.Drawable.Width,
+                            FallbackValue=0}"
+                        HeightRequest="{Binding
+                            SelectedPlatesResult.Drawable.Height,
+                            FallbackValue=0}"
+                        HorizontalOptions="Center"/>
+                </Grid>
+
+                <!-- Single Weight Results -->
+                <Grid
+                    Padding="0,10,0,10"
+                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    ColumnDefinitions="3*,9*"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    IsVisible="{Binding SingleWeightResultVisible}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto"/>
+                        <RowDefinition
+                            Height="{Binding
+                                SelectedSingleWeightResult.Drawable.Height,
+                                FallbackValue=0}"/>
+                    </Grid.RowDefinitions>
+                    <!-- Row 0 -->
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="Ideal"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Closest"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <!-- Row 1 -->
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="{Binding
+                            SelectedSingleWeightResult.Ideal,
+                            FallbackValue='',
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableIdeal}"
+                        HorizontalOptions="Start"/>
+                    <GraphicsView
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Drawable="{Binding
+                            SelectedSingleWeightResult.Drawable,
+                            FallbackValue=null}"
+                        WidthRequest="{Binding
+                            SelectedSingleWeightResult.Drawable.Width,
+                            FallbackValue=0}"
+                        HeightRequest="{Binding
+                            SelectedSingleWeightResult.Drawable.Height,
+                            FallbackValue=0}"
+                        HorizontalOptions="Center"/>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,5 +1,6 @@
 using Galaxon.Core.Exceptions;
 using Galaxon.Maui.Utilities;
+// using Galaxon.Maui.Utilities;
 using GymCalc.Constants;
 using GymCalc.ViewModels;
 using InputKitRadioButton = InputKit.Shared.Controls.RadioButton;
@@ -8,9 +9,13 @@ namespace GymCalc.Pages;
 
 public partial class CalculatorPage : ContentPage
 {
+    #region Fields
+
     private readonly CalculatorViewModel _model;
 
     private bool _databaseInitialized;
+
+    #endregion Fields
 
     private bool _layoutInitialized;
 
@@ -50,7 +55,7 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Initialise the exercise type buttons.
-        SetExerciseType(ExerciseType.Barbell);
+        SetExerciseType(_model.SelectedExerciseType);
 
         // Initialize other form elements.
         await _model.Initialize();
@@ -98,46 +103,23 @@ public partial class CalculatorPage : ContentPage
 
     private void UpdateLayoutOrientation()
     {
-        // Get the device orientation.
-        StackOrientation newOrientation =
-            MauiUtility.GetOrientation() == DisplayOrientation.Landscape
-                ? StackOrientation.Horizontal
-                : StackOrientation.Vertical;
+        // // Get the device orientation.
+        // StackOrientation newOrientation =
+        //     MauiUtility.GetOrientation() == DisplayOrientation.Landscape
+        //         ? StackOrientation.Horizontal
+        //         : StackOrientation.Vertical;
 
         // Skip the redraw if we don't need to do it.
-        if (_layoutInitialized && newOrientation == CalculatorLayout.Orientation)
+        if (_layoutInitialized)
         {
             return;
         }
 
         // If different, update the layout.
-        CalculatorLayout.Orientation = newOrientation;
+        // CalculatorLayout.Orientation = newOrientation;
 
         // Update the button widths.
         ResetExerciseTypeButtonWidths();
-
-        // If there are any results, re-render them for the altered width.
-        if (_model.ResultsVisible)
-        {
-            switch (_model.SelectedExerciseType)
-            {
-                case ExerciseType.Barbell:
-                    // await DisplayBarbellResults();
-                    break;
-
-                case ExerciseType.Dumbbell:
-                    // await DisplayDumbbellResults();
-                    break;
-
-                case ExerciseType.Machine:
-                    // await DisplayMachineResults();
-                    break;
-
-                case ExerciseType.Kettlebell:
-                    // await DisplayKettlebellResults();
-                    break;
-            }
-        }
 
         _layoutInitialized = true;
     }
@@ -238,8 +220,8 @@ public partial class CalculatorPage : ContentPage
         }
 
         // Display the results if the current results exercise type matches; otherwise hide them.
-        _model.ResultsVisible = exerciseType == _model.ResultsExerciseType
-            && (_model.PlatesResultVisible || _model.SingleWeightResultVisible);
+        // _model.ResultsVisible = exerciseType == _model.ResultsExerciseType
+        //     && (_model.PlatesResultVisible || _model.SingleWeightResultVisible);
     }
 
     #endregion UI
