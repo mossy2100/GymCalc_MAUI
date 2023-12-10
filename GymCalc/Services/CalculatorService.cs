@@ -1,4 +1,4 @@
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
 
@@ -37,66 +37,118 @@ public class CalculatorService
 
     #region Properties
 
+    internal EExerciseType? ExerciseType { get; set; }
+
+    internal decimal? MaxWeight { get; set; }
+
+    internal EBarbellType? BarbellType { get; set; }
+
+    internal decimal? BarWeight { get; set; }
+
+    internal EMachineType? MachineType { get; set; }
+
+    internal decimal? StartingWeight { get; set; }
+
+    internal EResultType? ResultType { get; private set; }
+
     internal List<PlatesResult>? PlatesResults { get; private set; }
 
     internal List<SingleWeightResult>? SingleWeightResults { get; private set; }
-
-    internal ResultType? SelectedResultType { get; private set; }
 
     #endregion Properties
 
     #region Calculation methods
 
-    internal async Task DoBarbellCalculations(BarbellType barbellType, decimal maxWeight,
+    /// <summary>
+    /// Reset the calculator in preparation for a new calculation.
+    /// </summary>
+    private void Reset()
+    {
+        ExerciseType = null;
+        MaxWeight = null;
+        BarbellType = null;
+        BarWeight = null;
+        MachineType = null;
+        StartingWeight = null;
+        ResultType = null;
+        PlatesResults = null;
+        SingleWeightResults = null;
+    }
+
+    internal async Task DoBarbellCalculations(EBarbellType barbellType, decimal maxWeight,
         decimal barWeight)
     {
+        // Update parameters.
+        Reset();
+        ExerciseType = EExerciseType.Barbell;
+        MaxWeight = maxWeight;
+        BarbellType = barbellType;
+        BarWeight = barWeight;
+
         // Calculate the results.
-        if (barbellType == BarbellType.PlateLoaded)
+        if (barbellType == EBarbellType.PlateLoaded)
         {
             List<Plate> plates = await _plateRepo.LoadSome();
             PlatesResults = PlateSolver.CalculateResults(maxWeight, barWeight, 2, "Plates each end",
                 plates);
-            SelectedResultType = ResultType.Plates;
+            ResultType = EResultType.Plates;
         }
         else
         {
             List<Barbell> barbells = await _barbellRepo.LoadSome();
             SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, barbells);
-            SelectedResultType = ResultType.SingleWeight;
+            ResultType = EResultType.SingleWeight;
         }
     }
 
-    internal async Task DoMachineCalculations(MachineType machineType, decimal maxWeight,
+    internal async Task DoMachineCalculations(EMachineType machineType, decimal maxWeight,
         decimal startingWeight)
     {
+        // Update parameters.
+        Reset();
+        ExerciseType = EExerciseType.Machine;
+        MaxWeight = maxWeight;
+        MachineType = machineType;
+        StartingWeight = startingWeight;
+
         // Get the available plates.
         List<Plate> plates = await _plateRepo.LoadSome();
 
         // Determine the number of plate stacks and total starting weight from the machine type.
-        int nStacks = machineType == MachineType.Isolateral ? 2 : 1;
+        int nStacks = machineType == EMachineType.Isolateral ? 2 : 1;
         decimal totalStartingWeight = startingWeight * nStacks;
-        string eachSideText = machineType == MachineType.Isolateral ? "Plates each side" : "Plates";
+        string eachSideText = machineType == EMachineType.Isolateral ? "Plates each side" : "Plates";
 
         // Calculate the results.
         PlatesResults = PlateSolver.CalculateResults(maxWeight, totalStartingWeight, nStacks,
             eachSideText, plates);
-        SelectedResultType = ResultType.Plates;
+        ResultType = EResultType.Plates;
     }
 
     internal async Task DoDumbbellCalculations(decimal maxWeight)
     {
+        // Update parameters.
+        Reset();
+        ExerciseType = EExerciseType.Dumbbell;
+        MaxWeight = maxWeight;
+
         // Calculate the results.
         List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, dumbbells);
-        SelectedResultType = ResultType.SingleWeight;
+        ResultType = EResultType.SingleWeight;
     }
 
     internal async Task DoKettlebellCalculations(decimal maxWeight)
     {
+        // Update parameters.
+        Reset();
+        ExerciseType = EExerciseType.Kettlebell;
+        MaxWeight = maxWeight;
+
         // Calculate the results.
         List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome();
         SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, kettlebells);
-        SelectedResultType = ResultType.SingleWeight;
+        ResultType = EResultType.SingleWeight;
     }
 
     #endregion Calculation methods

@@ -1,8 +1,8 @@
 using System.ComponentModel;
 
-namespace GymCalc.Constants;
+namespace GymCalc.Enums;
 
-public enum Units
+public enum EUnits
 {
     [Description("default")] Default,
 

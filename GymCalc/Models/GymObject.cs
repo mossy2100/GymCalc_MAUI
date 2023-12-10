@@ -17,7 +17,7 @@ public class GymObject
 
     [NotMapped]
     public decimal WeightKg =>
-        Units == Constants.Units.Kilograms.GetDescription()
+        Units == Enums.EUnits.Kilograms.GetDescription()
             ? Weight
             : Weight * UnitsUtility.KG_PER_LB;
 

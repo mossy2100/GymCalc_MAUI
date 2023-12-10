@@ -1,5 +1,5 @@
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 
 namespace GymCalc.Repositories;
@@ -19,7 +19,7 @@ public class BarbellRepository : GymObjectRepository<Barbell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Barbell objects.
-        Func<decimal, Units, bool, Barbell> fn = (weight, units, enabled) =>
+        Func<decimal, EUnits, bool, Barbell> fn = (weight, units, enabled) =>
             new Barbell
             {
                 Weight = weight,
@@ -28,12 +28,12 @@ public class BarbellRepository : GymObjectRepository<Barbell>
             };
 
         // Kilograms (common).
-        await AddSet(10, 50, 2.5m, Units.Kilograms, true, fn);
+        await AddSet(10, 50, 2.5m, EUnits.Kilograms, true, fn);
         // Kilograms (uncommon).
-        await AddSet(52.5m, 70, 2.5m, Units.Kilograms, false, fn);
+        await AddSet(52.5m, 70, 2.5m, EUnits.Kilograms, false, fn);
         // Pounds (common).
-        await AddSet(20, 110, 5, Units.Pounds, true, fn);
+        await AddSet(20, 110, 5, EUnits.Pounds, true, fn);
         // Pounds (uncommon).
-        await AddSet(115, 140, 5, Units.Pounds, false, fn);
+        await AddSet(115, 140, 5, EUnits.Pounds, false, fn);
     }
 }

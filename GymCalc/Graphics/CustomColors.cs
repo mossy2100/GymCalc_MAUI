@@ -1,4 +1,4 @@
-using GymCalc.Constants;
+using GymCalc.Enums;
 
 namespace GymCalc.Graphics;
 
@@ -49,12 +49,12 @@ internal static class CustomColors
     /// <param name="weight">The weight of the kettlebell.</param>
     /// <param name="units">The units.</param>
     /// <returns>The default kettlebell color.</returns>
-    internal static (string, bool, string?) DefaultKettlebellColor(decimal weight, Units units)
+    internal static (string, bool, string?) DefaultKettlebellColor(decimal weight, EUnits units)
     {
         // Determine if the kettlebell has bands and it's number for the color chart.
         bool hasBands;
         decimal n = weight;
-        if (units == Units.Kilograms)
+        if (units == EUnits.Kilograms)
         {
             hasBands = weight % 4 == 2;
             if (hasBands)

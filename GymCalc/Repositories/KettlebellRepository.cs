@@ -1,5 +1,5 @@
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Graphics;
 using GymCalc.Models;
 
@@ -20,7 +20,7 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Kettlebell objects.
-        Func<decimal, Units, bool, Kettlebell> fn = (weight, units, enabled) =>
+        Func<decimal, EUnits, bool, Kettlebell> fn = (weight, units, enabled) =>
         {
             // Get the default color parameters.
             (string ballColor, bool hasBands, string? bandColor) =
@@ -39,12 +39,12 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
         };
 
         // Kilograms (common).
-        await AddSet(4, 32, 4, Units.Kilograms, true, fn);
+        await AddSet(4, 32, 4, EUnits.Kilograms, true, fn);
         // Kilograms (uncommon).
-        await AddSet(6, 50, 2, Units.Kilograms, false, fn);
+        await AddSet(6, 50, 2, EUnits.Kilograms, false, fn);
         // Pounds (common).
-        await AddSet(5, 60, 5, Units.Pounds, true, fn);
+        await AddSet(5, 60, 5, EUnits.Pounds, true, fn);
         // Pounds (uncommon).
-        await AddSet(65, 120, 5, Units.Pounds, false, fn);
+        await AddSet(65, 120, 5, EUnits.Pounds, false, fn);
     }
 }

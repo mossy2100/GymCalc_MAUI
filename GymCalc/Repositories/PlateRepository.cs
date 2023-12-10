@@ -1,5 +1,5 @@
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 
 namespace GymCalc.Repositories;
@@ -14,38 +14,38 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// The key is the plate weight in kilograms. The value is the Enabled flag.
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
-    private static readonly (decimal, Units, bool, string)[] _DefaultPlates =
+    private static readonly (decimal, EUnits, bool, string)[] _DefaultPlates =
     {
         // Metric.
-        (0.25m, Units.Kilograms, false, "Red"),
-        (0.5m, Units.Kilograms, false, "OffWhite"),
-        (0.75m, Units.Kilograms, false, "Pink"),
-        (1m, Units.Kilograms, false, "Green"),
-        (1.25m, Units.Kilograms, true, "Orange"),
-        (1.5m, Units.Kilograms, false, "Yellow"),
-        (2, Units.Kilograms, false, "Indigo"),
-        (2.5m, Units.Kilograms, true, "Red"),
-        (5, Units.Kilograms, true, "OffWhite"),
-        (7.5m, Units.Kilograms, false, "Pink"),
-        (10, Units.Kilograms, true, "Green"),
-        (12.5m, Units.Kilograms, false, "Orange"),
-        (15, Units.Kilograms, true, "Yellow"),
-        (20, Units.Kilograms, true, "Indigo"),
-        (25, Units.Kilograms, true, "Red"),
+        (0.25m, EUnits.Kilograms, false, "Red"),
+        (0.5m, EUnits.Kilograms, false, "OffWhite"),
+        (0.75m, EUnits.Kilograms, false, "Pink"),
+        (1m, EUnits.Kilograms, false, "Green"),
+        (1.25m, EUnits.Kilograms, true, "Orange"),
+        (1.5m, EUnits.Kilograms, false, "Yellow"),
+        (2, EUnits.Kilograms, false, "Indigo"),
+        (2.5m, EUnits.Kilograms, true, "Red"),
+        (5, EUnits.Kilograms, true, "OffWhite"),
+        (7.5m, EUnits.Kilograms, false, "Pink"),
+        (10, EUnits.Kilograms, true, "Green"),
+        (12.5m, EUnits.Kilograms, false, "Orange"),
+        (15, EUnits.Kilograms, true, "Yellow"),
+        (20, EUnits.Kilograms, true, "Indigo"),
+        (25, EUnits.Kilograms, true, "Red"),
         // Pounds.
-        (0.25m, Units.Pounds, false, "Green"),
-        (0.5m, Units.Pounds, false, "Cyan"),
-        (0.75m, Units.Pounds, false, "Orange"),
-        (1, Units.Pounds, false, "OffWhite"),
-        (1.25m, Units.Pounds, true, "Purple"),
-        (2.5m, Units.Pounds, true, "Green"),
-        (5, Units.Pounds, true, "Cyan"),
-        (10, Units.Pounds, true, "OffWhite"),
-        (15, Units.Pounds, true, "Pink"),
-        (25, Units.Pounds, true, "Green"),
-        (35, Units.Pounds, true, "Yellow"),
-        (45, Units.Pounds, true, "Indigo"),
-        (55, Units.Pounds, true, "Red")
+        (0.25m, EUnits.Pounds, false, "Green"),
+        (0.5m, EUnits.Pounds, false, "Cyan"),
+        (0.75m, EUnits.Pounds, false, "Orange"),
+        (1, EUnits.Pounds, false, "OffWhite"),
+        (1.25m, EUnits.Pounds, true, "Purple"),
+        (2.5m, EUnits.Pounds, true, "Green"),
+        (5, EUnits.Pounds, true, "Cyan"),
+        (10, EUnits.Pounds, true, "OffWhite"),
+        (15, EUnits.Pounds, true, "Pink"),
+        (25, EUnits.Pounds, true, "Green"),
+        (35, EUnits.Pounds, true, "Yellow"),
+        (45, EUnits.Pounds, true, "Indigo"),
+        (55, EUnits.Pounds, true, "Red")
     };
 
     /// <summary>
@@ -57,7 +57,7 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
-        foreach ((decimal weight, Units units, bool enabled, string color) in _DefaultPlates)
+        foreach ((decimal weight, EUnits units, bool enabled, string color) in _DefaultPlates)
         {
             // Check that we haven't added this one already.
             Plate? plate = await LoadOneByWeight(weight, units);

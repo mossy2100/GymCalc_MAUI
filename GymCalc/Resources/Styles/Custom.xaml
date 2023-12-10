@@ -103,26 +103,11 @@
     <!--  Text styles  -->
 
     <Style
-        x:Key="ResultsTablePercent"
-        TargetType="Label">
-        <Setter
-            Property="FontSize"
-            Value="20"/>
-        <Setter
-            Property="FontAttributes"
-            Value="Bold"/>
-        <Setter
-            Property="TextColor"
-            Value="{AppThemeBinding Light={StaticResource Black},
-                                    Dark={StaticResource White}}"/>
-    </Style>
-
-    <Style
         x:Key="ResultsTableHeader"
         TargetType="Label">
         <Setter
             Property="FontSize"
-            Value="16"/>
+            Value="14"/>
         <Setter
             Property="FontAttributes"
             Value="Bold"/>
@@ -137,7 +122,7 @@
         TargetType="Label">
         <Setter
             Property="FontSize"
-            Value="16"/>
+            Value="14"/>
         <Setter
             Property="TextColor"
             Value="{AppThemeBinding Light={StaticResource Black},
@@ -149,7 +134,7 @@
         TargetType="Label">
         <Setter
             Property="FontSize"
-            Value="16"/>
+            Value="14"/>
         <Setter
             Property="TextColor"
             Value="{StaticResource Primary}"/>

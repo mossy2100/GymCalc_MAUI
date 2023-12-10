@@ -1,5 +1,5 @@
 using System.Globalization;
-using GymCalc.Constants;
+using GymCalc.Enums;
 
 namespace GymCalc.Converters;
 
@@ -8,7 +8,7 @@ public class BarbellTypeConverter : IValueConverter
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is BarbellType bt)
+        if (value is EBarbellType bt)
         {
             return bt.ToString();
         }
@@ -22,7 +22,7 @@ public class BarbellTypeConverter : IValueConverter
     {
         if (value is string s)
         {
-            return Enum.TryParse(s, out BarbellType bt) ? bt : null;
+            return Enum.TryParse(s, out EBarbellType bt) ? bt : null;
         }
 
         return null;

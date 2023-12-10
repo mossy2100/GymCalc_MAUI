@@ -1,5 +1,5 @@
 using System.Windows.Input;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Services;
 
@@ -218,14 +218,14 @@ public class ResultsViewModel : BaseViewModel
         SelectedPercent = percent;
 
         // Display the matching result.
-        switch (CalculatorService.SelectedResultType)
+        switch (CalculatorService.ResultType)
         {
-            case ResultType.Plates:
+            case EResultType.Plates:
                 SelectedPlatesResult =
                     CalculatorService.PlatesResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
                 break;
 
-            case ResultType.SingleWeight:
+            case EResultType.SingleWeight:
                 SelectedSingleWeightResult =
                     CalculatorService.SingleWeightResults?.FirstOrDefault(r =>
                         r.Percent == SelectedPercent);

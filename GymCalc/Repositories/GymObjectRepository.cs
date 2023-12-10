@@ -1,5 +1,5 @@
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Shared;
 using SQLite;
@@ -28,8 +28,8 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="units">The mass units.</param>
     /// <param name="enabled">If it should be enabled by default.</param>
     /// <param name="fnCreate">Function to construct new objects.</param>
-    protected async Task AddWeight(decimal weight, Units units, bool enabled,
-        Func<decimal, Units, bool, GymObject> fnCreate)
+    protected async Task AddWeight(decimal weight, EUnits units, bool enabled,
+        Func<decimal, EUnits, bool, GymObject> fnCreate)
     {
         // Check that we haven't added this one already.
         T? gymObject = await LoadOneByWeight(weight, units);
@@ -51,8 +51,8 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="units">The mass units.</param>
     /// <param name="enabled">If they should be enabled by default.</param>
     /// <param name="fnCreate">Function to construct new objects.</param>
-    protected async Task AddSet(decimal min, decimal max, decimal step, Units units, bool enabled,
-        Func<decimal, Units, bool, GymObject> fnCreate)
+    protected async Task AddSet(decimal min, decimal max, decimal step, EUnits units, bool enabled,
+        Func<decimal, EUnits, bool, GymObject> fnCreate)
     {
         for (decimal weight = min; weight <= max; weight += step)
         {
@@ -93,7 +93,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="weight">The weight of the gym object.</param>
     /// <param name="units">The units of mass the weight is expressed in.</param>
     /// <returns>The gym object or null if not found.</returns>
-    internal async Task<T?> LoadOneByWeight(decimal weight, Units units)
+    internal async Task<T?> LoadOneByWeight(decimal weight, EUnits units)
     {
         // Find units as a string before running the query, because GetDescription() can't be
         // converted to an SQL function.
@@ -125,7 +125,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// </param>
     /// <returns>The matching objects.</returns>
     internal async Task<List<T>> LoadSome(bool? enabled = true, bool? ascending = true,
-        Units units = Units.Default)
+        EUnits units = EUnits.Default)
     {
         // Start constructing the query to select the objects.
         AsyncTableQuery<T>? query = database.Connection.Table<T>();
@@ -142,10 +142,10 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         }
 
         // Add where clause for units if needed.
-        if (units != Units.All)
+        if (units != EUnits.All)
         {
             // Get default units if necessary.
-            if (units == Units.Default)
+            if (units == EUnits.Default)
             {
                 units = UnitsUtility.GetDefault();
             }
@@ -183,7 +183,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <returns>The list of all objects of the type T.</returns>
     internal async Task<List<T>> LoadAll(bool? ascending = true)
     {
-        return await LoadSome(null, ascending, Units.All);
+        return await LoadSome(null, ascending, EUnits.All);
     }
 
     /// <summary>

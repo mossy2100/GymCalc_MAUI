@@ -1,6 +1,6 @@
-namespace GymCalc.Constants;
+namespace GymCalc.Enums;
 
-public enum ExerciseType
+public enum EExerciseType
 {
     Barbell,
 

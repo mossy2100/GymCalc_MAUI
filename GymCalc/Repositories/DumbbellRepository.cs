@@ -1,5 +1,5 @@
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 
 namespace GymCalc.Repositories;
@@ -19,7 +19,7 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
     public override async Task InsertDefaults()
     {
         // Function to construct new Dumbbell objects.
-        Func<decimal, Units, bool, Dumbbell> fn = (weight, units, enabled) =>
+        Func<decimal, EUnits, bool, Dumbbell> fn = (weight, units, enabled) =>
             new Dumbbell
             {
                 Weight = weight,
@@ -29,13 +29,13 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
             };
 
         // Kilograms (common).
-        await AddSet(1, 10, 1, Units.Kilograms, true, fn);
-        await AddSet(12.5m, 50, 2.5m, Units.Kilograms, true, fn);
+        await AddSet(1, 10, 1, EUnits.Kilograms, true, fn);
+        await AddSet(12.5m, 50, 2.5m, EUnits.Kilograms, true, fn);
         // Kilograms (uncommon).
-        await AddWeight(7.5m, Units.Kilograms, false, fn);
-        await AddSet(52.5m, 60, 2.5m, Units.Kilograms, false, fn);
+        await AddWeight(7.5m, EUnits.Kilograms, false, fn);
+        await AddSet(52.5m, 60, 2.5m, EUnits.Kilograms, false, fn);
         // Pounds (common).
-        await AddSet(1, 10, 1, Units.Pounds, true, fn);
-        await AddSet(15, 120, 5, Units.Pounds, true, fn);
+        await AddSet(1, 10, 1, EUnits.Pounds, true, fn);
+        await AddSet(15, 120, 5, EUnits.Pounds, true, fn);
     }
 }

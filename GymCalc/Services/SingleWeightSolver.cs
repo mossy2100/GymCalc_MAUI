@@ -7,7 +7,7 @@ internal static class SingleWeightSolver
 {
     private static IEnumerable<GymObject>? _availWeights;
 
-    internal static List<SingleWeightResult>? CalculateResults(decimal maxWeight,
+    internal static List<SingleWeightResult> CalculateResults(decimal maxWeight,
         IEnumerable<GymObject> availWeights)
     {
         var results = new List<SingleWeightResult>();

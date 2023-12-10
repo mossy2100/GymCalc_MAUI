@@ -11,6 +11,8 @@ internal static class PageLayout
 
     internal const double DoubleSpacing = 2 * Spacing;
 
+    internal const double TripleSpacing = 3 * Spacing;
+
     /// <summary>
     /// Get the number of columns to use for laying out a page.
     /// If portrait, 1. If landscape, 2.

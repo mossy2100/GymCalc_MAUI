@@ -15,7 +15,7 @@ internal static class PlateSolver
 
     private static decimal _smallestDiff;
 
-    internal static List<PlatesResult>? CalculateResults(decimal maxTotalWeight,
+    internal static List<PlatesResult> CalculateResults(decimal maxTotalWeight,
         decimal totalStartingWeight, int nStacks, string eachSideText,
         IEnumerable<Plate> availPlates)
     {

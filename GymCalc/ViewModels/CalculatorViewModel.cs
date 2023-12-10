@@ -2,7 +2,7 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
 using GymCalc.Services;
@@ -37,7 +37,7 @@ public class CalculatorViewModel : BaseViewModel
         MachineTypeChangedCommand = new Command(MachineTypeChanged);
 
         // Initial selected exercise type.
-        SelectedExerciseType = ExerciseType.Barbell;
+        SelectedExerciseType = EExerciseType.Barbell;
     }
 
     #endregion Constructors
@@ -75,9 +75,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private BarbellType _barbellType = BarbellType.PlateLoaded;
+    private EBarbellType _barbellType = EBarbellType.PlateLoaded;
 
-    public BarbellType BarbellType
+    public EBarbellType BarbellType
     {
         get => _barbellType;
 
@@ -125,9 +125,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private MachineType _machineType = MachineType.Bilateral;
+    private EMachineType _machineType = EMachineType.Bilateral;
 
-    public MachineType MachineType
+    public EMachineType MachineType
     {
         get => _machineType;
 
@@ -165,9 +165,9 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private ExerciseType _selectedExerciseType;
+    private EExerciseType _selectedExerciseType;
 
-    internal ExerciseType SelectedExerciseType
+    internal EExerciseType SelectedExerciseType
     {
         get => _selectedExerciseType;
 
@@ -337,7 +337,7 @@ public class CalculatorViewModel : BaseViewModel
         // Do the calculations based on the selected exercise type.
         switch (SelectedExerciseType)
         {
-            case ExerciseType.Barbell:
+            case EExerciseType.Barbell:
                 if (ValidateMaxWeight())
                 {
                     await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
@@ -345,7 +345,7 @@ public class CalculatorViewModel : BaseViewModel
                 }
                 break;
 
-            case ExerciseType.Machine:
+            case EExerciseType.Machine:
                 if (ValidateMaxWeight() && ValidateStartingWeight())
                 {
                     await _calculatorService.DoMachineCalculations(MachineType, MaxWeight!.Value,
@@ -353,14 +353,14 @@ public class CalculatorViewModel : BaseViewModel
                 }
                 break;
 
-            case ExerciseType.Dumbbell:
+            case EExerciseType.Dumbbell:
                 if (ValidateMaxWeight())
                 {
                     await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
                 }
                 break;
 
-            case ExerciseType.Kettlebell:
+            case EExerciseType.Kettlebell:
                 if (ValidateMaxWeight())
                 {
                     await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
@@ -379,7 +379,7 @@ public class CalculatorViewModel : BaseViewModel
 
     private void MachineTypeChanged()
     {
-        StartingWeightLabel = MachineType == MachineType.Isolateral
+        StartingWeightLabel = MachineType == EMachineType.Isolateral
             ? "Starting weight per side"
             : "Starting weight";
     }

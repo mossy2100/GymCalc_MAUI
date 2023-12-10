@@ -1,6 +1,6 @@
 using System.Globalization;
 using Galaxon.Core.Types;
-using GymCalc.Constants;
+using GymCalc.Enums;
 
 namespace GymCalc.Shared;
 
@@ -22,18 +22,18 @@ public static class UnitsUtility
     /// Get the user's preferred units of mass. Defaults to pounds in the US, kilograms elsewhere.
     /// </summary>
     /// <returns>The user's preferred units of mass.</returns>
-    internal static Units GetDefault()
+    internal static EUnits GetDefault()
     {
         string sUnits = Preferences.Default.Get("Units", "");
-        if (sUnits == Units.Pounds.GetDescription())
+        if (sUnits == EUnits.Pounds.GetDescription())
         {
-            return Units.Pounds;
+            return EUnits.Pounds;
         }
-        if (sUnits == Units.Kilograms.GetDescription())
+        if (sUnits == EUnits.Kilograms.GetDescription())
         {
-            return Units.Kilograms;
+            return EUnits.Kilograms;
         }
         // See if they are from the US; or, at least, if their phone is set up for US.
-        return CultureInfo.CurrentCulture.Name == "en-US" ? Units.Pounds : Units.Kilograms;
+        return CultureInfo.CurrentCulture.Name == "en-US" ? EUnits.Pounds : EUnits.Kilograms;
     }
 }

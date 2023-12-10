@@ -1,7 +1,6 @@
 using Galaxon.Core.Exceptions;
 using Galaxon.Maui.Utilities;
-// using Galaxon.Maui.Utilities;
-using GymCalc.Constants;
+using GymCalc.Enums;
 using GymCalc.ViewModels;
 using InputKitRadioButton = InputKit.Shared.Controls.RadioButton;
 
@@ -63,22 +62,22 @@ public partial class CalculatorPage : ContentPage
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
     {
-        SetExerciseType(ExerciseType.Barbell);
+        SetExerciseType(EExerciseType.Barbell);
     }
 
     private void OnDumbbellButtonClicked(object sender, EventArgs e)
     {
-        SetExerciseType(ExerciseType.Dumbbell);
+        SetExerciseType(EExerciseType.Dumbbell);
     }
 
     private void OnMachineButtonClicked(object sender, EventArgs e)
     {
-        SetExerciseType(ExerciseType.Machine);
+        SetExerciseType(EExerciseType.Machine);
     }
 
     private void OnKettlebellButtonClicked(object sender, EventArgs e)
     {
-        SetExerciseType(ExerciseType.Kettlebell);
+        SetExerciseType(EExerciseType.Kettlebell);
     }
 
     private void OnBarbellTypePlateLoadedSelected(object sender, EventArgs e)
@@ -142,7 +141,7 @@ public partial class CalculatorPage : ContentPage
         KettlebellButton.WidthRequest = width;
     }
 
-    private void SetExerciseType(ExerciseType exerciseType)
+    private void SetExerciseType(EExerciseType exerciseType)
     {
         // Clear the error message.
         _model.ErrorMessage = "";
@@ -159,7 +158,7 @@ public partial class CalculatorPage : ContentPage
         // Update the button states.
         switch (exerciseType)
         {
-            case ExerciseType.Barbell:
+            case EExerciseType.Barbell:
                 // Update the button visual state.
                 VisualStateManager.GoToState(BarbellButton, "Selected");
 
@@ -168,12 +167,12 @@ public partial class CalculatorPage : ContentPage
 
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = true;
-                BarWeightGrid.IsVisible = _model.BarbellType == BarbellType.PlateLoaded;
+                BarWeightGrid.IsVisible = _model.BarbellType == EBarbellType.PlateLoaded;
                 MachineTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;
 
-            case ExerciseType.Dumbbell:
+            case EExerciseType.Dumbbell:
                 // Update the button visual state.
                 VisualStateManager.GoToState(DumbbellButton, "Selected");
 
@@ -187,7 +186,7 @@ public partial class CalculatorPage : ContentPage
                 StartingWeightGrid.IsVisible = false;
                 break;
 
-            case ExerciseType.Machine:
+            case EExerciseType.Machine:
                 // Update the button visual state.
                 VisualStateManager.GoToState(MachineButton, "Selected");
 
@@ -201,7 +200,7 @@ public partial class CalculatorPage : ContentPage
                 StartingWeightGrid.IsVisible = true;
                 break;
 
-            case ExerciseType.Kettlebell:
+            case EExerciseType.Kettlebell:
                 // Update the button visual state.
                 VisualStateManager.GoToState(KettlebellButton, "Selected");
 
