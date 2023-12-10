@@ -6,7 +6,6 @@ using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
 using GymCalc.Services;
-using GymCalc.Shared;
 
 namespace GymCalc.ViewModels;
 
@@ -276,7 +275,7 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     private void SetUnits()
     {
-        string units = UnitsUtility.GetDefault().GetDescription();
+        string units = UnitsService.GetDefault().GetDescription();
         MaxWeightUnits = units;
         BarWeightUnits = units;
         StartingWeightUnits = units;

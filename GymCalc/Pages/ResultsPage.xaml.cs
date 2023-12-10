@@ -3,7 +3,6 @@ using Galaxon.Maui.Utilities;
 using GymCalc.Controls;
 using GymCalc.Enums;
 using GymCalc.Services;
-using GymCalc.Shared;
 using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;
@@ -53,7 +52,7 @@ public partial class ResultsPage : ContentPage
     {
         MauiUtility.ClearGrid(CalculatorSettingsGrid, false, true);
         Dictionary<string, string> rows = new ();
-        string sUnits = UnitsUtility.GetDefault().GetDescription();
+        string sUnits = UnitsService.GetDefault().GetDescription();
         if (_calculatorService.ExerciseType != null)
         {
             rows.Add("Exercise type", _calculatorService.ExerciseType.GetDescription());

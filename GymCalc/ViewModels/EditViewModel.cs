@@ -6,7 +6,7 @@ using Galaxon.Core.Exceptions;
 using Galaxon.Core.Types;
 using GymCalc.Models;
 using GymCalc.Repositories;
-using GymCalc.Shared;
+using GymCalc.Services;
 
 namespace GymCalc.ViewModels;
 
@@ -264,7 +264,7 @@ public class EditViewModel : BaseViewModel
     private void ResetForm()
     {
         WeightText = "";
-        Units = UnitsUtility.GetDefault().GetDescription();
+        Units = UnitsService.GetDefault().GetDescription();
         Enabled = true;
         MainColor = "OffBlack";
         HasBands = false;

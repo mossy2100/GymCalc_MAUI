@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Galaxon.Core.Types;
 using GymCalc.Enums;
-using GymCalc.Shared;
+using GymCalc.Services;
 using SQLite;
 
 namespace GymCalc.Models;
@@ -18,7 +18,7 @@ public class GymObject
 
     [NotMapped]
     public decimal WeightKg =>
-        Units == EUnits.Kilograms.GetDescription() ? Weight : Weight * UnitsUtility.KG_PER_LB;
+        Units == EUnits.Kilograms.GetDescription() ? Weight : Weight * UnitsService.KG_PER_LB;
 
     public bool Enabled { get; set; }
 

@@ -4,7 +4,7 @@ using Galaxon.Core.Types;
 using GymCalc.Drawables;
 using GymCalc.Models;
 using GymCalc.Repositories;
-using GymCalc.Shared;
+using GymCalc.Services;
 
 namespace GymCalc.ViewModels;
 
@@ -50,7 +50,7 @@ public class ListViewModel : BaseViewModel
         Title = $"{GymObjectTypeName}s";
 
         Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
-            + $" weights ({UnitsUtility.GetDefault().GetDescription()}) are available."
+            + $" weights ({UnitsService.GetDefault().GetDescription()}) are available."
             + $" Use the edit and delete icon buttons to make changes."
             + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";

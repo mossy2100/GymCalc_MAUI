@@ -2,9 +2,9 @@ using System.Globalization;
 using Galaxon.Core.Types;
 using GymCalc.Enums;
 
-namespace GymCalc.Shared;
+namespace GymCalc.Services;
 
-public static class UnitsUtility
+internal static class UnitsService
 {
     /// <summary>
     /// The number of kilograms in a pound.

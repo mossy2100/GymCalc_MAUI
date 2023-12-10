@@ -1,11 +1,11 @@
 using Galaxon.Core.Types;
-using GymCalc.Shared;
+using GymCalc.Services;
 
 namespace GymCalc.ViewModels;
 
 public class SettingsViewModel : BaseViewModel
 {
-    private string _units = UnitsUtility.GetDefault().GetDescription();
+    private string _units = UnitsService.GetDefault().GetDescription();
 
     public string Units
     {

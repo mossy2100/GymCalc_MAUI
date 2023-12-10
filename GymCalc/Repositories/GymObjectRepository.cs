@@ -1,7 +1,7 @@
 using Galaxon.Core.Types;
 using GymCalc.Enums;
 using GymCalc.Models;
-using GymCalc.Shared;
+using GymCalc.Services;
 using SQLite;
 
 namespace GymCalc.Repositories;
@@ -147,7 +147,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
             // Get default units if necessary.
             if (units == EUnits.Default)
             {
-                units = UnitsUtility.GetDefault();
+                units = UnitsService.GetDefault();
             }
 
             // Find units as a string before running the query, because GetDescription() can't be

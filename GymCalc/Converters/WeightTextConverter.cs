@@ -1,6 +1,6 @@
 using System.Globalization;
 using Galaxon.Core.Types;
-using GymCalc.Shared;
+using GymCalc.Services;
 
 namespace GymCalc.Converters;
 
@@ -11,7 +11,7 @@ public class WeightTextConverter : IValueConverter
     {
         if (value is decimal weight)
         {
-            string units = UnitsUtility.GetDefault().GetDescription();
+            string units = UnitsService.GetDefault().GetDescription();
             return $"{weight:F2} {units}";
         }
 
