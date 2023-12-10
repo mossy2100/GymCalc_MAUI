@@ -22,7 +22,7 @@ internal static class UnitsService
     /// Get the user's preferred units of mass. Defaults to pounds in the US, kilograms elsewhere.
     /// </summary>
     /// <returns>The user's preferred units of mass.</returns>
-    internal static EUnits GetDefault()
+    internal static EUnits GetDefaultUnits()
     {
         string sUnits = Preferences.Default.Get("Units", "");
         if (sUnits == EUnits.Pounds.GetDescription())
@@ -35,5 +35,10 @@ internal static class UnitsService
         }
         // See if they are from the US; or, at least, if their phone is set up for US.
         return CultureInfo.CurrentCulture.Name == "en-US" ? EUnits.Pounds : EUnits.Kilograms;
+    }
+
+    internal static string GetDefaultUnitsSymbol()
+    {
+        return GetDefaultUnits().GetDescription();
     }
 }

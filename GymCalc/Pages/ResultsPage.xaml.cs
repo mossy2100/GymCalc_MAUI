@@ -52,7 +52,7 @@ public partial class ResultsPage : ContentPage
     {
         MauiUtility.ClearGrid(CalculatorSettingsGrid, false, true);
         Dictionary<string, string> rows = new ();
-        string sUnits = UnitsService.GetDefault().GetDescription();
+        string sUnits = UnitsService.GetDefaultUnitsSymbol();
         if (_calculatorService.ExerciseType != null)
         {
             rows.Add("Exercise type", _calculatorService.ExerciseType.GetDescription());

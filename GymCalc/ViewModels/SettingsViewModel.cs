@@ -5,7 +5,7 @@ namespace GymCalc.ViewModels;
 
 public class SettingsViewModel : BaseViewModel
 {
-    private string _units = UnitsService.GetDefault().GetDescription();
+    private string _units = UnitsService.GetDefaultUnitsSymbol();
 
     public string Units
     {

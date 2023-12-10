@@ -275,10 +275,10 @@ public class CalculatorViewModel : BaseViewModel
     /// </summary>
     private void SetUnits()
     {
-        string units = UnitsService.GetDefault().GetDescription();
-        MaxWeightUnits = units;
-        BarWeightUnits = units;
-        StartingWeightUnits = units;
+        string sUnits = UnitsService.GetDefaultUnitsSymbol();
+        MaxWeightUnits = sUnits;
+        BarWeightUnits = sUnits;
+        StartingWeightUnits = sUnits;
     }
 
     internal async Task Initialize()

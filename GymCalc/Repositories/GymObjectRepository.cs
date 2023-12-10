@@ -147,7 +147,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
             // Get default units if necessary.
             if (units == EUnits.Default)
             {
-                units = UnitsService.GetDefault();
+                units = UnitsService.GetDefaultUnits();
             }
 
             // Find units as a string before running the query, because GetDescription() can't be

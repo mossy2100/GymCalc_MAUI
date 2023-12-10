@@ -50,7 +50,7 @@ public class ListViewModel : BaseViewModel
         Title = $"{GymObjectTypeName}s";
 
         Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
-            + $" weights ({UnitsService.GetDefault().GetDescription()}) are available."
+            + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
             + $" Use the edit and delete icon buttons to make changes."
             + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";

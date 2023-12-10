@@ -264,7 +264,7 @@ public class EditViewModel : BaseViewModel
     private void ResetForm()
     {
         WeightText = "";
-        Units = UnitsService.GetDefault().GetDescription();
+        Units = UnitsService.GetDefaultUnitsSymbol();
         Enabled = true;
         MainColor = "OffBlack";
         HasBands = false;

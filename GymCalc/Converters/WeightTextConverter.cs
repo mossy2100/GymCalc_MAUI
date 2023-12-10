@@ -11,8 +11,8 @@ public class WeightTextConverter : IValueConverter
     {
         if (value is decimal weight)
         {
-            string units = UnitsService.GetDefault().GetDescription();
-            return $"{weight:F2} {units}";
+            string sUnits = UnitsService.GetDefaultUnitsSymbol();
+            return $"{weight:F2} {sUnits}";
         }
 
         return null;
