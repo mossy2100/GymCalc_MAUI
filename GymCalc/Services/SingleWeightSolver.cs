@@ -1,18 +1,21 @@
 using GymCalc.Drawables;
 using GymCalc.Models;
+using GymCalc.Repositories;
 
 namespace GymCalc.Services;
 
 internal static class SingleWeightSolver
 {
-    private static IEnumerable<GymObject>? _availWeights;
+    private static GymObject[]? _availWeights;
 
-    internal static List<SingleWeightResult> CalculateResults(decimal maxWeight,
-        IEnumerable<GymObject> availWeights)
+    internal static async Task<List<SingleWeightResult>> CalculateResults<T>(decimal maxWeight,
+        GymObjectRepository<T> repo) where T : GymObject, new()
     {
         var results = new List<SingleWeightResult>();
 
-        _availWeights = availWeights;
+        // Get the available weights as an array.
+        IEnumerable<GymObject> listAvailWeights = await repo.LoadSome();
+        _availWeights = listAvailWeights.ToArray();
 
         // For now we'll hard code that we want 50%, 60% ... 100%.
         // Later, this might be configurable.
@@ -41,12 +44,11 @@ internal static class SingleWeightSolver
     /// <returns>The closest weight to the ideal weight.</returns>
     private static GymObject FindClosest(decimal idealWeight)
     {
-        GymObject? current = null;
+        GymObject current = _availWeights![0];
 
-        GymObject[] gymObjects = _availWeights!.ToArray();
-        for (var i = 0; i < gymObjects.Length; i++)
+        for (var i = 0; i < _availWeights.Length; i++)
         {
-            current = gymObjects[i];
+            current = _availWeights[i];
 
             // Check for exact match.
             if (current.Weight == idealWeight)
@@ -54,31 +56,29 @@ internal static class SingleWeightSolver
                 return current;
             }
 
-            // The current weight is the smallest one with a weight greater than the ideal.
+            // Stop when we find the first weight heavier than the ideal.
             if (current.Weight > idealWeight)
             {
-                // If it's the smallest weight, this is the best we can do.
+                // If it's the lightest weight, this is the best we can do.
                 if (i == 0)
                 {
                     return current;
                 }
 
                 // Compare the weights above and below.
-                GymObject previous = gymObjects[i - 1];
-                decimal diffBelow = idealWeight - previous.Weight;
+                GymObject lowerWeightObject = _availWeights[i - 1];
+                decimal diffBelow = idealWeight - lowerWeightObject.Weight;
                 decimal diffAbove = current.Weight - idealWeight;
-                return diffAbove < diffBelow ? current : previous;
+
+                // If the ideal weight is exactly halfway between the lower and higher weights,
+                // choose the higher.
+                return diffBelow < diffAbove ? lowerWeightObject : current;
             }
         }
 
-        // Null check. Should never happen.
-        if (current == null)
-        {
-            throw new InvalidOperationException("Could not find closest weight.");
-        }
-
-        // We checked all available weight and none have a weight equal to or greater then the
-        // ideal. Therefore, the heaviest is the closest.
+        // The loop completed, which means we checked all available weight and none have a weight
+        // equal to or greater then the ideal. Therefore, the heaviest weight, which will be the
+        // last one we looked at, is the best we can do.
         return current;
     }
 }

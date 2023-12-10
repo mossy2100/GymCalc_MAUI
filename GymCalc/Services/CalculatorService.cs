@@ -88,15 +88,14 @@ public class CalculatorService
         // Calculate the results.
         if (barbellType == EBarbellType.PlateLoaded)
         {
-            List<Plate> plates = await _plateRepo.LoadSome();
-            PlatesResults = PlateSolver.CalculateResults(maxWeight, barWeight, 2, "Plates each end",
-                plates);
+            PlatesResults = await PlateSolver.CalculateResults(maxWeight, barWeight, 2,
+                "Plates each end", _plateRepo);
             ResultType = EResultType.Plates;
         }
         else
         {
-            List<Barbell> barbells = await _barbellRepo.LoadSome();
-            SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, barbells);
+            SingleWeightResults =
+                await SingleWeightSolver.CalculateResults(maxWeight, _barbellRepo);
             ResultType = EResultType.SingleWeight;
         }
     }
@@ -111,17 +110,15 @@ public class CalculatorService
         MachineType = machineType;
         StartingWeight = startingWeight;
 
-        // Get the available plates.
-        List<Plate> plates = await _plateRepo.LoadSome();
-
         // Determine the number of plate stacks and total starting weight from the machine type.
         int nStacks = machineType == EMachineType.Isolateral ? 2 : 1;
         decimal totalStartingWeight = startingWeight * nStacks;
-        string eachSideText = machineType == EMachineType.Isolateral ? "Plates each side" : "Plates";
+        string eachSideText =
+            machineType == EMachineType.Isolateral ? "Plates each side" : "Plates";
 
         // Calculate the results.
-        PlatesResults = PlateSolver.CalculateResults(maxWeight, totalStartingWeight, nStacks,
-            eachSideText, plates);
+        PlatesResults = await PlateSolver.CalculateResults(maxWeight, totalStartingWeight, nStacks,
+            eachSideText, _plateRepo);
         ResultType = EResultType.Plates;
     }
 
@@ -133,8 +130,7 @@ public class CalculatorService
         MaxWeight = maxWeight;
 
         // Calculate the results.
-        List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome();
-        SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, dumbbells);
+        SingleWeightResults = await SingleWeightSolver.CalculateResults(maxWeight, _dumbbellRepo);
         ResultType = EResultType.SingleWeight;
     }
 
@@ -146,8 +142,7 @@ public class CalculatorService
         MaxWeight = maxWeight;
 
         // Calculate the results.
-        List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome();
-        SingleWeightResults = SingleWeightSolver.CalculateResults(maxWeight, kettlebells);
+        SingleWeightResults = await SingleWeightSolver.CalculateResults(maxWeight, _kettlebellRepo);
         ResultType = EResultType.SingleWeight;
     }
 

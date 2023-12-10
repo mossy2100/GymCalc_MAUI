@@ -1,5 +1,6 @@
 using GymCalc.Drawables;
 using GymCalc.Models;
+using GymCalc.Repositories;
 
 namespace GymCalc.Services;
 
@@ -15,15 +16,16 @@ internal static class PlateSolver
 
     private static decimal _smallestDiff;
 
-    internal static List<PlatesResult> CalculateResults(decimal maxTotalWeight,
-        decimal totalStartingWeight, int nStacks, string eachSideText,
-        IEnumerable<Plate> availPlates)
+    internal static async Task<List<PlatesResult>> CalculateResults(decimal maxTotalWeight,
+        decimal totalStartingWeight, int nStacks, string eachSideText, PlateRepository plateRepo)
     {
         var results = new List<PlatesResult>();
 
-        // Sort the plates by decreasing weight.
-        _availPlates = availPlates.OrderByDescending(p => p.Weight).ToList();
-        _maxPlateWeight = _availPlates[0].Weight;
+        // Get the plates in order of decreasing weight.
+        _availPlates = await plateRepo.LoadSome(true, false);
+
+        // Get the heaviest plate.
+        _maxPlateWeight = _availPlates.First().Weight;
 
         // Get the best solution for each percentage fraction of the maxWeight we're interested in.
         // For now we'll hard code 50%, 60% ... 100%, but this might be configurable later.
