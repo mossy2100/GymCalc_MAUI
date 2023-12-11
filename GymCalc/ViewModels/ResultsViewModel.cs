@@ -166,9 +166,9 @@ public class ResultsViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private GymDrawable? _selectedResultDrawable;
+    private BaseDrawable? _selectedResultDrawable;
 
-    public GymDrawable? SelectedResultDrawable
+    public BaseDrawable? SelectedResultDrawable
     {
         get => _selectedResultDrawable;
 

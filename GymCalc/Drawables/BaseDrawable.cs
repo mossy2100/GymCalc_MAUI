@@ -1,6 +1,6 @@
 namespace GymCalc.Drawables;
 
-public abstract class GymDrawable : IDrawable
+public abstract class BaseDrawable : IDrawable
 {
     /// <summary>
     /// The width of the drawable in device-independent pixels.
@@ -11,6 +11,12 @@ public abstract class GymDrawable : IDrawable
     /// The height of the drawable in device-independent pixels.
     /// </summary>
     public double Height => GetHeight();
+
+    /// <summary>
+    /// Maximum weight for a gym object of the relevant type. This value is used when calculating
+    /// widths of variable-width gym objects like bars and plates.
+    /// </summary>
+    public decimal MaxWeight { get; set; }
 
     /// <summary>
     /// Calculate the width of the drawable in device-independent pixels.

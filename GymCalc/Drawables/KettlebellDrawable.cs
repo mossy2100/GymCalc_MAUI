@@ -8,9 +8,15 @@ namespace GymCalc.Drawables;
 
 public class KettlebellDrawable : GymObjectDrawable
 {
-    private const int _HEIGHT = 76;
-
+    /// <summary>
+    /// Constant width for kettlebell graphics.
+    /// </summary>
     private const int _WIDTH = 60;
+
+    /// <summary>
+    /// Constant height for kettlebell graphics.
+    /// </summary>
+    private const int _HEIGHT = 76;
 
     /// <inheritdoc/>
     protected override double GetWidth()

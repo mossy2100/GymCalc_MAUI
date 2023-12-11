@@ -7,9 +7,15 @@ namespace GymCalc.Drawables;
 
 public class DumbbellDrawable : GymObjectDrawable
 {
-    private const int _HEIGHT = 50;
-
+    /// <summary>
+    /// Constant width for dumbbell graphics.
+    /// </summary>
     private const int _WIDTH = 100;
+
+    /// <summary>
+    /// Constant height for dumbbell graphics.
+    /// </summary>
+    private const int _HEIGHT = 50;
 
     /// <inheritdoc/>
     protected override double GetWidth()

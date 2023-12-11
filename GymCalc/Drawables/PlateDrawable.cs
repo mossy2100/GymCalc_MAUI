@@ -8,8 +8,14 @@ namespace GymCalc.Drawables;
 
 internal class PlateDrawable : GymObjectDrawable
 {
+    /// <summary>
+    /// Constant height for plates.
+    /// </summary>
     internal const int HEIGHT = 30;
 
+    /// <summary>
+    /// Constant for corner radius of plate graphic.
+    /// </summary>
     private const int _CORNER_RADIUS = 4;
 
     /// <inheritdoc/>

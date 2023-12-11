@@ -2,11 +2,12 @@ using GymCalc.Models;
 
 namespace GymCalc.Drawables;
 
-public class PlateStackDrawable : GymDrawable
+public class PlateStackDrawable : BaseDrawable
 {
+    /// <summary>
+    /// The stack of plates.
+    /// </summary>
     internal List<Plate>? Plates { get; init; }
-
-    public decimal MaxWeight { get; set; }
 
     /// <inheritdoc />
     protected override double GetWidth()

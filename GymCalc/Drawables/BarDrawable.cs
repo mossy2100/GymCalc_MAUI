@@ -7,6 +7,9 @@ namespace GymCalc.Drawables;
 
 public class BarDrawable : GymObjectDrawable
 {
+    /// <summary>
+    /// Constant height for bar graphics.
+    /// </summary>
     private const int _HEIGHT = 20;
 
     /// <inheritdoc/>

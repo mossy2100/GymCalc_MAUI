@@ -2,15 +2,22 @@ using GymCalc.Models;
 
 namespace GymCalc.Drawables;
 
-public abstract class GymObjectDrawable : GymDrawable
+public abstract class GymObjectDrawable : BaseDrawable
 {
+    /// <summary>
+    /// Constant for the minimum width of a gym object graphic.
+    /// </summary>
     private const int _MIN_WIDTH = 50;
 
+    /// <summary>
+    /// Constant for the maximum width of a gym object graphic.
+    /// </summary>
     private const int _MAX_WIDTH = 200;
 
+    /// <summary>
+    /// Reference to the gym object this drawable represents.
+    /// </summary>
     protected GymObject? GymObject { get; private set; }
-
-    public decimal MaxWeight { get; set; }
 
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
