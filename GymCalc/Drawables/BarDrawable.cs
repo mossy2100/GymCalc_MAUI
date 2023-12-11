@@ -7,18 +7,18 @@ namespace GymCalc.Drawables;
 
 public class BarDrawable : GymObjectDrawable
 {
-    public const int HEIGHT = 20;
+    private const int _HEIGHT = 20;
 
     /// <inheritdoc/>
-    public override double GetWidth()
+    protected override double GetWidth()
     {
         return CalculateWidth();
     }
 
     /// <inheritdoc/>
-    public override double GetHeight()
+    protected override double GetHeight()
     {
-        return HEIGHT;
+        return _HEIGHT;
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)

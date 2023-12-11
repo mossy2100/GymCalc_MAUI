@@ -195,18 +195,14 @@
         x:Key="PercentButtonStyle"
         TargetType="Button">
         <Setter
-            Property="TextColor"
-            Value="{AppThemeBinding Light={StaticResource Black},
-                                    Dark={StaticResource White}}"/>
+            Property="BorderWidth"
+            Value="1"/>
         <Setter
             Property="WidthRequest"
             Value="55"/>
         <Setter
             Property="HeightRequest"
             Value="30"/>
-        <Setter
-            Property="BorderWidth"
-            Value="1"/>
         <Setter
             Property="FontSize"
             Value="16"/>
@@ -225,22 +221,27 @@
                         x:Name="Normal">
                         <VisualState.Setters>
                             <Setter
+                                Property="TextColor"
+                                Value="{AppThemeBinding Light={StaticResource Black},
+                                                        Dark={StaticResource White}}"/>
+                            <Setter
                                 Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource Gray50},
-                                                        Dark={StaticResource Gray900}}"/>
+                                Value="Transparent"/>
                             <Setter
                                 Property="BorderColor"
-                                Value="{AppThemeBinding Light={StaticResource Gray300},
-                                                        Dark={StaticResource Gray600}}"/>
+                                Value="{AppThemeBinding Light={StaticResource Black},
+                                                        Dark={StaticResource White}}"/>
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState
                         x:Name="Selected">
                         <VisualState.Setters>
                             <Setter
+                                Property="TextColor"
+                                Value="{StaticResource White}"/>
+                            <Setter
                                 Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource Secondary},
-                                                        Dark={StaticResource Tertiary}}"/>
+                                Value="{StaticResource Primary}"/>
                             <Setter
                                 Property="BorderColor"
                                 Value="{StaticResource Primary}"/>

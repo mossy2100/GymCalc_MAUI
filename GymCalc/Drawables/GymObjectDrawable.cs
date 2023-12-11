@@ -2,41 +2,30 @@ using GymCalc.Models;
 
 namespace GymCalc.Drawables;
 
-public abstract class GymObjectDrawable : IDrawable
+public abstract class GymObjectDrawable : GymDrawable
 {
-    public const int MIN_WIDTH = 50;
+    private const int _MIN_WIDTH = 50;
 
-    public const int MAX_WIDTH = 200;
+    private const int _MAX_WIDTH = 200;
 
-    public GymObject? GymObject { get; set; }
+    protected GymObject? GymObject { get; private set; }
 
-    public double Width => GetWidth();
-
-    public double Height => GetHeight();
-
-    internal decimal MaxWeight { get; set; }
-
-    /// <inheritdoc/>
-    public abstract void Draw(ICanvas canvas, RectF dirtyRect);
-
-    public abstract double GetWidth();
-
-    public abstract double GetHeight();
+    public decimal MaxWeight { get; set; }
 
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
     /// Static version.
     /// </summary>
-    public static double CalculateWidth(decimal weight, decimal maxWeight)
+    internal static double CalculateWidth(decimal weight, decimal maxWeight)
     {
-        return MIN_WIDTH + (double)weight / (double)maxWeight * (MAX_WIDTH - MIN_WIDTH);
+        return _MIN_WIDTH + (double)weight / (double)maxWeight * (_MAX_WIDTH - _MIN_WIDTH);
     }
 
     /// <summary>
     /// Calculate variable (weight-dependent) width for bars and plates.
     /// Instance version.
     /// </summary>
-    public double CalculateWidth()
+    protected double CalculateWidth()
     {
         return CalculateWidth(GymObject!.Weight, MaxWeight);
     }
@@ -47,7 +36,7 @@ public abstract class GymObjectDrawable : IDrawable
     /// <param name="gymObject">A gym object.</param>
     /// <returns>A GymObjectDrawable corresponding to the provided GymObject.</returns>
     /// <exception cref="Exception"></exception>
-    public static GymObjectDrawable Create(GymObject gymObject)
+    internal static GymObjectDrawable Create(GymObject gymObject)
     {
         // Get the type.
         string gymObjectTypeName = gymObject.GetType().Name;

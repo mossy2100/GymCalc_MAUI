@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using GymCalc.Drawables;
 using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Services;
@@ -164,6 +165,16 @@ public class ResultsViewModel : BaseViewModel
         set => SetProperty(ref _singleWeightResultVisible, value);
     }
 
+    // ---------------------------------------------------------------------------------------------
+    private GymDrawable? _selectedResultDrawable;
+
+    public GymDrawable? SelectedResultDrawable
+    {
+        get => _selectedResultDrawable;
+
+        set => SetProperty(ref _selectedResultDrawable, value);
+    }
+
     #endregion Bindable properties
 
     #region Command properties
@@ -223,12 +234,14 @@ public class ResultsViewModel : BaseViewModel
             case EResultType.Plates:
                 SelectedPlatesResult =
                     CalculatorService.PlatesResults?.FirstOrDefault(r => r.Percent == SelectedPercent);
+                SelectedResultDrawable = SelectedPlatesResult?.Drawable;
                 break;
 
             case EResultType.SingleWeight:
                 SelectedSingleWeightResult =
                     CalculatorService.SingleWeightResults?.FirstOrDefault(r =>
                         r.Percent == SelectedPercent);
+                SelectedResultDrawable = SelectedSingleWeightResult?.Drawable;
                 break;
         }
 

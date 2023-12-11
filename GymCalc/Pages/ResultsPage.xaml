@@ -23,7 +23,8 @@
             VerticalOptions="Fill">
 
             <VerticalStackLayout
-                Spacing="{x:Static graphics:PageLayout.TripleSpacing}">
+                Spacing="{x:Static graphics:PageLayout.TripleSpacing}"
+                Padding="0,10,0,10">
 
                 <!-- Calculator settings -->
                 <Grid
@@ -82,141 +83,129 @@
                         Style="{StaticResource PercentButtonStyle}"/>
                 </Grid>
 
-                <!-- Plates Results -->
-                <VerticalStackLayout
-                    IsVisible="{Binding PlatesResultVisible}"
-                    Spacing="{x:Static graphics:PageLayout.TripleSpacing}">
-                    <Grid
-                        ColumnDefinitions="6*,3*,3*"
-                        ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                        RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                        RowDefinitions="Auto,Auto,Auto">
-                        <!-- Row 0 -->
-                        <controls:BoldLabel
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="Ideal"
-                            VerticalTextAlignment="End"
-                            Style="{StaticResource ResultsTableHeader}"/>
-                        <controls:BoldLabel
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Text="Closest"
-                            VerticalTextAlignment="End"
-                            Style="{StaticResource ResultsTableHeader}"/>
-                        <!-- Row 1 -->
-                        <controls:BoldLabel
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Text="Total"
-                            Style="{StaticResource ResultsTableHeader}"/>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Text="{Binding
-                                SelectedPlatesResult.IdealTotalWeight,
-                                FallbackValue=0,
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                            Style="{StaticResource ResultsTableIdeal}"/>
-                        <Label
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Text="{Binding
-                                SelectedPlatesResult.ClosestTotalWeight,
-                                FallbackValue=0,
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                            Style="{StaticResource ResultsTableClosest}"/>
-                        <!-- Row 2 -->
-                        <controls:BoldLabel
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Text="{Binding
-                                SelectedPlatesResult.EachSideText,
-                                FallbackValue=''}"
-                            Style="{StaticResource ResultsTableHeader}"/>
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{Binding
-                                SelectedPlatesResult.IdealPlatesWeight,
-                                FallbackValue=0,
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                            Style="{StaticResource ResultsTableIdeal}"/>
-                        <Label
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Text="{Binding
-                                SelectedPlatesResult.ClosestPlatesWeight,
-                                FallbackValue='',
-                                Converter={StaticResource DefaultWeightTextConverter}}"
-                            Style="{StaticResource ResultsTableClosest}"/>
-                    </Grid>
-                    <!-- Plates stack -->
-                    <GraphicsView
-                        Drawable="{Binding
-                            SelectedPlatesResult.Drawable,
-                            FallbackValue=null}"
-                        WidthRequest="{Binding
-                            SelectedPlatesResult.Drawable.Width,
-                            FallbackValue=0}"
-                        HeightRequest="{Binding
-                            SelectedPlatesResult.Drawable.Height,
-                            FallbackValue=0}"
-                        HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-
-                <!-- Single Weight Results -->
+                <!-- Plates result -->
                 <Grid
-                    Padding="0,10,0,10"
-                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    ColumnDefinitions="3*,9*"
+                    ColumnDefinitions="6*,3*,3*"
                     ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                    IsVisible="{Binding SingleWeightResultVisible}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto"/>
-                        <RowDefinition
-                            Height="{Binding
-                                SelectedSingleWeightResult.Drawable.Height,
-                                FallbackValue=0}"/>
-                    </Grid.RowDefinitions>
+                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    RowDefinitions="Auto,Auto,Auto"
+                    IsVisible="{Binding PlatesResultVisible}">
                     <!-- Row 0 -->
                     <controls:BoldLabel
                         Grid.Row="0"
+                        Grid.Column="1"
+                        Text="Ideal"
+                        VerticalTextAlignment="End"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <controls:BoldLabel
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="Closest"
+                        VerticalTextAlignment="End"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <!-- Row 1 -->
+                    <controls:BoldLabel
+                        Grid.Row="1"
                         Grid.Column="0"
+                        Text="Total"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Text="{Binding
+                            SelectedPlatesResult.IdealTotalWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableIdeal}"/>
+                    <Label
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Text="{Binding
+                            SelectedPlatesResult.ClosestTotalWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableClosest}"/>
+                    <!-- Row 2 -->
+                    <controls:BoldLabel
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{Binding
+                            SelectedPlatesResult.EachSideText,
+                            FallbackValue=''}"
+                        Style="{StaticResource ResultsTableHeader}"/>
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Text="{Binding
+                            SelectedPlatesResult.IdealPlatesWeight,
+                            FallbackValue=0,
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableIdeal}"/>
+                    <Label
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="{Binding
+                            SelectedPlatesResult.ClosestPlatesWeight,
+                            FallbackValue='',
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableClosest}"/>
+                </Grid>
+
+                <!-- Single weight result -->
+                <Grid
+                    Padding="0,10,0,10"
+                    ColumnDefinitions="*,*,*,*"
+                    ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    RowSpacing="{x:Static graphics:PageLayout.Spacing}"
+                    RowDefinitions="Auto,Auto"
+                    IsVisible="{Binding SingleWeightResultVisible}">
+                    <!-- Row 0 -->
+                    <controls:BoldLabel
+                        Grid.Row="0"
+                        Grid.Column="1"
                         Text="Ideal"
                         HorizontalOptions="Start"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <controls:BoldLabel
                         Grid.Row="0"
-                        Grid.Column="1"
+                        Grid.Column="2"
                         Text="Closest"
-                        HorizontalOptions="Center"
+                        HorizontalOptions="Start"
                         Style="{StaticResource ResultsTableHeader}"/>
                     <!-- Row 1 -->
                     <Label
                         Grid.Row="1"
-                        Grid.Column="0"
+                        Grid.Column="1"
                         Text="{Binding
                             SelectedSingleWeightResult.Ideal,
                             FallbackValue='',
                             Converter={StaticResource DefaultWeightTextConverter}}"
                         Style="{StaticResource ResultsTableIdeal}"
                         HorizontalOptions="Start"/>
-                    <GraphicsView
+                    <Label
                         Grid.Row="1"
-                        Grid.Column="1"
-                        Drawable="{Binding
-                            SelectedSingleWeightResult.Drawable,
-                            FallbackValue=null}"
-                        WidthRequest="{Binding
-                            SelectedSingleWeightResult.Drawable.Width,
-                            FallbackValue=0}"
-                        HeightRequest="{Binding
-                            SelectedSingleWeightResult.Drawable.Height,
-                            FallbackValue=0}"
-                        HorizontalOptions="Center"/>
+                        Grid.Column="2"
+                        Text="{Binding
+                            SelectedSingleWeightResult.GymObject.Weight,
+                            FallbackValue='',
+                            Converter={StaticResource DefaultWeightTextConverter}}"
+                        Style="{StaticResource ResultsTableClosest}"
+                        HorizontalOptions="Start"/>
                 </Grid>
+
+                <!-- Image of the gym object(s) -->
+                <GraphicsView
+                    Drawable="{Binding
+                            SelectedResultDrawable,
+                            FallbackValue=null}"
+                    WidthRequest="{Binding
+                            SelectedResultDrawable.Width,
+                            FallbackValue=0}"
+                    HeightRequest="{Binding
+                            SelectedResultDrawable.Height,
+                            FallbackValue=0}"
+                    HorizontalOptions="Center"/>
+
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage.Content>

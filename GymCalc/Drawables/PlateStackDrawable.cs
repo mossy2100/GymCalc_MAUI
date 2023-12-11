@@ -2,26 +2,28 @@ using GymCalc.Models;
 
 namespace GymCalc.Drawables;
 
-public class PlatesDrawable : IDrawable
+public class PlateStackDrawable : GymDrawable
 {
-    public List<Plate>? Plates { get; set; }
+    internal List<Plate>? Plates { get; init; }
 
-    public double Width
+    public decimal MaxWeight { get; set; }
+
+    /// <inheritdoc />
+    protected override double GetWidth()
     {
-        get
-        {
-            decimal maxPlateWeight =
-                Plates == null || Plates.Count == 0 ? 0 : Plates.Max(p => p.Weight);
-            return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
-        }
+        decimal maxPlateWeight =
+            Plates == null || Plates.Count == 0 ? 0 : Plates.Max(p => p.Weight);
+        return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
     }
 
-    public double Height => (Plates?.Count ?? 0) * PlateDrawable.HEIGHT;
-
-    internal decimal MaxWeight { get; set; }
+    /// <inheritdoc />
+    protected override double GetHeight()
+    {
+        return (Plates?.Count ?? 0) * PlateDrawable.HEIGHT;
+    }
 
     /// <inheritdoc/>
-    public void Draw(ICanvas canvas, RectF dirtyRect)
+    public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         float rectWidth = dirtyRect.Width;
         var i = 0;

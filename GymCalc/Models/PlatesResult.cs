@@ -6,7 +6,7 @@ public class PlatesResult
 {
     internal PlatesResult(decimal percent, decimal maxTotalWeight, decimal totalStartingWeight,
         int nStacks, string eachSideText, IEnumerable<Plate> closestPlates,
-        PlatesDrawable drawable)
+        PlateStackDrawable drawable)
     {
         Percent = percent;
         EachSideText = eachSideText;
@@ -29,5 +29,5 @@ public class PlatesResult
 
     public decimal ClosestPlatesWeight { get; set; }
 
-    public PlatesDrawable Drawable { get; set; }
+    public PlateStackDrawable Drawable { get; set; }
 }

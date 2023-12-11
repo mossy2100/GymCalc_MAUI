@@ -8,20 +8,20 @@ namespace GymCalc.Drawables;
 
 public class KettlebellDrawable : GymObjectDrawable
 {
-    public const int HEIGHT = 76;
+    private const int _HEIGHT = 76;
 
-    public const int WIDTH = 60;
+    private const int _WIDTH = 60;
 
     /// <inheritdoc/>
-    public override double GetWidth()
+    protected override double GetWidth()
     {
-        return WIDTH;
+        return _WIDTH;
     }
 
     /// <inheritdoc/>
-    public override double GetHeight()
+    protected override double GetHeight()
     {
-        return HEIGHT;
+        return _HEIGHT;
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)

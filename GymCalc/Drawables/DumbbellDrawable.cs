@@ -7,20 +7,20 @@ namespace GymCalc.Drawables;
 
 public class DumbbellDrawable : GymObjectDrawable
 {
-    public const int HEIGHT = 50;
+    private const int _HEIGHT = 50;
 
-    public const int WIDTH = 100;
+    private const int _WIDTH = 100;
 
     /// <inheritdoc/>
-    public override double GetWidth()
+    protected override double GetWidth()
     {
-        return WIDTH;
+        return _WIDTH;
     }
 
     /// <inheritdoc/>
-    public override double GetHeight()
+    protected override double GetHeight()
     {
-        return HEIGHT;
+        return _HEIGHT;
     }
 
     public override void Draw(ICanvas canvas, RectF dirtyRect)

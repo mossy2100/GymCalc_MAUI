@@ -6,20 +6,20 @@ using Font = Microsoft.Maui.Graphics.Font;
 
 namespace GymCalc.Drawables;
 
-public class PlateDrawable : GymObjectDrawable
+internal class PlateDrawable : GymObjectDrawable
 {
-    public const int HEIGHT = 30;
+    internal const int HEIGHT = 30;
 
-    public const int CORNER_RADIUS = 4;
+    private const int _CORNER_RADIUS = 4;
 
     /// <inheritdoc/>
-    public override double GetWidth()
+    protected override double GetWidth()
     {
         return CalculateWidth();
     }
 
     /// <inheritdoc/>
-    public override double GetHeight()
+    protected override double GetHeight()
     {
         return HEIGHT;
     }
@@ -33,7 +33,7 @@ public class PlateDrawable : GymObjectDrawable
     /// <param name="y"></param>
     /// <param name="w"></param>
     /// <param name="h"></param>
-    public static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
+    internal static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
         Color? bgColor = CustomColors.Get(plate.Color) ?? CustomColors.Get("OffBlack");
@@ -41,12 +41,12 @@ public class PlateDrawable : GymObjectDrawable
         // Plate background.
         canvas.FillColor = bgColor!.AddLuminosity(-0.1f);
         var plateBackground = new RectF(x, y, w, h);
-        canvas.FillRoundedRectangle(plateBackground, CORNER_RADIUS);
+        canvas.FillRoundedRectangle(plateBackground, _CORNER_RADIUS);
 
         // Plate edge.
         canvas.FillColor = bgColor;
-        float innerHeight = h - 2 * CORNER_RADIUS;
-        var plateEdge = new RectF(x, y + CORNER_RADIUS, w, innerHeight);
+        float innerHeight = h - 2 * _CORNER_RADIUS;
+        var plateEdge = new RectF(x, y + _CORNER_RADIUS, w, innerHeight);
         canvas.FillRectangle(plateEdge);
 
         // Weight label.
@@ -55,7 +55,7 @@ public class PlateDrawable : GymObjectDrawable
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
-        canvas.DrawString(weightString, x, y + CORNER_RADIUS + offset, w, innerHeight,
+        canvas.DrawString(weightString, x, y + _CORNER_RADIUS + offset, w, innerHeight,
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 

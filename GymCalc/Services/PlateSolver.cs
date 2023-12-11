@@ -38,7 +38,7 @@ internal static class PlateSolver
             List<Plate> closestPlates = FindBestPlates(idealPlates);
 
             // Create the drawable.
-            var drawable = new PlatesDrawable
+            var drawable = new PlateStackDrawable
             {
                 Plates = closestPlates,
                 MaxWeight = _maxPlateWeight
