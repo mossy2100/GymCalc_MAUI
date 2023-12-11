@@ -367,7 +367,7 @@ public class CalculatorViewModel : BaseViewModel
                 break;
 
             default:
-                throw new NoMatchingCaseException("Invalid exercise type.");
+                throw new MatchNotFoundException("Invalid exercise type.");
         }
 
         // Go to the results page.

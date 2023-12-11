@@ -291,7 +291,7 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new NoMatchingCaseException(
+                throw new MatchNotFoundException(
                     $"Invalid gym object type '{_gymObjectTypeName}'");
         }
     }
@@ -299,7 +299,7 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     ///  Load an existing gym object from the database.
     /// </summary>
-    /// <exception cref="NoMatchingCaseException">
+    /// <exception cref="MatchNotFoundException">
     ///  If the gym object type is invalid (should never happen).
     /// </exception>
     /// <exception cref="KeyNotFoundException">
@@ -330,7 +330,7 @@ public class EditViewModel : BaseViewModel
                 break;
 
             default:
-                throw new NoMatchingCaseException(
+                throw new MatchNotFoundException(
                     $"Invalid gym object type '{_gymObjectTypeName}'.");
         }
 

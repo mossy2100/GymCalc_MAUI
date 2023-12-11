@@ -10,7 +10,7 @@ internal static class PlateSolver
 
     private static decimal _maxPlateWeight;
 
-    private static List<Plate>? _bestSolution;
+    private static List<Plate>? _bestPlates;
 
     private static decimal _idealWeight;
 
@@ -62,24 +62,24 @@ internal static class PlateSolver
         // Initialize fields.
         _idealWeight = idealWeight;
         _smallestDiff = idealWeight;
-        _bestSolution = new List<Plate>();
+        _bestPlates = new List<Plate>();
 
         // Search the solutions space.
-        SearchSolutions(_bestSolution, _maxPlateWeight);
+        SearchSolutions(_bestPlates, _maxPlateWeight);
 
         // Sort by ascending plate weight.
-        _bestSolution = _bestSolution.OrderBy(p => p.Weight).ToList();
+        _bestPlates = _bestPlates.OrderBy(p => p.Weight).ToList();
 
         // Return the best solution found during the search.
-        return _bestSolution;
+        return _bestPlates;
     }
 
     /// <summary>
     /// Recursive function to generate and test new solutions.
     /// </summary>
-    /// <param name="currentStack">The stack of plates so far.</param>
+    /// <param name="currentPlates">The stack of plates so far.</param>
     /// <param name="maxPlateWeight">The largest next plate that can be added.</param>
-    private static void SearchSolutions(IReadOnlyCollection<Plate> currentStack,
+    private static void SearchSolutions(IReadOnlyCollection<Plate> currentPlates,
         decimal maxPlateWeight)
     {
         foreach (Plate plate in _availPlates!)
@@ -93,39 +93,65 @@ internal static class PlateSolver
             }
 
             // Create a new stack from the current stack plus the new plate.
-            var newStack = new List<Plate>();
-            newStack.AddRange(currentStack);
-            newStack.Add(plate);
+            var newPlates = new List<Plate>();
+            newPlates.AddRange(currentPlates);
+            newPlates.Add(plate);
 
             // Test the solution.
-            decimal sum = newStack.Sum(p => p.Weight);
-            var diff = decimal.Abs(sum - _idealWeight);
+            decimal newPlatesWeight = newPlates.Sum(p => p.Weight);
+            decimal newDiff = decimal.Abs(newPlatesWeight - _idealWeight);
 
             // Check if this is a new best solution.
-            if (diff < _smallestDiff
-                || (diff == _smallestDiff && newStack.Count < _bestSolution!.Count))
+            bool updateSolution = false;
+            if (newDiff < _smallestDiff)
             {
-                // Update the best solution found so far.
-                _bestSolution = newStack;
-                _smallestDiff = diff;
+                updateSolution = true;
+            }
+            else if (newDiff == _smallestDiff)
+            {
+                // Check and see if the ideal is midway between 2 solutions, in which case, take
+                // the heavier.
+                decimal bestPlatesWeight = _bestPlates!.Sum(p => p.Weight);
+                if (bestPlatesWeight < _idealWeight && newPlatesWeight > _idealWeight)
+                {
+                    // The total weight of the new stack is above the ideal wright by exactly the
+                    // same amount as the current best solution is below it.
+                    // We'll update the best solution because of the rule:
+                    // "If there are 2 solutions equally close to the ideal, one lighter than it and
+                    // one heavier than it, choose the heavier."
+                    updateSolution = true;
+                }
+                else if (newPlatesWeight == bestPlatesWeight && newPlates.Count < _bestPlates!.Count)
+                {
+                    // The new set of plates has the same weight as the current best solution,
+                    // but with fewer plates, so we'll update it. This is because of the rule:
+                    // "Fewer plates is better."
+                    updateSolution = true;
+                }
+            }
+
+            // If we should, update the best solution found so far.
+            if (updateSolution)
+            {
+                _bestPlates = newPlates;
+                _smallestDiff = newDiff;
 
                 // If it's exact we can stop looking.
-                if (diff == 0)
+                if (newDiff == 0)
                 {
                     break;
                 }
             }
 
-            // If we're below the ideal weight, continue adding plates and looking for the best
-            // solution.
-            if (sum < _idealWeight)
+            // If we're below the ideal weight, keep looking.
+            if (newPlatesWeight < _idealWeight)
             {
-                SearchSolutions(newStack, plate.Weight);
+                SearchSolutions(newPlates, plate.Weight);
             }
 
             // If the remaining difference is greater than the weight we just added, don't test
             // adding any smaller plates. It's unnecessary and makes the algorithm take too long.
-            if (diff > plate.Weight)
+            if (newDiff > plate.Weight)
             {
                 break;
             }

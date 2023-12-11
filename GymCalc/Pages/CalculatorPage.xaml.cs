@@ -215,7 +215,7 @@ public partial class CalculatorPage : ContentPage
                 break;
 
             default:
-                throw new NoMatchingCaseException("Invalid exercise type.");
+                throw new MatchNotFoundException("Invalid exercise type.");
         }
 
         // Display the results if the current results exercise type matches; otherwise hide them.
