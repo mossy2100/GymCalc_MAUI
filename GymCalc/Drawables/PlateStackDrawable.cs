@@ -9,7 +9,7 @@ public class PlateStackDrawable : BaseDrawable
     /// </summary>
     internal List<Plate>? Plates { get; init; }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override double GetWidth()
     {
         decimal maxPlateWeight =
@@ -17,7 +17,7 @@ public class PlateStackDrawable : BaseDrawable
         return GymObjectDrawable.CalculateWidth(maxPlateWeight, MaxWeight);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override double GetHeight()
     {
         return (Plates?.Count ?? 0) * PlateDrawable.HEIGHT;
