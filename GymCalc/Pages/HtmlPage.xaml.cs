@@ -8,19 +8,33 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(Route), "route")]
 public partial class HtmlPage : ContentPage
 {
+    /// <summary>
+    /// Reference to the dependency.
+    /// </summary>
     private readonly HtmlUpdaterService _htmlUpdaterService;
 
-    /// <summary>Reference to the viewmodel.</summary>
+    /// <summary>
+    /// Reference to the viewmodel.
+    /// </summary>
     private readonly HtmlViewModel _model;
 
-    // The route to the Blazor page.
+    /// <summary>
+    /// The route to the Blazor page (backing field).
+    /// </summary>
     private string? _route;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="model">Reference to the viewmodel.</param>
+    /// <param name="htmlUpdaterService">Reference to the HtmlUpdaterService.</param>
     public HtmlPage(HtmlViewModel model, HtmlUpdaterService htmlUpdaterService)
     {
+        // Keep references to dependencies.
         _model = model;
         _htmlUpdaterService = htmlUpdaterService;
 
+        // Initialize.
         InitializeComponent();
         BindingContext = _model;
 
@@ -29,14 +43,21 @@ public partial class HtmlPage : ContentPage
 
         // Set the root component parameters. This can only be done once (init only).
         // Because RequestedTheme is not set at the start (it's Unspecified), I'm using a hack to
-        // detect the current theme using AppThemeBinding and the BackgroundColor property of the
-        // BlazorWebView element in the XAML.
+        // detect the current theme by inspecting the BackgroundColor property of the BlazorWebView
+        // element in the XAML. This property is set using AppThemeBinding and therefore reflects
+        // the current theme.
         AppTheme theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
             ? AppTheme.Light
             : AppTheme.Dark;
-        RootComponent.Parameters = new Dictionary<string, object?> { { "Theme", theme } };
+        RootComponent.Parameters = new Dictionary<string, object?>
+        {
+            { "Theme", theme }
+        };
     }
 
+    /// <summary>
+    /// The route to the Blazor page (property).
+    /// </summary>
     public string? Route
     {
         get => _route;
@@ -51,6 +72,11 @@ public partial class HtmlPage : ContentPage
         }
     }
 
+    /// <summary>
+    /// Event handler for when the theme changes.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnRequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
     {
         _htmlUpdaterService.UpdateTheme(Application.Current!.RequestedTheme);

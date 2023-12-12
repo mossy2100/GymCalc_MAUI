@@ -27,6 +27,13 @@
     </Style>
 
     <Style
+        TargetType="BlazorWebView">
+        <Setter
+            Property="Margin"
+            Value="0"/>
+    </Style>
+
+    <Style
         TargetType="Border">
         <Setter
             Property="Stroke"
