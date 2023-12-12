@@ -53,21 +53,21 @@ public static class MauiProgram
             // Singleton pages.
             .AddSingleton<CalculatorPage>()
             .AddSingleton<ResultsPage>()
-            .AddSingleton<HtmlPage>()
             .AddSingleton<ListPage>()
             .AddSingleton<SettingsPage>()
             .AddSingleton<WeightsPage>()
             // Transient pages.
             // It seems pages must be transient if they have more than one parameter.
             .AddTransient<EditPage>()
+            .AddTransient<HtmlPage>()
             // ViewModels.
             .AddSingleton<CalculatorViewModel>()
             .AddSingleton<ResultsViewModel>()
-            .AddSingleton<EditViewModel>()
-            .AddSingleton<HtmlViewModel>()
             .AddSingleton<ListViewModel>()
             .AddSingleton<SettingsViewModel>()
             .AddSingleton<WeightsViewModel>()
+            .AddSingleton<EditViewModel>()
+            .AddSingleton<HtmlViewModel>()
             // Services.
             .AddSingleton<CalculatorService>()
             .AddSingleton<HtmlUpdaterService>()

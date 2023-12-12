@@ -52,7 +52,7 @@ public abstract class GymObjectDrawable : BaseDrawable
         if (drawableType == null)
         {
             throw new InvalidOperationException(
-                $"Could not create a drawable for the {gymObjectTypeName} object.");
+                $"Could not find the drawable type for the {gymObjectTypeName} object.");
         }
 
         // Create the drawable object.

@@ -18,14 +18,15 @@ public partial class AppShell : Shell
     /// <summary>Register routes for navigation (non-global) pages.</summary>
     private static void RegisterRoutes()
     {
-        Routing.RegisterRoute("results", typeof(ResultsPage));
+        // Flyout menu pages.
         Routing.RegisterRoute("weights", typeof(WeightsPage));
-        Routing.RegisterRoute("list", typeof(ListPage));
-        Routing.RegisterRoute("edit", typeof(EditPage));
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("html", typeof(HtmlPage));
-        Routing.RegisterRoute("instructions", typeof(InstructionsPage));
-        // Routing.RegisterRoute("about", typeof(AboutPage));
+
+        // Navigation pages.
+        Routing.RegisterRoute("results", typeof(ResultsPage));
+        Routing.RegisterRoute("list", typeof(ListPage));
+        Routing.RegisterRoute("edit", typeof(EditPage));
     }
 
     private static async Task GoToPage(string? pageName)
@@ -46,16 +47,21 @@ public partial class AppShell : Shell
                 break;
 
             case "Instructions":
-                route = "instructions";
-                // route = "html";
-                // parameters = new Dictionary<string, object>
-                //     { { "title", "Instructions" }, { "route", "/Instructions" } };
+                route = "html";
+                parameters = new Dictionary<string, object>
+                {
+                    { "title", "Instructions" },
+                    { "route", "/Instructions" }
+                };
                 break;
 
             case "About":
                 route = "html";
                 parameters = new Dictionary<string, object>
-                    { { "title", "About GymCalc" }, { "route", "/About" } };
+                {
+                    { "title", "About GymCalc" },
+                    { "route", "/About" }
+                };
                 break;
         }
 

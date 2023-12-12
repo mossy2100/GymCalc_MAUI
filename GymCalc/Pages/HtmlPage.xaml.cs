@@ -13,9 +13,8 @@ public partial class HtmlPage : ContentPage
     /// <summary>Reference to the viewmodel.</summary>
     private readonly HtmlViewModel _model;
 
+    // The route to the Blazor page.
     private string? _route;
-
-    private AppTheme _theme;
 
     public HtmlPage(HtmlViewModel model, HtmlUpdaterService htmlUpdaterService)
     {
@@ -32,10 +31,10 @@ public partial class HtmlPage : ContentPage
         // Because RequestedTheme is not set at the start (it's Unspecified), I'm using a hack to
         // detect the current theme using AppThemeBinding and the BackgroundColor property of the
         // BlazorWebView element in the XAML.
-        _theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
+        AppTheme theme = BlazorWebView.BackgroundColor.Equals(Colors.White)
             ? AppTheme.Light
             : AppTheme.Dark;
-        RootComponent.Parameters = new Dictionary<string, object?> { { "Theme", _theme } };
+        RootComponent.Parameters = new Dictionary<string, object?> { { "Theme", theme } };
     }
 
     public string? Route
@@ -54,8 +53,7 @@ public partial class HtmlPage : ContentPage
 
     private void OnRequestedThemeChanged(object? sender, AppThemeChangedEventArgs e)
     {
-        _theme = Application.Current!.RequestedTheme;
-        _htmlUpdaterService.UpdateTheme(_theme);
+        _htmlUpdaterService.UpdateTheme(Application.Current!.RequestedTheme);
     }
 
     /// <inheritdoc/>
