@@ -307,8 +307,8 @@
                         <VisualState.Setters>
                             <Setter
                                 Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource Secondary},
-                                                        Dark={StaticResource Tertiary}}"/>
+                                Value="{AppThemeBinding Light={StaticResource SecondaryLight},
+                                                        Dark={StaticResource SecondaryDark}}"/>
                             <Setter
                                 Property="BorderColor"
                                 Value="{StaticResource Primary}"/>

@@ -696,8 +696,8 @@
                         <VisualState.Setters>
                             <Setter
                                 Property="OnColor"
-                                Value="{AppThemeBinding Light={StaticResource Secondary},
-                                                        Dark={StaticResource Tertiary}}"/>
+                                Value="{AppThemeBinding Light={StaticResource SecondaryLight},
+                                                        Dark={StaticResource SecondaryDark}}"/>
                             <Setter
                                 Property="ThumbColor"
                                 Value="{StaticResource Primary}"/>

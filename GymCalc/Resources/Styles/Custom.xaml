@@ -23,8 +23,8 @@
             Value="RoundRectangle 4"/>
         <Setter
             Property="BackgroundColor"
-            Value="{AppThemeBinding Light={StaticResource Secondary},
-                                    Dark={StaticResource Tertiary}}"/>
+            Value="{AppThemeBinding Light={StaticResource SecondaryLight},
+                                    Dark={StaticResource SecondaryDark}}"/>
     </Style>
 
     <Style

@@ -1,5 +1,11 @@
 namespace GymCalc.Controls;
 
+/// <summary>
+/// This custom control is a solution to the problem of Labels on iOS ignoring the FontAttributes
+/// property. If Microsoft fix this bug, we won't need this control anymore. We'll be able to just
+/// use a regular Label with FontAttributes=Bold.
+/// TODO Add a XML file with the markup for this control instead of creating everything dynamically.
+/// </summary>
 public class BoldLabel : Label
 {
     public new static readonly BindableProperty TextProperty = BindableProperty.Create(

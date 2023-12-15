@@ -4,7 +4,7 @@ public class VisualStateButton : Button
 {
     public static readonly BindableProperty VisualStateProperty = BindableProperty.Create(
         nameof(VisualState), typeof(string), typeof(VisualStateButton),
-        VisualStateManager.CommonStates.Normal, propertyChanged: OnVisualStateChanged);
+        VisualStateManager.CommonStates.Normal, BindingMode.TwoWay, null, OnVisualStateChanged);
 
     public string VisualState
     {

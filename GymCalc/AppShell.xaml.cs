@@ -19,6 +19,7 @@ public partial class AppShell : Shell
     private static void RegisterRoutes()
     {
         // Flyout menu pages.
+        Routing.RegisterRoute("calculator", typeof(CalculatorPage));
         Routing.RegisterRoute("weights", typeof(WeightsPage));
         Routing.RegisterRoute("settings", typeof(SettingsPage));
         Routing.RegisterRoute("html", typeof(HtmlPage));
@@ -38,6 +39,10 @@ public partial class AppShell : Shell
 
         switch (pageName)
         {
+            case "Calculator":
+                route = "calculator";
+                break;
+
             case "Weights":
                 route = "weights";
                 break;

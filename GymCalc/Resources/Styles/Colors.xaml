@@ -2,19 +2,22 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <!-- App colors -->
     <Color x:Key="Primary">#ff6c00</Color>
-    <Color x:Key="Secondary">#ffd2b2</Color>
-    <Color x:Key="Tertiary">#4d2000</Color>
+    <Color x:Key="SecondaryLight">#ffd2b2</Color>
+    <Color x:Key="SecondaryDark">#4d2000</Color>
 
+    <!-- Button colors -->
     <Color x:Key="SuccessColor">#0fb300</Color>
     <Color x:Key="DangerColor">#cc0022</Color>
 
+    <!-- Error message colors -->
     <Color x:Key="ErrorMessageText">#ff002b</Color>
     <Color x:Key="ErrorMessageBackgroundLight">#ffe5ea</Color>
     <Color x:Key="ErrorMessageBackgroundDark">#330008</Color>
 
+    <!-- Greys -->
     <Color x:Key="White">White</Color>
-    <Color x:Key="Black">Black</Color>
     <Color x:Key="Gray50">#f0f0f0</Color>
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
@@ -24,5 +27,6 @@
     <Color x:Key="Gray600">#404040</Color>
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Black">Black</Color>
 
 </ResourceDictionary>
