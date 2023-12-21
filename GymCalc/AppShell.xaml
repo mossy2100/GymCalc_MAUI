@@ -41,25 +41,12 @@
         <ShellContent
             ContentTemplate="{DataTemplate pages:CalculatorPage}"/>
     </FlyoutItem>
-    <FlyoutItem
-        Title="Weights"
-        FlyoutIcon="{AppThemeBinding Light='dumbbell_icon_black_300.png',
-                                     Dark='dumbbell_icon_white_300.png'}">
-        <ShellContent
-            ContentTemplate="{DataTemplate pages:WeightsPage}"/>
-    </FlyoutItem>
-    <!-- <MenuItem -->
-    <!--     Text="Calculator" -->
-    <!--     IconImageSource="{AppThemeBinding Light='calculator_icon_black_300.png', -->
-    <!--                                       Dark='calculator_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Calculator"/> -->
-    <!-- <MenuItem -->
-    <!--     Text="Weights" -->
-    <!--     IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png', -->
-    <!--                                       Dark='dumbbell_icon_white_300.png'}" -->
-    <!--     Command="{Binding GoToPageCommand}" -->
-    <!--     CommandParameter="Weights"/> -->
+    <MenuItem
+        Text="Weights"
+        IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                          Dark='dumbbell_icon_white_300.png'}"
+        Command="{Binding GoToPageCommand}"
+        CommandParameter="Weights"/>
     <MenuItem
         Text="Settings"
         IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png',

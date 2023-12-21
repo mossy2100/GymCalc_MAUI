@@ -18,16 +18,12 @@ public partial class AppShell : Shell
     /// <summary>Register routes for navigation (non-global) pages.</summary>
     private static void RegisterRoutes()
     {
-        // Flyout menu pages.
-        Routing.RegisterRoute("calculator", typeof(CalculatorPage));
-        Routing.RegisterRoute("weights", typeof(WeightsPage));
-        Routing.RegisterRoute("settings", typeof(SettingsPage));
-        Routing.RegisterRoute("html", typeof(HtmlPage));
-
-        // Navigation pages.
         Routing.RegisterRoute("results", typeof(ResultsPage));
+        Routing.RegisterRoute("weights", typeof(WeightsPage));
         Routing.RegisterRoute("list", typeof(ListPage));
         Routing.RegisterRoute("edit", typeof(EditPage));
+        Routing.RegisterRoute("settings", typeof(SettingsPage));
+        Routing.RegisterRoute("html", typeof(HtmlPage));
     }
 
     private static async Task GoToPage(string? pageName)
@@ -39,10 +35,6 @@ public partial class AppShell : Shell
 
         switch (pageName)
         {
-            case "Calculator":
-                route = "calculator";
-                break;
-
             case "Weights":
                 route = "weights";
                 break;
