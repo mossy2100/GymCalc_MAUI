@@ -15,7 +15,7 @@ public partial class AppShell : Shell
 
     public ICommand GoToPageCommand => new AsyncCommand<string>(GoToPage);
 
-    /// <summary>Register routes for navigation (non-global) pages.</summary>
+    /// <summary>Register routes for navigation pages.</summary>
     private static void RegisterRoutes()
     {
         Routing.RegisterRoute("results", typeof(ResultsPage));
@@ -26,6 +26,10 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("html", typeof(HtmlPage));
     }
 
+    /// <summary>
+    /// Command method for menu items.
+    /// </summary>
+    /// <param name="pageName">Key indicating which page to load.</param>
     private static async Task GoToPage(string? pageName)
     {
         Current.FlyoutIsPresented = false;
