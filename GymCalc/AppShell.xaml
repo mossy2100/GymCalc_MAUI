@@ -46,24 +46,24 @@
         IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
                                           Dark='dumbbell_icon_white_300.png'}"
         Command="{Binding GoToPageCommand}"
-        CommandParameter="Weights"/>
+        CommandParameter="weights"/>
     <MenuItem
         Text="Settings"
         IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png',
                                           Dark='settings_icon_white_300.png'}"
         Command="{Binding GoToPageCommand}"
-        CommandParameter="Settings"/>
+        CommandParameter="settings"/>
     <MenuItem
         Text="Instructions"
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
                                           Dark='help_icon_white_300.png'}"
         Command="{Binding GoToPageCommand}"
-        CommandParameter="Instructions"/>
+        CommandParameter="instructions"/>
     <MenuItem
         Text="About GymCalc"
         IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
                                           Dark='about_icon_white_300.png'}"
         Command="{Binding GoToPageCommand}"
-        CommandParameter="About"/>
+        CommandParameter="about"/>
 
 </Shell>

@@ -30,21 +30,13 @@ public partial class AppShell : Shell
     {
         Current.FlyoutIsPresented = false;
 
-        string? route = null;
+        string? state;
         Dictionary<string, object>? parameters = null;
 
         switch (pageName)
         {
-            case "Weights":
-                route = "weights";
-                break;
-
-            case "Settings":
-                route = "settings";
-                break;
-
-            case "Instructions":
-                route = "html";
+            case "instructions":
+                state = "html";
                 parameters = new Dictionary<string, object>
                 {
                     { "title", "Instructions" },
@@ -52,26 +44,30 @@ public partial class AppShell : Shell
                 };
                 break;
 
-            case "About":
-                route = "html";
+            case "about":
+                state = "html";
                 parameters = new Dictionary<string, object>
                 {
                     { "title", "About GymCalc" },
                     { "route", "/About" }
                 };
                 break;
+
+            default:
+                state = pageName;
+                break;
         }
 
         // If a route is specified, go to that page.
-        if (route != null)
+        if (state != null)
         {
             if (parameters == null)
             {
-                await Current.GoToAsync(route);
+                await Current.GoToAsync(state);
             }
             else
             {
-                await Current.GoToAsync(route, parameters);
+                await Current.GoToAsync(state, parameters);
             }
         }
     }
