@@ -9,14 +9,14 @@ namespace GymCalc.Pages;
 public partial class HtmlPage : ContentPage
 {
     /// <summary>
-    /// Reference to the dependency.
-    /// </summary>
-    private readonly HtmlUpdaterService _htmlUpdaterService;
-
-    /// <summary>
     /// Reference to the viewmodel.
     /// </summary>
     private readonly HtmlViewModel _model;
+
+    /// <summary>
+    /// Reference to the service dependency.
+    /// </summary>
+    private readonly HtmlUpdaterService _htmlUpdaterService;
 
     /// <summary>
     /// The route to the Blazor page (backing field).
