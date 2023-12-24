@@ -4,14 +4,13 @@ namespace GymCalc.Pages;
 
 public partial class SettingsPage : ContentPage
 {
-    /// <summary>Reference to the viewmodel.</summary>
-    private readonly SettingsViewModel _model;
-
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="model">The viewmodel to bind to.</param>
     public SettingsPage(SettingsViewModel model)
     {
-        _model = model;
-
         InitializeComponent();
-        BindingContext = _model;
+        BindingContext = model;
     }
 }

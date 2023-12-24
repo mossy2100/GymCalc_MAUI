@@ -15,7 +15,7 @@ public class PlateRepository : GymObjectRepository<Plate>
     /// Common plate weights are enabled by default. Less common ones are included but disabled.
     /// </summary>
     private static readonly (decimal, EUnits, bool, string)[] _DefaultPlates =
-    {
+    [
         // Metric.
         (0.25m, EUnits.Kilograms, false, "Red"),
         (0.5m, EUnits.Kilograms, false, "OffWhite"),
@@ -23,14 +23,14 @@ public class PlateRepository : GymObjectRepository<Plate>
         (1m, EUnits.Kilograms, false, "Green"),
         (1.25m, EUnits.Kilograms, true, "Orange"),
         (1.5m, EUnits.Kilograms, false, "Yellow"),
-        (2, EUnits.Kilograms, false, "Indigo"),
+        (2, EUnits.Kilograms, false, "Blue"),
         (2.5m, EUnits.Kilograms, true, "Red"),
         (5, EUnits.Kilograms, true, "OffWhite"),
         (7.5m, EUnits.Kilograms, false, "Pink"),
         (10, EUnits.Kilograms, true, "Green"),
         (12.5m, EUnits.Kilograms, false, "Orange"),
         (15, EUnits.Kilograms, true, "Yellow"),
-        (20, EUnits.Kilograms, true, "Indigo"),
+        (20, EUnits.Kilograms, true, "Blue"),
         (25, EUnits.Kilograms, true, "Red"),
         // Pounds.
         (0.25m, EUnits.Pounds, false, "Green"),
@@ -44,9 +44,9 @@ public class PlateRepository : GymObjectRepository<Plate>
         (15, EUnits.Pounds, true, "Pink"),
         (25, EUnits.Pounds, true, "Green"),
         (35, EUnits.Pounds, true, "Yellow"),
-        (45, EUnits.Pounds, true, "Indigo"),
+        (45, EUnits.Pounds, true, "Blue"),
         (55, EUnits.Pounds, true, "Red")
-    };
+    ];
 
     /// <summary>
     /// Constructor.

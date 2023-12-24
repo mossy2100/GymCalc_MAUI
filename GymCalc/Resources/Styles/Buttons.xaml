@@ -1,6 +1,4 @@
-<?xml
-    version="1.0"
-    encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -36,20 +34,20 @@
             Value="-1"/>
         <Setter
             Property="HeightRequest"
-            Value="40"/>
+            Value="{StaticResource ColorPickerButtonSize}"/>
         <Setter
             Property="WidthRequest"
-            Value="40"/>
+            Value="{StaticResource ColorPickerButtonSize}"/>
         <Setter
             Property="CornerRadius"
-            Value="7"/>
+            Value="8"/>
         <Setter
             Property="BorderColor"
             Value="{AppThemeBinding Light={StaticResource White},
                                     Dark={StaticResource Black}}"/>
         <Setter
             Property="BorderWidth"
-            Value="3"/>
+            Value="2"/>
     </Style>
 
     <Style
@@ -63,16 +61,22 @@
             Value="-1"/>
         <Setter
             Property="HeightRequest"
-            Value="32"/>
+            Value="{StaticResource IconButtonSize}"/>
         <Setter
             Property="WidthRequest"
-            Value="32"/>
+            Value="{StaticResource IconButtonSize}"/>
         <Setter
             Property="CornerRadius"
             Value="4"/>
         <Setter
             Property="Padding"
             Value="0"/>
+        <Setter
+            Property="HorizontalOptions"
+            Value="Center"/>
+        <Setter
+            Property="VerticalOptions"
+            Value="Center"/>
     </Style>
 
     <Style
@@ -198,17 +202,14 @@
             Property="BorderWidth"
             Value="1"/>
         <Setter
-            Property="WidthRequest"
-            Value="55"/>
-        <Setter
             Property="HeightRequest"
-            Value="30"/>
+            Value="32"/>
         <Setter
             Property="FontSize"
             Value="16"/>
         <Setter
             Property="Padding"
-            Value="5,5"/>
+            Value="4,4"/>
         <Setter
             Property="CornerRadius"
             Value="4"/>
@@ -226,11 +227,12 @@
                                                         Dark={StaticResource White}}"/>
                             <Setter
                                 Property="Background"
-                                Value="Transparent"/>
+                                Value="{AppThemeBinding Light={StaticResource Gray50},
+                                                        Dark={StaticResource Gray900}}"/>
                             <Setter
                                 Property="BorderColor"
-                                Value="{AppThemeBinding Light={StaticResource Black},
-                                                        Dark={StaticResource White}}"/>
+                                Value="{AppThemeBinding Light={StaticResource Gray300},
+                                                        Dark={StaticResource Gray600}}"/>
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState
@@ -267,9 +269,6 @@
             Property="ContentLayout"
             Value="Top,0"/>
         <Setter
-            Property="WidthRequest"
-            Value="140"/>
-        <Setter
             Property="HeightRequest"
             Value="140"/>
         <Setter
@@ -280,7 +279,7 @@
             Value="1"/>
         <Setter
             Property="HorizontalOptions"
-            Value="Center"/>
+            Value="Fill"/>
         <Setter
             Property="VerticalOptions"
             Value="Start"/>

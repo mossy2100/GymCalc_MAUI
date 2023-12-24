@@ -110,12 +110,7 @@ public class ListViewModel : BaseViewModel
             drawable.MaxWeight = maxWeight;
 
             // Create the list item and add it to the list.
-            var listItem = new ListItem
-            {
-                GymObject = gymObject,
-                Drawable = drawable,
-                Enabled = gymObject.Enabled
-            };
+            var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
             ListItems.Add(listItem);
         }
     }

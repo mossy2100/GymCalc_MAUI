@@ -7,44 +7,44 @@
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.WeightsPage"
-    x:DataType="viewModels:WeightsViewModel">
-    <ContentPage.Content>
-        <VerticalStackLayout
-            Padding="{x:Static graphics:PageLayout.Spacing}"
-            Spacing="{x:Static graphics:PageLayout.Spacing}">
-            <Label
-                FontSize="14"
-                Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."></Label>
-            <Button
-                ImageSource="bar_icon_white_300.png"
-                Text="Bars"
-                ContentLayout="Left,20"
-                Command="{Binding ListGymObjectsCommand}"
-                CommandParameter="Bar"/>
-            <Button
-                ImageSource="plate_icon_white_300.png"
-                Text="Plates"
-                ContentLayout="Left,20"
-                Command="{Binding ListGymObjectsCommand}"
-                CommandParameter="Plate"/>
-            <Button
-                ImageSource="barbell_icon_white_300.png"
-                Text="Fixed Barbells"
-                ContentLayout="Left,20"
-                Command="{Binding ListGymObjectsCommand}"
-                CommandParameter="Barbell"/>
-            <Button
-                ImageSource="dumbbell_icon_white_300.png"
-                Text="Dumbbells"
-                ContentLayout="Left,20"
-                Command="{Binding ListGymObjectsCommand}"
-                CommandParameter="Dumbbell"/>
-            <Button
-                ImageSource="kettlebell_icon_white_300.png"
-                Text="Kettlebells"
-                ContentLayout="Left,20"
-                Command="{Binding ListGymObjectsCommand}"
-                CommandParameter="Kettlebell"/>
-        </VerticalStackLayout>
-    </ContentPage.Content>
+    x:DataType="viewModels:WeightsViewModel"
+    Title="Weights">
+
+    <VerticalStackLayout
+        Padding="{x:Static graphics:PageLayout.Spacing}"
+        Spacing="{x:Static graphics:PageLayout.Spacing}">
+        <Label
+            FontSize="14"
+            Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."></Label>
+        <Button
+            ImageSource="bar_icon_white_300.png"
+            Text="Bars"
+            ContentLayout="Left,20"
+            Command="{Binding ListGymObjectsCommand}"
+            CommandParameter="Bar"/>
+        <Button
+            ImageSource="plate_icon_white_300.png"
+            Text="Plates"
+            ContentLayout="Left,20"
+            Command="{Binding ListGymObjectsCommand}"
+            CommandParameter="Plate"/>
+        <Button
+            ImageSource="barbell_icon_white_300.png"
+            Text="Fixed Barbells"
+            ContentLayout="Left,20"
+            Command="{Binding ListGymObjectsCommand}"
+            CommandParameter="Barbell"/>
+        <Button
+            ImageSource="dumbbell_icon_white_300.png"
+            Text="Dumbbells"
+            ContentLayout="Left,20"
+            Command="{Binding ListGymObjectsCommand}"
+            CommandParameter="Dumbbell"/>
+        <Button
+            ImageSource="kettlebell_icon_white_300.png"
+            Text="Kettlebells"
+            ContentLayout="Left,20"
+            Command="{Binding ListGymObjectsCommand}"
+            CommandParameter="Kettlebell"/>
+    </VerticalStackLayout>
 </ContentPage>

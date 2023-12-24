@@ -1,6 +1,4 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -14,72 +12,71 @@
     Title="{Binding Title}">
 
     <Grid
-        Padding="0"
+        Padding="{x:Static graphics:PageLayout.Spacing}"
         RowDefinitions="Auto,*,Auto"
-        RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+        RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
         <Label
             Grid.Row="0"
-            Padding="{x:Static graphics:PageLayout.Spacing}"
             FontSize="14"
             Text="{Binding Instructions}"
             TextType="Html"/>
 
-        <CollectionView
+        <Frame
             Grid.Row="1"
-            ItemsSource="{Binding ListItems}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate
-                    x:DataType="models:ListItem">
-                    <Grid
-                        ColumnDefinitions="*,Auto,Auto,Auto"
-                        ColumnSpacing="5"
-                        Padding="{x:Static graphics:PageLayout.Spacing}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition
-                                Height="{Binding Drawable.Height}"/>
-                        </Grid.RowDefinitions>
-                        <GraphicsView
-                            Grid.Column="0"
-                            Drawable="{Binding Drawable}"
-                            HeightRequest="{Binding Drawable.Height}"
-                            WidthRequest="{Binding Drawable.Width}"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"/>
-                        <input:CheckBox
-                            Grid.Column="1"
-                            Type="Material"
-                            HeightRequest="32"
-                            WidthRequest="32"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Center"
-                            IsChecked="{Binding Enabled, Mode=TwoWay}"
-                            CheckChangedCommand="{Binding Model.EnableCommand,
+            BorderColor="{AppThemeBinding Light={StaticResource Gray300},
+                                          Dark={StaticResource Gray500}}"
+            BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                              Dark={StaticResource Black}}"
+            CornerRadius="4"
+            Padding="0">
+            <CollectionView
+                ItemsSource="{Binding ListItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate
+                        x:DataType="models:ListItem">
+                        <Grid
+                            ColumnDefinitions="*,Auto,Auto,Auto"
+                            ColumnSpacing="{x:Static graphics:PageLayout.HalfSpacing}"
+                            Padding="10,10,20,10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="{Binding Height}"/>
+                            </Grid.RowDefinitions>
+                            <GraphicsView
+                                Grid.Column="0"
+                                Drawable="{Binding Drawable}"
+                                HeightRequest="{Binding Drawable.Height}"
+                                WidthRequest="{Binding Drawable.Width}"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"/>
+                            <input:CheckBox
+                                Grid.Column="1"
+                                Type="Material"
+                                HeightRequest="{Binding IconButtonHeight}"
+                                WidthRequest="{Binding IconButtonHeight}"
+                                HorizontalOptions="Start"
+                                VerticalOptions="Center"
+                                IsChecked="{Binding Enabled, Mode=TwoWay}"
+                                CheckChangedCommand="{Binding Model.EnableCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding .}"/>
-                        <Button
-                            Grid.Column="2"
-                            Style="{StaticResource EditIconButtonStyle}"
-                            HeightRequest="32"
-                            WidthRequest="32"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            Command="{Binding Model.EditCommand,
+                                CommandParameter="{Binding .}"/>
+                            <Button
+                                Grid.Column="2"
+                                Style="{StaticResource EditIconButtonStyle}"
+                                Command="{Binding Model.EditCommand,
                                 Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
-                            CommandParameter="{Binding GymObject}"/>
-                        <Button
-                            Grid.Column="3"
-                            Style="{StaticResource DeleteIconButtonStyle}"
-                            HeightRequest="32"
-                            WidthRequest="32"
-                            HorizontalOptions="Center"
-                            VerticalOptions="Center"
-                            Clicked="OnDeleteButtonClicked"
-                            CommandParameter="{Binding GymObject}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                CommandParameter="{Binding GymObject}"/>
+                            <Button
+                                Grid.Column="3"
+                                Style="{StaticResource DeleteIconButtonStyle}"
+                                Clicked="OnDeleteButtonClicked"
+                                CommandParameter="{Binding GymObject}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
 
         <Grid
             Grid.Row="2"

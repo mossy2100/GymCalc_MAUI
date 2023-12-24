@@ -5,7 +5,23 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Constants -->
+
+    <x:Int32
+        x:Key="IconButtonSize">
+        32
+    </x:Int32>
+    <x:Int32
+        x:Key="ColorPickerButtonSize">
+        38
+    </x:Int32>
+    <system:Double
+        x:Key="ColorPickerFrameSize">
+        42
+    </system:Double>
 
     <!--  Frame and border styles  -->
 
@@ -32,19 +48,40 @@
         TargetType="Frame">
         <Setter
             Property="WidthRequest"
-            Value="46"/>
+            Value="{StaticResource ColorPickerFrameSize}"/>
         <Setter
             Property="HeightRequest"
-            Value="46"/>
-        <Setter
-            Property="BackgroundColor"
-            Value="Transparent"/>
+            Value="{StaticResource ColorPickerFrameSize}"/>
         <Setter
             Property="BorderColor"
             Value="Transparent"/>
         <Setter
             Property="CornerRadius"
             Value="10"/>
+        <Setter
+            Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup
+                    x:Name="CommonStates">
+                    <VisualState
+                        x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter
+                                Property="BackgroundColor"
+                                Value="Transparent"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState
+                        x:Name="Selected">
+                        <VisualState.Setters>
+                            <Setter
+                                Property="BackgroundColor"
+                                Value="{StaticResource Primary}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
     <!-- Entry and Picker styles -->
@@ -87,11 +124,7 @@
         TargetType="Grid">
         <Setter
             Property="Padding"
-            Value="{x:Static graphics:PageLayout.Spacing}"/>
-        <Setter
-            Property="BackgroundColor"
-            Value="{AppThemeBinding Light={StaticResource Gray50},
-                                    Dark={StaticResource Gray900}}"/>
+            Value="0"/>
         <Setter
             Property="ColumnSpacing"
             Value="{x:Static graphics:PageLayout.Spacing}"/>

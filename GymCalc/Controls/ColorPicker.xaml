@@ -7,8 +7,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Grid
         x:Name="ColorPickerGrid"
-        ColumnDefinitions="46,46,46,46"
         ColumnSpacing="0"
-        RowDefinitions="46,46,46,46"
-        RowSpacing="0"/>
+        RowSpacing="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
+            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
+            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
+            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
+            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
+            <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
+            <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
+        </Grid.RowDefinitions>
+    </Grid>
 </ContentView>

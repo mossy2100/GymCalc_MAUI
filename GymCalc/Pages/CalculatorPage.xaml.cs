@@ -1,5 +1,4 @@
 using Galaxon.Core.Exceptions;
-using Galaxon.Maui.Utilities;
 using GymCalc.Enums;
 using GymCalc.ViewModels;
 using InputKitRadioButton = InputKit.Shared.Controls.RadioButton;
@@ -16,7 +15,7 @@ public partial class CalculatorPage : ContentPage
 
     #endregion Fields
 
-    private bool _layoutInitialized;
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -26,22 +25,11 @@ public partial class CalculatorPage : ContentPage
         InitializeComponent();
         BindingContext = model;
         _model = model;
-
-        // Events.
-        SizeChanged += OnSizeChanged;
     }
 
-    #region Event handlers
+    #endregion Constructor
 
-    /// <summary>
-    /// This runs whenever the page is displayed, and also when the orientation changes.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void OnSizeChanged(object? sender, EventArgs e)
-    {
-        UpdateLayoutOrientation();
-    }
+    #region Events
 
     /// <inheritdoc/>
     protected override async void OnAppearing()
@@ -96,50 +84,9 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
-    #endregion Event handlers
+    #endregion Events
 
     #region UI
-
-    private void UpdateLayoutOrientation()
-    {
-        // // Get the device orientation.
-        // StackOrientation newOrientation =
-        //     MauiUtility.GetOrientation() == DisplayOrientation.Landscape
-        //         ? StackOrientation.Horizontal
-        //         : StackOrientation.Vertical;
-
-        // Skip the redraw if we don't need to do it.
-        if (_layoutInitialized)
-        {
-            return;
-        }
-
-        // If different, update the layout.
-        // CalculatorLayout.Orientation = newOrientation;
-
-        // Update the button widths.
-        ResetExerciseTypeButtonWidths();
-
-        _layoutInitialized = true;
-    }
-
-    private double GetAvailWidth()
-    {
-        double scrollViewWidth = CalculatorScrollView.Width - CalculatorScrollView.Padding.Left
-            - CalculatorScrollView.Padding.Right;
-        return MauiUtility.GetOrientation() == DisplayOrientation.Landscape
-            ? (scrollViewWidth - CalculatorLayout.Spacing) / 2
-            : scrollViewWidth;
-    }
-
-    private void ResetExerciseTypeButtonWidths()
-    {
-        double width = (GetAvailWidth() - ExerciseTypeButtonGrid.ColumnSpacing) / 2;
-        BarbellButton.WidthRequest = width;
-        DumbbellButton.WidthRequest = width;
-        MachineButton.WidthRequest = width;
-        KettlebellButton.WidthRequest = width;
-    }
 
     private void SetExerciseType(EExerciseType exerciseType)
     {
@@ -217,10 +164,6 @@ public partial class CalculatorPage : ContentPage
             default:
                 throw new MatchNotFoundException("Invalid exercise type.");
         }
-
-        // Display the results if the current results exercise type matches; otherwise hide them.
-        // _model.ResultsVisible = exerciseType == _model.ResultsExerciseType
-        //     && (_model.PlatesResultVisible || _model.SingleWeightResultVisible);
     }
 
     #endregion UI

@@ -4,10 +4,16 @@ namespace GymCalc.Controls;
 /// This custom control is a solution to the problem of Labels on iOS ignoring the FontAttributes
 /// property. If Microsoft fix this bug, we won't need this control anymore. We'll be able to just
 /// use a regular Label with FontAttributes=Bold.
-/// TODO Add a XML file with the markup for this control instead of creating everything dynamically.
 /// </summary>
 public class BoldLabel : Label
 {
+    public BoldLabel()
+    {
+        // Add the formatted text and span.
+        FormattedText = new FormattedString();
+        FormattedText.Spans.Add(new Span { FontAttributes = FontAttributes.Bold });
+    }
+
     public new static readonly BindableProperty TextProperty = BindableProperty.Create(
         nameof(Text), typeof(string), typeof(BoldLabel), propertyChanged: OnTextChanged);
 
@@ -33,16 +39,6 @@ public class BoldLabel : Label
         if (oldText == newText)
         {
             return;
-        }
-
-        // If no spans have been added yet, add the single bold span.
-        if (bl.FormattedText == null)
-        {
-            bl.FormattedText = new FormattedString();
-        }
-        if (bl.FormattedText.Spans.Count == 0)
-        {
-            bl.FormattedText.Spans.Add(new Span { FontAttributes = FontAttributes.Bold });
         }
 
         // Update the span text.

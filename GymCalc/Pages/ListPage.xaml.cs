@@ -6,6 +6,8 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectTypeName), "type")]
 public partial class ListPage : ContentPage
 {
+    #region Fields
+
     /// <summary>
     /// The gym object type name. This is passed as a parameter to the page and determines what
     /// objects to display in the list.
@@ -13,6 +15,10 @@ public partial class ListPage : ContentPage
     /// gym objects of the specified type.
     /// </summary>
     private string? _gymObjectTypeName;
+
+    #endregion Fields
+
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -30,6 +36,10 @@ public partial class ListPage : ContentPage
         // Event handlers.
         SizeChanged += OnSizeChanged;
     }
+
+    #endregion Constructor
+
+    #region Properties
 
     /// <summary>
     /// Reference to the viewmodel.
@@ -51,6 +61,10 @@ public partial class ListPage : ContentPage
             Model.GymObjectTypeName = value;
         }
     }
+
+    #endregion Properties
+
+    #region Events
 
     /// <inheritdoc/>
     protected override async void OnAppearing()
@@ -119,4 +133,6 @@ public partial class ListPage : ContentPage
             await Model.ResetGymObjects();
         }
     }
+
+    #endregion Events
 }

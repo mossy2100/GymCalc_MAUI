@@ -7,7 +7,9 @@ namespace GymCalc.Graphics;
 /// </summary>
 internal static class PageLayout
 {
-    internal const double Spacing = 10;
+    internal const double Spacing = 8;
+
+    internal const double HalfSpacing = Spacing / 2;
 
     internal const double DoubleSpacing = 2 * Spacing;
 

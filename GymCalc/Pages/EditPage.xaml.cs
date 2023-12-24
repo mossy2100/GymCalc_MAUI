@@ -8,21 +8,20 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(GymObjectId), "id")]
 public partial class EditPage : ContentPage
 {
-    // ---------------------------------------------------------------------------------------------
+    #region Fields
 
     /// <summary>Reference to the viewmodel.</summary>
     private readonly EditViewModel _model;
+
+    private string? _operation;
 
     private int _gymObjectId;
 
     private string? _gymObjectTypeName;
 
-    // ---------------------------------------------------------------------------------------------
-    // Page parameters.
+    #endregion Fields
 
-    private string? _operation;
-
-    // ---------------------------------------------------------------------------------------------
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -33,11 +32,11 @@ public partial class EditPage : ContentPage
         InitializeComponent();
         _model = model;
         BindingContext = _model;
-
-        // Workaround for issue with Back button label.
-        // <see href="https://github.com/dotnet/maui/issues/8335" />
-        Shell.SetBackButtonBehavior(this, new BackButtonBehavior { IsVisible = false });
     }
+
+    #endregion Constructor
+
+    #region Properties
 
     public string? Operation
     {
@@ -72,8 +71,9 @@ public partial class EditPage : ContentPage
         }
     }
 
-    // ---------------------------------------------------------------------------------------------
-    // Event handlers.
+    #endregion Properties
+
+    #region Events
 
     /// <inheritdoc/>
     protected override async void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -89,4 +89,6 @@ public partial class EditPage : ContentPage
                 break;
         }
     }
+
+    #endregion Events
 }

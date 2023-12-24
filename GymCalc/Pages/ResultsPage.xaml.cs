@@ -48,6 +48,10 @@ public partial class ResultsPage : ContentPage
         _model.PercentSelected(100);
     }
 
+    #endregion Events
+
+    #region UI
+
     private void UpdateCalculatorSettings()
     {
         MauiUtility.ClearGrid(CalculatorSettingsGrid, false, true);
@@ -96,5 +100,5 @@ public partial class ResultsPage : ContentPage
         }
     }
 
-    #endregion Events
+    #endregion UI
 }

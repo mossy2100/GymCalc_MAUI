@@ -13,6 +13,7 @@
     Title="{Binding Title}">
 
     <Grid
+        Padding="{x:Static graphics:PageLayout.Spacing}"
         RowDefinitions="*,Auto">
         <ScrollView
             Grid.Row="0"
@@ -142,18 +143,15 @@
         <!--  Buttons  -->
         <Grid
             Grid.Row="1"
-            ColumnDefinitions="*,*"
             Style="{StaticResource ButtonGridStyle}">
+            <!-- <Button -->
+            <!--     Grid.Row="0" -->
+            <!--     Grid.Column="0" -->
+            <!--     Command="{Binding CancelCommand}" -->
+            <!--     Style="{StaticResource CancelButtonStyle}"/> -->
             <Button
-                x:Name="CancelButton"
                 Grid.Row="0"
                 Grid.Column="0"
-                Command="{Binding CancelCommand}"
-                Style="{StaticResource CancelButtonStyle}"/>
-            <Button
-                x:Name="SaveButton"
-                Grid.Row="0"
-                Grid.Column="1"
                 Command="{Binding SaveCommand}"
                 Style="{StaticResource SaveButtonStyle}"/>
         </Grid>

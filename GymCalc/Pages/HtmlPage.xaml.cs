@@ -8,6 +8,8 @@ namespace GymCalc.Pages;
 [QueryProperty(nameof(Route), "route")]
 public partial class HtmlPage : ContentPage
 {
+    #region Fields
+
     /// <summary>
     /// Reference to the viewmodel.
     /// </summary>
@@ -22,6 +24,10 @@ public partial class HtmlPage : ContentPage
     /// The route to the Blazor page (backing field).
     /// </summary>
     private string? _route;
+
+    #endregion Fields
+
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -55,6 +61,10 @@ public partial class HtmlPage : ContentPage
         };
     }
 
+    #endregion Constructor
+
+    #region Properties
+
     /// <summary>
     /// The route to the Blazor page (property).
     /// </summary>
@@ -71,6 +81,10 @@ public partial class HtmlPage : ContentPage
             }
         }
     }
+
+    #endregion Properties
+
+    #region Events
 
     /// <summary>
     /// Event handler for when the theme changes.
@@ -105,4 +119,6 @@ public partial class HtmlPage : ContentPage
                 break;
         }
     }
+
+    #endregion Events
 }

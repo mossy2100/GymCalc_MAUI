@@ -37,8 +37,8 @@ public partial class ColorPicker : ContentView
         Style? buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
 
         // Display the color buttons in the grid.
-        const int N_ROWS = 4;
-        const int N_COLS = 4;
+        const int N_ROWS = 3;
+        const int N_COLS = 5;
         int r = 0;
         int c = 0;
         foreach ((string colorName, string colorHex) in CustomColors.Palette)
@@ -105,9 +105,7 @@ public partial class ColorPicker : ContentView
             .Key;
         if (oldButton != null)
         {
-            // I should probably set a visual state here, rather than directly modifying the style
-            // attributes.
-            ((Frame)oldButton.Parent).BackgroundColor = Colors.Transparent;
+            VisualStateManager.GoToState((Frame)oldButton.Parent, "Normal");
         }
 
         // Select the button that was clicked.
@@ -116,9 +114,7 @@ public partial class ColorPicker : ContentView
             .Key;
         if (newButton != null)
         {
-            // I should probably set a visual state here, rather than directly modifying the style
-            // attributes.
-            ((Frame)newButton.Parent).BackgroundColor = MauiUtility.LookupColor("Primary");
+            VisualStateManager.GoToState((Frame)newButton.Parent, "Selected");
         }
     }
 }
