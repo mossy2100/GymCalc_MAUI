@@ -13,8 +13,8 @@
     Title="Calculator">
 
     <ContentPage.Resources>
-        <converters:MachineTypeConverter
-            x:Key="DefaultMachineTypeConverter"/>
+        <converters:MovementTypeConverter
+            x:Key="DefaultMovementTypeConverter"/>
         <converters:BarbellTypeConverter
             x:Key="DefaultBarbellTypeConverter"/>
     </ContentPage.Resources>
@@ -159,7 +159,7 @@
 
             <!-- Machine type -->
             <Grid
-                x:Name="MachineTypeGrid"
+                x:Name="MovementTypeGrid"
                 ColumnDefinitions="7*,5*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
@@ -171,9 +171,9 @@
                 <input:RadioButtonGroupView
                     Grid.Row="0"
                     Grid.Column="1"
-                    SelectedItem="{Binding MachineType, Mode=TwoWay,
-                    Converter={StaticResource DefaultMachineTypeConverter}}"
-                    SelectedItemChangedCommand="{Binding MachineTypeChangedCommand}">
+                    SelectedItem="{Binding _MovementType, Mode=TwoWay,
+                    Converter={StaticResource DefaultMovementTypeConverter}}"
+                    SelectedItemChangedCommand="{Binding MovementTypeChangedCommand}">
                     <input:RadioButton
                         Text="Bilateral"
                         Value="Bilateral"/>

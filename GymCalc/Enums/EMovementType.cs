@@ -1,6 +1,6 @@
 namespace GymCalc.Enums;
 
-public enum EMachineType
+public enum EMovementType
 {
     Bilateral,
 

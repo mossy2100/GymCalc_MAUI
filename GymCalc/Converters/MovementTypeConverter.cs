@@ -3,12 +3,12 @@ using GymCalc.Enums;
 
 namespace GymCalc.Converters;
 
-public class MachineTypeConverter : IValueConverter
+public class MovementTypeConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is EMachineType mt)
+        if (value is EMovementType mt)
         {
             return mt.ToString();
         }
@@ -22,7 +22,7 @@ public class MachineTypeConverter : IValueConverter
     {
         if (value is string s)
         {
-            return Enum.TryParse(s, out EMachineType mt) ? mt : null;
+            return Enum.TryParse(s, out EMovementType mt) ? mt : null;
         }
 
         return null;

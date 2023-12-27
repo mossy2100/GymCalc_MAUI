@@ -115,7 +115,7 @@ public partial class CalculatorPage : ContentPage
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = true;
                 BarWeightGrid.IsVisible = _model.BarbellType == EBarbellType.PlateLoaded;
-                MachineTypeGrid.IsVisible = false;
+                MovementTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;
 
@@ -129,7 +129,7 @@ public partial class CalculatorPage : ContentPage
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
-                MachineTypeGrid.IsVisible = false;
+                MovementTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;
 
@@ -143,7 +143,7 @@ public partial class CalculatorPage : ContentPage
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
-                MachineTypeGrid.IsVisible = true;
+                MovementTypeGrid.IsVisible = true;
                 StartingWeightGrid.IsVisible = true;
                 break;
 
@@ -157,7 +157,7 @@ public partial class CalculatorPage : ContentPage
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = false;
                 BarWeightGrid.IsVisible = false;
-                MachineTypeGrid.IsVisible = false;
+                MovementTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;
 

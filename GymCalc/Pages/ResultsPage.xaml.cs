@@ -73,9 +73,9 @@ public partial class ResultsPage : ContentPage
         {
             rows.Add("Bar weight", $"{_calculatorService.BarWeight} {sUnits}");
         }
-        if (_calculatorService.MachineType != null)
+        if (_calculatorService.MovementType != null)
         {
-            rows.Add("Machine type", _calculatorService.MachineType.GetDescription());
+            rows.Add("Machine type", _calculatorService.MovementType.GetDescription());
         }
         if (_calculatorService.StartingWeight != null)
         {

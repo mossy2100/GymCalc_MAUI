@@ -45,7 +45,7 @@ public class CalculatorService
 
     internal decimal? BarWeight { get; set; }
 
-    internal EMachineType? MachineType { get; set; }
+    internal EMovementType? MovementType { get; set; }
 
     internal decimal? StartingWeight { get; set; }
 
@@ -68,7 +68,7 @@ public class CalculatorService
         MaxWeight = null;
         BarbellType = null;
         BarWeight = null;
-        MachineType = null;
+        MovementType = null;
         StartingWeight = null;
         ResultType = null;
         PlatesResults = null;
@@ -100,21 +100,21 @@ public class CalculatorService
         }
     }
 
-    internal async Task DoMachineCalculations(EMachineType machineType, decimal maxWeight,
+    internal async Task DoMachineCalculations(EMovementType movementType, decimal maxWeight,
         decimal startingWeight)
     {
         // Update parameters.
         Reset();
         ExerciseType = EExerciseType.Machine;
         MaxWeight = maxWeight;
-        MachineType = machineType;
+        MovementType = movementType;
         StartingWeight = startingWeight;
 
         // Determine the number of plate stacks and total starting weight from the machine type.
-        int nStacks = machineType == EMachineType.Isolateral ? 2 : 1;
+        int nStacks = movementType == EMovementType.Isolateral ? 2 : 1;
         decimal totalStartingWeight = startingWeight * nStacks;
         string eachSideText =
-            machineType == EMachineType.Isolateral ? "Plates each side" : "Plates";
+            movementType == EMovementType.Isolateral ? "Plates each side" : "Plates";
 
         // Calculate the results.
         PlatesResults = await PlateSolver.CalculateResults(maxWeight, totalStartingWeight, nStacks,

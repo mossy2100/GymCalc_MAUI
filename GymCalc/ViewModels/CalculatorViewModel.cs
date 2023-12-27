@@ -33,7 +33,7 @@ public class CalculatorViewModel : BaseViewModel
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
         BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
-        MachineTypeChangedCommand = new Command(MachineTypeChanged);
+        MovementTypeChangedCommand = new Command(MovementTypeChanged);
 
         // Initial selected exercise type.
         SelectedExerciseType = EExerciseType.Barbell;
@@ -124,13 +124,13 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private EMachineType _machineType = EMachineType.Bilateral;
+    private EMovementType _movementType = EMovementType.Bilateral;
 
-    public EMachineType MachineType
+    public EMovementType _MovementType
     {
-        get => _machineType;
+        get => _movementType;
 
-        set => SetProperty(ref _machineType, value);
+        set => SetProperty(ref _movementType, value);
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand? BarbellTypeChangedCommand { get; init; }
 
-    public ICommand MachineTypeChangedCommand { get; init; }
+    public ICommand MovementTypeChangedCommand { get; init; }
 
     #endregion Commands
 
@@ -287,7 +287,7 @@ public class CalculatorViewModel : BaseViewModel
         SetUnits();
 
         // Initialize the starting weight label.
-        MachineTypeChanged();
+        MovementTypeChanged();
 
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
@@ -347,7 +347,7 @@ public class CalculatorViewModel : BaseViewModel
             case EExerciseType.Machine:
                 if (ValidateMaxWeight() && ValidateStartingWeight())
                 {
-                    await _calculatorService.DoMachineCalculations(MachineType, MaxWeight!.Value,
+                    await _calculatorService.DoMachineCalculations(_MovementType, MaxWeight!.Value,
                         StartingWeight!.Value);
                 }
                 break;
@@ -376,9 +376,9 @@ public class CalculatorViewModel : BaseViewModel
 
     private void BarbellTypeChanged() { }
 
-    private void MachineTypeChanged()
+    private void MovementTypeChanged()
     {
-        StartingWeightLabel = MachineType == EMachineType.Isolateral
+        StartingWeightLabel = _MovementType == EMovementType.Isolateral
             ? "Starting weight per side"
             : "Starting weight";
     }
