@@ -4,5 +4,7 @@ public enum EMovementType
 {
     Bilateral,
 
-    Isolateral
+    Isolateral,
+
+    Unilateral
 }
