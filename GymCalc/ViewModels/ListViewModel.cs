@@ -1,6 +1,5 @@
 using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
-using Galaxon.Core.Types;
 using GymCalc.Drawables;
 using GymCalc.Models;
 using GymCalc.Repositories;
@@ -39,6 +38,9 @@ public class ListViewModel : BaseViewModel
         ResetCommand = new AsyncCommand(ResetGymObjects);
     }
 
+    /// <summary>
+    /// Display the list of objects.
+    /// </summary>
     internal async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
@@ -55,46 +57,41 @@ public class ListViewModel : BaseViewModel
             + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";
 
-        // Display all gym objects of the specified type.
+        // Get all gym objects of the specified type.
+        List<GymObject>? gymObjects = null;
         switch (GymObjectTypeName)
         {
             case nameof(Bar):
                 List<Bar> bars = await _barRepo.LoadSome(null);
-                DisplayObjects(bars);
+                gymObjects = bars.Cast<GymObject>().ToList();
                 break;
 
             case nameof(Plate):
                 List<Plate> plates = await _plateRepo.LoadSome(null);
-                DisplayObjects(plates);
+                gymObjects = plates.Cast<GymObject>().ToList();
                 break;
 
             case nameof(Barbell):
                 List<Barbell> barbells = await _barbellRepo.LoadSome(null);
-                DisplayObjects(barbells);
+                gymObjects = barbells.Cast<GymObject>().ToList();
                 break;
 
             case nameof(Dumbbell):
                 List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome(null);
-                DisplayObjects(dumbbells);
+                gymObjects = dumbbells.Cast<GymObject>().ToList();
                 break;
 
             case nameof(Kettlebell):
                 List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome(null);
-                DisplayObjects(kettlebells);
+                gymObjects = kettlebells.Cast<GymObject>().ToList();
                 break;
         }
-    }
 
-    /// <summary>
-    /// Initialize the list of gym objects.
-    /// </summary>
-    private void DisplayObjects<T>(List<T> gymObjects) where T : GymObject
-    {
-        // Initialize the empty list.
+        // Initialize the list of items.
         ListItems = new List<ListItem>();
 
         // Check if there's anything to draw.
-        if (gymObjects.Count == 0)
+        if (gymObjects == null || gymObjects.Count == 0)
         {
             return;
         }
@@ -103,7 +100,7 @@ public class ListViewModel : BaseViewModel
         decimal maxWeight = gymObjects.Last().Weight;
 
         // Create drawables and add to list.
-        foreach (T gymObject in gymObjects)
+        foreach (GymObject gymObject in gymObjects)
         {
             // Create the drawable.
             var drawable = GymObjectDrawable.Create(gymObject);
@@ -112,19 +109,6 @@ public class ListViewModel : BaseViewModel
             // Create the list item and add it to the list.
             var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
             ListItems.Add(listItem);
-        }
-    }
-
-    /// <inheritdoc/>
-    protected override async void OnPropertyChanged(string? propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-
-        switch (propertyName)
-        {
-            case nameof(GymObjectTypeName):
-                await DisplayList();
-                break;
         }
     }
 
@@ -235,7 +219,7 @@ public class ListViewModel : BaseViewModel
     {
         // Check if an update is actually needed. This method is called on initialization of the
         // CollectionView, when no changes have occurred. Could be a bug in InputKit.
-        if (listItem!.Enabled == listItem.GymObject!.Enabled)
+        if (listItem!.Enabled == listItem.GymObject.Enabled)
         {
             return;
         }
@@ -336,4 +320,21 @@ public class ListViewModel : BaseViewModel
     }
 
     #endregion Command methods
+
+    #region Events
+
+    /// <inheritdoc/>
+    protected override async void OnPropertyChanged(string? propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(GymObjectTypeName):
+                await DisplayList();
+                break;
+        }
+    }
+
+    #endregion Events
 }

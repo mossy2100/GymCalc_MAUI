@@ -104,7 +104,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// Get a gym object from the database, searching by weight.
     /// </summary>
     /// <param name="weight">The weight of the gym object.</param>
-    /// <param name="units">The units of mass the weight is expressed in.</param>
+    /// <param name="units">The units the weight is expressed in.</param>
     /// <returns>The gym object or null if not found.</returns>
     internal async Task<T?> LoadOneByWeight(decimal weight, EUnits units)
     {
