@@ -32,9 +32,6 @@ public partial class ListPage : ContentPage
         // Initialize.
         InitializeComponent();
         BindingContext = Model;
-
-        // Event handlers.
-        SizeChanged += OnSizeChanged;
     }
 
     #endregion Constructor
@@ -65,23 +62,6 @@ public partial class ListPage : ContentPage
     #endregion Properties
 
     #region Events
-
-    /// <inheritdoc/>
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-        await Model.DisplayList();
-    }
-
-    /// <summary>
-    /// Re-render the list if the page orientation changes.
-    /// </summary>
-    /// <param name="sender">The object sending the event.</param>
-    /// <param name="e">The event arguments.</param>
-    private async void OnSizeChanged(object? sender, EventArgs e)
-    {
-        await Model.DisplayList();
-    }
 
     /// <summary>
     /// Event handler for when a delete icon button is clicked.

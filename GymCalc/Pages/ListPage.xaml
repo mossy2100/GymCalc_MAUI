@@ -22,13 +22,12 @@
             Text="{Binding Instructions}"
             TextType="Html"/>
 
-        <Frame
+        <Border
             Grid.Row="1"
-            BorderColor="{AppThemeBinding Light={StaticResource Gray300},
-                                          Dark={StaticResource Gray500}}"
+            Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                     Dark={StaticResource Gray500}}"
             BackgroundColor="{AppThemeBinding Light={StaticResource White},
                                               Dark={StaticResource Black}}"
-            CornerRadius="4"
             Padding="0">
             <CollectionView
                 ItemsSource="{Binding ListItems}">
@@ -76,7 +75,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </Frame>
+        </Border>
 
         <Grid
             Grid.Row="2"

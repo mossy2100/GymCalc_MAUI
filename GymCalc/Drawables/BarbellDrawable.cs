@@ -8,11 +8,6 @@ namespace GymCalc.Drawables;
 public class BarbellDrawable : GymObjectDrawable
 {
     /// <summary>
-    /// Constant width for barbell graphics.
-    /// </summary>
-    private const int _WIDTH = 200;
-
-    /// <summary>
     /// Constant height for barbell graphics.
     /// </summary>
     private const int _HEIGHT = 50;
@@ -20,7 +15,7 @@ public class BarbellDrawable : GymObjectDrawable
     /// <inheritdoc/>
     protected override double GetWidth()
     {
-        return _WIDTH;
+        return MAX_WIDTH;
     }
 
     /// <inheritdoc/>

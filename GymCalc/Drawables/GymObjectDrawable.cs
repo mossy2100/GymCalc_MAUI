@@ -7,12 +7,12 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// <summary>
     /// Constant for the minimum width of a gym object graphic.
     /// </summary>
-    private const int _MIN_WIDTH = 50;
+    protected const int MIN_WIDTH = 50;
 
     /// <summary>
     /// Constant for the maximum width of a gym object graphic.
     /// </summary>
-    private const int _MAX_WIDTH = 200;
+    protected const int MAX_WIDTH = 180;
 
     /// <summary>
     /// Reference to the gym object this drawable represents.
@@ -25,7 +25,7 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// </summary>
     internal static double CalculateWidth(decimal weight, decimal maxWeight)
     {
-        return _MIN_WIDTH + (double)weight / (double)maxWeight * (_MAX_WIDTH - _MIN_WIDTH);
+        return MIN_WIDTH + (double)weight / (double)maxWeight * (MAX_WIDTH - MIN_WIDTH);
     }
 
     /// <summary>

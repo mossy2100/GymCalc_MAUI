@@ -9,6 +9,24 @@ namespace GymCalc.ViewModels;
 
 public class ListViewModel : BaseViewModel
 {
+    #region Dependencies
+
+    private readonly Database _database;
+
+    private readonly BarRepository _barRepo;
+
+    private readonly PlateRepository _plateRepo;
+
+    private readonly BarbellRepository _barbellRepo;
+
+    private readonly DumbbellRepository _dumbbellRepo;
+
+    private readonly KettlebellRepository _kettlebellRepo;
+
+    #endregion Dependencies
+
+    #region Constructor
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -38,95 +56,7 @@ public class ListViewModel : BaseViewModel
         ResetCommand = new AsyncCommand(ResetGymObjects);
     }
 
-    /// <summary>
-    /// Display the list of objects.
-    /// </summary>
-    internal async Task DisplayList()
-    {
-        // Make sure GymObjectTypeName is set.
-        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
-        {
-            return;
-        }
-
-        Title = $"{GymObjectTypeName}s";
-
-        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
-            + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
-            + $" Use the edit and delete icon buttons to make changes."
-            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
-            + $" button to reset to the defaults.";
-
-        // Get all gym objects of the specified type.
-        List<GymObject>? gymObjects = null;
-        switch (GymObjectTypeName)
-        {
-            case nameof(Bar):
-                List<Bar> bars = await _barRepo.LoadSome(null);
-                gymObjects = bars.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Plate):
-                List<Plate> plates = await _plateRepo.LoadSome(null);
-                gymObjects = plates.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Barbell):
-                List<Barbell> barbells = await _barbellRepo.LoadSome(null);
-                gymObjects = barbells.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Dumbbell):
-                List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome(null);
-                gymObjects = dumbbells.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Kettlebell):
-                List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome(null);
-                gymObjects = kettlebells.Cast<GymObject>().ToList();
-                break;
-        }
-
-        // Initialize the list of items.
-        ListItems = new List<ListItem>();
-
-        // Check if there's anything to draw.
-        if (gymObjects == null || gymObjects.Count == 0)
-        {
-            return;
-        }
-
-        // Get the maximum weight, which is used to determine the width of bars and plates.
-        decimal maxWeight = gymObjects.Last().Weight;
-
-        // Create drawables and add to list.
-        foreach (GymObject gymObject in gymObjects)
-        {
-            // Create the drawable.
-            var drawable = GymObjectDrawable.Create(gymObject);
-            drawable.MaxWeight = maxWeight;
-
-            // Create the list item and add it to the list.
-            var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
-            ListItems.Add(listItem);
-        }
-    }
-
-    #region Dependencies
-
-    private readonly Database _database;
-
-    private readonly BarRepository _barRepo;
-
-    private readonly PlateRepository _plateRepo;
-
-    private readonly BarbellRepository _barbellRepo;
-
-    private readonly DumbbellRepository _dumbbellRepo;
-
-    private readonly KettlebellRepository _kettlebellRepo;
-
-    #endregion Dependencies
+    #endregion Constructor
 
     #region Bindable properties
 
@@ -337,4 +267,82 @@ public class ListViewModel : BaseViewModel
     }
 
     #endregion Events
+
+    #region UI methods
+
+    /// <summary>
+    /// Display the list of objects.
+    /// </summary>
+    internal async Task DisplayList()
+    {
+        // Make sure GymObjectTypeName is set.
+        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
+        {
+            return;
+        }
+
+        Title = $"{GymObjectTypeName}s";
+
+        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
+            + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
+            + $" Use the edit and delete icon buttons to make changes."
+            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
+            + $" button to reset to the defaults.";
+
+        // Get all gym objects of the specified type.
+        List<GymObject>? gymObjects = null;
+        switch (GymObjectTypeName)
+        {
+            case nameof(Bar):
+                List<Bar> bars = await _barRepo.LoadSome(null);
+                gymObjects = bars.Cast<GymObject>().ToList();
+                break;
+
+            case nameof(Plate):
+                List<Plate> plates = await _plateRepo.LoadSome(null);
+                gymObjects = plates.Cast<GymObject>().ToList();
+                break;
+
+            case nameof(Barbell):
+                List<Barbell> barbells = await _barbellRepo.LoadSome(null);
+                gymObjects = barbells.Cast<GymObject>().ToList();
+                break;
+
+            case nameof(Dumbbell):
+                List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome(null);
+                gymObjects = dumbbells.Cast<GymObject>().ToList();
+                break;
+
+            case nameof(Kettlebell):
+                List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome(null);
+                gymObjects = kettlebells.Cast<GymObject>().ToList();
+                break;
+        }
+
+        // Initialize the list of items.
+        ListItems = new List<ListItem>();
+
+        // Check if there's anything to draw.
+        if (gymObjects == null || gymObjects.Count == 0)
+        {
+            return;
+        }
+
+        // Get the maximum weight, which is used to determine the width of bars and plates.
+        decimal maxWeight = gymObjects.Last().Weight;
+
+        // Create drawables and add to list.
+        foreach (GymObject gymObject in gymObjects)
+        {
+            // Create the drawable.
+            var drawable = GymObjectDrawable.Create(gymObject);
+            drawable.MaxWeight = maxWeight;
+
+            // Create the list item and add it to the list.
+            var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
+            ListItems.Add(listItem);
+        }
+    }
+
+    #endregion UI methods
 }
