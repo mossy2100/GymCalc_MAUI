@@ -22,14 +22,29 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     }
 
     /// <summary>
+    /// Create a new gym object.
+    /// </summary>
+    /// <param name="weight">The weight value.</param>
+    /// <param name="units">The weight units.</param>
+    /// <param name="enabled">If the object should be enabled.</param>
+    /// <returns>The new gym object.</returns>
+    public virtual T Create(decimal weight, EUnits units, bool enabled)
+    {
+        return new T
+        {
+            Weight = weight,
+            Units = units.GetDescription(),
+            Enabled = enabled
+        };
+    }
+
+    /// <summary>
     /// Add an object to the database.
     /// </summary>
     /// <param name="weight">The weight.</param>
     /// <param name="units">The mass units.</param>
     /// <param name="enabled">If it should be enabled by default.</param>
-    /// <param name="fnCreate">Function to construct new objects.</param>
-    protected async Task AddWeight(decimal weight, EUnits units, bool enabled,
-        Func<decimal, EUnits, bool, GymObject> fnCreate)
+    protected async Task AddWeight(decimal weight, EUnits units, bool enabled)
     {
         // Check that we haven't added this one already.
         T? gymObject = await LoadOneByWeight(weight, units);
@@ -37,7 +52,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         // If the object isn't already in the database, construct and insert it.
         if (gymObject == null)
         {
-            gymObject = (T)fnCreate(weight, units, enabled);
+            gymObject = Create(weight, units, enabled);
             await Insert(gymObject);
         }
     }
@@ -50,13 +65,11 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="step">The difference between each weight.</param>
     /// <param name="units">The mass units.</param>
     /// <param name="enabled">If they should be enabled by default.</param>
-    /// <param name="fnCreate">Function to construct new objects.</param>
-    protected async Task AddSet(decimal min, decimal max, decimal step, EUnits units, bool enabled,
-        Func<decimal, EUnits, bool, GymObject> fnCreate)
+    protected async Task AddSet(decimal min, decimal max, decimal step, EUnits units, bool enabled)
     {
         for (decimal weight = min; weight <= max; weight += step)
         {
-            await AddWeight(weight, units, enabled, fnCreate);
+            await AddWeight(weight, units, enabled);
         }
     }
 

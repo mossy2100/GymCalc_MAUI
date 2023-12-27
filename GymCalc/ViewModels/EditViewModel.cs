@@ -266,9 +266,9 @@ public class EditViewModel : BaseViewModel
         WeightText = "";
         Units = UnitsService.GetDefaultUnitsSymbol();
         Enabled = true;
-        MainColor = "OffBlack";
+        MainColor = "Black";
         HasBands = false;
-        BandColor = "OffBlack";
+        BandColor = "Black";
 
         // Hide/show certain fields according to the object type.
         switch (_gymObjectTypeName)

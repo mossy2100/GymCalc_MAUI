@@ -1,6 +1,6 @@
 namespace GymCalc.Repositories;
 
-public interface IGymObjectRepository
+internal interface IGymObjectRepository
 {
     public Task InsertDefaults();
 

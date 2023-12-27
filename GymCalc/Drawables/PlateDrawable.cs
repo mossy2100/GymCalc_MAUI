@@ -42,7 +42,7 @@ internal class PlateDrawable : GymObjectDrawable
     internal static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
-        Color? bgColor = CustomColors.Get(plate.Color) ?? CustomColors.Get("OffBlack");
+        Color? bgColor = CustomColors.Get(plate.Color) ?? CustomColors.Get("Black");
 
         // Plate background.
         canvas.FillColor = bgColor!.AddLuminosity(-0.1f);

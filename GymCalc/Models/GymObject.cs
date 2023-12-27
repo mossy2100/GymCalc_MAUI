@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Galaxon.Core.Types;
-using GymCalc.Enums;
-using GymCalc.Services;
 using SQLite;
 
 namespace GymCalc.Models;
@@ -16,19 +12,5 @@ public class GymObject
 
     public string? Units { get; set; }
 
-    [NotMapped]
-    public decimal WeightKg =>
-        Units == EUnits.Kilograms.GetDescription() ? Weight : Weight * UnitsService.KG_PER_LB;
-
     public bool Enabled { get; set; }
-
-    /// <summary>
-    /// Clone the gym object.
-    /// </summary>
-    /// <typeparam name="T">The gym object derived type.</typeparam>
-    /// <returns>A copy of the object.</returns>
-    public T Clone<T>() where T : GymObject
-    {
-        return (T)MemberwiseClone();
-    }
 }

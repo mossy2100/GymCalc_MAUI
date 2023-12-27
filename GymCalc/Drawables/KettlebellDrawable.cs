@@ -36,7 +36,7 @@ public class KettlebellDrawable : GymObjectDrawable
         var width = (float)Width;
 
         // Colors.
-        Color? ballColor = CustomColors.Get(kettlebell.BallColor) ?? CustomColors.Get("OffBlack");
+        Color? ballColor = CustomColors.Get(kettlebell.BallColor) ?? CustomColors.Get("Black");
         Color? bandColor =
             (kettlebell.HasBands == true ? CustomColors.Get(kettlebell.BandColor) : null)
             ?? ballColor;
@@ -48,7 +48,7 @@ public class KettlebellDrawable : GymObjectDrawable
         const int y3 = 35;
 
         // Handle top.
-        canvas.StrokeColor = CustomColors.Get("PaleGray");
+        canvas.StrokeColor = CustomColors.Get("Silver");
         canvas.StrokeSize = 10;
         const int diam = 20;
         canvas.DrawArc(10, y0, diam, diam, 90, 180, false, false);

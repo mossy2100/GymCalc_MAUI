@@ -31,7 +31,7 @@ public class BarDrawable : GymObjectDrawable
         var width = (float)Width;
 
         // Bar background.
-        canvas.FillColor = CustomColors.Get("PaleGray");
+        canvas.FillColor = CustomColors.Get("Silver");
         var barBackground = new RectF(0, 0, width, height);
         canvas.FillRectangle(barBackground);
 

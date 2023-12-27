@@ -16,26 +16,28 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
     public DumbbellRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    public override Dumbbell Create(decimal weight, EUnits units, bool enabled)
+    {
+        return new Dumbbell
+        {
+            Weight = weight,
+            Units = units.GetDescription(),
+            Enabled = enabled,
+            Color = "Black"
+        };
+    }
+
+    /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
-        // Function to construct new Dumbbell objects.
-        Func<decimal, EUnits, bool, Dumbbell> fn = (weight, units, enabled) =>
-            new Dumbbell
-            {
-                Weight = weight,
-                Units = units.GetDescription(),
-                Enabled = enabled,
-                Color = "OffBlack"
-            };
-
         // Kilograms (common).
-        await AddSet(1, 10, 1, EUnits.Kilograms, true, fn);
-        await AddSet(12.5m, 50, 2.5m, EUnits.Kilograms, true, fn);
+        await AddSet(1, 10, 1, EUnits.Kilograms, true);
+        await AddSet(12.5m, 50, 2.5m, EUnits.Kilograms, true);
         // Kilograms (uncommon).
-        await AddWeight(7.5m, EUnits.Kilograms, false, fn);
-        await AddSet(52.5m, 60, 2.5m, EUnits.Kilograms, false, fn);
+        await AddWeight(7.5m, EUnits.Kilograms, false);
+        await AddSet(52.5m, 60, 2.5m, EUnits.Kilograms, false);
         // Pounds (common).
-        await AddSet(1, 10, 1, EUnits.Pounds, true, fn);
-        await AddSet(15, 120, 5, EUnits.Pounds, true, fn);
+        await AddSet(1, 10, 1, EUnits.Pounds, true);
+        await AddSet(15, 120, 5, EUnits.Pounds, true);
     }
 }

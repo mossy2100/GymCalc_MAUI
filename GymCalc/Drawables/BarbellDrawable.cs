@@ -39,7 +39,7 @@ public class BarbellDrawable : GymObjectDrawable
         const int barHeight = 20;
         var barTop = (float)((height - barHeight) / 2.0);
         var bar = new RectF(0, barTop, width, barHeight);
-        canvas.FillColor = CustomColors.Get("PaleGray");
+        canvas.FillColor = CustomColors.Get("Silver");
         canvas.FillRectangle(bar);
 
         // Plates.
@@ -48,7 +48,7 @@ public class BarbellDrawable : GymObjectDrawable
         const int cornerRadius = 2;
         float smallPlateTop = barTop / 3;
         float smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = CustomColors.Get("OffBlack");
+        canvas.FillColor = CustomColors.Get("Black");
 
         // Left small plate.
         var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);

@@ -16,15 +16,15 @@ internal static class CustomColors
         { "Lime", "#ace500" },
         { "Green", "#0fb300" },
         { "Cyan", "#80eaff" },
-        { "Blue", "#005AE6" },
+        { "Blue", "#0080ff" },
+        { "Indigo", "#0033cc" },
         { "Violet", "#7e5ce5" },
         { "Purple", "#9e19a7" },
         { "Pink", "#ff4cff" },
-        { "OffWhite", "#eee" },
+        { "White", "#eee" },
         { "Silver", "#c0c0c0" },
         { "Gray", "#808080" },
-        { "OffBlack", "#333" },
-        { "PaleGray", "#d7d7d7" }
+        { "Black", "#333" }
     };
 
     /// <summary>
@@ -84,14 +84,14 @@ internal static class CustomColors
             7 => "Orange",
             8 => "Red",
             9 => "Gray",
-            10 => "OffWhite",
+            10 => "White",
             11 => "Silver",
             12 => "Gold",
-            _ => "OffBlack"
+            _ => "Black"
         };
 
         // Add black bands if it has them.
-        string? bandColor = hasBands ? "OffBlack" : null;
+        string? bandColor = hasBands ? "Black" : null;
 
         return (ballColor, hasBands, bandColor);
     }

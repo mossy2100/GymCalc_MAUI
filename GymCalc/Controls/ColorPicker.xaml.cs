@@ -37,8 +37,8 @@ public partial class ColorPicker : ContentView
         Style? buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
 
         // Display the color buttons in the grid.
-        const int N_ROWS = 3;
-        const int N_COLS = 5;
+        const int N_ROWS = 4;
+        const int N_COLS = 4;
         int r = 0;
         int c = 0;
         foreach ((string colorName, string colorHex) in CustomColors.Palette)

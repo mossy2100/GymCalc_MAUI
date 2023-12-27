@@ -14,9 +14,9 @@
             <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
             <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
             <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
-            <ColumnDefinition Width="{StaticResource ColorPickerFrameSize}"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
             <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
             <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
             <RowDefinition Height="{StaticResource ColorPickerFrameSize}"/>
