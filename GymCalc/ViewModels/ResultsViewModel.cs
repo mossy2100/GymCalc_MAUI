@@ -105,16 +105,6 @@ public class ResultsViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private List<PlatesResult>? _platesResults;
-
-    public List<PlatesResult>? PlatesResults
-    {
-        get => _platesResults;
-
-        set => SetProperty(ref _platesResults, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
     private PlatesResult? _selectedPlatesResult;
 
     public PlatesResult? SelectedPlatesResult
@@ -132,16 +122,6 @@ public class ResultsViewModel : BaseViewModel
         get => _platesResultVisible;
 
         set => SetProperty(ref _platesResultVisible, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    private List<SingleWeightResult>? _singleWeightResults;
-
-    public List<SingleWeightResult>? SingleWeightResults
-    {
-        get => _singleWeightResults;
-
-        set => SetProperty(ref _singleWeightResults, value);
     }
 
     // ---------------------------------------------------------------------------------------------

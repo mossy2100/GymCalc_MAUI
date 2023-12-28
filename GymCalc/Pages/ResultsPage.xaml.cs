@@ -82,19 +82,19 @@ public partial class ResultsPage : ContentPage
             rows.Add("Starting weight", $"{_calculatorService.StartingWeight} {sUnits}");
         }
         var i = 0;
-        var fontSize = 14;
+        const int FONT_SIZE = 14;
         foreach (KeyValuePair<string, string> row in rows)
         {
             CalculatorSettingsGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             CalculatorSettingsGrid.Add(new BoldLabel
             {
                 Text = row.Key,
-                FontSize = fontSize
+                FontSize = FONT_SIZE
             }, 0, i);
             CalculatorSettingsGrid.Add(new Label
             {
                 Text = row.Value,
-                FontSize = fontSize
+                FontSize = FONT_SIZE
             }, 1, i);
             i++;
         }
