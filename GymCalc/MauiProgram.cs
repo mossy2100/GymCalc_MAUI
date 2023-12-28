@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Maui;
 using InputKit.Handlers;
 using GymCalc.Pages;
