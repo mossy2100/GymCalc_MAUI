@@ -1,4 +1,3 @@
-using System.Globalization;
 using Galaxon.Maui.Utilities;
 using GymCalc.Graphics;
 using GymCalc.Models;

@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using GymCalc.Drawables;
 using GymCalc.Enums;
 using GymCalc.Models;
@@ -208,7 +207,7 @@ public class ResultsViewModel : BaseViewModel
 
         // If the string couldn't be converted to a valid percent, don't throw an exception; just
         // default to the 100% result.
-        int[] validPercentages = { 50, 60, 70, 80, 90, 100 };
+        int[] validPercentages = [50, 60, 70, 80, 90, 100];
         if (!looksLikeInt || !validPercentages.Contains(percent))
         {
             percent = 100;
@@ -242,6 +241,11 @@ public class ResultsViewModel : BaseViewModel
                     CalculatorService.SingleWeightResults?.FirstOrDefault(r =>
                         r.Percent == SelectedPercent);
                 SelectedResultDrawable = SelectedSingleWeightResult?.Drawable;
+                break;
+
+            default:
+                SelectedPlatesResult = null;
+                SelectedSingleWeightResult = null;
                 break;
         }
 

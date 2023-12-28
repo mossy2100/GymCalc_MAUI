@@ -1,4 +1,3 @@
-using System.Globalization;
 using Galaxon.Core.Types;
 using GymCalc.Enums;
 

@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace GymCalc.Enums;
 
 public enum EResultType

@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 namespace GymCalc.ViewModels;
 
 public class BaseViewModel : INotifyPropertyChanged

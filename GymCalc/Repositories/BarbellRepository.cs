@@ -1,4 +1,3 @@
-using Galaxon.Core.Types;
 using GymCalc.Enums;
 using GymCalc.Models;
 

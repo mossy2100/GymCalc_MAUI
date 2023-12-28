@@ -1,3 +1,3 @@
 namespace GymCalc.Models;
 
-public class Barbell : GymObject { }
+public class Barbell : GymObject;

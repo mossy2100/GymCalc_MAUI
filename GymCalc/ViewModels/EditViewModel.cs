@@ -1,9 +1,5 @@
-using System.Data;
-using System.Globalization;
-using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
-using Galaxon.Core.Types;
 using GymCalc.Models;
 using GymCalc.Repositories;
 using GymCalc.Services;
@@ -297,42 +293,37 @@ public class EditViewModel : BaseViewModel
     }
 
     /// <summary>
-    ///  Load an existing gym object from the database.
+    /// Load an existing gym object from the database.
     /// </summary>
     /// <exception cref="MatchNotFoundException">
-    ///  If the gym object type is invalid (should never happen).
+    /// If the gym object type is invalid (should never happen).
     /// </exception>
     /// <exception cref="KeyNotFoundException">
     /// If the gym object with the given type and id is not found in the database.
     /// </exception>
     private async Task LoadGymObjectIntoForm()
     {
-        switch (_gymObjectTypeName)
+        // Guards.
+        if (string.IsNullOrEmpty(_gymObjectTypeName))
         {
-            case nameof(Bar):
-                _gymObject = await _barRepo.LoadOneById(_gymObjectId);
-                break;
-
-            case nameof(Plate):
-                _gymObject = await _plateRepo.LoadOneById(_gymObjectId);
-                break;
-
-            case nameof(Barbell):
-                _gymObject = await _barbellRepo.LoadOneById(_gymObjectId);
-                break;
-
-            case nameof(Dumbbell):
-                _gymObject = await _dumbbellRepo.LoadOneById(_gymObjectId);
-                break;
-
-            case nameof(Kettlebell):
-                _gymObject = await _kettlebellRepo.LoadOneById(_gymObjectId);
-                break;
-
-            default:
-                throw new MatchNotFoundException(
-                    $"Invalid gym object type '{_gymObjectTypeName}'.");
+            throw new InvalidOperationException("Gym object type not specified.");
         }
+        if (_gymObjectId == 0)
+        {
+            throw new InvalidOperationException("Gym object id not specified.");
+        }
+
+        // Load the object.
+        _gymObject = _gymObjectTypeName switch
+        {
+            nameof(Bar) => await _barRepo.LoadOneById(_gymObjectId),
+            nameof(Plate) => await _plateRepo.LoadOneById(_gymObjectId),
+            nameof(Barbell) => await _barbellRepo.LoadOneById(_gymObjectId),
+            nameof(Dumbbell) => await _dumbbellRepo.LoadOneById(_gymObjectId),
+            nameof(Kettlebell) => await _kettlebellRepo.LoadOneById(_gymObjectId),
+            _ => throw new MatchNotFoundException(
+                $"Invalid gym object type '{_gymObjectTypeName}'.")
+        };
 
         if (_gymObject == null)
         {

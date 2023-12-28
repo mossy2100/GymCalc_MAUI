@@ -1,4 +1,3 @@
-using System.Globalization;
 using GymCalc.Enums;
 
 namespace GymCalc.Converters;

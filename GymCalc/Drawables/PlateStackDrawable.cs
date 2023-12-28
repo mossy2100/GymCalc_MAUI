@@ -30,16 +30,15 @@ public class PlateStackDrawable : BaseDrawable
         var i = 0;
         foreach (Plate plate in Plates!)
         {
-            // Get the dimensions.
+            // Get the plate width.
             var w = (float)GymObjectDrawable.CalculateWidth(plate.Weight, MaxWeight);
-            var h = (float)PlateDrawable.HEIGHT;
 
             // Get the coordinates of the upper-left corner of the plate in the canvas.
             float x = (rectWidth - w) / 2f;
-            float y = i * h;
+            float y = i * PlateDrawable.HEIGHT;
 
             // Draw the plate on the canvas.
-            PlateDrawable.DrawPlate(canvas, plate, x, y, w, h);
+            PlateDrawable.DrawPlate(canvas, plate, x, y, w, PlateDrawable.HEIGHT);
 
             // Next.
             i++;

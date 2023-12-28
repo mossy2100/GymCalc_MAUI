@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using GymCalc.Services;
 using GymCalc.ViewModels;
 

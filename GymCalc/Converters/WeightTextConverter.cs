@@ -1,5 +1,3 @@
-using System.Globalization;
-using Galaxon.Core.Types;
 using GymCalc.Services;
 
 namespace GymCalc.Converters;

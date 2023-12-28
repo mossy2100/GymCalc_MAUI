@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using GymCalc.Drawables;
 using GymCalc.Models;
@@ -271,9 +270,9 @@ public class ListViewModel : BaseViewModel
     #region UI methods
 
     /// <summary>
-    /// Display the list of objects.
+    /// Display the list of objects on the page.
     /// </summary>
-    internal async Task DisplayList()
+    private async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(GymObjectTypeName))

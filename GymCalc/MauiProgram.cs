@@ -1,11 +1,9 @@
 using CommunityToolkit.Maui;
+using InputKit.Handlers;
 using GymCalc.Pages;
 using GymCalc.Repositories;
 using GymCalc.Services;
 using GymCalc.ViewModels;
-using InputKit.Handlers;
-using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Handlers;
 
 namespace GymCalc;
 

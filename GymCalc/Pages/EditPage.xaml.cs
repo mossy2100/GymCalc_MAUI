@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using GymCalc.ViewModels;
 
 namespace GymCalc.Pages;

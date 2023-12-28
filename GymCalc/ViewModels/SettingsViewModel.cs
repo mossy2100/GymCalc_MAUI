@@ -1,4 +1,3 @@
-using Galaxon.Core.Types;
 using GymCalc.Services;
 
 namespace GymCalc.ViewModels;
