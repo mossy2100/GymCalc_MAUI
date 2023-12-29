@@ -237,7 +237,7 @@ public class ListViewModel : BaseViewModel
     /// <summary>
     /// Display the list of objects on the page.
     /// </summary>
-    private async Task DisplayList()
+    internal async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
         if (string.IsNullOrWhiteSpace(_gymObjectTypeName))

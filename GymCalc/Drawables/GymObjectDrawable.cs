@@ -44,7 +44,7 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// </summary>
     /// <param name="gymObject">A gym object.</param>
     /// <returns>A GymObjectDrawable corresponding to the provided GymObject.</returns>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="InvalidOperationException"></exception>
     internal static GymObjectDrawable Create(GymObject gymObject)
     {
         // Get the type.
@@ -64,6 +64,7 @@ public abstract class GymObjectDrawable : BaseDrawable
             throw new InvalidOperationException(
                 $"Could not create a drawable for the {gymObjectTypeName} object.");
         }
+
         var gymObjectDrawable = (GymObjectDrawable)drawable;
         gymObjectDrawable.GymObject = gymObject;
         return gymObjectDrawable;

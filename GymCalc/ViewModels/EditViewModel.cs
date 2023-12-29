@@ -187,6 +187,7 @@ public class EditViewModel : BaseViewModel
             ErrorMessage = "Please ensure the weight is a number greater than 0.";
             return;
         }
+
         _weight = weight;
         ErrorMessage = "";
 
@@ -198,7 +199,7 @@ public class EditViewModel : BaseViewModel
             nameof(Barbell) => await SaveBarbell(),
             nameof(Dumbbell) => await SaveDumbbell(),
             nameof(Kettlebell) => await SaveKettlebell(),
-            _ => throw new Exception("Invalid gym object type.")
+            _ => throw new MatchNotFoundException("Invalid gym object type.")
         };
 
         // Go back to the list of this object type.

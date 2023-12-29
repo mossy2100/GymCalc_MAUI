@@ -10,6 +10,13 @@ internal interface IGymObjectRepository
     public Task InsertDefaults();
 
     /// <summary>
+    /// Get a gym object from the database, searching by id.
+    /// </summary>
+    /// <param name="id">The id of the gym object.</param>
+    /// <returns>The gym object or null if not found.</returns>
+    public Task<GymObject?> LoadById(int id);
+
+    /// <summary>
     /// Load all objects from the database table corresponding to the repository.
     /// </summary>
     /// <returns>A list of all the objects in the table as GymObjects.</returns>

@@ -63,6 +63,15 @@ public partial class ListPage : ContentPage
 
     #region Events
 
+    /// <inheritdoc />
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Re-render the list of objects.
+        await Model.DisplayList();
+    }
+
     /// <summary>
     /// Event handler for when a delete icon button is clicked.
     /// </summary>

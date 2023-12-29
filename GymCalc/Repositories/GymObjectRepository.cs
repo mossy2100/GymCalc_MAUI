@@ -81,12 +81,8 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         }
     }
 
-    /// <summary>
-    /// Get a gym object from the database, searching by Id.
-    /// </summary>
-    /// <param name="id">The id of the gym object.</param>
-    /// <returns>The gym object or null if not found.</returns>
-    internal async Task<T?> LoadById(int id)
+    /// <inheritdoc/>
+    public async Task<GymObject?> LoadById(int id)
     {
         return await database.Connection.FindAsync<T>(id);
     }
