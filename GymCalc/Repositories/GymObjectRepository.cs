@@ -13,22 +13,13 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     public abstract Task InsertDefaults();
 
     /// <summary>
-    /// Delete all objects of a given type.
-    /// </summary>
-    /// <returns>The number of deleted rows.</returns>
-    public async Task<int> DeleteAll()
-    {
-        return await database.Connection.DeleteAllAsync<T>();
-    }
-
-    /// <summary>
     /// Create a new gym object.
     /// </summary>
     /// <param name="weight">The weight value.</param>
     /// <param name="units">The weight units.</param>
     /// <param name="enabled">If the object should be enabled.</param>
     /// <returns>The new gym object.</returns>
-    public virtual T Create(decimal weight, EUnits units, bool enabled)
+    protected virtual T Create(decimal weight, EUnits units, bool enabled)
     {
         return new T
         {
@@ -47,7 +38,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     protected async Task AddWeight(decimal weight, EUnits units, bool enabled)
     {
         // Check that we haven't added this one already.
-        T? gymObject = await LoadOneByWeight(weight, units);
+        T? gymObject = await LoadByWeight(weight, units);
 
         // If the object isn't already in the database, construct and insert it.
         if (gymObject == null)
@@ -95,7 +86,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// </summary>
     /// <param name="id">The id of the gym object.</param>
     /// <returns>The gym object or null if not found.</returns>
-    internal async Task<T?> LoadOneById(int id)
+    internal async Task<T?> LoadById(int id)
     {
         return await database.Connection.FindAsync<T>(id);
     }
@@ -106,7 +97,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="weight">The weight of the gym object.</param>
     /// <param name="units">The units the weight is expressed in.</param>
     /// <returns>The gym object or null if not found.</returns>
-    internal async Task<T?> LoadOneByWeight(decimal weight, EUnits units)
+    internal async Task<T?> LoadByWeight(decimal weight, EUnits units)
     {
         // Find units as a string before running the query, because GetDescription() can't be
         // converted to an SQL function.
@@ -188,54 +179,46 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
         return await query.ToListAsync();
     }
 
-    /// <summary>
-    /// Load all the objects of a given gym object type T from the database, ordered by units, and
-    /// optionally also by weight.
-    /// </summary>
-    /// <param name="ascending">If to order the results by weight.</param>
-    /// <returns>The list of all objects of the type T.</returns>
-    internal async Task<List<T>> LoadAll(bool? ascending = true)
+    /// <inheritdoc/>
+    public async Task<List<GymObject>> LoadAll()
     {
-        return await LoadSome(null, ascending, EUnits.All);
+        List<T> gymObjects = await LoadSome(null);
+        return gymObjects.Cast<GymObject>().ToList();
     }
 
-    /// <summary>
-    /// Update a gym object.
-    /// </summary>
-    /// <param name="gymObject">The object to update.</param>
-    /// <returns>The number of rows updated.</returns>
-    internal async Task<int> Update(T gymObject)
+    /// <inheritdoc/>
+    public async Task<int> Update(GymObject gymObject)
     {
         return await database.Connection.UpdateAsync(gymObject);
     }
 
-    /// <summary>
-    /// Insert a new gym object.
-    /// </summary>
-    /// <param name="gymObject">The object to insert.</param>
-    /// <returns>The number of rows inserted.</returns>
-    internal async Task<int> Insert(T gymObject)
+    /// <inheritdoc/>
+    public async Task<int> Insert(GymObject gymObject)
     {
         return await database.Connection.InsertAsync(gymObject);
     }
 
-    /// <summary>
-    /// Update or insert as required.
-    /// </summary>
-    /// <param name="gymObject">The object to update or insert.</param>
-    /// <returns>The number of rows updated or inserted.</returns>
-    internal async Task<int> Upsert(T gymObject)
+    /// <inheritdoc/>
+    public async Task<int> Upsert(GymObject gymObject)
     {
         return await (gymObject.Id == 0 ? Insert(gymObject) : Update(gymObject));
     }
 
-    /// <summary>
-    /// Delete a gym object with a given type and id.
-    /// </summary>
-    /// <param name="id">The id of the gym object to delete.</param>
-    /// <returns>The number of deleted rows.</returns>
-    internal async Task<int> Delete(int id)
+    /// <inheritdoc/>
+    public async Task<int> Delete(int id)
     {
         return await database.Connection.DeleteAsync<T>(id);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> Delete(GymObject gymObject)
+    {
+        return await Delete(gymObject.Id);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> DeleteAll()
+    {
+        return await database.Connection.DeleteAllAsync<T>();
     }
 }

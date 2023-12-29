@@ -13,4 +13,6 @@ public class GymObject
     public string? Units { get; set; }
 
     public bool Enabled { get; set; }
+
+    public string? Color { get; set; }
 }

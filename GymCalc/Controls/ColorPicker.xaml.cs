@@ -41,7 +41,7 @@ public partial class ColorPicker : ContentView
         const int N_COLS = 4;
         int r = 0;
         int c = 0;
-        foreach ((string colorName, string colorHex) in CustomColors.Palette)
+        foreach ((string colorName, string colorHex) in Palette.Colors)
         {
             // Create a frame.
             var frame = new Frame
@@ -53,7 +53,7 @@ public partial class ColorPicker : ContentView
             var button = new Button
             {
                 Style = buttonStyle,
-                BackgroundColor = CustomColors.Get(colorName)
+                BackgroundColor = Palette.Get(colorName)
             };
 
             // Attach the event handler.

@@ -41,7 +41,7 @@ internal class PlateDrawable : GymObjectDrawable
     internal static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
-        Color? bgColor = CustomColors.Get(plate.Color) ?? CustomColors.Get("Black");
+        Color? bgColor = Palette.Get(plate.Color) ?? Palette.Get("Black");
 
         // Plate background.
         canvas.FillColor = bgColor!.AddLuminosity(-0.1f);
@@ -64,6 +64,7 @@ internal class PlateDrawable : GymObjectDrawable
             HorizontalAlignment.Center, VerticalAlignment.Center);
     }
 
+    /// <inheritdoc/>
     public override void Draw(ICanvas canvas, RectF dirtyRect)
     {
         var plate = (Plate)GymObject!;

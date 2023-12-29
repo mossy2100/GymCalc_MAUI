@@ -20,6 +20,14 @@ public class BarRepository : GymObjectRepository<Bar>
     public BarRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    protected override Bar Create(decimal weight, EUnits units, bool enabled)
+    {
+        Bar bar = base.Create(weight, units, enabled);
+        bar.Color = "Silver";
+        return bar;
+    }
+
+    /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
         // Kilograms (common).

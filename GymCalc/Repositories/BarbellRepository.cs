@@ -15,6 +15,14 @@ public class BarbellRepository : GymObjectRepository<Barbell>
     public BarbellRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    protected override Barbell Create(decimal weight, EUnits units, bool enabled)
+    {
+        Barbell barbell = base.Create(weight, units, enabled);
+        barbell.Color = "Black";
+        return barbell;
+    }
+
+    /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
         // Kilograms (common).

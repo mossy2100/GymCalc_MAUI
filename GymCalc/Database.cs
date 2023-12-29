@@ -51,10 +51,14 @@ public class Database(IServiceProvider serviceProvider)
     /// </exception>
     internal IGymObjectRepository GetRepo(string? gymObjectTypeName)
     {
-        var repoType = Type.GetType($"GymCalc.Repositories.{gymObjectTypeName}Repository");
-        if (repoType != null && serviceProvider.GetService(repoType) is IGymObjectRepository igor)
+        if (!string.IsNullOrEmpty(gymObjectTypeName))
         {
-            return igor;
+            var repoType = Type.GetType($"GymCalc.Repositories.{gymObjectTypeName}Repository");
+            if (repoType != null
+                && serviceProvider.GetService(repoType) is IGymObjectRepository igor)
+            {
+                return igor;
+            }
         }
 
         throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),

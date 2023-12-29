@@ -12,15 +12,7 @@ public class ListViewModel : BaseViewModel
 
     private readonly Database _database;
 
-    private readonly BarRepository _barRepo;
-
-    private readonly PlateRepository _plateRepo;
-
-    private readonly BarbellRepository _barbellRepo;
-
-    private readonly DumbbellRepository _dumbbellRepo;
-
-    private readonly KettlebellRepository _kettlebellRepo;
+    private IGymObjectRepository? _repo;
 
     #endregion Dependencies
 
@@ -30,22 +22,10 @@ public class ListViewModel : BaseViewModel
     /// Constructor.
     /// </summary>
     /// <param name="database"></param>
-    /// <param name="barRepo"></param>
-    /// <param name="plateRepo"></param>
-    /// <param name="barbellRepo"></param>
-    /// <param name="dumbbellRepo"></param>
-    /// <param name="kettlebellRepo"></param>
-    public ListViewModel(Database database, BarRepository barRepo, PlateRepository plateRepo,
-        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo)
+    public ListViewModel(Database database)
     {
-        // Keep references to the dependencies.
+        // Keep references to dependencies.
         _database = database;
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _barbellRepo = barbellRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
 
         // Commands.
         EnableCommand = new AsyncCommand<ListItem>(EnableGymObject);
@@ -146,6 +126,12 @@ public class ListViewModel : BaseViewModel
 
     private async Task EnableGymObject(ListItem? listItem)
     {
+        // Guard.
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Reference to repository not set.");
+        }
+
         // Check if an update is actually needed. This method is called on initialization of the
         // CollectionView, when no changes have occurred. Could be a bug in InputKit.
         if (listItem!.Enabled == listItem.GymObject.Enabled)
@@ -155,38 +141,23 @@ public class ListViewModel : BaseViewModel
 
         // Update the object in the database.
         listItem.GymObject.Enabled = listItem.Enabled;
-        switch (listItem.GymObject)
-        {
-            case Bar bar:
-                await _barRepo.Upsert(bar);
-                break;
-
-            case Plate plate:
-                await _plateRepo.Upsert(plate);
-                break;
-
-            case Barbell barbell:
-                await _barbellRepo.Upsert(barbell);
-                break;
-
-            case Dumbbell dumbbell:
-                await _dumbbellRepo.Upsert(dumbbell);
-                break;
-
-            case Kettlebell kettlebell:
-                await _kettlebellRepo.Upsert(kettlebell);
-                break;
-        }
+        await _repo.Upsert(listItem.GymObject);
     }
 
+    /// <summary>
+    /// Go to the form page for editing a gym object.
+    /// </summary>
+    /// <param name="gymObject"></param>
+    /// <exception cref="InvalidOperationException"></exception>
     private async Task EditGymObject(GymObject? gymObject)
     {
+        // Guard.
         if (gymObject == null)
         {
             throw new InvalidOperationException("Gym object not set.");
         }
 
-        await Shell.Current.GoToAsync($"edit?op=edit&type={GymObjectTypeName}&id={gymObject.Id}");
+        await Shell.Current.GoToAsync($"edit?op=edit&type={_gymObjectTypeName}&id={gymObject.Id}");
     }
 
     /// <summary>
@@ -196,53 +167,47 @@ public class ListViewModel : BaseViewModel
     /// <exception cref="InvalidOperationException"></exception>
     internal async Task DeleteGymObject(GymObject? gymObject)
     {
+        // Guards.
         if (gymObject == null)
         {
             throw new InvalidOperationException("Gym object not set.");
         }
-
-        switch (gymObject)
+        if (_repo == null)
         {
-            case Bar:
-                await _barRepo.Delete(gymObject.Id);
-                break;
-
-            case Plate:
-                await _plateRepo.Delete(gymObject.Id);
-                break;
-
-            case Barbell:
-                await _barbellRepo.Delete(gymObject.Id);
-                break;
-
-            case Dumbbell:
-                await _dumbbellRepo.Delete(gymObject.Id);
-                break;
-
-            case Kettlebell:
-                await _kettlebellRepo.Delete(gymObject.Id);
-                break;
+            throw new InvalidOperationException("Reference to repository not set.");
         }
+
+        // Delete the object from the database.
+        await _repo.Delete(gymObject);
 
         // Refresh the list of objects.
         await DisplayList();
     }
 
+    /// <summary>
+    /// Go to the form page for adding a new gym object.
+    /// </summary>
     private async Task AddGymObject()
     {
-        await Shell.Current.GoToAsync($"edit?op=add&type={GymObjectTypeName}");
+        await Shell.Current.GoToAsync($"edit?op=add&type={_gymObjectTypeName}");
     }
 
+    /// <summary>
+    /// Reset the gym objects to the default.
+    /// </summary>
     internal async Task ResetGymObjects()
     {
-        // Get the repo.
-        IGymObjectRepository repo = _database.GetRepo(GymObjectTypeName);
+        // Guard.
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Reference to repository not set.");
+        }
 
         // Delete all current objects of the specified type.
-        await repo.DeleteAll();
+        await _repo.DeleteAll();
 
         // Insert the defaults.
-        await repo.InsertDefaults();
+        await _repo.InsertDefaults();
 
         // Refresh the list.
         await DisplayList();
@@ -275,54 +240,28 @@ public class ListViewModel : BaseViewModel
     private async Task DisplayList()
     {
         // Make sure GymObjectTypeName is set.
-        if (string.IsNullOrWhiteSpace(GymObjectTypeName))
+        if (string.IsNullOrWhiteSpace(_gymObjectTypeName))
         {
             return;
         }
 
-        Title = $"{GymObjectTypeName}s";
-
-        Instructions = $"Use the checkboxes to select which {GymObjectTypeName.ToLower()}"
+        // Set the title and instructions.
+        Title = $"{_gymObjectTypeName}s";
+        Instructions = $"Use the checkboxes to select which {_gymObjectTypeName.ToLower()}"
             + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
             + $" Use the edit and delete icon buttons to make changes."
-            + $" Use the Add button to add a new {GymObjectTypeName.ToLower()}, or the Reset"
+            + $" Use the Add button to add a new {_gymObjectTypeName.ToLower()}, or the Reset"
             + $" button to reset to the defaults.";
 
         // Get all gym objects of the specified type.
-        List<GymObject>? gymObjects = null;
-        switch (GymObjectTypeName)
-        {
-            case nameof(Bar):
-                List<Bar> bars = await _barRepo.LoadSome(null);
-                gymObjects = bars.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Plate):
-                List<Plate> plates = await _plateRepo.LoadSome(null);
-                gymObjects = plates.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Barbell):
-                List<Barbell> barbells = await _barbellRepo.LoadSome(null);
-                gymObjects = barbells.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Dumbbell):
-                List<Dumbbell> dumbbells = await _dumbbellRepo.LoadSome(null);
-                gymObjects = dumbbells.Cast<GymObject>().ToList();
-                break;
-
-            case nameof(Kettlebell):
-                List<Kettlebell> kettlebells = await _kettlebellRepo.LoadSome(null);
-                gymObjects = kettlebells.Cast<GymObject>().ToList();
-                break;
-        }
+        _repo = _database.GetRepo(_gymObjectTypeName);
+        List<GymObject> gymObjects = await _repo.LoadAll();
 
         // Initialize the list of items.
         ListItems = new List<ListItem>();
 
         // Check if there's anything to draw.
-        if (gymObjects == null || gymObjects.Count == 0)
+        if (gymObjects.Count == 0)
         {
             return;
         }

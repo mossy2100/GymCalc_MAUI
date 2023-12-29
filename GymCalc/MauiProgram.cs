@@ -1,10 +1,10 @@
-using Microsoft.Extensions.DependencyInjection;
 using CommunityToolkit.Maui;
 using InputKit.Handlers;
 using GymCalc.Pages;
 using GymCalc.Repositories;
 using GymCalc.Services;
 using GymCalc.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace GymCalc;
 

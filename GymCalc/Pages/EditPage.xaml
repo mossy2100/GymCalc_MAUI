@@ -88,7 +88,7 @@
                     <controls:ColorPicker
                         Grid.Row="0"
                         Grid.Column="1"
-                        Selected="{Binding MainColor}"/>
+                        Selected="{Binding Color}"/>
                 </Grid>
 
                 <!--  Has bands  -->

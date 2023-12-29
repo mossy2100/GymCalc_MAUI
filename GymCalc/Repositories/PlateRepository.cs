@@ -59,13 +59,16 @@ public class PlateRepository : GymObjectRepository<Plate>
         foreach ((decimal weight, EUnits units, bool enabled, string color) in _DefaultPlates)
         {
             // Check that we haven't added this one already.
-            Plate? plate = await LoadOneByWeight(weight, units);
+            Plate? plate = await LoadByWeight(weight, units);
 
             // If this plate isn't already in the database, construct and insert it.
             if (plate == null)
             {
-                plate = Create(weight, units, enabled);
+                // Construct the plate object.
+                plate = base.Create(weight, units, enabled);
                 plate.Color = color;
+
+                // Add it to the database.
                 await Insert(plate);
             }
         }
