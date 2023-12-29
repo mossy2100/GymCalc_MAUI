@@ -53,7 +53,7 @@ public partial class ColorPicker : ContentView
             var button = new Button
             {
                 Style = buttonStyle,
-                BackgroundColor = Palette.Get(colorName)
+                BackgroundColor = Palette.GetColor(colorName)
             };
 
             // Attach the event handler.

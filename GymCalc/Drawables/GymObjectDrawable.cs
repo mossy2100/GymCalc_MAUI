@@ -89,7 +89,7 @@ public abstract class GymObjectDrawable : BaseDrawable
         const int barHeight = 20;
         var barTop = (float)((height - barHeight) / 2.0);
         var bar = new RectF(0, barTop, width, barHeight);
-        canvas.FillColor = Palette.Get("Silver");
+        canvas.FillColor = Palette.GetColor("Silver");
         canvas.FillRectangle(bar);
 
         // Plates.
@@ -98,7 +98,7 @@ public abstract class GymObjectDrawable : BaseDrawable
         const int cornerRadius = 2;
         float smallPlateTop = barTop / 3;
         float smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = Palette.Get(GymObject.Color) ?? Palette.Get("Black");
+        canvas.FillColor = Palette.GetColor(GymObject.Color) ?? Palette.GetColor("Black");
 
         // Left small plate.
         var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);

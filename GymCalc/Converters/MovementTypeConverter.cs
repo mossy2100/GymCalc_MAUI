@@ -2,7 +2,7 @@ using GymCalc.Enums;
 
 namespace GymCalc.Converters;
 
-public class MovementTypeConverter : IValueConverter
+internal class MovementTypeConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -19,9 +19,9 @@ public class MovementTypeConverter : IValueConverter
     public object? ConvertBack(object? value, Type targetType, object? parameter,
         CultureInfo culture)
     {
-        if (value is string s)
+        if (value is string s && Enum.TryParse(s, out EMovementType mt))
         {
-            return Enum.TryParse(s, out EMovementType mt) ? mt : null;
+            return mt;
         }
 
         return null;

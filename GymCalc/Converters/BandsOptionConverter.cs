@@ -2,14 +2,14 @@ using GymCalc.Enums;
 
 namespace GymCalc.Converters;
 
-internal class BarbellTypeConverter : IValueConverter
+internal class BandsOptionConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is EBarbellType bt)
+        if (value is EBandsOption bo)
         {
-            return bt.ToString();
+            return bo.ToString();
         }
 
         return null;
@@ -19,9 +19,9 @@ internal class BarbellTypeConverter : IValueConverter
     public object? ConvertBack(object? value, Type targetType, object? parameter,
         CultureInfo culture)
     {
-        if (value is string s && Enum.TryParse(s, out EBarbellType bt))
+        if (value is string s && Enum.TryParse(s, out EBandsOption bo))
         {
-            return bt;
+            return bo;
         }
 
         return null;

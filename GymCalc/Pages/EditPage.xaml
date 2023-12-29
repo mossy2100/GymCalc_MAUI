@@ -4,13 +4,19 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:controls="clr-namespace:GymCalc.Controls"
+    xmlns:converters="clr-namespace:GymCalc.Converters"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
     xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     x:Class="GymCalc.Pages.EditPage"
     x:DataType="viewModels:EditViewModel"
     Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <converters:BandsOptionConverter
+            x:Key="DefaultBandsOptionConverter"/>
+    </ContentPage.Resources>
 
     <Grid
         Padding="{x:Static graphics:PageLayout.Spacing}"
@@ -77,10 +83,9 @@
                         VerticalOptions="Center"/>
                 </Grid>
 
-                <!--  Plate color or ball color for kettlebells  -->
+                <!-- Color -->
                 <Grid
-                    ColumnDefinitions="*,2*"
-                    IsVisible="{Binding MainColorIsVisible}">
+                    ColumnDefinitions="*,2*">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
@@ -91,34 +96,30 @@
                         Selected="{Binding Color}"/>
                 </Grid>
 
-                <!--  Has bands  -->
+                <!-- Bands option -->
                 <Grid
                     ColumnDefinitions="*,2*"
-                    IsVisible="{Binding HasBandsIsVisible}">
+                    IsVisible="{Binding CanHaveBands}">
                     <Label
                         Grid.Row="0"
                         Grid.Column="0"
-                        Text="Has bands"
-                        VerticalTextAlignment="Center"/>
-                    <input:CheckBox
+                        Text="Bands"
+                        VerticalTextAlignment="Start"/>
+                    <input:RadioButtonGroupView
                         Grid.Row="0"
                         Grid.Column="1"
-                        IsChecked="{Binding HasBands}"
-                        VerticalOptions="Center"/>
-                </Grid>
-
-                <!--  Band color  -->
-                <Grid
-                    ColumnDefinitions="*,2*"
-                    IsVisible="{Binding HasBands}">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Text="Band color"/>
-                    <controls:ColorPicker
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Selected="{Binding BandColor}"/>
+                        SelectedItem="{Binding BandsOption, Mode=TwoWay,
+                            Converter={StaticResource DefaultBandsOptionConverter}}">
+                        <input:RadioButton
+                            Text="Color with no bands"
+                            Value="None"/>
+                        <input:RadioButton
+                            Text="Color with black bands"
+                            Value="Black"/>
+                        <input:RadioButton
+                            Text="Black with color bands"
+                            Value="Color"/>
+                    </input:RadioButtonGroupView>
                 </Grid>
 
                 <!--  Error message  -->

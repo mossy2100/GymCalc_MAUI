@@ -172,7 +172,7 @@
                     Grid.Row="0"
                     Grid.Column="1"
                     SelectedItem="{Binding _MovementType, Mode=TwoWay,
-                    Converter={StaticResource DefaultMovementTypeConverter}}"
+                        Converter={StaticResource DefaultMovementTypeConverter}}"
                     SelectedItemChangedCommand="{Binding MovementTypeChangedCommand}">
                     <input:RadioButton
                         Text="Bilateral"

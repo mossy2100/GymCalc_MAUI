@@ -29,11 +29,11 @@ internal static class Palette
     /// Get a color object given a color name.
     /// </summary>
     /// <param name="name">The color name.</param>
-    /// <returns>The corresponding Color object or null if not found.</returns>
-    internal static Color? Get(string? name)
+    /// <returns>The corresponding Color object.</returns>
+    internal static Color GetColor(string? name)
     {
         return (name != null && Colors.TryGetValue(name, out string? hex))
             ? Color.Parse(hex)
-            : null;
+            : throw new ArgumentOutOfRangeException(nameof(name), "Invalid color name.");
     }
 }

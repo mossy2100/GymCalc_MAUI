@@ -21,10 +21,9 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
         Kettlebell kettlebell = base.Create(weight, units, enabled);
 
         // Add the default color parameters.
-        (string color, bool hasBands, string? bandColor) = DefaultKettlebellColor(weight, units);
+        (string color, EBandsOption bandsOption) = DefaultKettlebellColor(weight, units);
         kettlebell.Color = color;
-        kettlebell.HasBands = hasBands;
-        kettlebell.BandColor = bandColor;
+        kettlebell.BandsOption = bandsOption;
 
         return kettlebell;
     }
@@ -50,11 +49,11 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
     /// <returns>The default kettlebell color.</returns>
     /// <remarks>
     /// Best image I've found showing a competition kettlebell with black bands:
-    /// <see href="https://www.amazon.com/Kettlebell-Kings-Competition-Designed-Repetition/dp/B017WBQSD2?th=1"/>
+    /// <see href="https://m.media-amazon.com/images/I/81+cs4R+7JL._AC_SX679_.jpg"/>
     /// </remarks>
-    private static (string, bool, string?) DefaultKettlebellColor(decimal weight, EUnits units)
+    private static (string, EBandsOption) DefaultKettlebellColor(decimal weight, EUnits units)
     {
-        // Determine if the kettlebell has bands and it's number for the color chart.
+        // Determine if the kettlebell has black bands, and it's number for the color chart.
         bool hasBands;
         decimal n = weight;
         if (units == EUnits.Kilograms)
@@ -94,9 +93,9 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
             _ => "Black"
         };
 
-        // Add black bands if it has them.
-        string? bandColor = hasBands ? "Black" : null;
+        // Get the bands option.
+        EBandsOption bandsOption = hasBands ? EBandsOption.Black : EBandsOption.None;
 
-        return (color, hasBands, bandColor);
+        return (color, bandsOption);
     }
 }

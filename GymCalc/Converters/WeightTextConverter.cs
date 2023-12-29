@@ -2,7 +2,7 @@ using GymCalc.Services;
 
 namespace GymCalc.Converters;
 
-public class WeightTextConverter : IValueConverter
+internal class WeightTextConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

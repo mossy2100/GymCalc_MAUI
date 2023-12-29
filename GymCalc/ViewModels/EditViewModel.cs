@@ -1,5 +1,6 @@
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
+using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
 using GymCalc.Services;
@@ -48,8 +49,6 @@ public class EditViewModel : BaseViewModel
 
     #region Fields
 
-    private string? _bandColor;
-
     private bool _enabled;
 
     private string? _errorMessage;
@@ -60,13 +59,11 @@ public class EditViewModel : BaseViewModel
 
     private string? _gymObjectTypeName;
 
-    private bool? _hasBands;
+    private bool _canHaveBands;
 
-    private bool _hasBandsIsVisible;
+    private EBandsOption _bandsOption;
 
     private string? _color;
-
-    private bool _mainColorIsVisible;
 
     private string? _operation;
 
@@ -120,18 +117,11 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _color, value);
     }
 
-    public bool? HasBands
+    public EBandsOption BandsOption
     {
-        get => _hasBands;
+        get => _bandsOption;
 
-        set => SetProperty(ref _hasBands, value);
-    }
-
-    public string? BandColor
-    {
-        get => _bandColor;
-
-        set => SetProperty(ref _bandColor, value);
+        set => SetProperty(ref _bandsOption, value);
     }
 
     public string? ErrorMessage
@@ -141,18 +131,11 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _errorMessage, value);
     }
 
-    public bool MainColorIsVisible
+    public bool CanHaveBands
     {
-        get => _mainColorIsVisible;
+        get => _canHaveBands;
 
-        set => SetProperty(ref _mainColorIsVisible, value);
-    }
-
-    public bool HasBandsIsVisible
-    {
-        get => _hasBandsIsVisible;
-
-        set => SetProperty(ref _hasBandsIsVisible, value);
+        set => SetProperty(ref _canHaveBands, value);
     }
 
     #endregion Bindable properties
@@ -254,8 +237,7 @@ public class EditViewModel : BaseViewModel
     }
 
     /// <summary>
-    /// Reset the form in preparation for a new item.
-    /// The object type affects what fields are displayed.
+    /// Reset the form values in preparation for loading a new item.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     private void ResetForm()
@@ -264,10 +246,8 @@ public class EditViewModel : BaseViewModel
         Units = UnitsService.GetDefaultUnitsSymbol();
         Enabled = true;
         Color = "Black";
-        HasBands = false;
-        BandColor = "Black";
-        MainColorIsVisible = true;
-        HasBandsIsVisible = _gymObject is Kettlebell;
+        CanHaveBands = false;
+        BandsOption = EBandsOption.None;
     }
 
     /// <summary>
@@ -318,8 +298,12 @@ public class EditViewModel : BaseViewModel
         // Set the type-specific form values.
         if (_gymObject is Kettlebell kettlebell)
         {
-            HasBands = kettlebell.HasBands;
-            BandColor = kettlebell.BandColor;
+            CanHaveBands = true;
+            BandsOption = kettlebell.BandsOption;
+        }
+        else
+        {
+            CanHaveBands = false;
         }
     }
 
@@ -409,8 +393,7 @@ public class EditViewModel : BaseViewModel
 
         // Copy values from the viewmodel to the model.
         CopyCommonValues(kettlebell);
-        kettlebell.HasBands = HasBands;
-        kettlebell.BandColor = BandColor;
+        kettlebell.BandsOption = BandsOption;
 
         // Update the database.
         await _kettlebellRepo.Upsert(kettlebell);

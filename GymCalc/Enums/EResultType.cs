@@ -4,5 +4,6 @@ public enum EResultType
 {
     Plates,
 
-    [Description("Single weight")] SingleWeight
+    [Description("Single weight")]
+    SingleWeight
 }

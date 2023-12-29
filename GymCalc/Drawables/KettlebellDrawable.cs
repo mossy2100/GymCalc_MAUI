@@ -1,4 +1,5 @@
 using Galaxon.Maui.Utilities;
+using GymCalc.Enums;
 using GymCalc.Graphics;
 using GymCalc.Models;
 using Font = Microsoft.Maui.Graphics.Font;
@@ -34,11 +35,23 @@ public class KettlebellDrawable : GymObjectDrawable
         var kettlebell = (Kettlebell)GymObject!;
         var width = (float)Width;
 
-        // Colors.
-        Color? color = Palette.Get(kettlebell.Color) ?? Palette.Get("Black");
-        Color? bandColor =
-            (kettlebell.HasBands == true ? Palette.Get(kettlebell.BandColor) : null)
-            ?? color;
+        // Get colors.
+        Color handleColor;
+        Color ballColor;
+        Color bandColor;
+        Color black = Palette.GetColor("Black");
+        if (kettlebell.BandsOption == EBandsOption.Color)
+        {
+            handleColor = black;
+            ballColor = black;
+            bandColor = Palette.GetColor(kettlebell.Color);
+        }
+        else
+        {
+            handleColor = Palette.GetColor("Silver");
+            ballColor = Palette.GetColor(kettlebell.Color);
+            bandColor = kettlebell.BandsOption == EBandsOption.None ? ballColor : black;
+        }
 
         // Useful dimensions.
         const int y0 = 5;
@@ -47,7 +60,7 @@ public class KettlebellDrawable : GymObjectDrawable
         const int y3 = 35;
 
         // Handle top.
-        canvas.StrokeColor = Palette.Get("Silver");
+        canvas.StrokeColor = handleColor;
         canvas.StrokeSize = 10;
         const int diam = 20;
         canvas.DrawArc(10, y0, diam, diam, 90, 180, false, false);
@@ -60,18 +73,18 @@ public class KettlebellDrawable : GymObjectDrawable
         canvas.DrawLine(50, y1, 50, y2);
 
         // Handle bottom.
-        canvas.StrokeColor = color;
+        canvas.StrokeColor = ballColor;
         canvas.DrawLine(10, y2, 10, y3);
         canvas.DrawLine(50, y2, 50, y3);
 
         // Ball.
-        canvas.FillColor = color;
+        canvas.FillColor = ballColor;
         canvas.FillArc(0, 20, width, width, 240, 300, true);
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
         canvas.FontSize = 20;
-        canvas.FontColor = color!.GetTextColor();
+        canvas.FontColor = ballColor.GetTextColor();
         var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
         int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;
         canvas.DrawString(weightString, 10, 35 + offset, 40, 30, HorizontalAlignment.Center,
