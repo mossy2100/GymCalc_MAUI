@@ -32,8 +32,11 @@ internal static class Palette
     /// <returns>The corresponding Color object.</returns>
     internal static Color GetColor(string? name)
     {
-        return (name != null && Colors.TryGetValue(name, out string? hex))
-            ? Color.Parse(hex)
-            : throw new ArgumentOutOfRangeException(nameof(name), "Invalid color name.");
+        if (name != null && Colors.TryGetValue(name, out string? hex))
+        {
+            return Color.Parse(hex);
+        }
+
+        throw new ArgumentOutOfRangeException(nameof(name), $"Color '{name}' not found.");
     }
 }
