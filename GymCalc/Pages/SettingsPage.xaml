@@ -1,40 +1,24 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
-<ContentPage
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="GymCalc.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    x:Class="GymCalc.Pages.SettingsPage"
-    x:DataType="viewModels:SettingsViewModel"
-    Title="Settings">
+    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Settings"
+    x:DataType="viewModels:SettingsViewModel">
 
-    <ScrollView
-        Padding="{x:Static graphics:PageLayout.Spacing}"
-        VerticalOptions="Fill">
-        <Grid
-            ColumnDefinitions="*,*"
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+        <Grid ColumnDefinitions="*,*"
             ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
             RowDefinitions="Auto"
             RowSpacing="{x:Static graphics:PageLayout.Spacing}">
 
-            <Label
-                Grid.Row="0"
-                Grid.Column="0"
+            <Label Grid.Row="0" Grid.Column="0"
                 Text="Units"/>
 
-            <input:RadioButtonGroupView
-                Grid.Row="0"
-                Grid.Column="1"
+            <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
                 SelectedItem="{Binding Units, Mode=TwoWay}">
-                <input:RadioButton
-                    Text="kilograms (kg)"
-                    Value="kg"/>
-                <input:RadioButton
-                    Text="pounds (lb)"
-                    Value="lb"/>
+                <input:RadioButton Text="kilograms (kg)" Value="kg"/>
+                <input:RadioButton Text="pounds (lb)" Value="lb"/>
             </input:RadioButtonGroupView>
 
         </Grid>

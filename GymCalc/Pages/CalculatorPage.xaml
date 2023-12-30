@@ -1,233 +1,155 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
-<ContentPage
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    x:Class="GymCalc.Pages.CalculatorPage"
-    x:DataType="viewModels:CalculatorViewModel"
-    Title="Calculator">
+    Title="Calculator"
+    x:DataType="viewModels:CalculatorViewModel">
 
     <ContentPage.Resources>
-        <converters:MovementTypeConverter
-            x:Key="DefaultMovementTypeConverter"/>
-        <converters:BarbellTypeConverter
-            x:Key="DefaultBarbellTypeConverter"/>
+        <converters:MovementTypeConverter x:Key="movementTypeConverter"/>
+        <converters:BarbellTypeConverter x:Key="barbellTypeConverter"/>
     </ContentPage.Resources>
 
-    <ScrollView
-        x:Name="CalculatorScrollView"
+    <ScrollView x:Name="CalculatorScrollView"
         Padding="{x:Static graphics:PageLayout.Spacing}"
         VerticalOptions="Fill">
 
         <!-- Calculator form. -->
-        <VerticalStackLayout
-            x:Name="CalculatorLayout"
-            Spacing="{x:Static graphics:PageLayout.Spacing}">
+        <VerticalStackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.Spacing}">
 
             <!-- Exercise type -->
-            <Label
-                Text="Select exercise type:"/>
-            <Grid
-                x:Name="ExerciseTypeButtonGrid"
+            <Label Text="Select exercise type:"/>
+            <Grid x:Name="ExerciseTypeButtonGrid"
                 ColumnDefinitions="*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto,Auto"
                 RowSpacing="{x:Static graphics:PageLayout.Spacing}">
                 <!-- Row 0 -->
-                <Button
-                    x:Name="BarbellButton"
-                    Grid.Row="0"
-                    Grid.Column="0"
+                <Button x:Name="BarbellButton"
+                    Grid.Row="0" Grid.Column="0"
                     Clicked="OnBarbellButtonClicked"
                     Style="{StaticResource BarbellButtonStyle}"
                     Text="Barbell"/>
-                <Button
-                    x:Name="DumbbellButton"
-                    Grid.Row="0"
-                    Grid.Column="1"
+                <Button x:Name="DumbbellButton"
+                    Grid.Row="0" Grid.Column="1"
                     Clicked="OnDumbbellButtonClicked"
                     Style="{StaticResource DumbbellButtonStyle}"
                     Text="Dumbbell"/>
                 <!-- Row 1 -->
-                <Button
-                    x:Name="MachineButton"
-                    Grid.Row="1"
-                    Grid.Column="0"
+                <Button x:Name="MachineButton"
+                    Grid.Row="1" Grid.Column="0"
                     Clicked="OnMachineButtonClicked"
                     Style="{StaticResource MachineButtonStyle}"
                     Text="Machine"/>
-                <Button
-                    x:Name="KettlebellButton"
-                    Grid.Row="1"
-                    Grid.Column="1"
+                <Button x:Name="KettlebellButton"
+                    Grid.Row="1" Grid.Column="1"
                     Clicked="OnKettlebellButtonClicked"
                     Style="{StaticResource KettlebellButtonStyle}"
                     Text="Kettlebell"/>
             </Grid>
 
             <!-- Max weight -->
-            <Grid
-                ColumnDefinitions="7*,4*,*"
+            <Grid ColumnDefinitions="7*,4*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
-                <Label
-                    x:Name="MaxWeightLabel"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalTextAlignment="Start"
-                    Text="Maximum weight"
+                <Label x:Name="MaxWeightLabel"
+                    Grid.Row="0" Grid.Column="0"
+                    HorizontalTextAlignment="Start" Text="Maximum weight"
                     VerticalTextAlignment="Center"/>
-                <Border
-                    Grid.Row="0"
-                    Grid.Column="1"
+                <Border Grid.Row="0" Grid.Column="1"
                     Style="{StaticResource ControlBorderStyle}">
-                    <Entry
-                        Text="{Binding MaxWeightText, Mode=TwoWay}"
-                        Style="{StaticResource NumericEntryStyle}"/>
+                    <Entry Style="{StaticResource NumericEntryStyle}" Text="{Binding MaxWeightText, Mode=TwoWay}"/>
                 </Border>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
+                <Label Grid.Row="0" Grid.Column="2"
                     HorizontalTextAlignment="Start"
                     Text="{Binding MaxWeightUnits}"
                     VerticalTextAlignment="Center"/>
             </Grid>
 
             <!-- Barbell type -->
-            <Grid
-                x:Name="BarbellTypeGrid"
+            <Grid x:Name="BarbellTypeGrid"
                 ColumnDefinitions="7*,5*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Barbell type"
-                    VerticalTextAlignment="Center"/>
-                <input:RadioButtonGroupView
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    SelectedItem="{Binding BarbellType, Mode=TwoWay,
-                    Converter={StaticResource DefaultBarbellTypeConverter}}">
-                    <input:RadioButton
+                <Label Grid.Row="0" Grid.Column="0"
+                    Text="Barbell type" VerticalTextAlignment="Center"/>
+                <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
+                    SelectedItem="{Binding BarbellType, Mode=TwoWay, Converter={StaticResource barbellTypeConverter}}">
+                    <input:RadioButton Clicked="OnBarbellTypePlateLoadedSelected" IsChecked="True"
                         Text="Plate-loaded"
-                        Value="PlateLoaded"
-                        Clicked="OnBarbellTypePlateLoadedSelected"
-                        IsChecked="True"/>
-                    <input:RadioButton
+                        Value="PlateLoaded"/>
+                    <input:RadioButton Clicked="OnBarbellTypeFixedSelected" IsChecked="False"
                         Text="Fixed"
-                        Value="Fixed"
-                        Clicked="OnBarbellTypeFixedSelected"
-                        IsChecked="False"/>
+                        Value="Fixed"/>
                 </input:RadioButtonGroupView>
             </Grid>
 
             <!-- Bar weight -->
-            <Grid
-                x:Name="BarWeightGrid"
+            <Grid x:Name="BarWeightGrid"
                 ColumnDefinitions="7*,4*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    FontSize="16"
-                    HorizontalTextAlignment="Start"
-                    Text="Bar weight"
-                    VerticalTextAlignment="Center"/>
-                <Border
-                    Grid.Row="0"
-                    Grid.Column="1"
+                <Label Grid.Row="0" Grid.Column="0"
+                    FontSize="16" HorizontalTextAlignment="Start"
+                    Text="Bar weight" VerticalTextAlignment="Center"/>
+                <Border Grid.Row="0" Grid.Column="1"
                     Style="{StaticResource ControlBorderStyle}">
-                    <Picker
-                        ItemsSource="{Binding BarWeights}"
+                    <Picker ItemsSource="{Binding BarWeights}"
                         SelectedItem="{Binding BarWeight, Mode=TwoWay}"
                         Style="{StaticResource NumericPickerStyle}"/>
                 </Border>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
+                <Label Grid.Row="0" Grid.Column="2"
                     HorizontalTextAlignment="Start"
-                    VerticalTextAlignment="Center"
-                    Text="{Binding BarWeightUnits}"/>
+                    Text="{Binding BarWeightUnits}"
+                    VerticalTextAlignment="Center"/>
             </Grid>
 
             <!-- Machine type -->
-            <Grid
-                x:Name="MovementTypeGrid"
+            <Grid x:Name="MovementTypeGrid"
                 ColumnDefinitions="7*,5*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Text="Machine type"
-                    VerticalTextAlignment="Center"/>
-                <input:RadioButtonGroupView
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    SelectedItem="{Binding _MovementType, Mode=TwoWay,
-                        Converter={StaticResource DefaultMovementTypeConverter}}"
+                <Label Grid.Row="0" Grid.Column="0"
+                    Text="Machine type" VerticalTextAlignment="Center"/>
+                <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
+                    SelectedItem="{Binding _MovementType, Mode=TwoWay, Converter={StaticResource movementTypeConverter}}"
                     SelectedItemChangedCommand="{Binding MovementTypeChangedCommand}">
-                    <input:RadioButton
-                        Text="Bilateral"
-                        Value="Bilateral"/>
-                    <input:RadioButton
-                        Text="Isolateral"
-                        Value="Isolateral"/>
+                    <input:RadioButton Text="Bilateral" Value="Bilateral"/>
+                    <input:RadioButton Text="Isolateral" Value="Isolateral"/>
                 </input:RadioButtonGroupView>
             </Grid>
 
             <!-- Machine starting weight -->
-            <Grid
-                x:Name="StartingWeightGrid"
+            <Grid x:Name="StartingWeightGrid"
                 ColumnDefinitions="7*,4*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto">
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="0"
+                <Label Grid.Row="0" Grid.Column="0"
                     HorizontalTextAlignment="Start"
                     Text="{Binding StartingWeightLabel}"
                     VerticalTextAlignment="Center"/>
-                <Border
-                    Grid.Row="0"
-                    Grid.Column="1"
+                <Border Grid.Row="0" Grid.Column="1"
                     Style="{StaticResource ControlBorderStyle}">
-                    <Entry
-                        Text="{Binding StartingWeightText, Mode=TwoWay}"
-                        Style="{StaticResource NumericEntryStyle}"/>
+                    <Entry Style="{StaticResource NumericEntryStyle}" Text="{Binding StartingWeightText, Mode=TwoWay}"/>
                 </Border>
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="2"
+                <Label Grid.Row="0" Grid.Column="2"
                     HorizontalTextAlignment="Start"
-                    VerticalTextAlignment="Center"
-                    Text="{Binding StartingWeightUnits}"/>
+                    Text="{Binding StartingWeightUnits}"
+                    VerticalTextAlignment="Center"/>
             </Grid>
 
             <!-- Calculate button -->
-            <Button
-                Command="{Binding CalculateCommand}"
-                Text="Calculate"/>
+            <Button Command="{Binding CalculateCommand}" Text="Calculate"/>
 
             <!-- Error message -->
-            <Label
-                Text="{Binding ErrorMessage}"
-                Style="{StaticResource ErrorMessageStyle}">
+            <Label Style="{StaticResource ErrorMessageStyle}" Text="{Binding ErrorMessage}">
                 <Label.Triggers>
-                    <DataTrigger
+                    <DataTrigger Binding="{Binding ErrorMessage}"
                         TargetType="Label"
-                        Binding="{Binding ErrorMessage}"
                         Value="">
-                        <Setter
-                            Property="IsVisible"
-                            Value="False"/>
+                        <Setter Property="IsVisible" Value="False"/>
                     </DataTrigger>
                 </Label.Triggers>
             </Label>

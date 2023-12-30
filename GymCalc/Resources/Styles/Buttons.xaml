@@ -1,252 +1,108 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Style
-        x:Key="SuccessButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource SuccessColor}"/>
+    <Style x:Key="SuccessButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
     </Style>
 
-    <Style
-        x:Key="DangerButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource DangerColor}"/>
+    <Style x:Key="DangerButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
     </Style>
 
-    <Style
-        x:Key="ColorPickerButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="Padding"
-            Value="0"/>
-        <Setter
-            Property="MinimumHeightRequest"
-            Value="-1"/>
-        <Setter
-            Property="MinimumWidthRequest"
-            Value="-1"/>
-        <Setter
-            Property="HeightRequest"
-            Value="{StaticResource ColorPickerButtonSize}"/>
-        <Setter
-            Property="WidthRequest"
-            Value="{StaticResource ColorPickerButtonSize}"/>
-        <Setter
-            Property="CornerRadius"
-            Value="8"/>
-        <Setter
-            Property="BorderColor"
-            Value="{AppThemeBinding Light={StaticResource White},
-                                    Dark={StaticResource Black}}"/>
-        <Setter
-            Property="BorderWidth"
-            Value="2"/>
+    <Style x:Key="IconButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="-1"/>
+        <Setter Property="MinimumWidthRequest" Value="-1"/>
+        <Setter Property="HeightRequest" Value="{StaticResource IconButtonSize}"/>
+        <Setter Property="WidthRequest" Value="{StaticResource IconButtonSize}"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
-    <Style
-        x:Key="IconButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="MinimumHeightRequest"
-            Value="-1"/>
-        <Setter
-            Property="MinimumWidthRequest"
-            Value="-1"/>
-        <Setter
-            Property="HeightRequest"
-            Value="{StaticResource IconButtonSize}"/>
-        <Setter
-            Property="WidthRequest"
-            Value="{StaticResource IconButtonSize}"/>
-        <Setter
-            Property="CornerRadius"
-            Value="4"/>
-        <Setter
-            Property="Padding"
-            Value="0"/>
-        <Setter
-            Property="HorizontalOptions"
-            Value="Center"/>
-        <Setter
-            Property="VerticalOptions"
-            Value="Center"/>
-    </Style>
-
-    <Style
-        x:Key="EditIconButtonStyle"
+    <Style x:Key="EditIconButtonStyle"
         BasedOn="{StaticResource IconButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource SuccessColor}"/>
-        <Setter
-            Property="ImageSource"
-            Value="edit_icon_white_16.png"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
+        <Setter Property="ImageSource" Value="edit_icon_white_16.png"/>
     </Style>
 
-    <Style
-        x:Key="DeleteIconButtonStyle"
+    <Style x:Key="DeleteIconButtonStyle"
         BasedOn="{StaticResource IconButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource DangerColor}"/>
-        <Setter
-            Property="ImageSource"
-            Value="delete_icon_white_16.png"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
+        <Setter Property="ImageSource" Value="delete_icon_white_16.png"/>
     </Style>
 
-    <Style
-        x:Key="AdminButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="MinimumHeightRequest"
-            Value="-1"/>
-        <Setter
-            Property="HeightRequest"
-            Value="36"/>
-        <Setter
-            Property="Padding"
-            Value="0"/>
-        <Setter
-            Property="HorizontalOptions"
-            Value="Fill"/>
-        <Setter
-            Property="VerticalOptions"
-            Value="Center"/>
+    <Style x:Key="AdminButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="-1"/>
+        <Setter Property="HeightRequest" Value="36"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
-    <Style
-        x:Key="AddButtonStyle"
+    <Style x:Key="AddButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource SuccessColor}"/>
-        <Setter
-            Property="Text"
-            Value="Add"/>
-        <Setter
-            Property="ImageSource"
-            Value="plus_icon_white_16.png"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
+        <Setter Property="Text" Value="Add"/>
+        <Setter Property="ImageSource" Value="plus_icon_white_16.png"/>
     </Style>
 
-    <Style
-        x:Key="ResetButtonStyle"
+    <Style x:Key="ResetButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource DangerColor}"/>
-        <Setter
-            Property="Text"
-            Value="Reset"/>
-        <Setter
-            Property="ImageSource"
-            Value="reset_icon_white_16.png"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
+        <Setter Property="Text" Value="Reset"/>
+        <Setter Property="ImageSource" Value="reset_icon_white_16.png"/>
     </Style>
 
-    <Style
-        x:Key="CancelButtonStyle"
+    <Style x:Key="CancelButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="cancel_icon_white_16.png"/>
-        <Setter
-            Property="Text"
-            Value="Cancel"/>
+        <Setter Property="ImageSource" Value="cancel_icon_white_16.png"/>
+        <Setter Property="Text" Value="Cancel"/>
     </Style>
 
-    <Style
-        x:Key="SaveButtonStyle"
+    <Style x:Key="SaveButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource SuccessColor}"/>
-        <Setter
-            Property="ImageSource"
-            Value="check_icon_white_16.png"/>
-        <Setter
-            Property="Text"
-            Value="Save"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
+        <Setter Property="ImageSource" Value="check_icon_white_16.png"/>
+        <Setter Property="Text" Value="Save"/>
     </Style>
 
-    <Style
-        x:Key="DeleteButtonStyle"
+    <Style x:Key="DeleteButtonStyle"
         BasedOn="{StaticResource AdminButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="delete_icon_white_16.png"/>
-        <Setter
-            Property="Text"
-            Value="Delete"/>
-        <Setter
-            Property="BackgroundColor"
-            Value="{StaticResource DangerColor}"/>
+        <Setter Property="ImageSource" Value="delete_icon_white_16.png"/>
+        <Setter Property="Text" Value="Delete"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
     </Style>
 
-    <Style
-        x:Key="PercentButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="BorderWidth"
-            Value="1"/>
-        <Setter
-            Property="HeightRequest"
-            Value="32"/>
-        <Setter
-            Property="FontSize"
-            Value="16"/>
-        <Setter
-            Property="Padding"
-            Value="4,4"/>
-        <Setter
-            Property="CornerRadius"
-            Value="4"/>
-        <Setter
-            Property="VisualStateManager.VisualStateGroups">
+    <Style x:Key="PercentButtonStyle" TargetType="Button">
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="4,4"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
-                <VisualStateGroup
-                    x:Name="CommonStates">
-                    <VisualState
-                        x:Name="Normal">
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
                         <VisualState.Setters>
-                            <Setter
-                                Property="TextColor"
-                                Value="{AppThemeBinding Light={StaticResource Black},
-                                                        Dark={StaticResource White}}"/>
-                            <Setter
-                                Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource Gray50},
-                                                        Dark={StaticResource Gray900}}"/>
-                            <Setter
-                                Property="BorderColor"
-                                Value="{AppThemeBinding Light={StaticResource Gray300},
-                                                        Dark={StaticResource Gray600}}"/>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}"/>
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState
-                        x:Name="Selected">
+                    <VisualState x:Name="Selected">
                         <VisualState.Setters>
-                            <Setter
-                                Property="TextColor"
-                                Value="{StaticResource White}"/>
-                            <Setter
-                                Property="Background"
-                                Value="{StaticResource Primary}"/>
-                            <Setter
-                                Property="BorderColor"
-                                Value="{StaticResource Primary}"/>
+                            <Setter Property="TextColor" Value="{StaticResource White}"/>
+                            <Setter Property="Background" Value="{StaticResource Primary}"/>
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -254,63 +110,29 @@
         </Setter>
     </Style>
 
-    <!--  Exercise type buttons  -->
-    <Style
-        x:Key="ExerciseTypeButtonStyle"
-        TargetType="Button">
-        <Setter
-            Property="FontSize"
-            Value="14"/>
-        <Setter
-            Property="TextColor"
-            Value="{AppThemeBinding Light={StaticResource Black},
-                                    Dark={StaticResource White}}"/>
-        <Setter
-            Property="ContentLayout"
-            Value="Top,0"/>
-        <Setter
-            Property="HeightRequest"
-            Value="140"/>
-        <Setter
-            Property="Padding"
-            Value="0,10,0,0"/>
-        <Setter
-            Property="BorderWidth"
-            Value="1"/>
-        <Setter
-            Property="HorizontalOptions"
-            Value="Fill"/>
-        <Setter
-            Property="VerticalOptions"
-            Value="Start"/>
-        <Setter
-            Property="VisualStateManager.VisualStateGroups">
+    <!-- Exercise type buttons -->
+    <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+        <Setter Property="ContentLayout" Value="Top,0"/>
+        <Setter Property="HeightRequest" Value="140"/>
+        <Setter Property="Padding" Value="0,10,0,0"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
-                <VisualStateGroup
-                    x:Name="CommonStates">
-                    <VisualState
-                        x:Name="Normal">
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
                         <VisualState.Setters>
-                            <Setter
-                                Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource Gray50},
-                                                        Dark={StaticResource Gray900}}"/>
-                            <Setter
-                                Property="BorderColor"
-                                Value="{AppThemeBinding Light={StaticResource Gray300},
-                                                        Dark={StaticResource Gray600}}"/>
+                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource Gray50}, Dark={StaticResource Gray900}}"/>
+                            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState
-                        x:Name="Selected">
+                    <VisualState x:Name="Selected">
                         <VisualState.Setters>
-                            <Setter
-                                Property="Background"
-                                Value="{AppThemeBinding Light={StaticResource SecondaryLight},
-                                                        Dark={StaticResource SecondaryDark}}"/>
-                            <Setter
-                                Property="BorderColor"
-                                Value="{StaticResource Primary}"/>
+                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
+                            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -318,44 +140,28 @@
         </Setter>
     </Style>
 
-    <Style
-        x:Key="BarbellButtonStyle"
+    <Style x:Key="BarbellButtonStyle"
         BasedOn="{StaticResource ExerciseTypeButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="{AppThemeBinding Light='deadlift_black_100.png',
-                                    Dark='deadlift_white_100.png'}"/>
+        <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_black_100.png', Dark='deadlift_white_100.png'}"/>
     </Style>
 
-    <Style
-        x:Key="DumbbellButtonStyle"
+    <Style x:Key="DumbbellButtonStyle"
         BasedOn="{StaticResource ExerciseTypeButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="{AppThemeBinding Light='dumbbell_press_black_100.png',
-                                    Dark='dumbbell_press_white_100.png'}"/>
+        <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_black_100.png', Dark='dumbbell_press_white_100.png'}"/>
     </Style>
 
-    <Style
-        x:Key="MachineButtonStyle"
+    <Style x:Key="MachineButtonStyle"
         BasedOn="{StaticResource ExerciseTypeButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="{AppThemeBinding Light='leg_press_black_100.png',
-                                    Dark='leg_press_white_100.png'}"/>
+        <Setter Property="ImageSource" Value="{AppThemeBinding Light='leg_press_black_100.png', Dark='leg_press_white_100.png'}"/>
     </Style>
 
-    <Style
-        x:Key="KettlebellButtonStyle"
+    <Style x:Key="KettlebellButtonStyle"
         BasedOn="{StaticResource ExerciseTypeButtonStyle}"
         TargetType="Button">
-        <Setter
-            Property="ImageSource"
-            Value="{AppThemeBinding Light='kettlebell_swing_black_100.png',
-                                    Dark='kettlebell_swing_white_100.png'}"/>
+        <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}"/>
     </Style>
 
 </ResourceDictionary>

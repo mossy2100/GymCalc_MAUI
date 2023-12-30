@@ -75,7 +75,7 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// </summary>
     /// <param name="canvas"></param>
     /// <exception cref="InvalidOperationException">if the gym object isn't yet set.</exception>
-    public void DrawBarWithPlates(ICanvas canvas)
+    protected void DrawBarWithPlates(ICanvas canvas)
     {
         if (GymObject == null)
         {
@@ -98,7 +98,7 @@ public abstract class GymObjectDrawable : BaseDrawable
         const int cornerRadius = 2;
         float smallPlateTop = barTop / 3;
         float smallPlateHeight = height - 2 * smallPlateTop;
-        canvas.FillColor = Palette.GetColor(GymObject.Color) ?? Palette.GetColor("Black");
+        canvas.FillColor = Palette.GetColor(GymObject.Color);
 
         // Left small plate.
         var leftSmallPlate = new RectF(gapWidth, smallPlateTop, plateWidth, smallPlateHeight);

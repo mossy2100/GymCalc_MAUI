@@ -2,11 +2,15 @@ namespace GymCalc.Enums;
 
 public enum EUnits
 {
-    [Description("default")] Default,
+    [Description("default")]
+    Default,
 
-    [Description("all")] All,
+    [Description("all")]
+    All,
 
-    [Description("kg")] Kilograms,
+    [Description("kg")]
+    Kilograms,
 
-    [Description("lb")] Pounds
+    [Description("lb")]
+    Pounds
 }

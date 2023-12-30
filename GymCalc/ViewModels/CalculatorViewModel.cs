@@ -30,7 +30,6 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
-        BarbellTypeChangedCommand = new Command(BarbellTypeChanged);
         MovementTypeChangedCommand = new Command(MovementTypeChanged);
 
         // Initial selected exercise type.
@@ -371,8 +370,6 @@ public class CalculatorViewModel : BaseViewModel
         // Go to the results page.
         await Shell.Current.GoToAsync("results");
     }
-
-    private void BarbellTypeChanged() { }
 
     private void MovementTypeChanged()
     {

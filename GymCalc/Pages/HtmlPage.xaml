@@ -1,25 +1,19 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
-<ContentPage
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="GymCalc.Pages.HtmlPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:components="clr-namespace:GymCalc.Components" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:components="clr-namespace:GymCalc.Components"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    x:Class="GymCalc.Pages.HtmlPage"
-    x:DataType="viewModels:HtmlViewModel"
-    Title="{Binding Title}">
+    Title="{Binding Title}"
+    x:DataType="viewModels:HtmlViewModel">
 
-    <BlazorWebView
-        x:Name="BlazorWebView"
-        HostPage="wwwroot/index.html"
+    <BlazorWebView x:Name="BlazorWebView"
         BackgroundColor="{AppThemeBinding Light={StaticResource White},
-                                          Dark={StaticResource Black}}">
+                                          Dark={StaticResource Black}}"
+        HostPage="wwwroot/index.html">
         <BlazorWebView.RootComponents>
-            <RootComponent
-                x:Name="RootComponent"
-                Selector="#app"
-                ComponentType="{x:Type components:Main}"/>
+            <RootComponent x:Name="RootComponent"
+                ComponentType="{x:Type components:Main}"
+                Selector="#app"/>
         </BlazorWebView.RootComponents>
     </BlazorWebView>
 

@@ -1,139 +1,80 @@
-<?xml
-    version="1.0"
-    encoding="utf-8"?>
-<ContentPage
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="GymCalc.Pages.EditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:GymCalc.Controls"
-    xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    x:Class="GymCalc.Pages.EditPage"
-    x:DataType="viewModels:EditViewModel"
-    Title="{Binding Title}">
+    xmlns:controls="clr-namespace:GymCalc.Controls" xmlns:converters="clr-namespace:GymCalc.Converters"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="{Binding Title}"
+    x:DataType="viewModels:EditViewModel">
 
     <ContentPage.Resources>
-        <converters:BandsOptionConverter
-            x:Key="DefaultBandsOptionConverter"/>
+        <converters:BandsOptionConverter x:Key="bandsOptionConverter"/>
     </ContentPage.Resources>
 
-    <Grid
-        Padding="{x:Static graphics:PageLayout.Spacing}"
-        RowDefinitions="*,Auto">
-        <ScrollView
-            Grid.Row="0"
+    <Grid Padding="{x:Static graphics:PageLayout.Spacing}" RowDefinitions="*,Auto">
+        <ScrollView Grid.Row="0"
             Padding="{x:Static graphics:PageLayout.Spacing}"
             VerticalOptions="Fill">
 
-            <VerticalStackLayout
-                Spacing="{x:Static graphics:PageLayout.DoubleSpacing}"
-                VerticalOptions="Start">
+            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" VerticalOptions="Start">
 
-                <!--  Weight  -->
-                <Grid
-                    ColumnDefinitions="*,*,*">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Text="Weight"
-                        VerticalTextAlignment="Center"/>
-                    <Border
-                        Grid.Row="0"
-                        Grid.Column="1"
+                <!-- Weight -->
+                <Grid ColumnDefinitions="*,*,*">
+                    <Label Grid.Row="0" Grid.Column="0"
+                        Text="Weight" VerticalTextAlignment="Center"/>
+                    <Border Grid.Row="0" Grid.Column="1"
                         Style="{StaticResource ControlBorderStyle}">
-                        <Entry
-                            Text="{Binding WeightText}"
-                            Style="{StaticResource NumericEntryStyle}"/>
+                        <Entry Style="{StaticResource NumericEntryStyle}" Text="{Binding WeightText}"/>
                     </Border>
                 </Grid>
 
-                <!--  Units  -->
-                <Grid
-                    ColumnDefinitions="*,2*">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
+                <!-- Units -->
+                <Grid ColumnDefinitions="*,2*">
+                    <Label Grid.Row="0" Grid.Column="0"
                         Text="Units"/>
-                    <input:RadioButtonGroupView
-                        Grid.Row="0"
-                        Grid.Column="1"
+                    <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
                         SelectedItem="{Binding Units, Mode=TwoWay}">
-                        <input:RadioButton
-                            Text="kilograms (kg)"
-                            Value="kg"/>
-                        <input:RadioButton
-                            Text="pounds (lb)"
-                            Value="lb"/>
+                        <input:RadioButton Text="kilograms (kg)" Value="kg"/>
+                        <input:RadioButton Text="pounds (lb)" Value="lb"/>
                     </input:RadioButtonGroupView>
                 </Grid>
 
-                <!--  Enabled  -->
-                <Grid
-                    ColumnDefinitions="*,2*">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Text="Enabled"
-                        VerticalTextAlignment="Center"/>
-                    <input:CheckBox
-                        Grid.Row="0"
-                        Grid.Column="1"
+                <!-- Enabled -->
+                <Grid ColumnDefinitions="*,2*">
+                    <Label Grid.Row="0" Grid.Column="0"
+                        Text="Enabled" VerticalTextAlignment="Center"/>
+                    <input:CheckBox Grid.Row="0" Grid.Column="1"
                         IsChecked="{Binding Enabled}"
                         VerticalOptions="Center"/>
                 </Grid>
 
                 <!-- Color -->
-                <Grid
-                    ColumnDefinitions="*,2*">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
+                <Grid ColumnDefinitions="*,2*">
+                    <Label Grid.Row="0" Grid.Column="0"
                         Text="Color"/>
-                    <controls:ColorPicker
-                        Grid.Row="0"
-                        Grid.Column="1"
+                    <controls:ColorPicker Grid.Row="0" Grid.Column="1"
                         Selected="{Binding Color}"/>
                 </Grid>
 
                 <!-- Bands option -->
-                <Grid
-                    ColumnDefinitions="*,2*"
-                    IsVisible="{Binding CanHaveBands}">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Text="Bands"
-                        VerticalTextAlignment="Start"/>
-                    <input:RadioButtonGroupView
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        SelectedItem="{Binding BandsOption, Mode=TwoWay,
-                            Converter={StaticResource DefaultBandsOptionConverter}}">
-                        <input:RadioButton
-                            Text="Color with no bands"
-                            Value="None"/>
-                        <input:RadioButton
-                            Text="Color with black bands"
-                            Value="Black"/>
-                        <input:RadioButton
-                            Text="Black with color bands"
-                            Value="Color"/>
+                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding CanHaveBands}">
+                    <Label Grid.Row="0" Grid.Column="0"
+                        Text="Bands" VerticalTextAlignment="Start"/>
+                    <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
+                        SelectedItem="{Binding BandsOption, Mode=TwoWay, Converter={StaticResource bandsOptionConverter}}">
+                        <input:RadioButton Text="Color with no bands" Value="None"/>
+                        <input:RadioButton Text="Color with black bands" Value="Black"/>
+                        <input:RadioButton Text="Black with color bands" Value="Color"/>
                     </input:RadioButtonGroupView>
                 </Grid>
 
-                <!--  Error message  -->
-                <Label
-                    Text="{Binding ErrorMessage}"
-                    Style="{StaticResource ErrorMessageStyle}">
+                <!-- Error message -->
+                <Label Style="{StaticResource ErrorMessageStyle}" Text="{Binding ErrorMessage}">
                     <Label.Triggers>
-                        <DataTrigger
+                        <DataTrigger Binding="{Binding ErrorMessage}"
                             TargetType="Label"
-                            Binding="{Binding ErrorMessage}"
                             Value="">
-                            <Setter
-                                Property="IsVisible"
-                                Value="False"/>
+                            <Setter Property="IsVisible" Value="False"/>
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
@@ -141,18 +82,14 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!--  Buttons  -->
-        <Grid
-            Grid.Row="1"
-            Style="{StaticResource ButtonGridStyle}">
+        <!-- Buttons -->
+        <Grid Grid.Row="1" Style="{StaticResource ButtonGridStyle}">
             <!-- <Button -->
-            <!--     Grid.Row="0" -->
-            <!--     Grid.Column="0" -->
-            <!--     Command="{Binding CancelCommand}" -->
-            <!--     Style="{StaticResource CancelButtonStyle}"/> -->
-            <Button
-                Grid.Row="0"
-                Grid.Column="0"
+            <!-- Grid.Row="0" -->
+            <!-- Grid.Column="0" -->
+            <!-- Command="{Binding CancelCommand}" -->
+            <!-- Style="{StaticResource CancelButtonStyle}"/> -->
+            <Button Grid.Row="0" Grid.Column="0"
                 Command="{Binding SaveCommand}"
                 Style="{StaticResource SaveButtonStyle}"/>
         </Grid>

@@ -33,8 +33,8 @@ public partial class ColorPicker : ContentView
     private void ConstructGrid()
     {
         // Lookup styles.
-        Style? frameStyle = MauiUtility.LookupStyle("ColorPickerFrameStyle");
-        Style? buttonStyle = MauiUtility.LookupStyle("ColorPickerButtonStyle");
+        Style? frameStyle = ResourceUtility.LookupStyle("ColorPickerFrameStyle", Resources);
+        Style? buttonStyle = ResourceUtility.LookupStyle("ColorPickerButtonStyle", Resources);
 
         // Display the color buttons in the grid.
         const int N_ROWS = 4;

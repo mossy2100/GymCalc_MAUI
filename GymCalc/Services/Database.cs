@@ -1,7 +1,7 @@
 using GymCalc.Repositories;
 using SQLite;
 
-namespace GymCalc;
+namespace GymCalc.Services;
 
 /// <summary>
 /// Container for database stuff.

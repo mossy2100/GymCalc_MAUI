@@ -1,6 +1,6 @@
-using Galaxon.Core.Types;
 using GymCalc.Enums;
 using GymCalc.Models;
+using GymCalc.Services;
 
 namespace GymCalc.Repositories;
 

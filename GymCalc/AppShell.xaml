@@ -1,69 +1,36 @@
-<?xml
-    version="1.0"
-    encoding="UTF-8"?>
-<Shell
-    x:Class="GymCalc.AppShell"
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="GymCalc.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:pages="clr-namespace:GymCalc.Pages"
+    xmlns:gymCalc="clr-namespace:GymCalc" xmlns:pages="clr-namespace:GymCalc.Pages"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:gymCalc="clr-namespace:GymCalc"
-    x:DataType="gymCalc:AppShell"
-    NavBarHasShadow="true">
+    x:DataType="gymCalc:AppShell" NavBarHasShadow="true">
 
     <Shell.BackButtonBehavior>
-        <BackButtonBehavior
-            TextOverride=""/>
+        <BackButtonBehavior TextOverride=""/>
     </Shell.BackButtonBehavior>
 
-    <!-- <Shell.FlyoutHeader> -->
-    <!--     <VerticalStackLayout -->
-    <!--         Padding="20" -->
-    <!--         BackgroundColor="{StaticResource Primary}" -->
-    <!--         Spacing="10" -->
-    <!--         VerticalOptions="Start"> -->
-    <!--         <Label -->
-    <!--             FontAttributes="Bold" -->
-    <!--             FontSize="20" -->
-    <!--             Text="GymCalc" -->
-    <!--             TextColor="White"/> -->
-    <!--         <Label -->
-    <!--             FontAttributes="Bold" -->
-    <!--             FontSize="16" -->
-    <!--             Text="by Shaun Moss" -->
-    <!--             TextColor="White"/> -->
-    <!--     </VerticalStackLayout> -->
-    <!-- </Shell.FlyoutHeader> -->
-
-    <FlyoutItem
-        Title="Calculator"
-        FlyoutIcon="{AppThemeBinding Light='calculator_icon_black_300.png',
-                                     Dark='calculator_icon_white_300.png'}">
-        <ShellContent
-            ContentTemplate="{DataTemplate pages:CalculatorPage}"/>
+    <FlyoutItem Title="Calculator" FlyoutIcon="{AppThemeBinding Light='calculator_icon_black_300.png', Dark='calculator_icon_white_300.png'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:CalculatorPage}"/>
     </FlyoutItem>
-    <MenuItem
-        Text="Weights"
+    <MenuItem Command="{Binding GoToPageCommand}"
+        CommandParameter="weights"
         IconImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
                                           Dark='dumbbell_icon_white_300.png'}"
-        Command="{Binding GoToPageCommand}"
-        CommandParameter="weights"/>
-    <MenuItem
-        Text="Settings"
+        Text="Weights"/>
+    <MenuItem Command="{Binding GoToPageCommand}"
+        CommandParameter="settings"
         IconImageSource="{AppThemeBinding Light='settings_icon_black_300.png',
                                           Dark='settings_icon_white_300.png'}"
-        Command="{Binding GoToPageCommand}"
-        CommandParameter="settings"/>
-    <MenuItem
-        Text="Instructions"
+        Text="Settings"/>
+    <MenuItem Command="{Binding GoToPageCommand}"
+        CommandParameter="instructions"
         IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
                                           Dark='help_icon_white_300.png'}"
-        Command="{Binding GoToPageCommand}"
-        CommandParameter="instructions"/>
-    <MenuItem
-        Text="About GymCalc"
+        Text="Instructions"/>
+    <MenuItem Command="{Binding GoToPageCommand}"
+        CommandParameter="about"
         IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
                                           Dark='about_icon_white_300.png'}"
-        Command="{Binding GoToPageCommand}"
-        CommandParameter="about"/>
+        Text="About GymCalc"/>
 
 </Shell>

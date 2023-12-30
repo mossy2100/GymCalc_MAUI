@@ -41,10 +41,10 @@ internal class PlateDrawable : GymObjectDrawable
     internal static void DrawPlate(ICanvas canvas, Plate plate, float x, float y, float w, float h)
     {
         // Get the color.
-        Color? bgColor = Palette.GetColor(plate.Color) ?? Palette.GetColor("Black");
+        Color bgColor = Palette.GetColor(plate.Color);
 
         // Plate background.
-        canvas.FillColor = bgColor!.AddLuminosity(-0.1f);
+        canvas.FillColor = bgColor.AddLuminosity(-0.1f);
         var plateBackground = new RectF(x, y, w, h);
         canvas.FillRoundedRectangle(plateBackground, _CORNER_RADIUS);
 

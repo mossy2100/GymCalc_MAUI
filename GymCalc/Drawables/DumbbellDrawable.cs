@@ -1,7 +1,3 @@
-using GymCalc.Graphics;
-using GymCalc.Models;
-using Font = Microsoft.Maui.Graphics.Font;
-
 namespace GymCalc.Drawables;
 
 public class DumbbellDrawable : GymObjectDrawable
