@@ -124,7 +124,7 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _color, value);
     }
 
-    public string ColorLabel => GeoService.GetSpelling("color").UpperCaseFirstLetter();
+    public string ColorLabel => GeoService.GetSpelling("Color");
 
     public string? ErrorMessage
     {
