@@ -1,5 +1,6 @@
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
+using Galaxon.Core.Strings;
 using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
@@ -123,6 +124,8 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _color, value);
     }
 
+    public string ColorLabel => GeoService.GetSpelling("color").UpperCaseFirstLetter();
+
     public string? ErrorMessage
     {
         get => _errorMessage;
@@ -146,10 +149,10 @@ public class EditViewModel : BaseViewModel
             // Update the backing field.
             _bandsOption = value;
 
-            // Set the checked flags for each radio.
-            BandsOptionNoneChecked = value == EBandsOption.None;
-            BandsOptionBlackChecked = value == EBandsOption.Black;
-            BandsOptionColorChecked = value == EBandsOption.Color;
+            // Trigger the OnPropertyChanged event for each radio.
+            SetProperty(ref _bandsOptionNoneChecked, value == EBandsOption.None);
+            SetProperty(ref _bandsOptionBlackChecked, value == EBandsOption.Black);
+            SetProperty(ref _bandsOptionColorChecked, value == EBandsOption.Color);
         }
     }
 
@@ -163,9 +166,6 @@ public class EditViewModel : BaseViewModel
             {
                 BandsOption = EBandsOption.None;
             }
-
-            // Fire the OnPropertyChanged event.
-            SetProperty(ref _bandsOptionNoneChecked, value);
         }
     }
 
@@ -179,9 +179,6 @@ public class EditViewModel : BaseViewModel
             {
                 BandsOption = EBandsOption.Black;
             }
-
-            // Fire the OnPropertyChanged event.
-            SetProperty(ref _bandsOptionBlackChecked, value);
         }
     }
 
@@ -195,9 +192,6 @@ public class EditViewModel : BaseViewModel
             {
                 BandsOption = EBandsOption.Color;
             }
-
-            // Fire the OnPropertyChanged event.
-            SetProperty(ref _bandsOptionColorChecked, value);
         }
     }
 

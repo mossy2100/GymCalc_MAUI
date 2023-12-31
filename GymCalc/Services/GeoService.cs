@@ -19,4 +19,22 @@ public static class GeoService
     {
         return GetLocale() == "en-US";
     }
+
+    /// <summary>
+    /// Get the correct spelling of "color" for the user's locale.
+    /// Note, result is always lower-case.
+    /// Add more words as needed. May also need flags for isFromCanada, isFromAustralia, etc.
+    /// </summary>
+    public static string GetSpelling(string word)
+    {
+        bool isFromUS = IsUserFromUnitedStates();
+        switch (word.ToLower())
+        {
+            case "color":
+                return isFromUS ? "color" : "colour";
+
+            default:
+                return word;
+        }
+    }
 }
