@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.EditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:controls="clr-namespace:GymCalc.Controls" xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:GymCalc.Controls" xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="{Binding Title}"
     x:DataType="viewModels:EditViewModel">
-
-    <ContentPage.Resources>
-        <converters:BandsOptionConverter x:Key="bandsOptionConverter"/>
-    </ContentPage.Resources>
 
     <Grid Padding="{x:Static graphics:PageLayout.Spacing}" RowDefinitions="*,Auto">
         <ScrollView Grid.Row="0"
@@ -60,11 +56,16 @@
                 <Grid ColumnDefinitions="*,2*" IsVisible="{Binding CanHaveBands}">
                     <Label Grid.Row="0" Grid.Column="0"
                         Text="Bands" VerticalTextAlignment="Start"/>
-                    <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
-                        SelectedItem="{Binding BandsOption, Mode=TwoWay, Converter={StaticResource bandsOptionConverter}}">
-                        <input:RadioButton Text="Color with no bands" Value="None"/>
-                        <input:RadioButton Text="Color with black bands" Value="Black"/>
-                        <input:RadioButton Text="Black with color bands" Value="Color"/>
+                    <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1">
+                        <input:RadioButton IsChecked="{Binding BandsOptionNoneChecked, Mode=TwoWay}"
+                            Text="None"
+                            Value="None"/>
+                        <input:RadioButton IsChecked="{Binding BandsOptionBlackChecked, Mode=TwoWay}"
+                            Text="Color with black bands"
+                            Value="Black"/>
+                        <input:RadioButton IsChecked="{Binding BandsOptionColorChecked, Mode=TwoWay}"
+                            Text="Black with color bands"
+                            Value="Color"/>
                     </input:RadioButtonGroupView>
                 </Grid>
 
@@ -83,13 +84,13 @@
         </ScrollView>
 
         <!-- Buttons -->
-        <Grid Grid.Row="1" Style="{StaticResource ButtonGridStyle}">
-            <!-- <Button -->
-            <!-- Grid.Row="0" -->
-            <!-- Grid.Column="0" -->
-            <!-- Command="{Binding CancelCommand}" -->
-            <!-- Style="{StaticResource CancelButtonStyle}"/> -->
+        <Grid Grid.Row="1"
+            ColumnDefinitions="*,*"
+            Style="{StaticResource ButtonGridStyle}">
             <Button Grid.Row="0" Grid.Column="0"
+                Command="{Binding CancelCommand}"
+                Style="{StaticResource CancelButtonStyle}"/>
+            <Button Grid.Row="0" Grid.Column="1"
                 Command="{Binding SaveCommand}"
                 Style="{StaticResource SaveButtonStyle}"/>
         </Grid>

@@ -23,17 +23,27 @@ internal static class UnitsService
     /// <returns>The user's preferred units of mass.</returns>
     internal static EUnits GetDefaultUnits()
     {
+        // Check if the units are already set in the user's preferences.
         string sUnits = Preferences.Default.Get("Units", "");
-        if (sUnits == EUnits.Pounds.GetDescription())
+
+        // If so, try to convert the value from a string to an EUnits value.
+        if (!string.IsNullOrEmpty(sUnits))
         {
-            return EUnits.Pounds;
+            if (sUnits == EUnits.Pounds.GetDescription())
+            {
+                return EUnits.Pounds;
+            }
+
+            if (sUnits == EUnits.Kilograms.GetDescription())
+            {
+                return EUnits.Kilograms;
+            }
         }
-        if (sUnits == EUnits.Kilograms.GetDescription())
-        {
-            return EUnits.Kilograms;
-        }
-        // See if they are from the US; or, at least, if their phone is set up for US.
-        return CultureInfo.CurrentCulture.Name == "en-US" ? EUnits.Pounds : EUnits.Kilograms;
+
+        // The units are not specified in their preferences, so, check if they are from the US (or,
+        // at least, if their phone is set up for US), and if so, default to pounds.
+        // For everyone else, default to kilograms.
+        return GeoService.IsUserFromUnitedStates() ? EUnits.Pounds : EUnits.Kilograms;
     }
 
     internal static string GetDefaultUnitsSymbol()

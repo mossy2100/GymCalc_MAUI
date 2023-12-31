@@ -59,10 +59,6 @@ public class EditViewModel : BaseViewModel
 
     private string? _gymObjectTypeName;
 
-    private bool _canHaveBands;
-
-    private EBandsOption _bandsOption;
-
     private string? _color;
 
     private string? _operation;
@@ -70,6 +66,16 @@ public class EditViewModel : BaseViewModel
     private string? _title;
 
     private string? _units;
+
+    private bool _canHaveBands;
+
+    private EBandsOption _bandsOption;
+
+    private bool _bandsOptionNoneChecked;
+
+    private bool _bandsOptionBlackChecked;
+
+    private bool _bandsOptionColorChecked;
 
     /// <summary>
     /// The weight (parsed from the WeightText entry field).
@@ -117,13 +123,6 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _color, value);
     }
 
-    public EBandsOption BandsOption
-    {
-        get => _bandsOption;
-
-        set => SetProperty(ref _bandsOption, value);
-    }
-
     public string? ErrorMessage
     {
         get => _errorMessage;
@@ -136,6 +135,70 @@ public class EditViewModel : BaseViewModel
         get => _canHaveBands;
 
         set => SetProperty(ref _canHaveBands, value);
+    }
+
+    public EBandsOption BandsOption
+    {
+        get => _bandsOption;
+
+        set
+        {
+            // Update the backing field.
+            _bandsOption = value;
+
+            // Set the checked flags for each radio.
+            BandsOptionNoneChecked = value == EBandsOption.None;
+            BandsOptionBlackChecked = value == EBandsOption.Black;
+            BandsOptionColorChecked = value == EBandsOption.Color;
+        }
+    }
+
+    public bool BandsOptionNoneChecked
+    {
+        get => _bandsOptionNoneChecked;
+
+        set
+        {
+            if (value)
+            {
+                BandsOption = EBandsOption.None;
+            }
+
+            // Fire the OnPropertyChanged event.
+            SetProperty(ref _bandsOptionNoneChecked, value);
+        }
+    }
+
+    public bool BandsOptionBlackChecked
+    {
+        get => _bandsOptionBlackChecked;
+
+        set
+        {
+            if (value)
+            {
+                BandsOption = EBandsOption.Black;
+            }
+
+            // Fire the OnPropertyChanged event.
+            SetProperty(ref _bandsOptionBlackChecked, value);
+        }
+    }
+
+    public bool BandsOptionColorChecked
+    {
+        get => _bandsOptionColorChecked;
+
+        set
+        {
+            if (value)
+            {
+                BandsOption = EBandsOption.Color;
+            }
+
+            // Fire the OnPropertyChanged event.
+            SetProperty(ref _bandsOptionColorChecked, value);
+        }
     }
 
     #endregion Bindable properties
