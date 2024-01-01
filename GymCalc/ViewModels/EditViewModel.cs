@@ -1,6 +1,5 @@
 using AsyncAwaitBestPractices.MVVM;
 using Galaxon.Core.Exceptions;
-using Galaxon.Core.Strings;
 using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Repositories;
@@ -70,7 +69,7 @@ public class EditViewModel : BaseViewModel
 
     private bool _canHaveBands;
 
-    private EBandsOption _bandsOption;
+    // private EBandsOption _bandsOption;
 
     private bool _bandsOptionNoneChecked;
 
@@ -142,17 +141,38 @@ public class EditViewModel : BaseViewModel
 
     public EBandsOption BandsOption
     {
-        get => _bandsOption;
+        get
+        {
+            if (BandsOptionNoneChecked)
+            {
+                return EBandsOption.None;
+            }
+            else if (BandsOptionBlackChecked)
+            {
+                return EBandsOption.Black;
+            }
+            else
+            {
+                return EBandsOption.Color;
+            }
+        }
 
         set
         {
-            // Update the backing field.
-            _bandsOption = value;
+            switch (value)
+            {
+                case EBandsOption.None:
+                    BandsOptionNoneChecked = true;
+                    break;
 
-            // Trigger the OnPropertyChanged event for each radio.
-            SetProperty(ref _bandsOptionNoneChecked, value == EBandsOption.None);
-            SetProperty(ref _bandsOptionBlackChecked, value == EBandsOption.Black);
-            SetProperty(ref _bandsOptionColorChecked, value == EBandsOption.Color);
+                case EBandsOption.Black:
+                    BandsOptionBlackChecked = true;
+                    break;
+
+                default:
+                    BandsOptionColorChecked = true;
+                    break;
+            }
         }
     }
 
@@ -162,9 +182,11 @@ public class EditViewModel : BaseViewModel
 
         set
         {
+            SetProperty(ref _bandsOptionNoneChecked, value);
             if (value)
             {
-                BandsOption = EBandsOption.None;
+                BandsOptionBlackChecked = false;
+                BandsOptionColorChecked = false;
             }
         }
     }
@@ -175,9 +197,11 @@ public class EditViewModel : BaseViewModel
 
         set
         {
+            SetProperty(ref _bandsOptionBlackChecked, value);
             if (value)
             {
-                BandsOption = EBandsOption.Black;
+                BandsOptionNoneChecked = false;
+                BandsOptionColorChecked = false;
             }
         }
     }
@@ -188,9 +212,11 @@ public class EditViewModel : BaseViewModel
 
         set
         {
+            SetProperty(ref _bandsOptionColorChecked, value);
             if (value)
             {
-                BandsOption = EBandsOption.Color;
+                BandsOptionNoneChecked = false;
+                BandsOptionBlackChecked = false;
             }
         }
     }
