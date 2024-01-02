@@ -30,7 +30,6 @@ public class CalculatorViewModel : BaseViewModel
 
         // Create commands.
         CalculateCommand = new AsyncCommand(Calculate);
-        MovementTypeChangedCommand = new Command(MovementTypeChanged);
 
         // Initial selected exercise type.
         SelectedExerciseType = EExerciseType.Barbell;
@@ -123,7 +122,7 @@ public class CalculatorViewModel : BaseViewModel
     // ---------------------------------------------------------------------------------------------
     private EMovementType _movementType = EMovementType.Bilateral;
 
-    public EMovementType _MovementType
+    public EMovementType MovementType
     {
         get => _movementType;
 
@@ -216,10 +215,6 @@ public class CalculatorViewModel : BaseViewModel
 
     public ICommand CalculateCommand { get; init; }
 
-    public ICommand? BarbellTypeChangedCommand { get; init; }
-
-    public ICommand MovementTypeChangedCommand { get; init; }
-
     #endregion Commands
 
     // ---------------------------------------------------------------------------------------------
@@ -283,9 +278,6 @@ public class CalculatorViewModel : BaseViewModel
         // Set the units labels, which may have changed if the user went to the settings page.
         SetUnits();
 
-        // Initialize the starting weight label.
-        MovementTypeChanged();
-
         // Update the bar weight picker whenever this page appears, because the bar weights may have
         // changed on the Bars page.
         await ResetBarWeightPicker();
@@ -347,7 +339,7 @@ public class CalculatorViewModel : BaseViewModel
             case EExerciseType.Machine:
                 if (proceed && ValidateStartingWeight())
                 {
-                    await _calculatorService.DoMachineCalculations(_MovementType, MaxWeight!.Value,
+                    await _calculatorService.DoMachineCalculations(MovementType, MaxWeight!.Value,
                         StartingWeight!.Value);
                 }
                 else
@@ -370,13 +362,6 @@ public class CalculatorViewModel : BaseViewModel
 
         // Go to the results page.
         await Shell.Current.GoToAsync("results");
-    }
-
-    private void MovementTypeChanged()
-    {
-        StartingWeightLabel = _MovementType == EMovementType.Isolateral
-            ? "Starting weight per side"
-            : "Starting weight";
     }
 
     #endregion Command methods

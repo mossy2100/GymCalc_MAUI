@@ -165,7 +165,8 @@
     </Style>
 
     <ControlTemplate x:Key="RadioButtonTemplate">
-        <Border HeightRequest="22" StrokeThickness="0">
+        <Border Margin="0" Padding="0"
+            HeightRequest="22" StrokeThickness="0">
             <Grid ColumnDefinitions="22,Auto" ColumnSpacing="8"
                 RowDefinitions="22">
                 <Grid Grid.Column="0"

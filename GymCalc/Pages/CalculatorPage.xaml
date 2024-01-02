@@ -2,8 +2,7 @@
 <ContentPage x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator"
     x:DataType="viewModels:CalculatorViewModel">
 
@@ -118,12 +117,22 @@
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     Text="Machine type" VerticalTextAlignment="Center"/>
-                <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
-                    SelectedItem="{Binding _MovementType, Mode=TwoWay, Converter={StaticResource movementTypeConverter}}"
-                    SelectedItemChangedCommand="{Binding MovementTypeChangedCommand}">
-                    <input:RadioButton Text="Bilateral" Value="Bilateral"/>
-                    <input:RadioButton Text="Isolateral" Value="Isolateral"/>
-                </input:RadioButtonGroupView>
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1"
+                    Margin="0" Padding="0"
+                    RadioButtonGroup.GroupName="MovementTypeRadioButtonGroup"
+                    RadioButtonGroup.SelectedValue="{Binding MovementType, Mode=TwoWay, Converter={StaticResource movementTypeConverter}}"
+                    Spacing="0">
+                    <RadioButton Margin="0" Padding="0"
+                        CheckedChanged="OnMovementTypeChanged" Content="Bilateral"
+                        GroupName="MovementTypeRadioButtonGroup"
+                        Style="{StaticResource RadioButtonStyle}"
+                        Value="Bilateral"/>
+                    <RadioButton Margin="0" Padding="0"
+                        CheckedChanged="OnMovementTypeChanged" Content="Isolateral"
+                        GroupName="MovementTypeRadioButtonGroup"
+                        Style="{StaticResource RadioButtonStyle}"
+                        Value="Isolateral"/>
+                </VerticalStackLayout>
             </Grid>
 
             <!-- Machine starting weight -->

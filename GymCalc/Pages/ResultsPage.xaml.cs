@@ -79,7 +79,10 @@ public partial class ResultsPage : ContentPage
         }
         if (_calculatorService.StartingWeight != null)
         {
-            rows.Add("Starting weight", $"{_calculatorService.StartingWeight} {sUnits}");
+            string startingWeightText = _calculatorService.MovementType == EMovementType.Isolateral
+                ? "Starting weight per side"
+                : "Starting weight";
+            rows.Add(startingWeightText, $"{_calculatorService.StartingWeight} {sUnits}");
         }
         var i = 0;
         const int FONT_SIZE = 14;
@@ -89,12 +92,16 @@ public partial class ResultsPage : ContentPage
             CalculatorSettingsGrid.Add(new BoldLabel
             {
                 Text = row.Key,
-                FontSize = FONT_SIZE
+                FontSize = FONT_SIZE,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center
             }, 0, i);
             CalculatorSettingsGrid.Add(new Label
             {
                 Text = row.Value,
-                FontSize = FONT_SIZE
+                FontSize = FONT_SIZE,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalTextAlignment = TextAlignment.Center
             }, 1, i);
             i++;
         }

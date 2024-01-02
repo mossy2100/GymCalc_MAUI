@@ -8,7 +8,7 @@ public partial class CalculatorPage : ContentPage
 {
     #region Fields
 
-    private readonly CalculatorViewModel _model;
+    private readonly CalculatorViewModel? _model;
 
     private bool _databaseInitialized;
 
@@ -33,6 +33,11 @@ public partial class CalculatorPage : ContentPage
     /// <inheritdoc/>
     protected override async void OnAppearing()
     {
+        if (_model == null)
+        {
+            return;
+        }
+
         // Initialize database on first page load.
         if (!_databaseInitialized)
         {
@@ -83,12 +88,29 @@ public partial class CalculatorPage : ContentPage
         }
     }
 
+    private void OnMovementTypeChanged(object sender, EventArgs e)
+    {
+        if (_model == null)
+        {
+            return;
+        }
+
+        _model.StartingWeightLabel = _model.MovementType == EMovementType.Isolateral
+            ? "Starting weight per side"
+            : "Starting weight";
+    }
+
     #endregion Events
 
     #region UI
 
     private void SetExerciseType(EExerciseType exerciseType)
     {
+        if (_model == null)
+        {
+            return;
+        }
+
         // Clear the error message.
         _model.ErrorMessage = "";
 
