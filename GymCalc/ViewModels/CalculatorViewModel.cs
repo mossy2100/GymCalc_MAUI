@@ -110,7 +110,7 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     // ---------------------------------------------------------------------------------------------
-    private string? _startingWeightLabel;
+    private string? _startingWeightLabel = "Starting weight";
 
     public string? StartingWeightLabel
     {

@@ -29,14 +29,10 @@ internal static class UnitsService
         // If so, try to convert the value from a string to an EUnits value.
         if (!string.IsNullOrEmpty(sUnits))
         {
-            if (sUnits == EUnits.Pounds.GetDescription())
+            if (XEnum.TryParse(sUnits, out EUnits units)
+                && units is EUnits.Kilograms or EUnits.Pounds)
             {
-                return EUnits.Pounds;
-            }
-
-            if (sUnits == EUnits.Kilograms.GetDescription())
-            {
-                return EUnits.Kilograms;
+                return units;
             }
         }
 

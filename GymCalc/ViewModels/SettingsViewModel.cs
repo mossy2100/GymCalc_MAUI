@@ -1,12 +1,13 @@
+using GymCalc.Enums;
 using GymCalc.Services;
 
 namespace GymCalc.ViewModels;
 
 public class SettingsViewModel : BaseViewModel
 {
-    private string _units = UnitsService.GetDefaultUnitsSymbol();
+    private EUnits _units = UnitsService.GetDefaultUnits();
 
-    public string Units
+    public EUnits Units
     {
         get => _units;
 
@@ -21,7 +22,7 @@ public class SettingsViewModel : BaseViewModel
         switch (propertyName)
         {
             case nameof(Units):
-                Preferences.Default.Set("Units", Units);
+                Preferences.Default.Set("Units", Units.ToString());
                 break;
         }
     }

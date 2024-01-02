@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:graphics="clr-namespace:GymCalc.Graphics"
     xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Settings"
     x:DataType="viewModels:SettingsViewModel">
+
+    <ContentPage.Resources>
+        <converters:UnitsConverter x:Key="unitsConverter"/>
+    </ContentPage.Resources>
 
     <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
         <Grid ColumnDefinitions="*,*"
@@ -15,11 +19,18 @@
             <Label Grid.Row="0" Grid.Column="0"
                 Text="Units"/>
 
-            <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
-                SelectedItem="{Binding Units, Mode=TwoWay}">
-                <input:RadioButton Text="kilograms (kg)" Value="kg"/>
-                <input:RadioButton Text="pounds (lb)" Value="lb"/>
-            </input:RadioButtonGroupView>
+            <VerticalStackLayout Grid.Row="0" Grid.Column="1"
+                Margin="0" Padding="0"
+                RadioButtonGroup.GroupName="UnitsRadioButtonGroup"
+                RadioButtonGroup.SelectedValue="{Binding Units, Mode=TwoWay, Converter={StaticResource unitsConverter}}"
+                Spacing="0">
+                <RadioButton Content="kilograms (kg)" GroupName="UnitsRadioButtonGroup"
+                    Style="{StaticResource RadioButtonStyle}"
+                    Value="Kilograms"/>
+                <RadioButton Content="pounds (lb)" GroupName="UnitsRadioButtonGroup"
+                    Style="{StaticResource RadioButtonStyle}"
+                    Value="Pounds"/>
+            </VerticalStackLayout>
 
         </Grid>
     </ScrollView>
