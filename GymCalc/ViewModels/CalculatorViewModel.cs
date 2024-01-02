@@ -330,37 +330,38 @@ public class CalculatorViewModel : BaseViewModel
 
     private async Task Calculate()
     {
+        bool proceed = ValidateMaxWeight();
+        if (!proceed)
+        {
+            return;
+        }
+
         // Do the calculations based on the selected exercise type.
         switch (SelectedExerciseType)
         {
             case EExerciseType.Barbell:
-                if (ValidateMaxWeight())
-                {
-                    await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
-                        BarWeight);
-                }
+                await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
+                    BarWeight);
                 break;
 
             case EExerciseType.Machine:
-                if (ValidateMaxWeight() && ValidateStartingWeight())
+                if (proceed && ValidateStartingWeight())
                 {
                     await _calculatorService.DoMachineCalculations(_MovementType, MaxWeight!.Value,
                         StartingWeight!.Value);
                 }
+                else
+                {
+                    return;
+                }
                 break;
 
             case EExerciseType.Dumbbell:
-                if (ValidateMaxWeight())
-                {
-                    await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
-                }
+                await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
                 break;
 
             case EExerciseType.Kettlebell:
-                if (ValidateMaxWeight())
-                {
-                    await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
-                }
+                await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
                 break;
 
             default:

@@ -1,3 +1,4 @@
+using GymCalc.Enums;
 using SQLite;
 
 namespace GymCalc.Models;
@@ -10,7 +11,7 @@ public class GymObject
 
     public decimal Weight { get; set; }
 
-    public string? Units { get; set; }
+    public EUnits Units { get; set; }
 
     public bool Enabled { get; set; }
 

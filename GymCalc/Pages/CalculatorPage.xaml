@@ -75,15 +75,20 @@
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     Text="Barbell type" VerticalTextAlignment="Center"/>
-                <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
-                    SelectedItem="{Binding BarbellType, Mode=TwoWay, Converter={StaticResource barbellTypeConverter}}">
-                    <input:RadioButton Clicked="OnBarbellTypePlateLoadedSelected" IsChecked="True"
-                        Text="Plate-loaded"
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1"
+                    Margin="0" Padding="0"
+                    RadioButtonGroup.GroupName="BarbellTypeRadioButtonGroup"
+                    RadioButtonGroup.SelectedValue="{Binding BarbellType, Mode=TwoWay, Converter={StaticResource barbellTypeConverter}}"
+                    Spacing="0">
+                    <RadioButton CheckedChanged="OnBarbellTypePlateLoadedSelected" Content="Plate-loaded"
+                        GroupName="BarbellTypeRadioButtonGroup"
+                        Style="{StaticResource RadioButtonStyle}"
                         Value="PlateLoaded"/>
-                    <input:RadioButton Clicked="OnBarbellTypeFixedSelected" IsChecked="False"
-                        Text="Fixed"
+                    <RadioButton CheckedChanged="OnBarbellTypeFixedSelected" Content="Fixed"
+                        GroupName="BarbellTypeRadioButtonGroup"
+                        Style="{StaticResource RadioButtonStyle}"
                         Value="Fixed"/>
-                </input:RadioButtonGroupView>
+                </VerticalStackLayout>
             </Grid>
 
             <!-- Bar weight -->

@@ -1,3 +1,4 @@
+using Galaxon.Core.Types;
 using GymCalc.Models;
 using GymCalc.ViewModels;
 
@@ -88,7 +89,7 @@ public partial class ListPage : ContentPage
 
         // Show the confirmation dialog.
         var msg =
-            $"Are you sure you want to delete the {gymObject.Weight} {gymObject.Units} {GymObjectTypeName.ToLower()}?";
+            $"Are you sure you want to delete the {gymObject.Weight} {gymObject.Units.GetDescription()} {GymObjectTypeName.ToLower()}?";
         bool confirmed = await DisplayAlert("Please confirm", msg, "OK", "Cancel");
 
         // If confirmed, do the deletion.

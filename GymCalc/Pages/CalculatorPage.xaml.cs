@@ -1,7 +1,6 @@
 using Galaxon.Core.Exceptions;
 using GymCalc.Enums;
 using GymCalc.ViewModels;
-using InputKitRadioButton = InputKit.Shared.Controls.RadioButton;
 
 namespace GymCalc.Pages;
 
@@ -70,7 +69,7 @@ public partial class CalculatorPage : ContentPage
 
     private void OnBarbellTypePlateLoadedSelected(object sender, EventArgs e)
     {
-        if (sender is InputKitRadioButton rb && BarWeightGrid != null)
+        if (sender is RadioButton rb && BarWeightGrid != null)
         {
             BarWeightGrid.IsVisible = rb.IsChecked;
         }
@@ -78,7 +77,7 @@ public partial class CalculatorPage : ContentPage
 
     private void OnBarbellTypeFixedSelected(object sender, EventArgs e)
     {
-        if (sender is InputKitRadioButton rb && BarWeightGrid != null)
+        if (sender is RadioButton rb && BarWeightGrid != null)
         {
             BarWeightGrid.IsVisible = !rb.IsChecked;
         }

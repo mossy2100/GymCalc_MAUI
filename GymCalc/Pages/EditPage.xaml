@@ -9,6 +9,7 @@
 
     <ContentPage.Resources>
         <converters:BandsOptionConverter x:Key="bandsOptionConverter"/>
+        <converters:UnitsConverter x:Key="unitsConverter"/>
     </ContentPage.Resources>
 
     <Grid Padding="{x:Static graphics:PageLayout.Spacing}" RowDefinitions="*,Auto">
@@ -32,11 +33,16 @@
                 <Grid ColumnDefinitions="*,2*">
                     <Label Grid.Row="0" Grid.Column="0"
                         Text="Units"/>
-                    <input:RadioButtonGroupView Grid.Row="0" Grid.Column="1"
-                        SelectedItem="{Binding Units, Mode=TwoWay}">
-                        <input:RadioButton Text="kilograms (kg)" Value="kg"/>
-                        <input:RadioButton Text="pounds (lb)" Value="lb"/>
-                    </input:RadioButtonGroupView>
+                    <StackLayout Grid.Row="0" Grid.Column="1"
+                        RadioButtonGroup.GroupName="UnitsRadioButtonGroup"
+                        RadioButtonGroup.SelectedValue="{Binding Units, Mode=TwoWay, Converter={StaticResource unitsConverter}}">
+                        <RadioButton Content="kilograms (kg)" GroupName="UnitsRadioButtonGroup"
+                            Style="{StaticResource RadioButtonStyle}"
+                            Value="Kilograms"/>
+                        <RadioButton Content="pounds (lb)" GroupName="UnitsRadioButtonGroup"
+                            Style="{StaticResource RadioButtonStyle}"
+                            Value="Pounds"/>
+                    </StackLayout>
                 </Grid>
 
                 <!-- Enabled -->
@@ -57,18 +63,20 @@
                 </Grid>
 
                 <!-- Bands option -->
-                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding CanHaveBands}">
+                <Grid ColumnDefinitions="*,2*" IsVisible="{Binding BandsOptionVisible}">
                     <Label Grid.Row="0" Grid.Column="0"
                         Text="Bands" VerticalTextAlignment="Start"/>
-                    <StackLayout Grid.Row="0" Grid.Column="1">
-                        <RadioButton Content="None"
-                            IsChecked="{Binding BandsOptionNoneChecked, Mode=TwoWay}"
+                    <StackLayout Grid.Row="0" Grid.Column="1"
+                        RadioButtonGroup.GroupName="BandsOptionRadioButtonGroup"
+                        RadioButtonGroup.SelectedValue="{Binding BandsOption, Mode=TwoWay, Converter={StaticResource bandsOptionConverter}}">
+                        <RadioButton Content="None" GroupName="BandsOptionRadioButtonGroup"
+                            Style="{StaticResource RadioButtonStyle}"
                             Value="None"/>
-                        <RadioButton Content="Color with black bands"
-                            IsChecked="{Binding BandsOptionBlackChecked, Mode=TwoWay}"
+                        <RadioButton Content="Color with black bands" GroupName="BandsOptionRadioButtonGroup"
+                            Style="{StaticResource RadioButtonStyle}"
                             Value="Black"/>
-                        <RadioButton Content="Black with color bands"
-                            IsChecked="{Binding BandsOptionColorChecked, Mode=TwoWay}"
+                        <RadioButton Content="Black with color bands" GroupName="BandsOptionRadioButtonGroup"
+                            Style="{StaticResource RadioButtonStyle}"
                             Value="Color"/>
                     </StackLayout>
                 </Grid>

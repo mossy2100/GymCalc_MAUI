@@ -164,4 +164,49 @@
         <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}"/>
     </Style>
 
+    <ControlTemplate x:Key="RadioButtonTemplate">
+        <Border HeightRequest="22" StrokeThickness="0">
+            <Grid ColumnDefinitions="22,Auto" ColumnSpacing="8"
+                RowDefinitions="22">
+                <Grid Grid.Column="0"
+                    HeightRequest="22" HorizontalOptions="Center"
+                    VerticalOptions="Center" WidthRequest="22">
+                    <Ellipse x:Name="OuterCircle"
+                        Fill="Transparent" HeightRequest="20"
+                        HorizontalOptions="Center"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="2" VerticalOptions="Center"
+                        WidthRequest="20"/>
+                    <Ellipse x:Name="InnerCircle"
+                        Fill="{StaticResource Primary}"
+                        HeightRequest="10" HorizontalOptions="Center"
+                        VerticalOptions="Center" WidthRequest="10"/>
+                </Grid>
+                <ContentPresenter Grid.Column="1"
+                    Margin="0" Padding="0"
+                    HorizontalOptions="Start" VerticalOptions="Center"/>
+            </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter TargetName="InnerCircle" Property="Opacity" Value="1"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter TargetName="InnerCircle" Property="Opacity" Value="0"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}"/>
+    </Style>
+
 </ResourceDictionary>

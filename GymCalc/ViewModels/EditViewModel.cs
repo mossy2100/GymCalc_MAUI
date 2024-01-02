@@ -65,21 +65,12 @@ public class EditViewModel : BaseViewModel
 
     private string? _title;
 
-    private string? _units;
+    private EUnits _units;
 
-    private bool _canHaveBands;
+    private bool _bandsOptionVisible;
 
-    // private EBandsOption _bandsOption;
+    private EBandsOption _bandsOption;
 
-    private bool _bandsOptionNoneChecked;
-
-    private bool _bandsOptionBlackChecked;
-
-    private bool _bandsOptionColorChecked;
-
-    /// <summary>
-    /// The weight (parsed from the WeightText entry field).
-    /// </summary>
     private decimal _weight;
 
     private string? _weightText;
@@ -102,7 +93,7 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _weightText, value);
     }
 
-    public string? Units
+    public EUnits Units
     {
         get => _units;
 
@@ -132,93 +123,18 @@ public class EditViewModel : BaseViewModel
         set => SetProperty(ref _errorMessage, value);
     }
 
-    public bool CanHaveBands
+    public bool BandsOptionVisible
     {
-        get => _canHaveBands;
+        get => _bandsOptionVisible;
 
-        set => SetProperty(ref _canHaveBands, value);
+        set => SetProperty(ref _bandsOptionVisible, value);
     }
 
     public EBandsOption BandsOption
     {
-        get
-        {
-            if (BandsOptionNoneChecked)
-            {
-                return EBandsOption.None;
-            }
-            else if (BandsOptionBlackChecked)
-            {
-                return EBandsOption.Black;
-            }
-            else
-            {
-                return EBandsOption.Color;
-            }
-        }
+        get => _bandsOption;
 
-        set
-        {
-            switch (value)
-            {
-                case EBandsOption.None:
-                    BandsOptionNoneChecked = true;
-                    break;
-
-                case EBandsOption.Black:
-                    BandsOptionBlackChecked = true;
-                    break;
-
-                default:
-                    BandsOptionColorChecked = true;
-                    break;
-            }
-        }
-    }
-
-    public bool BandsOptionNoneChecked
-    {
-        get => _bandsOptionNoneChecked;
-
-        set
-        {
-            SetProperty(ref _bandsOptionNoneChecked, value);
-            if (value)
-            {
-                BandsOptionBlackChecked = false;
-                BandsOptionColorChecked = false;
-            }
-        }
-    }
-
-    public bool BandsOptionBlackChecked
-    {
-        get => _bandsOptionBlackChecked;
-
-        set
-        {
-            SetProperty(ref _bandsOptionBlackChecked, value);
-            if (value)
-            {
-                BandsOptionNoneChecked = false;
-                BandsOptionColorChecked = false;
-            }
-        }
-    }
-
-    public bool BandsOptionColorChecked
-    {
-        get => _bandsOptionColorChecked;
-
-        set
-        {
-            SetProperty(ref _bandsOptionColorChecked, value);
-            if (value)
-            {
-                BandsOptionNoneChecked = false;
-                BandsOptionBlackChecked = false;
-            }
-        }
+        set => SetProperty(ref _bandsOption, value);
     }
 
     #endregion Bindable properties
@@ -326,10 +242,10 @@ public class EditViewModel : BaseViewModel
     private void ResetForm()
     {
         WeightText = "";
-        Units = UnitsService.GetDefaultUnitsSymbol();
+        Units = UnitsService.GetDefaultUnits();
         Enabled = true;
         Color = "Black";
-        CanHaveBands = false;
+        BandsOptionVisible = false;
         BandsOption = EBandsOption.None;
     }
 
@@ -381,12 +297,12 @@ public class EditViewModel : BaseViewModel
         // Set the type-specific form values.
         if (_gymObject is Kettlebell kettlebell)
         {
-            CanHaveBands = true;
+            BandsOptionVisible = true;
             BandsOption = kettlebell.BandsOption;
         }
         else
         {
-            CanHaveBands = false;
+            BandsOptionVisible = false;
         }
     }
 

@@ -2,18 +2,18 @@ using GymCalc.Enums;
 
 namespace GymCalc.Converters;
 
-internal class BandsOptionConverter : IValueConverter
+internal class UnitsConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return (value is EBandsOption bo) ? bo.ToString() : null;
+        return (value is EUnits units) ? units.ToString() : null;
     }
 
     /// <inheritdoc/>
     public object? ConvertBack(object? value, Type targetType, object? parameter,
         CultureInfo culture)
     {
-        return (value is string s && Enum.TryParse(s, out EBandsOption bo)) ? bo : null;
+        return (value is string str && Enum.TryParse(str, out EUnits units)) ? units : null;
     }
 }
