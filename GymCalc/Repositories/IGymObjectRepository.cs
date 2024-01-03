@@ -23,6 +23,12 @@ internal interface IGymObjectRepository
     public Task<List<GymObject>> LoadAll();
 
     /// <summary>
+    /// Create a gym object.
+    /// </summary>
+    /// <returns>The new gym object.</returns>
+    public GymObject Create();
+
+    /// <summary>
     /// Update a gym object.
     /// </summary>
     /// <param name="gymObject">The object to update.</param>

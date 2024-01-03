@@ -1,4 +1,3 @@
-using Galaxon.Core.Types;
 using GymCalc.Enums;
 using GymCalc.Models;
 using GymCalc.Services;
@@ -172,6 +171,12 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     {
         List<T> gymObjects = await LoadSome(null);
         return gymObjects.Cast<GymObject>().ToList();
+    }
+
+    /// <inheritdoc/>
+    public GymObject Create()
+    {
+        return Activator.CreateInstance<T>();
     }
 
     /// <inheritdoc/>

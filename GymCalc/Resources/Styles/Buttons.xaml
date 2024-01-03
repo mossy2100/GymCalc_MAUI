@@ -179,8 +179,8 @@
                         WidthRequest="24"/>
                     <Ellipse x:Name="InnerCircle"
                         Fill="{StaticResource Primary}"
-                        HeightRequest="12" HorizontalOptions="Center"
-                        VerticalOptions="Center" WidthRequest="12"/>
+                        HeightRequest="14" HorizontalOptions="Center"
+                        VerticalOptions="Center" WidthRequest="14"/>
                 </Grid>
                 <ContentPresenter Grid.Column="1"
                     Margin="0" Padding="0"

@@ -12,42 +12,20 @@ public class EditViewModel : BaseViewModel
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="barRepo"></param>
-    /// <param name="plateRepo"></param>
-    /// <param name="barbellRepo"></param>
-    /// <param name="dumbbellRepo"></param>
-    /// <param name="kettlebellRepo"></param>
-    public EditViewModel(BarRepository barRepo, PlateRepository plateRepo,
-        BarbellRepository barbellRepo, DumbbellRepository dumbbellRepo,
-        KettlebellRepository kettlebellRepo)
+    /// <param name="database"></param>
+    public EditViewModel(Database database)
     {
         // Dependencies.
-        _barRepo = barRepo;
-        _plateRepo = plateRepo;
-        _barbellRepo = barbellRepo;
-        _dumbbellRepo = dumbbellRepo;
-        _kettlebellRepo = kettlebellRepo;
+        _database = database;
 
         // Commands.
         CancelCommand = new AsyncCommand(Cancel);
         SaveCommand = new AsyncCommand(Save);
     }
 
-    #region Dependencies
-
-    private readonly BarRepository _barRepo;
-
-    private readonly PlateRepository _plateRepo;
-
-    private readonly BarbellRepository _barbellRepo;
-
-    private readonly DumbbellRepository _dumbbellRepo;
-
-    private readonly KettlebellRepository _kettlebellRepo;
-
-    #endregion Dependencies
-
     #region Fields
+
+    private readonly Database _database;
 
     private bool _enabled;
 
@@ -71,9 +49,9 @@ public class EditViewModel : BaseViewModel
 
     private EBandsOption _bandsOption;
 
-    private decimal _weight;
-
     private string? _weightText;
+
+    private IGymObjectRepository? _repo;
 
     #endregion Fields
 
@@ -162,6 +140,12 @@ public class EditViewModel : BaseViewModel
     /// </summary>
     private async Task Save()
     {
+        // Make sure we have a reference to the repository.
+        if (_repo == null)
+        {
+            return;
+        }
+
         // Validate the form.
         bool weightOk = decimal.TryParse(WeightText, out decimal weight) && weight > 0;
         if (!weightOk)
@@ -170,19 +154,28 @@ public class EditViewModel : BaseViewModel
             return;
         }
 
-        _weight = weight;
         ErrorMessage = "";
 
-        // Update the object. The exact process will vary by type.
-        _gymObject = _gymObjectTypeName switch
+        // If this is an add operation, create new gym object.
+        if (_operation == "add" || _gymObject == null)
         {
-            nameof(Bar) => await SaveBar(),
-            nameof(Plate) => await SavePlate(),
-            nameof(Barbell) => await SaveBarbell(),
-            nameof(Dumbbell) => await SaveDumbbell(),
-            nameof(Kettlebell) => await SaveKettlebell(),
-            _ => throw new MatchNotFoundException("Invalid gym object type.")
-        };
+            _gymObject = _repo.Create();
+        }
+
+        // Copy values from the viewmodel to the model.
+        _gymObject.Weight = weight;
+        _gymObject.Units = Units;
+        _gymObject.Enabled = Enabled;
+        _gymObject.Color = Color;
+
+        // Special handling for kettlebells.
+        if (_gymObject is Kettlebell kettlebell)
+        {
+            kettlebell.BandsOption = BandsOption;
+        }
+
+        // Update the database.
+        await _repo.Upsert(_gymObject);
 
         // Go back to the list of this object type.
         await Shell.Current.GoToAsync("..");
@@ -215,6 +208,9 @@ public class EditViewModel : BaseViewModel
         _operation = operation;
         _gymObjectTypeName = gymObjectTypeName;
         _gymObjectId = gymObjectId;
+
+        // Get the repository for this gym object type.
+        _repo = _database.GetRepo(_gymObjectTypeName);
 
         // Set the title.
         TextInfo ti = new CultureInfo("en-US", false).TextInfo;
@@ -269,18 +265,13 @@ public class EditViewModel : BaseViewModel
         {
             throw new InvalidOperationException("Gym object id not specified.");
         }
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Repository not specified.");
+        }
 
         // Load the object.
-        _gymObject = _gymObjectTypeName switch
-        {
-            nameof(Bar) => await _barRepo.LoadById(_gymObjectId),
-            nameof(Plate) => await _plateRepo.LoadById(_gymObjectId),
-            nameof(Barbell) => await _barbellRepo.LoadById(_gymObjectId),
-            nameof(Dumbbell) => await _dumbbellRepo.LoadById(_gymObjectId),
-            nameof(Kettlebell) => await _kettlebellRepo.LoadById(_gymObjectId),
-            _ => throw new MatchNotFoundException(
-                $"Invalid gym object type '{_gymObjectTypeName}'.")
-        };
+        _gymObject = await _repo.LoadById(_gymObjectId);
 
         if (_gymObject == null)
         {
@@ -306,99 +297,5 @@ public class EditViewModel : BaseViewModel
         }
     }
 
-    /// <summary>
-    /// Copy common values from the viewmodel to the model.
-    /// </summary>
-    private void CopyCommonValues(GymObject gymObject)
-    {
-        gymObject.Weight = _weight;
-        gymObject.Units = Units;
-        gymObject.Enabled = Enabled;
-        gymObject.Color = Color;
-    }
-
     #endregion Other methods
-
-    #region Save methods
-
-    private async Task<GymObject> SaveBar()
-    {
-        // If this is an add operation, create new Bar.
-        Bar? bar = (_operation == "add" || _gymObject == null) ? new Bar() : (Bar)_gymObject;
-
-        // Copy values from the viewmodel to the model.
-        CopyCommonValues(bar);
-
-        // Update the database.
-        await _barRepo.Upsert(bar);
-
-        return bar;
-    }
-
-    private async Task<GymObject?> SavePlate()
-    {
-        // If this is an add operation, create new Bar.
-        Plate? plate = (_operation == "add" || _gymObject == null)
-            ? new Plate()
-            : (Plate)_gymObject;
-
-        // Copy values from the viewmodel to the model.
-        CopyCommonValues(plate);
-
-        // Update the database.
-        await _plateRepo.Upsert(plate);
-
-        return plate;
-    }
-
-    private async Task<GymObject?> SaveBarbell()
-    {
-        // If this is an add operation, create new Barbell.
-        Barbell? barbell = (_operation == "add" || _gymObject == null)
-            ? new Barbell()
-            : (Barbell)_gymObject;
-
-        // Copy values from the viewmodel to the model.
-        CopyCommonValues(barbell);
-
-        // Update the database.
-        await _barbellRepo.Upsert(barbell);
-
-        return barbell;
-    }
-
-    private async Task<GymObject?> SaveDumbbell()
-    {
-        // If this is an add operation, create new Dumbbell.
-        Dumbbell? dumbbell = (_operation == "add" || _gymObject == null)
-            ? new Dumbbell()
-            : (Dumbbell)_gymObject;
-
-        // Copy values from the viewmodel to the model.
-        CopyCommonValues(dumbbell);
-
-        // Update the database.
-        await _dumbbellRepo.Upsert(dumbbell);
-
-        return dumbbell;
-    }
-
-    private async Task<GymObject?> SaveKettlebell()
-    {
-        // If this is an add operation, create new Kettlebell.
-        Kettlebell? kettlebell = (_operation == "add" || _gymObject == null)
-            ? new Kettlebell()
-            : (Kettlebell)_gymObject;
-
-        // Copy values from the viewmodel to the model.
-        CopyCommonValues(kettlebell);
-        kettlebell.BandsOption = BandsOption;
-
-        // Update the database.
-        await _kettlebellRepo.Upsert(kettlebell);
-
-        return kettlebell;
-    }
-
-    #endregion Save methods
 }
