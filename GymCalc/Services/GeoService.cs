@@ -34,7 +34,7 @@ public static class GeoService
         // will do for now).
         bool isFromUS = IsUserFromUnitedStates();
 
-        // Get the source word's case.
+        // Get the source word's string case.
         EStringCase wordCase = word.GetCase();
 
         // Get the locale-specific spelling in lower-case.
@@ -47,22 +47,11 @@ public static class GeoService
                 break;
 
             default:
-                // Word not found, so just give it back.
+                // Word not found, so just give it back unaltered.
                 return word;
         }
 
-        // Apply the original case transformation as needed.
-        switch (wordCase)
-        {
-            case EStringCase.Upper:
-                return result.ToUpper();
-
-            case EStringCase.Proper:
-                return result.ToProper();
-
-            default:
-                // Return the lower-case version.
-                return result;
-        }
+        // Apply the original string case as needed.
+        return result.SetCase(wordCase);
     }
 }
