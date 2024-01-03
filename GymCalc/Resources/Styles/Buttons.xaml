@@ -2,6 +2,8 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
+    <!-- Form buttons -->
+
     <Style x:Key="SuccessButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
     </Style>
@@ -74,13 +76,7 @@
         <Setter Property="Text" Value="Save"/>
     </Style>
 
-    <Style x:Key="DeleteButtonStyle"
-        BasedOn="{StaticResource AdminButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="delete_icon_white_16.png"/>
-        <Setter Property="Text" Value="Delete"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
-    </Style>
+    <!-- Percent buttons -->
 
     <Style x:Key="PercentButtonStyle" TargetType="Button">
         <Setter Property="BorderWidth" Value="1"/>
@@ -111,6 +107,7 @@
     </Style>
 
     <!-- Exercise type buttons -->
+
     <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
@@ -164,24 +161,26 @@
         <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}"/>
     </Style>
 
+    <!-- Radio buttons -->
+
     <ControlTemplate x:Key="RadioButtonTemplate">
         <Border Margin="0" Padding="0"
-            HeightRequest="22" StrokeThickness="0">
-            <Grid ColumnDefinitions="22,Auto" ColumnSpacing="8"
-                RowDefinitions="22">
+            HeightRequest="26" StrokeThickness="0">
+            <Grid ColumnDefinitions="26,Auto" ColumnSpacing="8"
+                RowDefinitions="26">
                 <Grid Grid.Column="0"
-                    HeightRequest="22" HorizontalOptions="Center"
-                    VerticalOptions="Center" WidthRequest="22">
+                    HeightRequest="26" HorizontalOptions="Center"
+                    VerticalOptions="Center" WidthRequest="26">
                     <Ellipse x:Name="OuterCircle"
-                        Fill="Transparent" HeightRequest="20"
+                        Fill="Transparent" HeightRequest="24"
                         HorizontalOptions="Center"
                         Stroke="{StaticResource Primary}"
                         StrokeThickness="2" VerticalOptions="Center"
-                        WidthRequest="20"/>
+                        WidthRequest="24"/>
                     <Ellipse x:Name="InnerCircle"
                         Fill="{StaticResource Primary}"
-                        HeightRequest="10" HorizontalOptions="Center"
-                        VerticalOptions="Center" WidthRequest="10"/>
+                        HeightRequest="12" HorizontalOptions="Center"
+                        VerticalOptions="Center" WidthRequest="12"/>
                 </Grid>
                 <ContentPresenter Grid.Column="1"
                     Margin="0" Padding="0"

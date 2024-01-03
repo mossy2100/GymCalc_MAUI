@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Constants -->
 
     <x:Int32 x:Key="IconButtonSize">32</x:Int32>
 
-    <!-- Frame and border styles -->
+    <!-- Borders -->
 
     <Style x:Key="ControlBorderStyle" TargetType="Border">
         <Setter Property="Stroke" Value="{StaticResource Primary}"/>
@@ -16,7 +17,7 @@
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
     </Style>
 
-    <!-- Entry and Picker styles -->
+    <!-- Controls -->
 
     <Style x:Key="NumericEntryStyle" TargetType="Entry">
         <Setter Property="BackgroundColor" Value="Transparent"/>
@@ -31,7 +32,7 @@
         <Setter Property="VerticalTextAlignment" Value="Center"/>
     </Style>
 
-    <!-- Grid styles -->
+    <!-- Grids -->
 
     <Style x:Key="ButtonGridStyle" TargetType="Grid">
         <Setter Property="Padding" Value="0"/>
@@ -39,7 +40,7 @@
         <Setter Property="RowDefinitions" Value="Auto"/>
     </Style>
 
-    <!-- Text styles -->
+    <!-- Labels -->
 
     <Style x:Key="ResultsTableHeader" TargetType="Label">
         <Setter Property="FontSize" Value="14"/>

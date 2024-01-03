@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.ListPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:models="clr-namespace:GymCalc.Models"
-    xmlns:pages="clr-namespace:GymCalc.Pages"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+    xmlns:models="clr-namespace:GymCalc.Models" xmlns:pages="clr-namespace:GymCalc.Pages"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="{Binding Title}"
     x:DataType="viewModels:ListViewModel">
 
-    <Grid Padding="{x:Static graphics:PageLayout.Spacing}" RowDefinitions="Auto,*,Auto" RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}">
+    <Grid Padding="{x:Static graphics:PageLayout.Spacing}"
+        RowDefinitions="Auto,*,Auto"
+        RowSpacing="{x:Static graphics:PageLayout.DoubleSpacing}">
 
-        <Label Grid.Row="0" FontSize="14" Text="{Binding Instructions}" TextType="Html"/>
+        <Label Grid.Row="0"
+            FontSize="14"
+            Text="{Binding Instructions}"
+            TextType="Html"/>
 
-        <Border Grid.Row="1" Padding="0" BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray500}}">
-            <CollectionView ItemsSource="{Binding ListItems}">
+        <Border Grid.Row="1"
+            Padding="0"
+            BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                              Dark={StaticResource Black}}"
+            Stroke="{AppThemeBinding Light={StaticResource Gray300},
+                                     Dark={StaticResource Gray500}}">
+            <CollectionView x:Name="ListCollectionView" ItemsSource="{Binding ListItems}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ListItem">
-                        <Grid Padding="10,10,20,10" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="{x:Static graphics:PageLayout.HalfSpacing}">
+                        <Grid Padding="10,10,20,10"
+                            ColumnDefinitions="*,Auto,Auto,Auto"
+                            ColumnSpacing="{x:Static graphics:PageLayout.HalfSpacing}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="{Binding Height}"/>
                             </Grid.RowDefinitions>
@@ -30,22 +39,30 @@
                             <input:CheckBox Grid.Column="1"
                                 CheckChangedCommand="{Binding Model.EnableCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                                 CommandParameter="{Binding .}"
-                                HeightRequest="{Binding IconButtonHeight}"
-                                HorizontalOptions="Start"
-                                IsChecked="{Binding Enabled, Mode=TwoWay}"
-                                Type="Material" VerticalOptions="Center"
-                                WidthRequest="{Binding IconButtonHeight}"/>
-                            <Button Grid.Column="2" Command="{Binding Model.EditCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}" CommandParameter="{Binding GymObject}" Style="{StaticResource EditIconButtonStyle}"/>
-                            <Button Grid.Column="3" Clicked="OnDeleteButtonClicked" CommandParameter="{Binding GymObject}" Style="{StaticResource DeleteIconButtonStyle}"/>
+                                IsChecked="{Binding Enabled, Mode=TwoWay}"/>
+                            <Button Grid.Column="2"
+                                Command="{Binding Model.EditCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
+                                CommandParameter="{Binding GymObject}"
+                                Style="{StaticResource EditIconButtonStyle}"/>
+                            <Button Grid.Column="3"
+                                Clicked="OnDeleteButtonClicked"
+                                CommandParameter="{Binding GymObject}"
+                                Style="{StaticResource DeleteIconButtonStyle}"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
 
-        <Grid Grid.Row="2" ColumnDefinitions="*,*" Style="{StaticResource ButtonGridStyle}">
-            <Button Grid.Column="0" Command="{Binding AddCommand}" Style="{StaticResource AddButtonStyle}"/>
-            <Button Grid.Column="1" Clicked="OnResetButtonClicked" Style="{StaticResource ResetButtonStyle}"/>
+        <Grid Grid.Row="2"
+            ColumnDefinitions="*,*"
+            Style="{StaticResource ButtonGridStyle}">
+            <Button Grid.Row="0" Grid.Column="0"
+                Command="{Binding AddCommand}"
+                Style="{StaticResource AddButtonStyle}"/>
+            <Button Grid.Row="0" Grid.Column="1"
+                Clicked="OnResetButtonClicked"
+                Style="{StaticResource ResetButtonStyle}"/>
         </Grid>
     </Grid>
 

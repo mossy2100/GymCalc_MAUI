@@ -3,12 +3,16 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- InputKit styles -->
-
+    <!-- CheckBox -->
     <Style ApplyToDerivedTypes="True" TargetType="input:CheckBox">
         <Setter Property="TextFontSize" Value="16"/>
         <Setter Property="Color" Value="{StaticResource Primary}"/>
         <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="WidthRequest" Value="32"/>
+        <Setter Property="Type" Value="Material"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -26,13 +30,6 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
-    </Style>
-
-    <Style TargetType="input:RadioButton">
-        <Setter Property="Color" Value="{StaticResource Primary}"/>
-        <Setter Property="CircleColor" Value="{StaticResource Primary}"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
-        <Setter Property="TextFontSize" Value="16"/>
     </Style>
 
 </ResourceDictionary>

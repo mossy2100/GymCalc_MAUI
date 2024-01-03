@@ -10,9 +10,9 @@ public class ListItem
 
     public bool Enabled { get; set; }
 
-    public static int IconButtonHeight { get; set; } = 32;
+    public static int IconButtonSize { get; set; } = 32;
 
-    public double Height => Math.Max(Drawable.Height, IconButtonHeight);
+    public double Height => Math.Max(Drawable.Height, IconButtonSize);
 
     internal ListItem(GymObject gymObject, GymObjectDrawable drawable, bool enabled)
     {
