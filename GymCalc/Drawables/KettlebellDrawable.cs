@@ -83,7 +83,7 @@ public class KettlebellDrawable : GymObjectDrawable
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
-        canvas.FontSize = 20;
+        canvas.FontSize = (float)TextSize.LARGE;
         canvas.FontColor = ballColor.GetTextColor();
         var weightString = kettlebell.Weight.ToString(CultureInfo.InvariantCulture);
         int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;

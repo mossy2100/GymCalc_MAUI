@@ -2,6 +2,7 @@ using Galaxon.Core.Types;
 using Galaxon.Maui.Utilities;
 using GymCalc.Controls;
 using GymCalc.Enums;
+using GymCalc.Graphics;
 using GymCalc.Services;
 using GymCalc.ViewModels;
 
@@ -85,21 +86,20 @@ public partial class ResultsPage : ContentPage
             rows.Add(startingWeightText, $"{_calculatorService.StartingWeight} {sUnits}");
         }
         var i = 0;
-        const int FONT_SIZE = 14;
         foreach (KeyValuePair<string, string> row in rows)
         {
             CalculatorSettingsGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
             CalculatorSettingsGrid.Add(new BoldLabel
             {
                 Text = row.Key,
-                FontSize = FONT_SIZE,
+                FontSize = TextSize.SMALL,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             }, 0, i);
             CalculatorSettingsGrid.Add(new Label
             {
                 Text = row.Value,
-                FontSize = FONT_SIZE,
+                FontSize = TextSize.SMALL,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             }, 1, i);

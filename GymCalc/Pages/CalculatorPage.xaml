@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:graphics="clr-namespace:GymCalc.Graphics"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator"
     x:DataType="viewModels:CalculatorViewModel">
 
@@ -101,8 +101,9 @@
                 ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
-                    FontSize="16" HorizontalTextAlignment="Start"
-                    Text="Bar weight" VerticalTextAlignment="Center"/>
+                    FontSize="{x:Static graphics:TextSize.MEDIUM}"
+                    HorizontalTextAlignment="Start" Text="Bar weight"
+                    VerticalTextAlignment="Center"/>
                 <Border Grid.Row="0" Grid.Column="1"
                     Style="{StaticResource ControlBorderStyle}">
                     <Picker ItemsSource="{Binding BarWeights}"

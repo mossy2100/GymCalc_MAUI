@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Constants -->
-
-    <x:Int32 x:Key="HalfSpacing">4</x:Int32>
+    <system:Double x:Key="HalfSpacing">4</system:Double>
     <system:Double x:Key="Spacing">8</system:Double>
-    <x:Int32 x:Key="DoubleSpacing">16</x:Int32>
-    <x:Int32 x:Key="TripleSpacing">24</x:Int32>
-    <x:Int32 x:Key="RadioButtonSize">24</x:Int32>
-    <x:Int32 x:Key="IconButtonSize">32</x:Int32>
+    <system:Double x:Key="DoubleSpacing">16</system:Double>
+    <system:Double x:Key="TripleSpacing">24</system:Double>
+
+    <system:Double x:Key="RadioButtonSize">24</system:Double>
+    <system:Double x:Key="CheckBoxSize">32</system:Double>
+    <system:Double x:Key="IconButtonSize">32</system:Double>
 
     <!-- Borders -->
 
@@ -47,24 +49,24 @@
     <!-- Labels -->
 
     <Style x:Key="ResultsTableHeader" TargetType="Label">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
     </Style>
 
     <Style x:Key="ResultsTableIdeal" TargetType="Label">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
     </Style>
 
     <Style x:Key="ResultsTableClosest" TargetType="Label">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
         <Setter Property="TextColor" Value="{StaticResource Primary}"/>
     </Style>
 
     <Style x:Key="ErrorMessageStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource ErrorMessageText}"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
     </Style>
 
 </ResourceDictionary>
