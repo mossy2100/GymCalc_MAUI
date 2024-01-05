@@ -27,18 +27,18 @@ public class DumbbellRepository : GymObjectRepository<Dumbbell>
     public override async Task InsertDefaults()
     {
         // Kilograms (common).
-        await AddSet(1, 10, 1, EUnits.Kilograms, true);
-        await AddSet(12.5m, 50, 2.5m, EUnits.Kilograms, true);
+        await AddWeights(1, 10, 1, EUnits.Kilograms, true);
+        await AddWeights(12.5m, 50, 2.5m, EUnits.Kilograms, true);
 
         // Kilograms (uncommon).
-        await AddSet(52.5m, 80, 2.5m, EUnits.Kilograms, false);
-        await AddSet(85, 100, 5, EUnits.Kilograms, false);
+        await AddWeight(7.5m, EUnits.Kilograms, false);
+        await AddWeights(55, 75, 5, EUnits.Kilograms, false);
 
         // Pounds (common).
-        await AddSet(1, 10, 1, EUnits.Pounds, true);
-        await AddSet(15, 100, 5, EUnits.Pounds, true);
+        await AddWeights(1, 10, 1, EUnits.Pounds, true);
+        await AddWeights(15, 100, 5, EUnits.Pounds, true);
 
         // Pounds (uncommon).
-        await AddSet(105, 200, 5, EUnits.Pounds, false);
+        await AddWeights(110, 150, 10, EUnits.Pounds, false);
     }
 }

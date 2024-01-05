@@ -33,13 +33,13 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
     public override async Task InsertDefaults()
     {
         // Kilograms (common).
-        await AddSet(4, 32, 4, EUnits.Kilograms, true);
+        await AddWeights(4, 32, 4, EUnits.Kilograms, true);
         // Kilograms (uncommon).
-        await AddSet(6, 50, 2, EUnits.Kilograms, false);
+        await AddWeights(6, 50, 2, EUnits.Kilograms, false);
         // Pounds (common).
-        await AddSet(5, 60, 5, EUnits.Pounds, true);
+        await AddWeights(5, 60, 5, EUnits.Pounds, true);
         // Pounds (uncommon).
-        await AddSet(65, 120, 5, EUnits.Pounds, false);
+        await AddWeights(65, 120, 5, EUnits.Pounds, false);
     }
 
     /// <summary>

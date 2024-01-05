@@ -3,40 +3,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Form buttons -->
-
-    <Style x:Key="SuccessButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
-    </Style>
-
-    <Style x:Key="DangerButtonStyle" TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
-    </Style>
-
-    <Style x:Key="IconButtonStyle" TargetType="Button">
-        <Setter Property="MinimumHeightRequest" Value="-1"/>
-        <Setter Property="MinimumWidthRequest" Value="-1"/>
-        <Setter Property="HeightRequest" Value="{StaticResource IconButtonSize}"/>
-        <Setter Property="WidthRequest" Value="{StaticResource IconButtonSize}"/>
-        <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
-    </Style>
-
-    <Style x:Key="EditIconButtonStyle"
-        BasedOn="{StaticResource IconButtonStyle}"
-        TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
-        <Setter Property="ImageSource" Value="edit_icon_white_16.png"/>
-    </Style>
-
-    <Style x:Key="DeleteIconButtonStyle"
-        BasedOn="{StaticResource IconButtonStyle}"
-        TargetType="Button">
-        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
-        <Setter Property="ImageSource" Value="delete_icon_white_16.png"/>
-    </Style>
-
     <Style x:Key="AdminButtonStyle" TargetType="Button">
         <Setter Property="MinimumHeightRequest" Value="-1"/>
         <Setter Property="HeightRequest" Value="36"/>
@@ -76,8 +42,32 @@
         <Setter Property="Text" Value="Save"/>
     </Style>
 
-    <!-- Percent buttons -->
+    <Style x:Key="IconButtonStyle" TargetType="Button">
+        <Setter Property="MinimumHeightRequest" Value="-1"/>
+        <Setter Property="MinimumWidthRequest" Value="-1"/>
+        <Setter Property="HeightRequest" Value="{StaticResource IconButtonSize}"/>
+        <Setter Property="WidthRequest" Value="{StaticResource IconButtonSize}"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
 
+    <Style x:Key="EditIconButtonStyle"
+        BasedOn="{StaticResource IconButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource SuccessColor}"/>
+        <Setter Property="ImageSource" Value="edit_icon_white_16.png"/>
+    </Style>
+
+    <Style x:Key="DeleteIconButtonStyle"
+        BasedOn="{StaticResource IconButtonStyle}"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}"/>
+        <Setter Property="ImageSource" Value="delete_icon_white_16.png"/>
+    </Style>
+
+    <!-- Percent buttons -->
     <Style x:Key="PercentButtonStyle" TargetType="Button">
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="HeightRequest" Value="32"/>
@@ -107,7 +97,6 @@
     </Style>
 
     <!-- Exercise type buttons -->
-
     <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
@@ -137,76 +126,33 @@
         </Setter>
     </Style>
 
-    <Style x:Key="BarbellButtonStyle"
-        BasedOn="{StaticResource ExerciseTypeButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="{AppThemeBinding Light='deadlift_black_100.png', Dark='deadlift_white_100.png'}"/>
-    </Style>
-
-    <Style x:Key="DumbbellButtonStyle"
-        BasedOn="{StaticResource ExerciseTypeButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="{AppThemeBinding Light='dumbbell_press_black_100.png', Dark='dumbbell_press_white_100.png'}"/>
-    </Style>
-
-    <Style x:Key="MachineButtonStyle"
-        BasedOn="{StaticResource ExerciseTypeButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="{AppThemeBinding Light='leg_press_black_100.png', Dark='leg_press_white_100.png'}"/>
-    </Style>
-
-    <Style x:Key="KettlebellButtonStyle"
-        BasedOn="{StaticResource ExerciseTypeButtonStyle}"
-        TargetType="Button">
-        <Setter Property="ImageSource" Value="{AppThemeBinding Light='kettlebell_swing_black_100.png', Dark='kettlebell_swing_white_100.png'}"/>
-    </Style>
-
-    <!-- Radio buttons -->
-
-    <ControlTemplate x:Key="RadioButtonTemplate">
-        <Border Margin="0" Padding="0"
-            HeightRequest="26" StrokeThickness="0">
-            <Grid ColumnDefinitions="26,Auto" ColumnSpacing="8"
-                RowDefinitions="26">
-                <Grid Grid.Column="0"
-                    HeightRequest="26" HorizontalOptions="Center"
-                    VerticalOptions="Center" WidthRequest="26">
-                    <Ellipse x:Name="OuterCircle"
-                        Fill="Transparent" HeightRequest="24"
-                        HorizontalOptions="Center"
-                        Stroke="{StaticResource Primary}"
-                        StrokeThickness="2" VerticalOptions="Center"
-                        WidthRequest="24"/>
-                    <Ellipse x:Name="InnerCircle"
-                        Fill="{StaticResource Primary}"
-                        HeightRequest="14" HorizontalOptions="Center"
-                        VerticalOptions="Center" WidthRequest="14"/>
-                </Grid>
-                <ContentPresenter Grid.Column="1"
-                    Margin="0" Padding="0"
-                    HorizontalOptions="Start" VerticalOptions="Center"/>
-            </Grid>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CheckedStates">
-                        <VisualState x:Name="Checked">
-                            <VisualState.Setters>
-                                <Setter TargetName="InnerCircle" Property="Opacity" Value="1"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Unchecked">
-                            <VisualState.Setters>
-                                <Setter TargetName="InnerCircle" Property="Opacity" Value="0"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </VisualStateManager.VisualStateGroups>
-        </Border>
-    </ControlTemplate>
-
-    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
-        <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}"/>
+    <!-- Gym object type buttons -->
+    <Style x:Key="GymObjectTypeButtonStyle" TargetType="Button">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+        <Setter Property="ContentLayout" Value="Left,15"/>
+        <Setter Property="HeightRequest" Value="50"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Background" Value="{StaticResource Primary}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

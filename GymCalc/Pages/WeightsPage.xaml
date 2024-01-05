@@ -8,20 +8,46 @@
 
     <VerticalStackLayout Padding="{x:Static graphics:PageLayout.Spacing}" Spacing="{x:Static graphics:PageLayout.Spacing}">
         <Label FontSize="14" Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."/>
-        <Button Command="{Binding ListGymObjectsCommand}"
-            CommandParameter="Bar" ContentLayout="Left,20"
-            ImageSource="bar_icon_white_300.png" Text="Bars"/>
-        <Button Command="{Binding ListGymObjectsCommand}"
-            CommandParameter="Plate" ContentLayout="Left,20"
-            ImageSource="plate_icon_white_300.png" Text="Plates"/>
-        <Button Command="{Binding ListGymObjectsCommand}"
-            CommandParameter="Barbell" ContentLayout="Left,20"
-            ImageSource="barbell_icon_white_300.png" Text="Fixed Barbells"/>
-        <Button Command="{Binding ListGymObjectsCommand}"
-            CommandParameter="Dumbbell" ContentLayout="Left,20"
-            ImageSource="dumbbell_icon_white_300.png" Text="Dumbbells"/>
-        <Button Command="{Binding ListGymObjectsCommand}"
-            CommandParameter="Kettlebell" ContentLayout="Left,20"
-            ImageSource="kettlebell_icon_white_300.png" Text="Kettlebells"/>
+
+        <Grid ColumnDefinitions="*,*"
+            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+            RowDefinitions="Auto,Auto,Auto"
+            RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+            <Button Grid.Row="0" Grid.Column="0"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Bar"
+                ImageSource="{AppThemeBinding Light='bar_icon_black_300.png',
+                                              Dark='bar_icon_white_300.png'}"
+                Style="{StaticResource GymObjectTypeButtonStyle}"
+                Text="Bars"/>
+            <Button Grid.Row="0" Grid.Column="1"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Plate"
+                ImageSource="{AppThemeBinding Light='plate_icon_black_300.png',
+                                              Dark='plate_icon_white_300.png'}"
+                Style="{StaticResource GymObjectTypeButtonStyle}"
+                Text="Plates"/>
+            <Button Grid.Row="1" Grid.Column="0"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Barbell"
+                ImageSource="{AppThemeBinding Light='barbell_icon_black_300.png',
+                                              Dark='barbell_icon_white_300.png'}"
+                Style="{StaticResource GymObjectTypeButtonStyle}"
+                Text="Fixed Barbells"/>
+            <Button Grid.Row="1" Grid.Column="1"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Dumbbell"
+                ImageSource="{AppThemeBinding Light='dumbbell_icon_black_300.png',
+                                              Dark='dumbbell_icon_white_300.png'}"
+                Style="{StaticResource GymObjectTypeButtonStyle}"
+                Text="Dumbbells"/>
+            <Button Grid.Row="2" Grid.Column="0"
+                Command="{Binding ListGymObjectsCommand}"
+                CommandParameter="Kettlebell"
+                ImageSource="{AppThemeBinding Light='kettlebell_icon_black_300.png',
+                                              Dark='kettlebell_icon_white_300.png'}"
+                Style="{StaticResource GymObjectTypeButtonStyle}"
+                Text="Kettlebells"/>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

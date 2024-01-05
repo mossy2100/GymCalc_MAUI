@@ -55,7 +55,7 @@ public abstract class GymObjectRepository<T>(Database database) : IGymObjectRepo
     /// <param name="step">The difference between each weight.</param>
     /// <param name="units">The mass units.</param>
     /// <param name="enabled">If they should be enabled by default.</param>
-    protected async Task AddSet(decimal min, decimal max, decimal step, EUnits units, bool enabled)
+    protected async Task AddWeights(decimal min, decimal max, decimal step, EUnits units, bool enabled)
     {
         for (decimal weight = min; weight <= max; weight += step)
         {

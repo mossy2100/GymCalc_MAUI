@@ -10,7 +10,8 @@
                 <ResourceDictionary Source="Resources/Styles/Default.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Custom.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
-                <ResourceDictionary Source="Resources/Styles/InputKit.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/CheckBoxes.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/RadioButtons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

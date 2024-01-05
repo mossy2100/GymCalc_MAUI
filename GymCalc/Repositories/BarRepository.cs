@@ -32,8 +32,8 @@ public class BarRepository : GymObjectRepository<Bar>
     public override async Task InsertDefaults()
     {
         // Kilograms (common).
-        await AddSet(10, 25, 5, EUnits.Kilograms, true);
+        await AddWeights(10, 25, 5, EUnits.Kilograms, true);
         // Pounds (common).
-        await AddSet(15, 55, 10, EUnits.Pounds, true);
+        await AddWeights(15, 55, 10, EUnits.Pounds, true);
     }
 }

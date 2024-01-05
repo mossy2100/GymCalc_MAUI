@@ -11,17 +11,14 @@
         <converters:BarbellTypeConverter x:Key="barbellTypeConverter"/>
     </ContentPage.Resources>
 
-    <ScrollView x:Name="CalculatorScrollView"
-        Padding="{x:Static graphics:PageLayout.Spacing}"
-        VerticalOptions="Fill">
+    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
 
         <!-- Calculator form. -->
-        <VerticalStackLayout x:Name="CalculatorLayout" Spacing="{x:Static graphics:PageLayout.Spacing}">
+        <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
 
             <!-- Exercise type -->
             <Label Text="Select exercise type:"/>
-            <Grid x:Name="ExerciseTypeButtonGrid"
-                ColumnDefinitions="*,*"
+            <Grid ColumnDefinitions="*,*"
                 ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
                 RowDefinitions="Auto,Auto"
                 RowSpacing="{x:Static graphics:PageLayout.Spacing}">
@@ -29,23 +26,31 @@
                 <Button x:Name="BarbellButton"
                     Grid.Row="0" Grid.Column="0"
                     Clicked="OnBarbellButtonClicked"
-                    Style="{StaticResource BarbellButtonStyle}"
+                    ImageSource="{AppThemeBinding Light='deadlift_black_100.png',
+                                                  Dark='deadlift_white_100.png'}"
+                    Style="{StaticResource ExerciseTypeButtonStyle}"
                     Text="Barbell"/>
                 <Button x:Name="DumbbellButton"
                     Grid.Row="0" Grid.Column="1"
                     Clicked="OnDumbbellButtonClicked"
-                    Style="{StaticResource DumbbellButtonStyle}"
+                    ImageSource="{AppThemeBinding Light='dumbbell_press_black_100.png',
+                                                  Dark='dumbbell_press_white_100.png'}"
+                    Style="{StaticResource ExerciseTypeButtonStyle}"
                     Text="Dumbbell"/>
                 <!-- Row 1 -->
                 <Button x:Name="MachineButton"
                     Grid.Row="1" Grid.Column="0"
                     Clicked="OnMachineButtonClicked"
-                    Style="{StaticResource MachineButtonStyle}"
+                    ImageSource="{AppThemeBinding Light='leg_press_black_100.png',
+                                                  Dark='leg_press_white_100.png'}"
+                    Style="{StaticResource ExerciseTypeButtonStyle}"
                     Text="Machine"/>
                 <Button x:Name="KettlebellButton"
                     Grid.Row="1" Grid.Column="1"
                     Clicked="OnKettlebellButtonClicked"
-                    Style="{StaticResource KettlebellButtonStyle}"
+                    ImageSource="{AppThemeBinding Light='kettlebell_swing_black_100.png',
+                                                  Dark='kettlebell_swing_white_100.png'}"
+                    Style="{StaticResource ExerciseTypeButtonStyle}"
                     Text="Kettlebell"/>
             </Grid>
 

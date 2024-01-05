@@ -228,6 +228,9 @@
         <SubType>Designer</SubType>
       </MauiXaml>
       <MauiXaml Remove="old\**" />
+      <MauiXaml Update="Resources\Styles\RadioButtons.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
