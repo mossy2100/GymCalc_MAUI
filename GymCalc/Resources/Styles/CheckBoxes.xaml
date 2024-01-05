@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Style ApplyToDerivedTypes="True" TargetType="input:CheckBox">
-        <Setter Property="TextFontSize" Value="{x:Static graphics:TextSize.MEDIUM}"/>
+        <Setter Property="TextFontSize" Value="{x:Static graphics:FontSizes.MEDIUM}"/>
         <Setter Property="Color" Value="{StaticResource Primary}"/>
         <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
         <Setter Property="HeightRequest" Value="{StaticResource CheckBoxSize}"/>

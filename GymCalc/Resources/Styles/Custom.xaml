@@ -49,24 +49,24 @@
     <!-- Labels -->
 
     <Style x:Key="ResultsTableHeader" TargetType="Label">
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.SMALL}"/>
         <Setter Property="FontAttributes" Value="Bold"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
     </Style>
 
     <Style x:Key="ResultsTableIdeal" TargetType="Label">
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.SMALL}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
     </Style>
 
     <Style x:Key="ResultsTableClosest" TargetType="Label">
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.SMALL}"/>
         <Setter Property="TextColor" Value="{StaticResource Primary}"/>
     </Style>
 
     <Style x:Key="ErrorMessageStyle" TargetType="Label">
         <Setter Property="TextColor" Value="{StaticResource ErrorMessageText}"/>
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.SMALL}"/>
     </Style>
 
 </ResourceDictionary>

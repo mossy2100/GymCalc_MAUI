@@ -56,7 +56,7 @@ internal class PlateDrawable : GymObjectDrawable
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
-        canvas.FontSize = (float)TextSize.MEDIUM;
+        canvas.FontSize = (float)FontSizes.MEDIUM;
         canvas.FontColor = bgColor.GetTextColor();
         var weightString = plate.Weight.ToString(CultureInfo.InvariantCulture);
         int offset = DeviceInfo.Platform == DevicePlatform.iOS ? 2 : 0;

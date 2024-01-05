@@ -101,7 +101,7 @@
                 ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
-                    FontSize="{x:Static graphics:TextSize.MEDIUM}"
+                    FontSize="{x:Static graphics:FontSizes.MEDIUM}"
                     HorizontalTextAlignment="Start" Text="Bar weight"
                     VerticalTextAlignment="Center"/>
                 <Border Grid.Row="0" Grid.Column="1"

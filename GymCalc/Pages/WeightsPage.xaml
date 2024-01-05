@@ -7,7 +7,7 @@
     x:DataType="viewModels:WeightsViewModel">
 
     <VerticalStackLayout Padding="{StaticResource Spacing}" Spacing="{StaticResource Spacing}">
-        <Label FontSize="{x:Static graphics:TextSize.SMALL}" Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."/>
+        <Label FontSize="{x:Static graphics:FontSizes.SMALL}" Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."/>
 
         <Grid ColumnDefinitions="*,*"
             ColumnSpacing="{StaticResource Spacing}"

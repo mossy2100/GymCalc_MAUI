@@ -72,7 +72,7 @@
     <Style x:Key="PercentButtonStyle" TargetType="Button">
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="HeightRequest" Value="{StaticResource IconButtonSize}"/>
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.MEDIUM}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.MEDIUM}"/>
         <Setter Property="Padding" Value="4,4"/>
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -99,7 +99,7 @@
 
     <!-- Exercise type buttons -->
     <Style x:Key="ExerciseTypeButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.SMALL}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.SMALL}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
         <Setter Property="ContentLayout" Value="Top,0"/>
         <Setter Property="HeightRequest" Value="140"/>
@@ -129,7 +129,7 @@
 
     <!-- Gym object type buttons -->
     <Style x:Key="GymObjectTypeButtonStyle" TargetType="Button">
-        <Setter Property="FontSize" Value="{x:Static graphics:TextSize.MEDIUM}"/>
+        <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.MEDIUM}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
         <Setter Property="ContentLayout" Value="Left,16"/>
         <Setter Property="HeightRequest" Value="50"/>

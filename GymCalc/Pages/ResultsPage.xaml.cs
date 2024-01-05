@@ -92,14 +92,14 @@ public partial class ResultsPage : ContentPage
             CalculatorSettingsGrid.Add(new BoldLabel
             {
                 Text = row.Key,
-                FontSize = TextSize.SMALL,
+                FontSize = FontSizes.SMALL,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             }, 0, i);
             CalculatorSettingsGrid.Add(new Label
             {
                 Text = row.Value,
-                FontSize = TextSize.SMALL,
+                FontSize = FontSizes.SMALL,
                 HorizontalTextAlignment = TextAlignment.Start,
                 VerticalTextAlignment = TextAlignment.Center
             }, 1, i);

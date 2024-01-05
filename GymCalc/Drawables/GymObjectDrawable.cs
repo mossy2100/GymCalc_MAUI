@@ -119,7 +119,7 @@ public abstract class GymObjectDrawable : BaseDrawable
 
         // Weight label.
         canvas.Font = Font.DefaultBold;
-        canvas.FontSize = (float)TextSize.MEDIUM;
+        canvas.FontSize = (float)FontSizes.MEDIUM;
         canvas.FontColor = Colors.Black;
         var weightString = GymObject.Weight.ToString(CultureInfo.InvariantCulture);
         const int m = (gapWidth + plateWidth) * 2;
