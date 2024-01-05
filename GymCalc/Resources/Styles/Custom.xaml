@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:system="clr-namespace:System;assembly=System.Runtime"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:system="clr-namespace:System;assembly=System.Runtime" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Constants -->
 
+    <x:Int32 x:Key="HalfSpacing">4</x:Int32>
+    <system:Double x:Key="Spacing">8</system:Double>
+    <x:Int32 x:Key="DoubleSpacing">16</x:Int32>
+    <x:Int32 x:Key="TripleSpacing">24</x:Int32>
+    <x:Int32 x:Key="RadioButtonSize">24</x:Int32>
     <x:Int32 x:Key="IconButtonSize">32</x:Int32>
 
     <!-- Borders -->
@@ -36,7 +40,7 @@
 
     <Style x:Key="ButtonGridStyle" TargetType="Grid">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="ColumnSpacing" Value="{x:Static graphics:PageLayout.Spacing}"/>
+        <Setter Property="ColumnSpacing" Value="{StaticResource Spacing}"/>
         <Setter Property="RowDefinitions" Value="Auto"/>
     </Style>
 

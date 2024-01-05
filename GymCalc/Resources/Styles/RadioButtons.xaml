@@ -11,11 +11,12 @@
                     HeightRequest="26" HorizontalOptions="Center"
                     VerticalOptions="Center" WidthRequest="26">
                     <Ellipse x:Name="OuterCircle"
-                        Fill="Transparent" HeightRequest="24"
+                        Fill="Transparent"
+                        HeightRequest="{StaticResource RadioButtonSize}"
                         HorizontalOptions="Center"
                         Stroke="{StaticResource Primary}"
                         StrokeThickness="2" VerticalOptions="Center"
-                        WidthRequest="24"/>
+                        WidthRequest="{StaticResource RadioButtonSize}"/>
                     <Ellipse x:Name="InnerCircle"
                         Fill="{StaticResource Primary}"
                         HeightRequest="14" HorizontalOptions="Center"

@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.WeightsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Weights"
     x:DataType="viewModels:WeightsViewModel">
 
-    <VerticalStackLayout Padding="{x:Static graphics:PageLayout.Spacing}" Spacing="{x:Static graphics:PageLayout.Spacing}">
+    <VerticalStackLayout Padding="{StaticResource Spacing}" Spacing="{StaticResource Spacing}">
         <Label FontSize="14" Text="To enable, disable, add, remove, or modify weights, click the button for the type of weight you want to change."/>
 
         <Grid ColumnDefinitions="*,*"
-            ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+            ColumnSpacing="{StaticResource Spacing}"
             RowDefinitions="Auto,Auto,Auto"
-            RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+            RowSpacing="{StaticResource Spacing}">
             <Button Grid.Row="0" Grid.Column="0"
                 Command="{Binding ListGymObjectsCommand}"
                 CommandParameter="Bar"

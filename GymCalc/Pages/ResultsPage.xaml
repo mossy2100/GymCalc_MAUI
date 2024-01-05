@@ -2,8 +2,7 @@
 <ContentPage x:Class="GymCalc.Pages.ResultsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:controls="clr-namespace:GymCalc.Controls" xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Results"
     x:DataType="viewModels:ResultsViewModel">
 
@@ -11,19 +10,24 @@
         <converters:WeightTextConverter x:Key="weightTextConverter"/>
     </ContentPage.Resources>
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+    <ScrollView Padding="{StaticResource Spacing}" VerticalOptions="Fill">
 
-        <VerticalStackLayout Padding="0,10,0,10" Spacing="{x:Static graphics:PageLayout.TripleSpacing}">
+        <VerticalStackLayout Spacing="{StaticResource TripleSpacing}">
+            <VerticalStackLayout.Padding>
+                <Thickness Bottom="{StaticResource Spacing}"
+                    Left="0" Right="0"
+                    Top="{StaticResource Spacing}"/>
+            </VerticalStackLayout.Padding>
 
             <!-- Calculator settings -->
             <Grid x:Name="CalculatorSettingsGrid"
                 ColumnDefinitions="*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
-                RowSpacing="{x:Static graphics:PageLayout.Spacing}"/>
+                ColumnSpacing="{StaticResource Spacing}"
+                RowSpacing="{StaticResource Spacing}"/>
 
             <!-- Percentage selector -->
             <Grid ColumnDefinitions="*,*,*,*,*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.HalfSpacing}"
+                ColumnSpacing="{StaticResource HalfSpacing}"
                 RowDefinitions="Auto">
                 <controls:VisualStateButton Grid.Column="0"
                     Command="{Binding PercentSelectedCommand}"
@@ -65,10 +69,10 @@
 
             <!-- Plates result -->
             <Grid ColumnDefinitions="6*,3*,3*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 IsVisible="{Binding PlatesResultVisible}"
                 RowDefinitions="Auto,Auto,Auto"
-                RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+                RowSpacing="{StaticResource Spacing}">
                 <!-- Row 0 -->
                 <controls:BoldLabel Grid.Row="0" Grid.Column="1"
                     Style="{StaticResource ResultsTableHeader}"
@@ -101,10 +105,10 @@
             <!-- Single weight result -->
             <Grid Padding="0,10,0,10"
                 ColumnDefinitions="*,*,*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 IsVisible="{Binding SingleWeightResultVisible}"
                 RowDefinitions="Auto,Auto"
-                RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+                RowSpacing="{StaticResource Spacing}">
                 <!-- Row 0 -->
                 <controls:BoldLabel Grid.Row="0" Grid.Column="1"
                     HorizontalOptions="Start"

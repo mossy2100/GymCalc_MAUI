@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage x:Class="GymCalc.Pages.CalculatorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:graphics="clr-namespace:GymCalc.Graphics"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:GymCalc.Converters" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Calculator"
     x:DataType="viewModels:CalculatorViewModel">
 
@@ -11,17 +11,17 @@
         <converters:BarbellTypeConverter x:Key="barbellTypeConverter"/>
     </ContentPage.Resources>
 
-    <ScrollView Padding="{x:Static graphics:PageLayout.Spacing}" VerticalOptions="Fill">
+    <ScrollView Padding="{StaticResource Spacing}" VerticalOptions="Fill">
 
         <!-- Calculator form. -->
-        <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.Spacing}">
+        <VerticalStackLayout Spacing="{StaticResource Spacing}">
 
             <!-- Exercise type -->
             <Label Text="Select exercise type:"/>
             <Grid ColumnDefinitions="*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto,Auto"
-                RowSpacing="{x:Static graphics:PageLayout.Spacing}">
+                RowSpacing="{StaticResource Spacing}">
                 <!-- Row 0 -->
                 <Button x:Name="BarbellButton"
                     Grid.Row="0" Grid.Column="0"
@@ -56,7 +56,7 @@
 
             <!-- Max weight -->
             <Grid ColumnDefinitions="7*,4*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label x:Name="MaxWeightLabel"
                     Grid.Row="0" Grid.Column="0"
@@ -75,7 +75,7 @@
             <!-- Barbell type -->
             <Grid x:Name="BarbellTypeGrid"
                 ColumnDefinitions="7*,5*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     Text="Barbell type" VerticalTextAlignment="Center"/>
@@ -98,7 +98,7 @@
             <!-- Bar weight -->
             <Grid x:Name="BarWeightGrid"
                 ColumnDefinitions="7*,4*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     FontSize="16" HorizontalTextAlignment="Start"
@@ -118,7 +118,7 @@
             <!-- Machine type -->
             <Grid x:Name="MovementTypeGrid"
                 ColumnDefinitions="7*,5*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     Text="Machine type" VerticalTextAlignment="Center"/>
@@ -143,7 +143,7 @@
             <!-- Machine starting weight -->
             <Grid x:Name="StartingWeightGrid"
                 ColumnDefinitions="7*,4*,*"
-                ColumnSpacing="{x:Static graphics:PageLayout.Spacing}"
+                ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
                     HorizontalTextAlignment="Start"

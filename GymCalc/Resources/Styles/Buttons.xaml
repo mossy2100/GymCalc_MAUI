@@ -70,7 +70,7 @@
     <!-- Percent buttons -->
     <Style x:Key="PercentButtonStyle" TargetType="Button">
         <Setter Property="BorderWidth" Value="1"/>
-        <Setter Property="HeightRequest" Value="32"/>
+        <Setter Property="HeightRequest" Value="{StaticResource IconButtonSize}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Padding" Value="4,4"/>
         <Setter Property="CornerRadius" Value="4"/>
@@ -102,7 +102,7 @@
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
         <Setter Property="ContentLayout" Value="Top,0"/>
         <Setter Property="HeightRequest" Value="140"/>
-        <Setter Property="Padding" Value="0,10,0,0"/>
+        <Setter Property="Padding" Value="0,8,0,0"/>
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="VerticalOptions" Value="Start"/>
@@ -130,9 +130,9 @@
     <Style x:Key="GymObjectTypeButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
-        <Setter Property="ContentLayout" Value="Left,15"/>
+        <Setter Property="ContentLayout" Value="Left,16"/>
         <Setter Property="HeightRequest" Value="50"/>
-        <Setter Property="Padding" Value="10,0,0,0"/>
+        <Setter Property="Padding" Value="8,0,0,0"/>
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="VerticalOptions" Value="Center"/>

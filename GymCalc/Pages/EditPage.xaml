@@ -2,8 +2,8 @@
 <ContentPage x:Class="GymCalc.Pages.EditPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:controls="clr-namespace:GymCalc.Controls" xmlns:converters="clr-namespace:GymCalc.Converters"
-    xmlns:graphics="clr-namespace:GymCalc.Graphics" xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
-    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui" xmlns:viewModels="clr-namespace:GymCalc.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="{Binding Title}"
     x:DataType="viewModels:EditViewModel">
 
@@ -12,12 +12,12 @@
         <converters:UnitsConverter x:Key="unitsConverter"/>
     </ContentPage.Resources>
 
-    <Grid Padding="{x:Static graphics:PageLayout.Spacing}" RowDefinitions="*,Auto">
+    <Grid Padding="{StaticResource Spacing}" RowDefinitions="*,Auto">
         <ScrollView Grid.Row="0"
-            Padding="{x:Static graphics:PageLayout.Spacing}"
+            Padding="{StaticResource Spacing}"
             VerticalOptions="Fill">
 
-            <VerticalStackLayout Spacing="{x:Static graphics:PageLayout.DoubleSpacing}" VerticalOptions="Start">
+            <VerticalStackLayout Spacing="{StaticResource DoubleSpacing}" VerticalOptions="Start">
 
                 <!-- Weight -->
                 <Grid ColumnDefinitions="*,*,*">
