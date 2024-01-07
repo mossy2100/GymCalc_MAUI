@@ -4,6 +4,8 @@ namespace GymCalc.ViewModels;
 
 public class WeightsViewModel : BaseViewModel
 {
+    #region Constructor
+
     /// <summary>Constructor.</summary>
     public WeightsViewModel()
     {
@@ -11,6 +13,11 @@ public class WeightsViewModel : BaseViewModel
         ListGymObjectsCommand = new AsyncCommand<string>(ListGymObjects);
     }
 
+    #endregion Constructor
+
+    #region Commands
+
+    // ---------------------------------------------------------------------------------------------
     /// <summary>Command to navigate to the list page for a gym object type.</summary>
     public ICommand ListGymObjectsCommand { get; init; }
 
@@ -20,4 +27,6 @@ public class WeightsViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync($"list?type={gymObjectTypeName}");
     }
+
+    #endregion Commands
 }

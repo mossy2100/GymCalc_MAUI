@@ -4,7 +4,7 @@ namespace GymCalc.ViewModels;
 
 public class ManualViewModel : BaseViewModel
 {
-    #region Constructors
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -17,7 +17,7 @@ public class ManualViewModel : BaseViewModel
         GoToAboutPageCommand = new AsyncCommand(GoToAboutPage);
     }
 
-    #endregion Constructors
+    #endregion Constructor
 
     #region Commands
 

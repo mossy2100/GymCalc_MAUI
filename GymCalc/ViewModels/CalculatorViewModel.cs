@@ -205,7 +205,52 @@ public class CalculatorViewModel : BaseViewModel
 
     #region Commands
 
+    // ---------------------------------------------------------------------------------------------
     public ICommand CalculateCommand { get; init; }
+
+    private async Task Calculate()
+    {
+        bool proceed = ValidateMaxWeight();
+        if (!proceed)
+        {
+            return;
+        }
+
+        // Do the calculations based on the selected exercise type.
+        switch (SelectedExerciseType)
+        {
+            case EExerciseType.Barbell:
+                await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
+                    BarWeight);
+                break;
+
+            case EExerciseType.Machine:
+                if (proceed && ValidateStartingWeight())
+                {
+                    await _calculatorService.DoMachineCalculations(MovementType, MaxWeight!.Value,
+                        StartingWeight!.Value);
+                }
+                else
+                {
+                    return;
+                }
+                break;
+
+            case EExerciseType.Dumbbell:
+                await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
+                break;
+
+            case EExerciseType.Kettlebell:
+                await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
+                break;
+
+            default:
+                throw new MatchNotFoundException("Invalid exercise type.");
+        }
+
+        // Go to the results page.
+        await Shell.Current.GoToAsync("results");
+    }
 
     #endregion Commands
 
@@ -305,52 +350,4 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     #endregion Validation methods
-
-    #region Command methods
-
-    private async Task Calculate()
-    {
-        bool proceed = ValidateMaxWeight();
-        if (!proceed)
-        {
-            return;
-        }
-
-        // Do the calculations based on the selected exercise type.
-        switch (SelectedExerciseType)
-        {
-            case EExerciseType.Barbell:
-                await _calculatorService.DoBarbellCalculations(BarbellType, MaxWeight!.Value,
-                    BarWeight);
-                break;
-
-            case EExerciseType.Machine:
-                if (proceed && ValidateStartingWeight())
-                {
-                    await _calculatorService.DoMachineCalculations(MovementType, MaxWeight!.Value,
-                        StartingWeight!.Value);
-                }
-                else
-                {
-                    return;
-                }
-                break;
-
-            case EExerciseType.Dumbbell:
-                await _calculatorService.DoDumbbellCalculations(MaxWeight!.Value);
-                break;
-
-            case EExerciseType.Kettlebell:
-                await _calculatorService.DoKettlebellCalculations(MaxWeight!.Value);
-                break;
-
-            default:
-                throw new MatchNotFoundException("Invalid exercise type.");
-        }
-
-        // Go to the results page.
-        await Shell.Current.GoToAsync("results");
-    }
-
-    #endregion Command methods
 }

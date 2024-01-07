@@ -8,14 +8,6 @@ namespace GymCalc.ViewModels;
 
 public class ListViewModel : BaseViewModel
 {
-    #region Dependencies
-
-    private readonly Database _database;
-
-    private IGymObjectRepository? _repo;
-
-    #endregion Dependencies
-
     #region Constructor
 
     /// <summary>
@@ -28,192 +20,14 @@ public class ListViewModel : BaseViewModel
         _database = database;
 
         // Commands.
-        EnableCommand = new AsyncCommand<ListItem>(EnableGymObject);
-        EditCommand = new AsyncCommand<GymObject>(EditGymObject);
-        DeleteCommand = new AsyncCommand<GymObject>(DeleteGymObject);
-        AddCommand = new AsyncCommand(AddGymObject);
-        ResetCommand = new AsyncCommand(ResetGymObjects);
+        EnableGymObjectCommand = new AsyncCommand<ListItem>(EnableGymObject);
+        EditGymObjectCommand = new AsyncCommand<GymObject>(EditGymObject);
+        DeleteGymObjectCommand = new AsyncCommand<GymObject>(DeleteGymObject);
+        AddGymObjectCommand = new AsyncCommand(AddGymObject);
+        ResetGymObjectsCommand = new AsyncCommand(ResetGymObjects);
     }
 
     #endregion Constructor
-
-    #region Bindable properties
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
-    /// </summary>
-    private string? _gymObjectTypeName;
-
-    public string? GymObjectTypeName
-    {
-        get => _gymObjectTypeName;
-
-        set => SetProperty(ref _gymObjectTypeName, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Results for the CollectionView.
-    /// </summary>
-    private List<ListItem>? _listItems;
-
-    public List<ListItem>? ListItems
-    {
-        get => _listItems;
-
-        set => SetProperty(ref _listItems, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Page title.
-    /// </summary>
-    private string? _title;
-
-    public string? Title
-    {
-        get => _title;
-
-        set => SetProperty(ref _title, value);
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Instructions text.
-    /// </summary>
-    private string? _instructions;
-
-    public string? Instructions
-    {
-        get => _instructions;
-
-        set => SetProperty(ref _instructions, value);
-    }
-
-    #endregion Bindable properties
-
-    #region Commands
-
-    /// <summary>
-    /// Command to enable/disable an item.
-    /// </summary>
-    public ICommand EnableCommand { get; init; }
-
-    /// <summary>
-    /// Command to edit an item.
-    /// </summary>
-    public ICommand EditCommand { get; init; }
-
-    /// <summary>
-    /// Command to delete an item.
-    /// </summary>
-    public ICommand DeleteCommand { get; init; }
-
-    /// <summary>
-    /// Command to add a new item.
-    /// </summary>
-    public ICommand AddCommand { get; init; }
-
-    /// <summary>
-    /// Reset items command.
-    /// </summary>
-    public ICommand ResetCommand { get; init; }
-
-    #endregion Commands
-
-    #region Command methods
-
-    private async Task EnableGymObject(ListItem? listItem)
-    {
-        // Guard.
-        if (_repo == null)
-        {
-            throw new InvalidOperationException("Reference to repository not set.");
-        }
-
-        // Check if an update is actually needed. This method is called on initialization of the
-        // CollectionView, when no changes have occurred. Could be a bug in InputKit.
-        if (listItem!.Enabled == listItem.GymObject.Enabled)
-        {
-            return;
-        }
-
-        // Update the object in the database.
-        listItem.GymObject.Enabled = listItem.Enabled;
-        await _repo.Upsert(listItem.GymObject);
-    }
-
-    /// <summary>
-    /// Go to the form page for editing a gym object.
-    /// </summary>
-    /// <param name="gymObject"></param>
-    /// <exception cref="InvalidOperationException"></exception>
-    private async Task EditGymObject(GymObject? gymObject)
-    {
-        // Guard.
-        if (gymObject == null)
-        {
-            throw new InvalidOperationException("Gym object not set.");
-        }
-
-        await Shell.Current.GoToAsync($"edit?op=edit&type={_gymObjectTypeName}&id={gymObject.Id}");
-    }
-
-    /// <summary>
-    /// Delete a gym object and refresh the list.
-    /// </summary>
-    /// <param name="gymObject">The gym object to delete.</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    internal async Task DeleteGymObject(GymObject? gymObject)
-    {
-        // Guards.
-        if (gymObject == null)
-        {
-            throw new InvalidOperationException("Gym object not set.");
-        }
-        if (_repo == null)
-        {
-            throw new InvalidOperationException("Reference to repository not set.");
-        }
-
-        // Delete the object from the database.
-        await _repo.Delete(gymObject);
-
-        // Refresh the list of objects.
-        await DisplayList();
-    }
-
-    /// <summary>
-    /// Go to the form page for adding a new gym object.
-    /// </summary>
-    private async Task AddGymObject()
-    {
-        await Shell.Current.GoToAsync($"edit?op=add&type={_gymObjectTypeName}");
-    }
-
-    /// <summary>
-    /// Reset the gym objects to the default.
-    /// </summary>
-    internal async Task ResetGymObjects()
-    {
-        // Guard.
-        if (_repo == null)
-        {
-            throw new InvalidOperationException("Reference to repository not set.");
-        }
-
-        // Delete all current objects of the specified type.
-        await _repo.DeleteAll();
-
-        // Insert the defaults.
-        await _repo.InsertDefaults();
-
-        // Refresh the list.
-        await DisplayList();
-    }
-
-    #endregion Command methods
 
     #region Events
 
@@ -283,4 +97,191 @@ public class ListViewModel : BaseViewModel
     }
 
     #endregion UI methods
+
+    #region Dependencies
+
+    private readonly Database _database;
+
+    private IGymObjectRepository? _repo;
+
+    #endregion Dependencies
+
+    #region Bindable properties
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// The type of gym objects listed. This is set by the page, which receives it as a parameter.
+    /// </summary>
+    private string? _gymObjectTypeName;
+
+    public string? GymObjectTypeName
+    {
+        get => _gymObjectTypeName;
+
+        set => SetProperty(ref _gymObjectTypeName, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Results for the CollectionView.
+    /// </summary>
+    private List<ListItem>? _listItems;
+
+    public List<ListItem>? ListItems
+    {
+        get => _listItems;
+
+        set => SetProperty(ref _listItems, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Page title.
+    /// </summary>
+    private string? _title;
+
+    public string? Title
+    {
+        get => _title;
+
+        set => SetProperty(ref _title, value);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Instructions text.
+    /// </summary>
+    private string? _instructions;
+
+    public string? Instructions
+    {
+        get => _instructions;
+
+        set => SetProperty(ref _instructions, value);
+    }
+
+    #endregion Bindable properties
+
+    #region Commands
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Command to enable/disable an item.
+    /// </summary>
+    public ICommand EnableGymObjectCommand { get; init; }
+
+    private async Task EnableGymObject(ListItem? listItem)
+    {
+        // Guard.
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Reference to repository not set.");
+        }
+
+        // Check if an update is actually needed. This method is called on initialization of the
+        // CollectionView, when no changes have occurred. Could be a bug in InputKit.
+        if (listItem!.Enabled == listItem.GymObject.Enabled)
+        {
+            return;
+        }
+
+        // Update the object in the database.
+        listItem.GymObject.Enabled = listItem.Enabled;
+        await _repo.Upsert(listItem.GymObject);
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Command to edit an item.
+    /// </summary>
+    public ICommand EditGymObjectCommand { get; init; }
+
+    /// <summary>
+    /// Go to the form page for editing a gym object.
+    /// </summary>
+    /// <param name="gymObject"></param>
+    /// <exception cref="InvalidOperationException"></exception>
+    private async Task EditGymObject(GymObject? gymObject)
+    {
+        // Guard.
+        if (gymObject == null)
+        {
+            throw new InvalidOperationException("Gym object not set.");
+        }
+
+        await Shell.Current.GoToAsync($"edit?op=edit&type={_gymObjectTypeName}&id={gymObject.Id}");
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Command to delete an item.
+    /// </summary>
+    public ICommand DeleteGymObjectCommand { get; init; }
+
+    /// <summary>
+    /// Delete a gym object and refresh the list.
+    /// </summary>
+    /// <param name="gymObject">The gym object to delete.</param>
+    /// <exception cref="InvalidOperationException"></exception>
+    internal async Task DeleteGymObject(GymObject? gymObject)
+    {
+        // Guards.
+        if (gymObject == null)
+        {
+            throw new InvalidOperationException("Gym object not set.");
+        }
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Reference to repository not set.");
+        }
+
+        // Delete the object from the database.
+        await _repo.Delete(gymObject);
+
+        // Refresh the list of objects.
+        await DisplayList();
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Command to add a new item.
+    /// </summary>
+    public ICommand AddGymObjectCommand { get; init; }
+
+    /// <summary>
+    /// Go to the form page for adding a new gym object.
+    /// </summary>
+    private async Task AddGymObject()
+    {
+        await Shell.Current.GoToAsync($"edit?op=add&type={_gymObjectTypeName}");
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Reset items command.
+    /// </summary>
+    public ICommand ResetGymObjectsCommand { get; init; }
+
+    /// <summary>
+    /// Reset the gym objects to the default.
+    /// </summary>
+    internal async Task ResetGymObjects()
+    {
+        // Guard.
+        if (_repo == null)
+        {
+            throw new InvalidOperationException("Reference to repository not set.");
+        }
+
+        // Delete all current objects of the specified type.
+        await _repo.DeleteAll();
+
+        // Insert the defaults.
+        await _repo.InsertDefaults();
+
+        // Refresh the list.
+        await DisplayList();
+    }
+
+    #endregion Commands
 }

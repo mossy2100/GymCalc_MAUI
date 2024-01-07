@@ -7,7 +7,7 @@ namespace GymCalc.ViewModels;
 
 public class ResultsViewModel : BaseViewModel
 {
-    #region Constructors
+    #region Constructor
 
     /// <summary>
     /// Constructor.
@@ -24,7 +24,7 @@ public class ResultsViewModel : BaseViewModel
         PercentSelected(100);
     }
 
-    #endregion Constructors
+    #endregion Constructor
 
     #region Dependencies
 
@@ -156,11 +156,32 @@ public class ResultsViewModel : BaseViewModel
 
     #endregion Bindable properties
 
-    #region Command properties
+    #region Commands
 
+    // ---------------------------------------------------------------------------------------------
     public ICommand PercentSelectedCommand { get; init; }
 
-    #endregion Command properties
+    /// <summary>
+    /// Command method for when a percent button is tapped.
+    /// </summary>
+    /// <param name="sPercent">
+    /// The command parameter, which should be a string like "50", "60", etc.
+    /// </param>
+    public void PercentSelected(string sPercent)
+    {
+        // Try to convert the string to an integer and check it's valid. If the string can't be
+        // converted to a valid percent, don't throw an exception; just default to 100.
+        int[] validPercentages = [50, 60, 70, 80, 90, 100];
+        if (!int.TryParse(sPercent, out int percent) || !validPercentages.Contains(percent))
+        {
+            percent = 100;
+        }
+
+        // Call the integer version of the method.
+        PercentSelected(percent);
+    }
+
+    #endregion Commands
 
     #region Methods
 
@@ -172,28 +193,6 @@ public class ResultsViewModel : BaseViewModel
     private string GetPercentButtonVisualState(int pc)
     {
         return SelectedPercent == pc ? "Selected" : "Normal";
-    }
-
-    /// <summary>
-    /// Command method for when a percent button is tapped.
-    /// </summary>
-    /// <param name="sPercent">
-    /// The command parameter, which should be a string like "50", "60", etc.
-    /// </param>
-    public void PercentSelected(string sPercent)
-    {
-        // Convert the percent string to an integer.
-        bool looksLikeInt = int.TryParse(sPercent, out int percent);
-
-        // If the string couldn't be converted to a valid percent, don't throw an exception; just
-        // default to the 100% result.
-        int[] validPercentages = [50, 60, 70, 80, 90, 100];
-        if (!looksLikeInt || !validPercentages.Contains(percent))
-        {
-            percent = 100;
-        }
-
-        PercentSelected(percent);
     }
 
     /// <summary>

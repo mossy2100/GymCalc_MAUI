@@ -119,13 +119,8 @@ public class EditViewModel : BaseViewModel
 
     #region Commands
 
+    // ---------------------------------------------------------------------------------------------
     public ICommand CancelCommand { get; init; }
-
-    public ICommand SaveCommand { get; init; }
-
-    #endregion Commands
-
-    #region Command methods
 
     /// <summary>
     /// Go back to the list page, showing items of the current type.
@@ -134,6 +129,9 @@ public class EditViewModel : BaseViewModel
     {
         await Shell.Current.GoToAsync("..");
     }
+
+    // ---------------------------------------------------------------------------------------------
+    public ICommand SaveCommand { get; init; }
 
     /// <summary>
     /// Save the item to the database, then go back to the list page.
@@ -181,7 +179,7 @@ public class EditViewModel : BaseViewModel
         await Shell.Current.GoToAsync("..");
     }
 
-    #endregion Command methods
+    #endregion Commands
 
     #region Other methods
 
