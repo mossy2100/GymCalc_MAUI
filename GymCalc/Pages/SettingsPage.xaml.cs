@@ -7,10 +7,10 @@ public partial class SettingsPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="model">The viewmodel to bind to.</param>
-    public SettingsPage(SettingsViewModel model)
+    /// <param name="viewModel">The viewmodel to bind to.</param>
+    public SettingsPage(SettingsViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = model;
+        BindingContext = viewModel;
     }
 }

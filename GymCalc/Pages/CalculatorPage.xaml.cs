@@ -8,7 +8,7 @@ public partial class CalculatorPage : ContentPage
 {
     #region Fields
 
-    private readonly CalculatorViewModel? _model;
+    private readonly CalculatorViewModel? _viewModel;
 
     private bool _databaseInitialized;
 
@@ -19,11 +19,11 @@ public partial class CalculatorPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    public CalculatorPage(CalculatorViewModel model)
+    public CalculatorPage(CalculatorViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = model;
-        _model = model;
+        BindingContext = viewModel;
+        _viewModel = viewModel;
     }
 
     #endregion Constructor
@@ -33,7 +33,7 @@ public partial class CalculatorPage : ContentPage
     /// <inheritdoc/>
     protected override async void OnAppearing()
     {
-        if (_model == null)
+        if (_viewModel == null)
         {
             return;
         }
@@ -41,15 +41,15 @@ public partial class CalculatorPage : ContentPage
         // Initialize database on first page load.
         if (!_databaseInitialized)
         {
-            await _model.InitializeDatabase();
+            await _viewModel.InitializeDatabase();
             _databaseInitialized = true;
         }
 
         // Initialise the exercise type buttons.
-        SetExerciseType(_model.SelectedExerciseType);
+        SetExerciseType(_viewModel.SelectedExerciseType);
 
         // Initialize other form elements.
-        await _model.Initialize();
+        await _viewModel.Initialize();
     }
 
     private void OnBarbellButtonClicked(object sender, EventArgs e)
@@ -90,12 +90,12 @@ public partial class CalculatorPage : ContentPage
 
     private void OnMovementTypeChanged(object sender, EventArgs e)
     {
-        if (_model == null)
+        if (_viewModel == null)
         {
             return;
         }
 
-        _model.StartingWeightLabel = _model.MovementType == EMovementType.Isolateral
+        _viewModel.StartingWeightLabel = _viewModel.MovementType == EMovementType.Isolateral
             ? "Starting weight per side"
             : "Starting weight";
     }
@@ -106,16 +106,16 @@ public partial class CalculatorPage : ContentPage
 
     private void SetExerciseType(EExerciseType exerciseType)
     {
-        if (_model == null)
+        if (_viewModel == null)
         {
             return;
         }
 
         // Clear the error message.
-        _model.ErrorMessage = "";
+        _viewModel.ErrorMessage = "";
 
         // Update the viewmodel.
-        _model.SelectedExerciseType = exerciseType;
+        _viewModel.SelectedExerciseType = exerciseType;
 
         // Deselect all exercise type buttons.
         VisualStateManager.GoToState(BarbellButton, "Normal");
@@ -135,7 +135,7 @@ public partial class CalculatorPage : ContentPage
 
                 // Hide/show rows.
                 BarbellTypeGrid.IsVisible = true;
-                BarWeightGrid.IsVisible = _model.BarbellType == EBarbellType.PlateLoaded;
+                BarWeightGrid.IsVisible = _viewModel.BarbellType == EBarbellType.PlateLoaded;
                 MovementTypeGrid.IsVisible = false;
                 StartingWeightGrid.IsVisible = false;
                 break;

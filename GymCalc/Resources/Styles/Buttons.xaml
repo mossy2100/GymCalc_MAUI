@@ -138,22 +138,14 @@
         <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <VisualState.Setters>
-                            <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
-                        </VisualState.Setters>
-                    </VisualState>
-                    <VisualState x:Name="Pressed">
-                        <VisualState.Setters>
-                            <Setter Property="Background" Value="{StaticResource Primary}"/>
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
+    </Style>
+
+    <!-- Manual page buttons -->
+    <Style x:Key="ManualButtonStyle" TargetType="Button">
+        <Setter Property="HorizontalOptions" Value="Start"/>
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+        <Setter Property="Background" Value="Transparent"/>
     </Style>
 
 </ResourceDictionary>

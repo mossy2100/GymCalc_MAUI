@@ -24,15 +24,15 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="listViewModel">Reference to the viewmodel.</param>
-    public ListPage(ListViewModel listViewModel)
+    /// <param name="listViewViewModel">Reference to the viewmodel.</param>
+    public ListPage(ListViewModel listViewViewModel)
     {
         // Keep references to dependencies.
-        Model = listViewModel;
+        ViewModel = listViewViewModel;
 
         // Initialize.
         InitializeComponent();
-        BindingContext = Model;
+        BindingContext = ViewModel;
     }
 
     #endregion Constructor
@@ -42,7 +42,7 @@ public partial class ListPage : ContentPage
     /// <summary>
     /// Reference to the viewmodel.
     /// </summary>
-    public ListViewModel Model { get; }
+    public ListViewModel ViewModel { get; }
 
     /// <summary>
     /// Page parameter specifying what type of gym object to list.
@@ -55,8 +55,8 @@ public partial class ListPage : ContentPage
         {
             _gymObjectTypeName = value;
 
-            // Copy the value to the model.
-            Model.GymObjectTypeName = value;
+            // Copy the value to the viewmodel.
+            ViewModel.GymObjectTypeName = value;
         }
     }
 
@@ -70,7 +70,7 @@ public partial class ListPage : ContentPage
         base.OnAppearing();
 
         // Re-render the list of objects.
-        await Model.DisplayList();
+        await ViewModel.DisplayList();
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public partial class ListPage : ContentPage
         // If confirmed, do the deletion.
         if (confirmed)
         {
-            await Model.DeleteGymObject(gymObject);
+            await ViewModel.DeleteGymObject(gymObject);
         }
     }
 
@@ -120,7 +120,7 @@ public partial class ListPage : ContentPage
         // If confirmed, do the reset.
         if (confirmed)
         {
-            await Model.ResetGymObjects();
+            await ViewModel.ResetGymObjects();
         }
     }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="GymCalc.Pages.ManualPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:viewModels="clr-namespace:GymCalc.ViewModels" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="GymCalc Manual"
+    x:DataType="viewModels:ManualViewModel">
+
+    <VerticalStackLayout Padding="{StaticResource Spacing}">
+        <Button Command="{Binding GoToInstructionsPageCommand}"
+            Style="{StaticResource ManualButtonStyle}"
+            Text="1. Instructions"/>
+        <Button Command="{Binding GoToTrainingPageCommand}"
+            Style="{StaticResource ManualButtonStyle}"
+            Text="2. Training Methods"/>
+        <Button Command="{Binding GoToAboutPageCommand}"
+            Style="{StaticResource ManualButtonStyle}"
+            Text="3. About GymCalc"/>
+    </VerticalStackLayout>
+
+</ContentPage>

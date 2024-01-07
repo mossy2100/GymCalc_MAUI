@@ -12,7 +12,7 @@ public partial class HtmlPage : ContentPage
     /// <summary>
     /// Reference to the viewmodel.
     /// </summary>
-    private readonly HtmlViewModel _model;
+    private readonly HtmlViewModel _viewModel;
 
     /// <summary>
     /// Reference to the service dependency.
@@ -31,17 +31,18 @@ public partial class HtmlPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="model">Reference to the viewmodel.</param>
+    /// <param name="viewModel">Reference to the viewmodel.</param>
     /// <param name="htmlUpdaterService">Reference to the HtmlUpdaterService.</param>
-    public HtmlPage(HtmlViewModel model, HtmlUpdaterService htmlUpdaterService)
+    public HtmlPage(HtmlViewModel viewModel, HtmlUpdaterService htmlUpdaterService)
     {
         // Keep references to dependencies.
-        _model = model;
+        _viewModel = viewModel;
         _htmlUpdaterService = htmlUpdaterService;
 
         // Initialize.
         InitializeComponent();
-        BindingContext = _model;
+        BindingContext = _viewModel;
+        Title = "Manual";
 
         // Events.
         Application.Current!.RequestedThemeChanged += OnRequestedThemeChanged;
@@ -103,8 +104,8 @@ public partial class HtmlPage : ContentPage
         switch (propertyName)
         {
             case nameof(Title):
-                // Copy the title to the model.
-                _model.Title = Title;
+                // Copy the title to the viewmodel.
+                _viewModel.Title = Title;
                 break;
 
             case nameof(Route):

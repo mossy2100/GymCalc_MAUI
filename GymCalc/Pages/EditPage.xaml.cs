@@ -10,7 +10,7 @@ public partial class EditPage : ContentPage
     #region Fields
 
     /// <summary>Reference to the viewmodel.</summary>
-    private readonly EditViewModel _model;
+    private readonly EditViewModel _viewModel;
 
     private string? _operation;
 
@@ -25,12 +25,12 @@ public partial class EditPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="model"></param>
-    public EditPage(EditViewModel model)
+    /// <param name="viewModel"></param>
+    public EditPage(EditViewModel viewModel)
     {
         InitializeComponent();
-        _model = model;
-        BindingContext = _model;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
 
     #endregion Constructor
@@ -84,7 +84,7 @@ public partial class EditPage : ContentPage
             case nameof(Operation):
             case nameof(GymObjectTypeName):
             case nameof(GymObjectId):
-                await _model.Initialize(Operation, GymObjectTypeName, GymObjectId);
+                await _viewModel.Initialize(Operation, GymObjectTypeName, GymObjectId);
                 break;
         }
     }

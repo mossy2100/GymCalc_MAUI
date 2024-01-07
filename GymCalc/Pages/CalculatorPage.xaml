@@ -116,13 +116,13 @@
                     VerticalTextAlignment="Center"/>
             </Grid>
 
-            <!-- Machine type -->
+            <!-- Movement type -->
             <Grid x:Name="MovementTypeGrid"
                 ColumnDefinitions="7*,5*"
                 ColumnSpacing="{StaticResource Spacing}"
                 RowDefinitions="Auto">
                 <Label Grid.Row="0" Grid.Column="0"
-                    Text="Machine type" VerticalTextAlignment="Center"/>
+                    Text="Movement type" VerticalTextAlignment="Center"/>
                 <VerticalStackLayout Grid.Row="0" Grid.Column="1"
                     Margin="0" Padding="0"
                     RadioButtonGroup.GroupName="MovementTypeRadioButtonGroup"

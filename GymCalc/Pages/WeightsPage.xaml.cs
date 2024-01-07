@@ -7,10 +7,10 @@ public partial class WeightsPage : ContentPage
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="model">The viewmodel to bind to.</param>
-    public WeightsPage(WeightsViewModel model)
+    /// <param name="viewModel">The viewmodel to bind to.</param>
+    public WeightsPage(WeightsViewModel viewModel)
     {
         InitializeComponent();
-        BindingContext = model;
+        BindingContext = viewModel;
     }
 }

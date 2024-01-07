@@ -12,7 +12,7 @@ public partial class ResultsPage : ContentPage
 {
     #region Fields
 
-    private readonly ResultsViewModel _model;
+    private readonly ResultsViewModel _viewModel;
 
     private readonly CalculatorService _calculatorService;
 
@@ -20,11 +20,11 @@ public partial class ResultsPage : ContentPage
 
     #region Constructor
 
-    public ResultsPage(ResultsViewModel model, CalculatorService calculatorService)
+    public ResultsPage(ResultsViewModel viewModel, CalculatorService calculatorService)
     {
         InitializeComponent();
-        BindingContext = model;
-        _model = model;
+        BindingContext = viewModel;
+        _viewModel = viewModel;
         _calculatorService = calculatorService;
     }
 
@@ -41,12 +41,12 @@ public partial class ResultsPage : ContentPage
         UpdateCalculatorSettings();
 
         // Display the right type of result.
-        _model.PlatesResultVisible = _calculatorService.ResultType == EResultType.Plates;
-        _model.SingleWeightResultVisible =
+        _viewModel.PlatesResultVisible = _calculatorService.ResultType == EResultType.Plates;
+        _viewModel.SingleWeightResultVisible =
             _calculatorService.ResultType == EResultType.SingleWeight;
 
         // Select the 100% result to start with.
-        _model.PercentSelected(100);
+        _viewModel.PercentSelected(100);
     }
 
     #endregion Events

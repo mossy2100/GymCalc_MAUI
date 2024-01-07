@@ -37,11 +37,11 @@
                                 HorizontalOptions="Center" VerticalOptions="Center"
                                 WidthRequest="{Binding Drawable.Width}"/>
                             <input:CheckBox Grid.Column="1"
-                                CheckChangedCommand="{Binding Model.EnableCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
+                                CheckChangedCommand="{Binding ViewModel.EnableCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                                 CommandParameter="{Binding .}"
                                 IsChecked="{Binding Enabled, Mode=TwoWay}"/>
                             <Button Grid.Column="2"
-                                Command="{Binding Model.EditCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
+                                Command="{Binding ViewModel.EditCommand, Source={RelativeSource AncestorType={x:Type pages:ListPage}}}"
                                 CommandParameter="{Binding GymObject}"
                                 Style="{StaticResource EditIconButtonStyle}"/>
                             <Button Grid.Column="3"

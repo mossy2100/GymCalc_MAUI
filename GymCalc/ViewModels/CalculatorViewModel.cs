@@ -9,8 +9,6 @@ namespace GymCalc.ViewModels;
 
 public class CalculatorViewModel : BaseViewModel
 {
-    // ---------------------------------------------------------------------------------------------
-
     #region Constructors
 
     /// <summary>
@@ -37,8 +35,6 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Constructors
 
-    // ---------------------------------------------------------------------------------------------
-
     #region Dependencies
 
     private readonly BarRepository _barRepo;
@@ -54,8 +50,6 @@ public class CalculatorViewModel : BaseViewModel
     private readonly CalculatorService _calculatorService;
 
     #endregion Dependencies
-
-    // ---------------------------------------------------------------------------------------------
 
     #region Bindable properties
 
@@ -181,7 +175,6 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion Bindable properties
 
-    // ---------------------------------------------------------------------------------------------
     #region Calculated properties
 
     /// <summary>
@@ -210,14 +203,12 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion
 
-    // ---------------------------------------------------------------------------------------------
     #region Commands
 
     public ICommand CalculateCommand { get; init; }
 
     #endregion Commands
 
-    // ---------------------------------------------------------------------------------------------
     #region Initialization stuff
 
     internal async Task InitializeDatabase()
@@ -285,7 +276,6 @@ public class CalculatorViewModel : BaseViewModel
 
     #endregion
 
-    // ---------------------------------------------------------------------------------------------
     #region Validation methods
 
     private bool ValidateMaxWeight()
@@ -315,8 +305,6 @@ public class CalculatorViewModel : BaseViewModel
     }
 
     #endregion Validation methods
-
-    // ---------------------------------------------------------------------------------------------
 
     #region Command methods
 

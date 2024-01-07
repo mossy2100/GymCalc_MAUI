@@ -18,15 +18,8 @@
     <FlyoutItem Title="Settings" FlyoutIcon="{AppThemeBinding Light='settings_icon_black_300.png', Dark='settings_icon_white_300.png'}">
         <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}"/>
     </FlyoutItem>
-    <MenuItem Command="{Binding GoToPageCommand}"
-        CommandParameter="instructions"
-        IconImageSource="{AppThemeBinding Light='help_icon_black_300.png',
-                                          Dark='help_icon_white_300.png'}"
-        Text="Instructions"/>
-    <MenuItem Command="{Binding GoToPageCommand}"
-        CommandParameter="about"
-        IconImageSource="{AppThemeBinding Light='about_icon_black_300.png',
-                                          Dark='about_icon_white_300.png'}"
-        Text="About GymCalc"/>
+    <FlyoutItem Title="Manual" FlyoutIcon="{AppThemeBinding Light='help_icon_black_300.png', Dark='help_icon_white_300.png'}">
+        <ShellContent ContentTemplate="{DataTemplate pages:ManualPage}"/>
+    </FlyoutItem>
 
 </Shell>

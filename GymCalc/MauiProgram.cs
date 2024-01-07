@@ -41,8 +41,10 @@ public static class MauiProgram
     private static void RegisterDependencyInjection(MauiAppBuilder builder)
     {
         builder.Services
-            // Database.
+            // Services.
             .AddSingleton<Database>()
+            .AddSingleton<CalculatorService>()
+            .AddSingleton<HtmlUpdaterService>()
             // Repositories.
             .AddSingleton<BarRepository>()
             .AddSingleton<PlateRepository>()
@@ -55,6 +57,7 @@ public static class MauiProgram
             .AddSingleton<ListPage>()
             .AddSingleton<SettingsPage>()
             .AddSingleton<WeightsPage>()
+            .AddSingleton<ManualPage>()
             // Transient pages.
             // It seems pages must be transient if they have more than one parameter.
             .AddTransient<EditPage>()
@@ -67,9 +70,7 @@ public static class MauiProgram
             .AddSingleton<WeightsViewModel>()
             .AddSingleton<EditViewModel>()
             .AddSingleton<HtmlViewModel>()
-            // Services.
-            .AddSingleton<CalculatorService>()
-            .AddSingleton<HtmlUpdaterService>()
+            .AddSingleton<ManualViewModel>()
             ;
     }
 
