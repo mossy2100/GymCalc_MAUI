@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-<!--        <TargetFramework>net8.0-ios</TargetFramework>-->
-<!--        <TargetFramework>net8.0-android</TargetFramework>-->
-        <TargetFrameworks>net8.0-ios;net8.0-android</TargetFrameworks>
-        <!--        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>-->
+                <TargetFramework>net8.0-ios</TargetFramework>
+        <!--        <TargetFramework>net8.0-android</TargetFramework>-->
+<!--        <TargetFrameworks>net8.0-ios;net8.0-android</TargetFrameworks>-->
+        <!--        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>-->
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
         <RootNamespace>GymCalc</RootNamespace>
         <UseMaui>true</UseMaui>
@@ -34,112 +34,168 @@
         <ReleaseVersion>1.0</ReleaseVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
-      <CreatePackage>false</CreatePackage>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+        <CreatePackage>false</CreatePackage>
+        <RuntimeIdentifier>iossimulator-arm64</RuntimeIdentifier>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
-      <CreatePackage>false</CreatePackage>
-      <CodesignProvision>Automatic</CodesignProvision>
-      <CodesignKey>Apple Distribution: Shaun Moss (N2YGZM872J)</CodesignKey>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
+        <CreatePackage>false</CreatePackage>
+        <CodesignProvision>Automatic</CodesignProvision>
+        <CodesignKey>Apple Distribution: Shaun Moss (N2YGZM872J)</CodesignKey>
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
+
     <ItemGroup>
-        <!-- App Icon -->
+        <!-- CSS files -->
         <MauiAsset Include="wwwroot\css\dark.css">
-          <LogicalName>css/dark.css</LogicalName>
+            <LogicalName>css/dark.css</LogicalName>
         </MauiAsset>
         <MauiAsset Include="wwwroot\css\light.css">
-          <LogicalName>css/light.css</LogicalName>
+            <LogicalName>css/light.css</LogicalName>
         </MauiAsset>
+
+        <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="White">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
         <MauiIcon Include="Resources\AppIcon\appiconfg.svg">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiIcon>
 
         <!-- Flyout icons -->
+        <MauiImage Include="Resources\Images\flyout_item_icons\about_icon_black_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\flyout_item_icons\about_icon_white_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
+        <MauiImage Include="Resources\Images\flyout_item_icons\calculator_icon_black_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\flyout_item_icons\calculator_icon_white_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
+        <MauiImage Include="Resources\Images\flyout_item_icons\help_icon_black_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\flyout_item_icons\help_icon_white_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
+        <MauiImage Include="Resources\Images\flyout_item_icons\settings_icon_black_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\flyout_item_icons\settings_icon_white_300.png">
+          <BaseSize>32,32</BaseSize>
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
 
-        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
+        <!-- Exercise type images -->
+        <MauiImage Include="Resources\Images\exercise_types\deadlift_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\calculator_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\bar_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\bar_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\plate_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\barbell_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\dumbbell_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
+        <MauiImage Include="Resources\Images\exercise_types\deadlift_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
-        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\kettlebell_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\settings_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
+        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
-        <MauiImage Include="Resources\Images\tab_bar_icons\help_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
+        <MauiImage Include="Resources\Images\exercise_types\leg_press_black_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\help_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_black_300.png">
-            <BaseSize>30,30</BaseSize>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\tab_bar_icons\about_icon_white_300.png">
-            <BaseSize>30,30</BaseSize>
+        <MauiImage Include="Resources\Images\exercise_types\leg_press_white_100.png">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiImage>
 
+        <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_black_100.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_white_100.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <!-- Gym object icons -->
+        <MauiImage Include="Resources\Images\gym_object_icons\bar_icon_black_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\gym_object_icons\bar_icon_white_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
+        <MauiImage Include="Resources\Images\gym_object_icons\plate_icon_black_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\gym_object_icons\plate_icon_white_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\gym_object_icons\barbell_icon_black_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\gym_object_icons\barbell_icon_white_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\gym_object_icons\dumbbell_icon_black_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\gym_object_icons\dumbbell_icon_white_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <MauiImage Include="Resources\Images\gym_object_icons\kettlebell_icon_black_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\gym_object_icons\kettlebell_icon_white_300.png">
+            <BaseSize>48,48</BaseSize>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+
+        <!-- Button icons -->
+        <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </MauiImage>
+        
         <!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="White" BaseSize="128,128" />
 
@@ -154,51 +210,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </MauiAsset>
 
-        <!-- Exercise type images -->
-        <MauiImage Include="Resources\Images\exercise_types\deadlift_black_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\deadlift_white_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_black_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\dumbbell_press_white_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\leg_press_black_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\leg_press_white_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_black_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\exercise_types\kettlebell_swing_white_100.png">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-
-        <!-- Button icons -->
-        <MauiImage Include="Resources\Images\button_icons\edit_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\button_icons\plus_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\button_icons\cancel_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\button_icons\delete_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\button_icons\reset_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
-        <MauiImage Include="Resources\Images\button_icons\check_icon_white_16.png">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </MauiImage>
     </ItemGroup>
 
     <ItemGroup>
@@ -215,50 +226,50 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiXaml Update="Pages\ListPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Themes\OrangeTheme.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Themes\PinkTheme.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Update="Pages\HtmlPage.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
-      <MauiXaml Remove="old\**" />
-      <MauiXaml Update="Resources\Styles\RadioButtons.xaml">
-        <SubType>Designer</SubType>
-      </MauiXaml>
+        <MauiXaml Update="Pages\ListPage.xaml">
+            <SubType>Designer</SubType>
+        </MauiXaml>
+        <MauiXaml Update="Themes\OrangeTheme.xaml">
+            <SubType>Designer</SubType>
+        </MauiXaml>
+        <MauiXaml Update="Themes\PinkTheme.xaml">
+            <SubType>Designer</SubType>
+        </MauiXaml>
+        <MauiXaml Update="Pages\HtmlPage.xaml">
+            <SubType>Designer</SubType>
+        </MauiXaml>
+        <MauiXaml Remove="old\**" />
+        <MauiXaml Update="Resources\Styles\RadioButtons.xaml">
+            <SubType>Designer</SubType>
+        </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Pages\ListPage.xaml.cs">
-        <DependentUpon>ListPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Themes\OrangeTheme.xaml.cs">
-        <DependentUpon>OrangeTheme.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Pages\HtmlPage.xaml.cs">
-        <DependentUpon>HtmlPage.xaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Remove="old\**" />
-      <Compile Update="Platforms\Android\Services\DeviceOrientationService.cs">
-        <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
-      </Compile>
+        <Compile Update="Pages\ListPage.xaml.cs">
+            <DependentUpon>ListPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Themes\OrangeTheme.xaml.cs">
+            <DependentUpon>OrangeTheme.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Pages\HtmlPage.xaml.cs">
+            <DependentUpon>HtmlPage.xaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Remove="old\**" />
+        <Compile Update="Platforms\Android\Services\DeviceOrientationService.cs">
+            <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Galaxon.Core">
-        <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net8.0\Galaxon.Core.dll</HintPath>
-      </Reference>
-      <Reference Include="Galaxon.Maui">
-        <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Maui\Maui\bin\Debug\net8.0\Galaxon.Maui.dll</HintPath>
-      </Reference>
+        <Reference Include="Galaxon.Core">
+            <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Core\Core\bin\Debug\net8.0\Galaxon.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Galaxon.Maui">
+            <HintPath>..\..\..\..\Web &amp; software development\C#\Projects\Galaxon\Maui\Maui\bin\Debug\net8.0\Galaxon.Maui.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
@@ -267,19 +278,19 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiCss Remove="old\**" />
+        <MauiCss Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="old\**" />
+        <EmbeddedResource Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Remove="old\**" />
+        <Content Remove="old\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="old\**" />
+        <None Remove="old\**" />
     </ItemGroup>
 
 </Project>

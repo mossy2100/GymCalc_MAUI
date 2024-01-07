@@ -131,12 +131,12 @@
     <Style x:Key="GymObjectTypeButtonStyle" TargetType="Button">
         <Setter Property="FontSize" Value="{x:Static graphics:FontSizes.MEDIUM}"/>
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
-        <Setter Property="ContentLayout" Value="Left,16"/>
-        <Setter Property="HeightRequest" Value="50"/>
-        <Setter Property="Padding" Value="8,0,0,0"/>
+        <Setter Property="ContentLayout" Value="Top,12"/>
+        <Setter Property="HeightRequest" Value="108"/>
+        <Setter Property="Padding" Value="0,16,0,8"/>
         <Setter Property="BorderWidth" Value="1"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
         <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource SecondaryLight}, Dark={StaticResource SecondaryDark}}"/>
     </Style>
