@@ -22,81 +22,10 @@ public class ListViewModel : BaseViewModel
         // Commands.
         EnableGymObjectCommand = new AsyncCommand<ListItem>(EnableGymObject);
         EditGymObjectCommand = new AsyncCommand<GymObject>(EditGymObject);
-        DeleteGymObjectCommand = new AsyncCommand<GymObject>(DeleteGymObject);
         AddGymObjectCommand = new AsyncCommand(AddGymObject);
-        ResetGymObjectsCommand = new AsyncCommand(ResetGymObjects);
     }
 
     #endregion Constructor
-
-    #region Events
-
-    /// <inheritdoc/>
-    protected override async void OnPropertyChanged(string? propertyName = null)
-    {
-        base.OnPropertyChanged(propertyName);
-
-        switch (propertyName)
-        {
-            case nameof(GymObjectTypeName):
-                await DisplayList();
-                break;
-        }
-    }
-
-    #endregion Events
-
-    #region UI methods
-
-    /// <summary>
-    /// Display the list of objects on the page.
-    /// </summary>
-    internal async Task DisplayList()
-    {
-        // Make sure GymObjectTypeName is set.
-        if (string.IsNullOrWhiteSpace(_gymObjectTypeName))
-        {
-            return;
-        }
-
-        // Set the title and instructions.
-        Title = $"{_gymObjectTypeName}s";
-        Instructions = $"Use the checkboxes to select which {_gymObjectTypeName.ToLower()}"
-            + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
-            + $" Use the edit and delete icon buttons to make changes."
-            + $" Use the Add button to add a new {_gymObjectTypeName.ToLower()}, or the Reset"
-            + $" button to reset to the defaults.";
-
-        // Get all gym objects of the specified type.
-        _repo = _database.GetRepo(_gymObjectTypeName);
-        List<GymObject> gymObjects = await _repo.LoadAll();
-
-        // Initialize the list of items.
-        ListItems = new List<ListItem>();
-
-        // Check if there's anything to draw.
-        if (gymObjects.Count == 0)
-        {
-            return;
-        }
-
-        // Get the maximum weight, which is used to determine the width of bars and plates.
-        decimal maxWeight = gymObjects.Last().Weight;
-
-        // Create drawables and add to list.
-        foreach (GymObject gymObject in gymObjects)
-        {
-            // Create the drawable.
-            var drawable = GymObjectDrawable.Create(gymObject);
-            drawable.MaxWeight = maxWeight;
-
-            // Create the list item and add it to the list.
-            var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
-            ListItems.Add(listItem);
-        }
-    }
-
-    #endregion UI methods
 
     #region Dependencies
 
@@ -162,6 +91,23 @@ public class ListViewModel : BaseViewModel
 
     #endregion Bindable properties
 
+    #region Events
+
+    /// <inheritdoc/>
+    protected override async void OnPropertyChanged(string? propertyName = null)
+    {
+        base.OnPropertyChanged(propertyName);
+
+        switch (propertyName)
+        {
+            case nameof(GymObjectTypeName):
+                await DisplayList();
+                break;
+        }
+    }
+
+    #endregion Events
+
     #region Commands
 
     // ---------------------------------------------------------------------------------------------
@@ -214,9 +160,69 @@ public class ListViewModel : BaseViewModel
 
     // ---------------------------------------------------------------------------------------------
     /// <summary>
-    /// Command to delete an item.
+    /// Command to add a new item.
     /// </summary>
-    public ICommand DeleteGymObjectCommand { get; init; }
+    public ICommand AddGymObjectCommand { get; init; }
+
+    /// <summary>
+    /// Go to the form page for adding a new gym object.
+    /// </summary>
+    private async Task AddGymObject()
+    {
+        await Shell.Current.GoToAsync($"edit?op=add&type={_gymObjectTypeName}");
+    }
+
+    #endregion Commands
+
+    #region Additional methods
+
+    /// <summary>
+    /// Display the list of objects on the page.
+    /// </summary>
+    internal async Task DisplayList()
+    {
+        // Make sure GymObjectTypeName is set.
+        if (string.IsNullOrWhiteSpace(_gymObjectTypeName))
+        {
+            return;
+        }
+
+        // Set the title and instructions.
+        Title = $"{_gymObjectTypeName}s";
+        Instructions = $"Use the checkboxes to select which {_gymObjectTypeName.ToLower()}"
+            + $" weights ({UnitsService.GetDefaultUnitsSymbol()}) are available."
+            + $" Use the edit and delete icon buttons to make changes."
+            + $" Use the Add button to add a new {_gymObjectTypeName.ToLower()}, or the Reset"
+            + $" button to reset to the defaults.";
+
+        // Get all gym objects of the specified type.
+        _repo = _database.GetRepo(_gymObjectTypeName);
+        List<GymObject> gymObjects = await _repo.LoadAll();
+
+        // Initialize the list of items.
+        ListItems = new List<ListItem>();
+
+        // Check if there's anything to draw.
+        if (gymObjects.Count == 0)
+        {
+            return;
+        }
+
+        // Get the maximum weight, which is used to determine the width of bars and plates.
+        decimal maxWeight = gymObjects.Last().Weight;
+
+        // Create drawables and add to list.
+        foreach (GymObject gymObject in gymObjects)
+        {
+            // Create the drawable.
+            var drawable = GymObjectDrawable.Create(gymObject);
+            drawable.MaxWeight = maxWeight;
+
+            // Create the list item and add it to the list.
+            var listItem = new ListItem(gymObject, drawable, gymObject.Enabled);
+            ListItems.Add(listItem);
+        }
+    }
 
     /// <summary>
     /// Delete a gym object and refresh the list.
@@ -242,26 +248,6 @@ public class ListViewModel : BaseViewModel
         await DisplayList();
     }
 
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Command to add a new item.
-    /// </summary>
-    public ICommand AddGymObjectCommand { get; init; }
-
-    /// <summary>
-    /// Go to the form page for adding a new gym object.
-    /// </summary>
-    private async Task AddGymObject()
-    {
-        await Shell.Current.GoToAsync($"edit?op=add&type={_gymObjectTypeName}");
-    }
-
-    // ---------------------------------------------------------------------------------------------
-    /// <summary>
-    /// Reset items command.
-    /// </summary>
-    public ICommand ResetGymObjectsCommand { get; init; }
-
     /// <summary>
     /// Reset the gym objects to the default.
     /// </summary>
@@ -283,5 +269,5 @@ public class ListViewModel : BaseViewModel
         await DisplayList();
     }
 
-    #endregion Commands
+    #endregion Additional methods
 }
