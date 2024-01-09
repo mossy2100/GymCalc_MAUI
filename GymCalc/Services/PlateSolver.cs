@@ -99,10 +99,10 @@ internal static class PlateSolver
 
             // Test the solution.
             decimal newPlatesWeight = newPlates.Sum(p => p.Weight);
-            decimal newDiff = decimal.Abs(newPlatesWeight - _idealWeight);
+            var newDiff = decimal.Abs(newPlatesWeight - _idealWeight);
 
             // Check if this is a new best solution.
-            bool updateSolution = false;
+            var updateSolution = false;
             if (newDiff < _smallestDiff)
             {
                 updateSolution = true;

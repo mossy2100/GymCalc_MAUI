@@ -9,6 +9,7 @@
         <x:Int32 x:Key="ColorPickerButtonSize">38</x:Int32>
         <system:Double x:Key="ColorPickerFrameSize">42</system:Double>
 
+        <!-- ReSharper disable once Xaml.RedundantResource -->
         <Style x:Key="ColorPickerFrameStyle" TargetType="Frame">
             <Setter Property="WidthRequest" Value="{StaticResource ColorPickerFrameSize}"/>
             <Setter Property="HeightRequest" Value="{StaticResource ColorPickerFrameSize}"/>
@@ -32,6 +33,7 @@
             </Setter>
         </Style>
 
+        <!-- ReSharper disable once Xaml.RedundantResource -->
         <Style x:Key="ColorPickerButtonStyle" TargetType="Button">
             <Setter Property="Padding" Value="0"/>
             <Setter Property="MinimumHeightRequest" Value="-1"/>
