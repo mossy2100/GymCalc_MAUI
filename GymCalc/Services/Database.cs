@@ -1,3 +1,5 @@
+using Galaxon.Core.Exceptions;
+using GymCalc.Models;
 using GymCalc.Repositories;
 using SQLite;
 
@@ -49,19 +51,25 @@ public class Database(IServiceProvider serviceProvider)
     /// <exception cref="ArgumentOutOfRangeException">
     /// If the gym object type name is invalid.
     /// </exception>
-    internal IGymObjectRepository GetRepo(string? gymObjectTypeName)
+    internal IGymObjectRepository GetRepository(string? gymObjectTypeName)
     {
-        if (!string.IsNullOrEmpty(gymObjectTypeName))
+        // Get the repository service the the specified gym object type.
+        IGymObjectRepository? repo = gymObjectTypeName switch
         {
-            var repoType = Type.GetType($"GymCalc.Repositories.{gymObjectTypeName}Repository");
-            if (repoType != null
-                && serviceProvider.GetService(repoType) is IGymObjectRepository igor)
-            {
-                return igor;
-            }
+            nameof(Bar) => serviceProvider.GetService<BarRepository>(),
+            nameof(Barbell) => serviceProvider.GetService<BarbellRepository>(),
+            nameof(Dumbbell) => serviceProvider.GetService<DumbbellRepository>(),
+            nameof(Kettlebell) => serviceProvider.GetService<KettlebellRepository>(),
+            nameof(Plate) => serviceProvider.GetService<PlateRepository>(),
+            _ => null
+        };
+
+        if (repo == null)
+        {
+            throw new MatchNotFoundException(
+                "No repository service exists for this gym object type.");
         }
 
-        throw new ArgumentOutOfRangeException(nameof(gymObjectTypeName),
-            "Invalid gym object type name.");
+        return repo;
     }
 }

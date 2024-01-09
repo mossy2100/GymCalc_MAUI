@@ -16,6 +16,12 @@ public class BarbellRepository : GymObjectRepository<Barbell>
     public BarbellRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    public override Barbell Create()
+    {
+        return new Barbell();
+    }
+
+    /// <inheritdoc/>
     protected override Barbell Create(decimal weight, EUnits units, bool enabled)
     {
         Barbell barbell = base.Create(weight, units, enabled);

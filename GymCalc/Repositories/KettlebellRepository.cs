@@ -16,6 +16,12 @@ public class KettlebellRepository : GymObjectRepository<Kettlebell>
     public KettlebellRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    public override Kettlebell Create()
+    {
+        return new Kettlebell();
+    }
+
+    /// <inheritdoc/>
     protected override Kettlebell Create(decimal weight, EUnits units, bool enabled)
     {
         // Construct the new Kettlebell object.

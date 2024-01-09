@@ -55,6 +55,12 @@ public class PlateRepository : GymObjectRepository<Plate>
     public PlateRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    public override Plate Create()
+    {
+        return new Plate();
+    }
+
+    /// <inheritdoc/>
     public override async Task InsertDefaults()
     {
         foreach ((decimal weight, EUnits units, bool enabled, string color) in _DefaultPlates)

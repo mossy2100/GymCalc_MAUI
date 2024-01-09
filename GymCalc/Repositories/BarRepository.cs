@@ -21,6 +21,12 @@ public class BarRepository : GymObjectRepository<Bar>
     public BarRepository(Database database) : base(database) { }
 
     /// <inheritdoc/>
+    public override Bar Create()
+    {
+        return new Bar();
+    }
+
+    /// <inheritdoc/>
     protected override Bar Create(decimal weight, EUnits units, bool enabled)
     {
         Bar bar = base.Create(weight, units, enabled);

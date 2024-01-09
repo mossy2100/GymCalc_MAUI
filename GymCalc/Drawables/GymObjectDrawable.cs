@@ -1,3 +1,4 @@
+using Galaxon.Core.Exceptions;
 using GymCalc.Graphics;
 using GymCalc.Models;
 using Font = Microsoft.Maui.Graphics.Font;
@@ -45,29 +46,17 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// <param name="gymObject">A gym object.</param>
     /// <returns>A GymObjectDrawable corresponding to the provided GymObject.</returns>
     /// <exception cref="InvalidOperationException"></exception>
-    internal static GymObjectDrawable Create(GymObject gymObject)
+    internal static GymObjectDrawable CreateDrawable(GymObject gymObject)
     {
-        // Get the type.
-        string gymObjectTypeName = gymObject.GetType().Name;
-        var drawableTypeName = $"GymCalc.Drawables.{gymObjectTypeName}Drawable";
-        var drawableType = Type.GetType(drawableTypeName);
-        if (drawableType == null)
+        return gymObject switch
         {
-            throw new InvalidOperationException(
-                $"Could not find the drawable type for the {gymObjectTypeName} object.");
-        }
-
-        // Create the drawable object.
-        object? drawable = Activator.CreateInstance(drawableType);
-        if (drawable == null)
-        {
-            throw new InvalidOperationException(
-                $"Could not create a drawable for the {gymObjectTypeName} object.");
-        }
-
-        var gymObjectDrawable = (GymObjectDrawable)drawable;
-        gymObjectDrawable.GymObject = gymObject;
-        return gymObjectDrawable;
+            Bar => new BarDrawable(),
+            Barbell => new BarbellDrawable(),
+            Dumbbell => new DumbbellDrawable(),
+            Kettlebell => new KettlebellDrawable(),
+            Plate => new PlateDrawable(),
+            _ => throw new MatchNotFoundException($"No drawable class available for an object of type {gymObject.GetType().Name}.")
+        };
     }
 
     /// <summary>

@@ -208,7 +208,7 @@ public class EditViewModel : BaseViewModel
         _gymObjectId = gymObjectId;
 
         // Get the repository for this gym object type.
-        _repo = _database.GetRepo(_gymObjectTypeName);
+        _repo = _database.GetRepository(_gymObjectTypeName);
 
         // Set the title.
         TextInfo ti = new CultureInfo("en-US", false).TextInfo;

@@ -196,7 +196,7 @@ public class ListViewModel : BaseViewModel
             + $" button to reset to the defaults.";
 
         // Get all gym objects of the specified type.
-        _repo = _database.GetRepo(_gymObjectTypeName);
+        _repo = _database.GetRepository(_gymObjectTypeName);
         List<GymObject> gymObjects = await _repo.LoadAll();
 
         // Initialize the list of items.
@@ -215,7 +215,7 @@ public class ListViewModel : BaseViewModel
         foreach (GymObject gymObject in gymObjects)
         {
             // Create the drawable.
-            var drawable = GymObjectDrawable.Create(gymObject);
+            var drawable = GymObjectDrawable.CreateDrawable(gymObject);
             drawable.MaxWeight = maxWeight;
 
             // Create the list item and add it to the list.
