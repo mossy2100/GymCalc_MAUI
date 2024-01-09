@@ -27,7 +27,7 @@ internal static class SingleWeightSolver
             GymObject closest = FindClosest(idealWeight);
 
             // Construct the drawable.
-            var drawable = GymObjectDrawable.CreateDrawable(closest);
+            var drawable = GymObjectDrawable.Create(closest);
 
             // Add the result to the result set.
             var result = new SingleWeightResult(percent, idealWeight, closest, drawable);

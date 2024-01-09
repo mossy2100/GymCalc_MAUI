@@ -215,7 +215,7 @@ public class ListViewModel : BaseViewModel
         foreach (GymObject gymObject in gymObjects)
         {
             // Create the drawable.
-            var drawable = GymObjectDrawable.CreateDrawable(gymObject);
+            var drawable = GymObjectDrawable.Create(gymObject);
             drawable.MaxWeight = maxWeight;
 
             // Create the list item and add it to the list.

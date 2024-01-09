@@ -46,7 +46,7 @@ public abstract class GymObjectDrawable : BaseDrawable
     /// <param name="gymObject">A gym object.</param>
     /// <returns>A GymObjectDrawable corresponding to the provided GymObject.</returns>
     /// <exception cref="InvalidOperationException"></exception>
-    internal static GymObjectDrawable CreateDrawable(GymObject gymObject)
+    internal static GymObjectDrawable Create(GymObject gymObject)
     {
         return gymObject switch
         {
